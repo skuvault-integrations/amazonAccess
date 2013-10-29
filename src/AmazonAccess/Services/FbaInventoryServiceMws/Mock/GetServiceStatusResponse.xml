@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetServiceStatusResponse xmlns="http://mws.amazonaws.com/FulfillmentInventory/2010-10-01/">
+  <GetServiceStatusResult>
+    <!--Optional:-->
+    <Status>string</Status>
+    <!--Optional:-->
+    <Timestamp>2008-09-29T01:49:45</Timestamp>
+  </GetServiceStatusResult>
+  <ResponseMetadata>
+    <RequestId>string</RequestId>
+  </ResponseMetadata>
+</GetServiceStatusResponse>

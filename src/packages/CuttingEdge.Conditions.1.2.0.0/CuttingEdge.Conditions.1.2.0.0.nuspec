@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>CuttingEdge.Conditions</id>
+    <version>1.2.0.0</version>
+    <title>CuttingEdge.Conditions</title>
+    <authors>Steven van Deursen</authors>
+    <owners>Steven van Deursen</owners>
+    <licenseUrl>http://conditions.codeplex.com/license/</licenseUrl>
+    <projectUrl>http://conditions.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>CuttingEdge.Conditions is a library that helps developers to write fluent pre and postcondition validations in their C# 3.0 and VB.NET 9.0 code base.
+
+Writing these validations is easy and it improves the readability and maintainability of code.</description>
+    <summary>A fluent argument checking library.</summary>
+    <releaseNotes />
+    <copyright />
+    <language />
+    <tags>pre post condition validation fluent argument checking</tags>
+  </metadata>
+</package>

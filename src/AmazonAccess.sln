@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonAccess", "AmazonAccess\AmazonAccess.csproj", "{06A120E2-C802-4541-B237-52461B4742DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{42B3F27F-9331-40F0-9008-D1F7E364A407}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonAccessTests", "AmazonAccessTests\AmazonAccessTests.csproj", "{AF715B5F-5876-4FA2-AB0D-EFC82CE575C6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{06A120E2-C802-4541-B237-52461B4742DC} = {06A120E2-C802-4541-B237-52461B4742DC}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06A120E2-C802-4541-B237-52461B4742DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06A120E2-C802-4541-B237-52461B4742DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06A120E2-C802-4541-B237-52461B4742DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06A120E2-C802-4541-B237-52461B4742DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF715B5F-5876-4FA2-AB0D-EFC82CE575C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF715B5F-5876-4FA2-AB0D-EFC82CE575C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF715B5F-5876-4FA2-AB0D-EFC82CE575C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF715B5F-5876-4FA2-AB0D-EFC82CE575C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

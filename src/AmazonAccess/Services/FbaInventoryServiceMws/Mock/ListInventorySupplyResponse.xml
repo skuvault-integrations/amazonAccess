@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListInventorySupplyResponse xmlns="http://mws.amazonaws.com/FulfillmentInventory/2010-10-01/">
+  <ListInventorySupplyResult>
+    <!--Optional:-->
+    <InventorySupplyList>
+      <!--1 or more repetitions:-->
+      <member>
+        <!--Optional:-->
+        <SellerSKU>string</SellerSKU>
+        <!--Optional:-->
+        <FNSKU>string</FNSKU>
+        <!--Optional:-->
+        <ASIN>string</ASIN>
+        <!--Optional:-->
+        <Condition>string</Condition>
+        <!--Optional:-->
+        <TotalSupplyQuantity>100</TotalSupplyQuantity>
+        <!--Optional:-->
+        <InStockSupplyQuantity>100</InStockSupplyQuantity>
+        <!--Optional:-->
+        <EarliestAvailability>
+          <TimepointType>string</TimepointType>
+          <!--Optional:-->
+          <DateTime>2008-09-29T01:49:45</DateTime>
+        </EarliestAvailability>
+        <!--Optional:-->
+        <SupplyDetail>
+          <!--1 or more repetitions:-->
+          <member>
+            <!--Optional:-->
+            <Quantity>100</Quantity>
+            <!--Optional:-->
+            <SupplyType>string</SupplyType>
+            <!--Optional:-->
+            <EarliestAvailableToPick>
+              <TimepointType>string</TimepointType>
+              <!--Optional:-->
+              <DateTime>2014-09-18T23:18:33</DateTime>
+            </EarliestAvailableToPick>
+            <!--Optional:-->
+            <LatestAvailableToPick>
+              <TimepointType>string</TimepointType>
+              <!--Optional:-->
+              <DateTime>2006-08-19T17:27:14+00:00</DateTime>
+            </LatestAvailableToPick>
+          </member>
+        </SupplyDetail>
+      </member>
+    </InventorySupplyList>
+    <!--Optional:-->
+    <NextToken>string</NextToken>
+  </ListInventorySupplyResult>
+  <ResponseMetadata>
+    <RequestId>string</RequestId>
+  </ResponseMetadata>
+</ListInventorySupplyResponse>
