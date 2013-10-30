@@ -25,6 +25,7 @@ using System.Globalization;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
+using Netco.Logging;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 {
@@ -212,6 +213,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
             byte[] requestData = new UTF8Encoding().GetBytes(queryString);
             bool shouldRetry = true;
             int retries = 0;
+
+	        this.Log().Trace( "Amazon query string: {0}", queryString );
             do
             {
                 HttpWebRequest request = this.ConfigureWebRequest(requestData.Length);
