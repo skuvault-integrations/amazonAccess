@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AmazonAccess.Exceptions;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using CuttingEdge.Conditions;
 using Netco.Logging;
@@ -51,6 +52,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				this.Log().Info( string.Concat( "Error Code: ", ex.ErrorCode ) );
 				this.Log().Info( string.Concat( "Error Type: ", ex.ErrorType ) );
 				this.Log().Info( string.Concat( "Request ID: ", ex.RequestId ) );
+
+				throw new AmazonException( ex.Message );
 			}
 
 			this.GetOrderItems( orders );

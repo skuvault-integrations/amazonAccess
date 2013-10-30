@@ -16,6 +16,7 @@
  */
 
 using System.Collections.Generic;
+using AmazonAccess.Exceptions;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
 using CuttingEdge.Conditions;
 using Netco.Logging;
@@ -98,6 +99,8 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 				this.Log().Info( string.Concat( "Error Code: ", ex.ErrorCode ) );
 				this.Log().Info( string.Concat( "Error Type: ", ex.ErrorType ) );
 				this.Log().Info( string.Concat( "Request ID: ", ex.RequestId ) );
+
+				throw new AmazonException( ex.Message );
 			}
 
 			return inventory;

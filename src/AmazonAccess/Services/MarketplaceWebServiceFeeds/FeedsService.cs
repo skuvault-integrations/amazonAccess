@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using AmazonAccess.Exceptions;
 using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
 using MarketplaceWebService;
 using Netco.Logging;
@@ -33,6 +34,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 				this.Log().Info( string.Concat( "Error Code: ", ex.ErrorCode ) );
 				this.Log().Info( string.Concat( "Error Type: ", ex.ErrorType ) );
 				this.Log().Info( string.Concat( "Request ID: ", ex.RequestId ) );
+
+				throw new AmazonException( ex.Message );
 			}
 		}
 
