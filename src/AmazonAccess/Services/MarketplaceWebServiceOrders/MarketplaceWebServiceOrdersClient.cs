@@ -588,12 +588,13 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
          */
         private String GetFormattedTimestamp(DateTime dateTime)
         {
-            return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day,
+		  var date = dateTime.Kind != DateTimeKind.Local ? dateTime : 
+				    new DateTime(dateTime.Year, dateTime.Month, dateTime.Day,
                                  dateTime.Hour, dateTime.Minute, dateTime.Second,
                                  dateTime.Millisecond
                                  , DateTimeKind.Local
-                               ).ToUniversalTime().ToString("yyyy-MM-dd\\THH:mm:ss.fff\\Z",
-                                CultureInfo.InvariantCulture);
+                               ).ToUniversalTime();
+		  return date.ToString("yyyy-MM-dd\\THH:mm:ss.fff\\Z", CultureInfo.InvariantCulture);
         }
 
                                                 
