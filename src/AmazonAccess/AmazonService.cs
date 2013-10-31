@@ -40,8 +40,8 @@ namespace AmazonAccess
 					var request = new ListOrdersRequest
 						{
 							SellerId = this._credentials.SellerId,
-							CreatedAfter = dateFrom,
-							CreatedBefore = dateTo,
+							LastUpdatedAfter = dateFrom,
+							//LastUpdatedBefore = dateTo,
 							MarketplaceId = new MarketplaceIdList { Id = this._credentials.MarketplaceIds }
 						};
 					var service = new OrdersService( client, request );
