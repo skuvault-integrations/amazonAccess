@@ -13,7 +13,7 @@ namespace AmazonAccess.Misc
 			get { return _amazonGetPolicy; }
 		}
 
-		private static readonly ActionPolicy _amazonGetPolicy = ActionPolicy.Handle< Exception >().Retry( 10, ( ex, i ) =>
+		private static readonly ActionPolicy _amazonGetPolicy = ActionPolicy.Handle< Exception >().Retry( 2, ( ex, i ) =>
 			{
 				typeof( ActionPolicies ).Log().Trace( ex, "Retrying Amazon API get call for the {0} time", i );
 				SystemUtil.Sleep( TimeSpan.FromSeconds( 0.5 + i ) );
@@ -24,7 +24,7 @@ namespace AmazonAccess.Misc
 			get { return _amazonSumbitPolicy; }
 		}
 
-		private static readonly ActionPolicy _amazonSumbitPolicy = ActionPolicy.Handle< Exception >().Retry( 10, ( ex, i ) =>
+		private static readonly ActionPolicy _amazonSumbitPolicy = ActionPolicy.Handle< Exception >().Retry( 2, ( ex, i ) =>
 			{
 				typeof( ActionPolicies ).Log().Trace( ex, "Retrying Amazon API submit call for the {0} time", i );
 				SystemUtil.Sleep( TimeSpan.FromSeconds( 0.5 + i ) );
