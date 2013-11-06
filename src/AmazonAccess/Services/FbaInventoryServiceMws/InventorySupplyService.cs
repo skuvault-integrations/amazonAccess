@@ -18,7 +18,6 @@
 using System.Collections.Generic;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
 using CuttingEdge.Conditions;
-using Netco.Logging;
 
 namespace AmazonAccess.Services.FbaInventoryServiceMws
 {
@@ -70,36 +69,23 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 		public IEnumerable< InventorySupply > LoadInventory()
 		{
 			var inventory = new List< InventorySupply >();
-			try
-			{
-				var response = this._client.ListInventorySupply( this._request );
+			var response = this._client.ListInventorySupply( this._request );
 
-				if( response.IsSetListInventorySupplyResult() )
+			if( response.IsSetListInventorySupplyResult() )
+			{
+				var listInventorySupplyResult = response.ListInventorySupplyResult;
+				if( listInventorySupplyResult.IsSetInventorySupplyList() )
+					inventory.AddRange( listInventorySupplyResult.InventorySupplyList.member );
+				if( listInventorySupplyResult.IsSetNextToken() )
 				{
-					var listInventorySupplyResult = response.ListInventorySupplyResult;
-					if( listInventorySupplyResult.IsSetInventorySupplyList() )
-						inventory.AddRange( listInventorySupplyResult.InventorySupplyList.member );
-					if( listInventorySupplyResult.IsSetNextToken() )
-					{
-						var nextResponse = this._client.ListInventorySupplyByNextToken( new ListInventorySupplyByNextTokenRequest
-							{
-								SellerId = this._request.SellerId,
-								NextToken = listInventorySupplyResult.NextToken
-							} );
+					var nextResponse = this._client.ListInventorySupplyByNextToken( new ListInventorySupplyByNextTokenRequest
+						{
+							SellerId = this._request.SellerId,
+							NextToken = listInventorySupplyResult.NextToken
+						} );
 
-						this.LoadNextInventoryInfoPage( nextResponse.ListInventorySupplyByNextTokenResult, inventory );
-					}
+					this.LoadNextInventoryInfoPage( nextResponse.ListInventorySupplyByNextTokenResult, inventory );
 				}
-			}
-			catch( FbaInventoryServiceMwsException ex )
-			{
-				this.Log().Info( string.Concat( "Caught Exception: ", ex.Message ) );
-				this.Log().Info( string.Concat( "Response Status Code: ", ex.StatusCode ) );
-				this.Log().Info( string.Concat( "Error Code: ", ex.ErrorCode ) );
-				this.Log().Info( string.Concat( "Error Type: ", ex.ErrorType ) );
-				this.Log().Info( string.Concat( "Request ID: ", ex.RequestId ) );
-
-				throw;
 			}
 
 			return inventory;

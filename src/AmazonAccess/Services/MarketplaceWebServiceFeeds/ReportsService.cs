@@ -4,7 +4,6 @@ using System.Linq;
 using AmazonAccess.Models;
 using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
 using MarketplaceWebService;
-using Netco.Logging;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 {
@@ -12,28 +11,18 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 	{
 		public void GetInventoryReport( IMarketplaceWebService client )
 		{
-			try
-			{
-				var reportId = this.GetReportId( client, new GetReportListRequest
-					{
-						Merchant = "A7I0VA9RRJTE8",
-						AvailableFromDate = DateTime.UtcNow - TimeSpan.FromDays( 1 ),
-						AvailableToDate = DateTime.UtcNow
-					} );
-				var response = client.GetReport( new GetReportRequest { ReportId = reportId } );
 
-				if( response.IsSetGetReportResult() )
+			var reportId = this.GetReportId( client, new GetReportListRequest
 				{
-					var report = response.GetReportResult.ToXMLFragment();
-				}
-			}
-			catch( MarketplaceWebServiceException ex )
+					Merchant = "A7I0VA9RRJTE8",
+					AvailableFromDate = DateTime.UtcNow - TimeSpan.FromDays( 1 ),
+					AvailableToDate = DateTime.UtcNow
+				} );
+			var response = client.GetReport( new GetReportRequest { ReportId = reportId } );
+
+			if( response.IsSetGetReportResult() )
 			{
-				this.Log().Info( string.Concat( "Caught Exception: ", ex.Message ) );
-				this.Log().Info( string.Concat( "Response Status Code: ", ex.StatusCode ) );
-				this.Log().Info( string.Concat( "Error Code: ", ex.ErrorCode ) );
-				this.Log().Info( string.Concat( "Error Type: ", ex.ErrorType ) );
-				this.Log().Info( string.Concat( "Request ID: ", ex.RequestId ) );
+				var report = response.GetReportResult.ToXMLFragment();
 			}
 		}
 

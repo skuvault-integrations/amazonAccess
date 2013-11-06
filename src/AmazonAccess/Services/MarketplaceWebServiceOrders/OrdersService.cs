@@ -2,7 +2,6 @@
 using System.Linq;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using CuttingEdge.Conditions;
-using Netco.Logging;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 {
@@ -24,35 +23,22 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		{
 			var orders = new List< ComposedOrder >();
 
-			try
+			var response = this._client.ListOrders( this._request );
+			if( response.IsSetListOrdersResult() )
 			{
-				var response = this._client.ListOrders( this._request );
-				if( response.IsSetListOrdersResult() )
+				var listInventorySupplyResult = response.ListOrdersResult;
+				if( listInventorySupplyResult.IsSetOrders() )
+					orders.AddRange( listInventorySupplyResult.Orders.Order.Select( o => new ComposedOrder( o ) ).ToList() );
+				if( listInventorySupplyResult.IsSetNextToken() )
 				{
-					var listInventorySupplyResult = response.ListOrdersResult;
-					if( listInventorySupplyResult.IsSetOrders() )
-						orders.AddRange( listInventorySupplyResult.Orders.Order.Select( o => new ComposedOrder( o ) ).ToList() );
-					if( listInventorySupplyResult.IsSetNextToken() )
-					{
-						var nextResponse = this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
-							{
-								SellerId = this._request.SellerId,
-								NextToken = listInventorySupplyResult.NextToken
-							} );
+					var nextResponse = this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
+						{
+							SellerId = this._request.SellerId,
+							NextToken = listInventorySupplyResult.NextToken
+						} );
 
-						this.LoadNextOrdersInfoPage( nextResponse.ListOrdersByNextTokenResult, orders );
-					}
+					this.LoadNextOrdersInfoPage( nextResponse.ListOrdersByNextTokenResult, orders );
 				}
-			}
-			catch( MarketplaceWebServiceOrdersException ex )
-			{
-				this.Log().Info( string.Concat( "Caught Exception: ", ex.Message ) );
-				this.Log().Info( string.Concat( "Response Status Code: ", ex.StatusCode ) );
-				this.Log().Info( string.Concat( "Error Code: ", ex.ErrorCode ) );
-				this.Log().Info( string.Concat( "Error Type: ", ex.ErrorType ) );
-				this.Log().Info( string.Concat( "Request ID: ", ex.RequestId ) );
-
-				throw;
 			}
 
 			this.GetOrderItems( orders );

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
 using MarketplaceWebService;
-using Netco.Logging;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 {
@@ -13,28 +12,15 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		public void SubmitFeed( IMarketplaceWebService client, SubmitFeedRequest request )
 		{
 			var response = client.SubmitFeed( request );
-			try
+			if( response.IsSetSubmitFeedResult() )
 			{
-				if( response.IsSetSubmitFeedResult() )
+				var feedSubmissionId = response.SubmitFeedResult.FeedSubmissionInfo.FeedSubmissionId;
+				while( !this.IsReportReady( client, feedSubmissionId, request.Merchant ) )
 				{
-					var feedSubmissionId = response.SubmitFeedResult.FeedSubmissionInfo.FeedSubmissionId;
-					while( !this.IsReportReady( client, feedSubmissionId, request.Merchant ) )
-					{
-						//waiting for the report
-						Thread.Sleep( TimeSpan.FromMinutes( 1 ) );
-					}
-					//this.GetReport( client, feedSubmissionId,request.Merchant );
+					//waiting for the report
+					Thread.Sleep( TimeSpan.FromMinutes( 1 ) );
 				}
-			}
-			catch( MarketplaceWebServiceException ex )
-			{
-				this.Log().Info( string.Concat( "Caught Exception: ", ex.Message ) );
-				this.Log().Info( string.Concat( "Response Status Code: ", ex.StatusCode ) );
-				this.Log().Info( string.Concat( "Error Code: ", ex.ErrorCode ) );
-				this.Log().Info( string.Concat( "Error Type: ", ex.ErrorType ) );
-				this.Log().Info( string.Concat( "Request ID: ", ex.RequestId ) );
-
-				throw;
+				//this.GetReport( client, feedSubmissionId,request.Merchant );
 			}
 		}
 
