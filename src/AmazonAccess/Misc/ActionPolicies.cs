@@ -40,5 +40,11 @@ namespace AmazonAccess.Misc
 				typeof( ActionPolicies ).Log().Trace( ex, "Retrying Amazon API get call for the {0} time", i );
 				await Task.Delay( TimeSpan.FromSeconds( 5 + 20 * i ) );
 			} );
+
+		public static Task CreateApiDelay( double seconds )
+		{
+			var delay = TimeSpan.FromSeconds( seconds );
+			return Task.Delay( delay );
+		}
 	}
 }
