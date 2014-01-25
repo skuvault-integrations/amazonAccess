@@ -1,6 +1,3 @@
-[submodule "Invoke-Build"]
-	path = Invoke-Build
-	url = git://github.com/nightroman/Invoke-Build.git
 [submodule "tools/Invoke-Build"]
 	path = tools/Invoke-Build
 	url = git://github.com/nightroman/Invoke-Build.git
