@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 [ assembly : ComVisible( false ) ]
 [ assembly : AssemblyProduct( "AmazonAccess" ) ]
 [ assembly : AssemblyCompany( "Agile Harbor, LLC" ) ]
-[ assembly : AssemblyCopyright( "Copyright (C) 2013 Agile Harbor, LLC" ) ]
+[ assembly : AssemblyCopyright( "Copyright (C) 2014 Agile Harbor, LLC" ) ]
 [ assembly : AssemblyDescription( "Amazon webservices API wrapper." ) ]
 [ assembly : AssemblyTrademark( "" ) ]
 [ assembly : AssemblyCulture( "" ) ]
@@ -24,4 +24,4 @@ using System.Runtime.InteropServices;
 
 // Keep in track with CA API version
 
-[ assembly : AssemblyVersion( "1.0.0.0" ) ]
+[ assembly : AssemblyVersion( "0.5.0.0" ) ]
