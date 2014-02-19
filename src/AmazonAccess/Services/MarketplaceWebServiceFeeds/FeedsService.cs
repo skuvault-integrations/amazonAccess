@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
 using MarketplaceWebService;
 
@@ -12,6 +13,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		public void SubmitFeed( IMarketplaceWebService client, SubmitFeedRequest request )
 		{
 			var response = client.SubmitFeed( request );
+			
 			if( response.IsSetSubmitFeedResult() )
 			{
 				var feedSubmissionId = response.SubmitFeedResult.FeedSubmissionInfo.FeedSubmissionId;
@@ -42,6 +44,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 					FeedSubmissionIdList = new IdList { Id = new List< string > { feedSubmissionId } },
 					Merchant = merchant
 				} );
+			ActionPolicies.CreateApiDelay( 2 ).Wait();
+
 			if( response.IsSetGetFeedSubmissionListResult() )
 			{
 				var info = response.GetFeedSubmissionListResult.FeedSubmissionInfo.FirstOrDefault( i => i.FeedSubmissionId.Equals( feedSubmissionId ) );

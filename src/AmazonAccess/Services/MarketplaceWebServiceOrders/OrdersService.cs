@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using CuttingEdge.Conditions;
 
@@ -24,6 +25,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			var orders = new List< ComposedOrder >();
 
 			var response = this._client.ListOrders( this._request );
+			ActionPolicies.CreateApiDelay( 2 ).Wait();
+
 			if( response.IsSetListOrdersResult() )
 			{
 				var listInventorySupplyResult = response.ListOrdersResult;
@@ -36,6 +39,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 							SellerId = this._request.SellerId,
 							NextToken = listInventorySupplyResult.NextToken
 						} );
+					ActionPolicies.CreateApiDelay( 2 ).Wait();
 
 					this.LoadNextOrdersInfoPage( nextResponse.ListOrdersByNextTokenResult, orders );
 				}
@@ -57,6 +61,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						SellerId = this._request.SellerId,
 						NextToken = listInventorySupplyResult.NextToken
 					} );
+				ActionPolicies.CreateApiDelay( 2 ).Wait();
 
 				this.LoadNextOrdersInfoPage( response.ListOrdersByNextTokenResult, orders );
 			}

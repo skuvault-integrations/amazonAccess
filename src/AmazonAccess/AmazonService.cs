@@ -34,19 +34,19 @@ namespace AmazonAccess
 		{
 			var orders = new List< ComposedOrder >();
 
-			ActionPolicies.AmazonSubmitPolicy.Do( () =>
+			ActionPolicies.AmazonGetPolicy.Do( () =>
+			{
+				var client = this._factory.CreateOrdersClient( "SkuVault", "1.0" );
+				var request = new ListOrdersRequest
 				{
-					var client = this._factory.CreateOrdersClient( "SkuVault", "1.0" );
-					var request = new ListOrdersRequest
-						{
-							SellerId = this._credentials.SellerId,
-							LastUpdatedAfter = dateFrom,
-							//LastUpdatedBefore = dateTo,
-							MarketplaceId = new MarketplaceIdList { Id = this._credentials.MarketplaceIds }
-						};
-					var service = new OrdersService( client, request );
-					orders.AddRange( service.LoadOrders() );
-				} );
+					SellerId = this._credentials.SellerId,
+					LastUpdatedAfter = dateFrom,
+					//LastUpdatedBefore = dateTo,
+					MarketplaceId = new MarketplaceIdList { Id = this._credentials.MarketplaceIds }
+				};
+				var service = new OrdersService( client, request );
+				orders.AddRange( service.LoadOrders() );
+			} );
 
 			return orders;
 		}
@@ -55,22 +55,19 @@ namespace AmazonAccess
 		#region update inventory
 		public void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems )
 		{
-			ActionPolicies.AmazonSubmitPolicy.Do( () =>
-				{
-					var client = this._factory.CreateFeedsReportsClient();
-					if( inventoryItems.Count() > Updateitemslimit )
-					{
-						var partsCount = inventoryItems.Count() / Updateitemslimit + 1;
-						var parts = inventoryItems.Split( partsCount );
+			var client = this._factory.CreateFeedsReportsClient();
+			if( inventoryItems.Count() > Updateitemslimit )
+			{
+				var partsCount = inventoryItems.Count() / Updateitemslimit + 1;
+				var parts = inventoryItems.Split( partsCount );
 
-						foreach( var part in parts )
-							this.SubmitInventoryUpdateRequest( client, part );
-					}
-					else
-					{
-						this.SubmitInventoryUpdateRequest( client, inventoryItems );
-					}
-				} );
+				foreach( var part in parts )
+					this.SubmitInventoryUpdateRequest( client, part );
+			}
+			else
+			{
+				this.SubmitInventoryUpdateRequest( client, inventoryItems );
+			}
 		}
 
 		private SubmitFeedRequest InitInventoryFeedRequest( IEnumerable< AmazonInventoryItem > inventoryItems )
@@ -79,13 +76,13 @@ namespace AmazonAccess
 			var contentStream = xmlService.GetDocumentStream();
 
 			var request = new SubmitFeedRequest
-				{
-					MarketplaceIdList = new IdList { Id = this._credentials.MarketplaceIds },
-					Merchant = this._credentials.SellerId,
-					FeedType = FeedType.InventoryQuantityUpdate.Description,
-					FeedContent = contentStream,
-					ContentMD5 = MarketplaceWebServiceClient.CalculateContentMD5( contentStream )
-				};
+			{
+				MarketplaceIdList = new IdList { Id = this._credentials.MarketplaceIds },
+				Merchant = this._credentials.SellerId,
+				FeedType = FeedType.InventoryQuantityUpdate.Description,
+				FeedContent = contentStream,
+				ContentMD5 = MarketplaceWebServiceClient.CalculateContentMD5( contentStream )
+			};
 
 			return request;
 		}
@@ -95,8 +92,12 @@ namespace AmazonAccess
 			var request = this.InitInventoryFeedRequest( inventoryItems );
 			var service = new FeedsService();
 
-			service.SubmitFeed( client, request );
-			request.FeedContent.Close();
+			ActionPolicies.AmazonGetPolicy.Do( () =>
+			{
+				service.SubmitFeed( client, request );
+				request.FeedContent.Close();
+				ActionPolicies.CreateApiDelay( 2 ).Wait();
+			} );
 		}
 		#endregion
 
@@ -105,17 +106,17 @@ namespace AmazonAccess
 		{
 			var inventory = new List< InventorySupply >();
 
-			ActionPolicies.AmazonSubmitPolicy.Do( () =>
+			ActionPolicies.AmazonGetPolicy.Do( () =>
+			{
+				var client = this._factory.CreateFbaInventoryClient();
+				var request = new ListInventorySupplyRequest
 				{
-					var client = this._factory.CreateFbaInventoryClient();
-					var request = new ListInventorySupplyRequest
-						{
-							SellerId = this._credentials.SellerId,
-							QueryStartDateTime = DateTime.MinValue
-						};
-					var service = new InventorySupplyService( client, request );
-					inventory.AddRange( service.LoadInventory() );
-				} );
+					SellerId = this._credentials.SellerId,
+					QueryStartDateTime = DateTime.MinValue
+				};
+				var service = new InventorySupplyService( client, request );
+				inventory.AddRange( service.LoadInventory() );
+			} );
 
 			return inventory;
 		}
