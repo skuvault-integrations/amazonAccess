@@ -541,7 +541,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			HttpWebRequest request;
 
 			bool isStreamingResponse = this.ExpectStreamingResponse( typeof( K ) );
-
+			var clazzStream = string.Empty;
 			bool shouldRetry = true;
 			int retries = 0;
 			do
@@ -587,6 +587,13 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 								Stream inputStream = this.GetTransferStream( clazz, StreamType.REQUEST_STREAM );
 								inputStream.Position = 0;
 								this.CopyStream( inputStream, requestStream );
+
+								inputStream.Position = 0;
+								using (var reader = new StreamReader(inputStream))
+								{
+									clazzStream = reader.ReadToEnd();
+								}
+
 								break;
 							default:
 								requestStream.Write( requestData, 0, requestData.Length );
@@ -674,12 +681,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 						/* Rethrow on deserializer error */
 					catch( Exception e )
 					{
-						Stream inputStream = this.GetTransferStream( clazz, StreamType.REQUEST_STREAM );
-						inputStream.Position = 0;
-						using( var reader = new StreamReader( inputStream ) )
-						{
-							this.Log().Debug( "query string: {0}, clazz: {1}", queryString, reader.ReadToEnd() );
-						}
+						this.Log().Debug( "query string: {0}, clazz: {1}", queryString, clazzStream );
+						
 						if( e is MarketplaceWebServiceException )
 						{
 							throw e;
