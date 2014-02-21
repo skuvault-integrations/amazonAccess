@@ -674,7 +674,12 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 						/* Rethrow on deserializer error */
 					catch( Exception e )
 					{
-						this.Log().Info( "Error message: {0}\nResponse body: {1}", e.Message, responseBody );
+						Stream inputStream = this.GetTransferStream( clazz, StreamType.REQUEST_STREAM );
+						inputStream.Position = 0;
+						using( var reader = new StreamReader( inputStream ) )
+						{
+							this.Log().Debug( "query string: {0}, clazz: {1}", queryString, reader.ReadToEnd() );
+						}
 						if( e is MarketplaceWebServiceException )
 						{
 							throw e;
