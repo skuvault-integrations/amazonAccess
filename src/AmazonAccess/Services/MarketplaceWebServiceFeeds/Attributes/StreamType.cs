@@ -1,4 +1,8 @@
-﻿namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Attributes
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MarketplaceWebService.Attributes
 {
     public enum StreamType
     {

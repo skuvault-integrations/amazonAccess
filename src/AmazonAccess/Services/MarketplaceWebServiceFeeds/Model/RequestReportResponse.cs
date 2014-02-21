@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+namespace MarketplaceWebService.Model
 {
     [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
     [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]

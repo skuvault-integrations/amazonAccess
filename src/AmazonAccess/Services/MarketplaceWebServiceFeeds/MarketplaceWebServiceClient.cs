@@ -25,13 +25,11 @@ using System.Security.Cryptography;
 using System.Globalization;
 using System.Xml.Serialization;
 using System.Collections.Generic;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Attributes;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
-using MarketplaceWebService;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
+using MarketplaceWebService.Model;
+using MarketplaceWebService.Attributes;
 using Netco.Logging;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
+namespace MarketplaceWebService
 {
 	/**
 
@@ -114,7 +112,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			this.awsSecretAccessKey = awsSecretAccessKey;
 			this.config = config;
 
-			this.buildUserAgentHeader( applicationName, applicationVersion, config );
+			buildUserAgentHeader( applicationName, applicationVersion, config );
 		}
 
 		private const string mwsClientVersion = "2011-08-01";
@@ -151,7 +149,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportResponse GetReport( GetReportRequest request )
 		{
-			return this.Invoke< GetReportResponse, GetReportRequest >( this.ConvertGetReport( request ), request );
+			return Invoke< GetReportResponse, GetReportRequest >( ConvertGetReport( request ), request );
 		}
 
 
@@ -166,7 +164,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportScheduleCountResponse GetReportScheduleCount( GetReportScheduleCountRequest request )
 		{
-			return this.Invoke< GetReportScheduleCountResponse >( this.ConvertGetReportScheduleCount( request ) );
+			return Invoke< GetReportScheduleCountResponse >( ConvertGetReportScheduleCount( request ) );
 		}
 
 
@@ -181,7 +179,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportRequestListByNextTokenResponse GetReportRequestListByNextToken( GetReportRequestListByNextTokenRequest request )
 		{
-			return this.Invoke< GetReportRequestListByNextTokenResponse >( this.ConvertGetReportRequestListByNextToken( request ) );
+			return Invoke< GetReportRequestListByNextTokenResponse >( ConvertGetReportRequestListByNextToken( request ) );
 		}
 
 
@@ -196,7 +194,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public UpdateReportAcknowledgementsResponse UpdateReportAcknowledgements( UpdateReportAcknowledgementsRequest request )
 		{
-			return this.Invoke< UpdateReportAcknowledgementsResponse >( this.ConvertUpdateReportAcknowledgements( request ) );
+			return Invoke< UpdateReportAcknowledgementsResponse >( ConvertUpdateReportAcknowledgements( request ) );
 		}
 
 
@@ -215,7 +213,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public SubmitFeedResponse SubmitFeed( SubmitFeedRequest request )
 		{
-			return this.Invoke< SubmitFeedResponse, SubmitFeedRequest >( this.ConvertSubmitFeed( request ), request );
+			return Invoke< SubmitFeedResponse, SubmitFeedRequest >( ConvertSubmitFeed( request ), request );
 		}
 
 
@@ -232,7 +230,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportCountResponse GetReportCount( GetReportCountRequest request )
 		{
-			return this.Invoke< GetReportCountResponse >( this.ConvertGetReportCount( request ) );
+			return Invoke< GetReportCountResponse >( ConvertGetReportCount( request ) );
 		}
 
 
@@ -247,7 +245,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetFeedSubmissionListByNextTokenResponse GetFeedSubmissionListByNextToken( GetFeedSubmissionListByNextTokenRequest request )
 		{
-			return this.Invoke< GetFeedSubmissionListByNextTokenResponse >( this.ConvertGetFeedSubmissionListByNextToken( request ) );
+			return Invoke< GetFeedSubmissionListByNextTokenResponse >( ConvertGetFeedSubmissionListByNextToken( request ) );
 		}
 
 
@@ -263,7 +261,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public CancelFeedSubmissionsResponse CancelFeedSubmissions( CancelFeedSubmissionsRequest request )
 		{
-			return this.Invoke< CancelFeedSubmissionsResponse >( this.ConvertCancelFeedSubmissions( request ) );
+			return Invoke< CancelFeedSubmissionsResponse >( ConvertCancelFeedSubmissions( request ) );
 		}
 
 
@@ -278,7 +276,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public RequestReportResponse RequestReport( RequestReportRequest request )
 		{
-			return this.Invoke< RequestReportResponse >( this.ConvertRequestReport( request ) );
+			return Invoke< RequestReportResponse >( ConvertRequestReport( request ) );
 		}
 
 
@@ -293,7 +291,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetFeedSubmissionCountResponse GetFeedSubmissionCount( GetFeedSubmissionCountRequest request )
 		{
-			return this.Invoke< GetFeedSubmissionCountResponse >( this.ConvertGetFeedSubmissionCount( request ) );
+			return Invoke< GetFeedSubmissionCountResponse >( ConvertGetFeedSubmissionCount( request ) );
 		}
 
 
@@ -309,7 +307,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public CancelReportRequestsResponse CancelReportRequests( CancelReportRequestsRequest request )
 		{
-			return this.Invoke< CancelReportRequestsResponse >( this.ConvertCancelReportRequests( request ) );
+			return Invoke< CancelReportRequestsResponse >( ConvertCancelReportRequests( request ) );
 		}
 
 
@@ -325,7 +323,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportListResponse GetReportList( GetReportListRequest request )
 		{
-			return this.Invoke< GetReportListResponse >( this.ConvertGetReportList( request ) );
+			return Invoke< GetReportListResponse >( ConvertGetReportList( request ) );
 		}
 
 
@@ -340,7 +338,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetFeedSubmissionResultResponse GetFeedSubmissionResult( GetFeedSubmissionResultRequest request )
 		{
-			return this.Invoke< GetFeedSubmissionResultResponse, GetFeedSubmissionResultRequest >( this.ConvertGetFeedSubmissionResult( request ), request );
+			return Invoke< GetFeedSubmissionResultResponse, GetFeedSubmissionResultRequest >( ConvertGetFeedSubmissionResult( request ), request );
 		}
 
 
@@ -355,7 +353,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetFeedSubmissionListResponse GetFeedSubmissionList( GetFeedSubmissionListRequest request )
 		{
-			return this.Invoke< GetFeedSubmissionListResponse >( this.ConvertGetFeedSubmissionList( request ) );
+			return Invoke< GetFeedSubmissionListResponse >( ConvertGetFeedSubmissionList( request ) );
 		}
 
 
@@ -370,7 +368,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportRequestListResponse GetReportRequestList( GetReportRequestListRequest request )
 		{
-			return this.Invoke< GetReportRequestListResponse >( this.ConvertGetReportRequestList( request ) );
+			return Invoke< GetReportRequestListResponse >( ConvertGetReportRequestList( request ) );
 		}
 
 
@@ -385,7 +383,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportScheduleListByNextTokenResponse GetReportScheduleListByNextToken( GetReportScheduleListByNextTokenRequest request )
 		{
-			return this.Invoke< GetReportScheduleListByNextTokenResponse >( this.ConvertGetReportScheduleListByNextToken( request ) );
+			return Invoke< GetReportScheduleListByNextTokenResponse >( ConvertGetReportScheduleListByNextToken( request ) );
 		}
 
 
@@ -400,7 +398,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportListByNextTokenResponse GetReportListByNextToken( GetReportListByNextTokenRequest request )
 		{
-			return this.Invoke< GetReportListByNextTokenResponse >( this.ConvertGetReportListByNextToken( request ) );
+			return Invoke< GetReportListByNextTokenResponse >( ConvertGetReportListByNextToken( request ) );
 		}
 
 
@@ -416,7 +414,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public ManageReportScheduleResponse ManageReportSchedule( ManageReportScheduleRequest request )
 		{
-			return this.Invoke< ManageReportScheduleResponse >( this.ConvertManageReportSchedule( request ) );
+			return Invoke< ManageReportScheduleResponse >( ConvertManageReportSchedule( request ) );
 		}
 
 
@@ -432,7 +430,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportRequestCountResponse GetReportRequestCount( GetReportRequestCountRequest request )
 		{
-			return this.Invoke< GetReportRequestCountResponse >( this.ConvertGetReportRequestCount( request ) );
+			return Invoke< GetReportRequestCountResponse >( ConvertGetReportRequestCount( request ) );
 		}
 
 
@@ -447,7 +445,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportScheduleListResponse GetReportScheduleList( GetReportScheduleListRequest request )
 		{
-			return this.Invoke< GetReportScheduleListResponse >( this.ConvertGetReportScheduleList( request ) );
+			return Invoke< GetReportScheduleListResponse >( ConvertGetReportScheduleList( request ) );
 		}
 
 		// Private API ------------------------------------------------------------//
@@ -455,27 +453,27 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		private HttpWebRequest ConfigureWebRequest( String queryParameters, ContentType contentType )
 		{
 			string serviceUrl;
-			if( this.config.ServiceURL.EndsWith( "/" ) )
+			if( config.ServiceURL.EndsWith( "/" ) )
 			{
-				serviceUrl = this.config.ServiceURL.Substring( 0, this.config.ServiceURL.Length - 1 );
+				serviceUrl = config.ServiceURL.Substring( 0, config.ServiceURL.Length - 1 );
 			}
 			else
 			{
-				serviceUrl = this.config.ServiceURL;
+				serviceUrl = config.ServiceURL;
 			}
 
 			HttpWebRequest request = WebRequest.Create(
 				serviceUrl + "/?" + queryParameters ) as HttpWebRequest;
 
-			if( this.config.IsSetProxyHost() )
+			if( config.IsSetProxyHost() )
 			{
-				request.Proxy = new WebProxy( this.config.ProxyHost, this.config.ProxyPort );
+				request.Proxy = new WebProxy( config.ProxyHost, config.ProxyPort );
 			}
 
-			request.UserAgent = this.config.UserAgent;
+			request.UserAgent = config.UserAgent;
 
 			request.Method = "POST";
-			request.Timeout = this.config.RequestTimeout;
+			request.Timeout = config.RequestTimeout;
 
 			request.ContentType = contentType.ToString();
 
@@ -492,13 +490,13 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 
 		private HttpWebRequest ConfigureWebRequest( int contentLength )
 		{
-			HttpWebRequest request = WebRequest.Create( this.config.ServiceURL ) as HttpWebRequest;
+			HttpWebRequest request = WebRequest.Create( config.ServiceURL ) as HttpWebRequest;
 
-			if( this.config.IsSetProxyHost() )
+			if( config.IsSetProxyHost() )
 			{
-				request.Proxy = new WebProxy( this.config.ProxyHost, this.config.ProxyPort );
+				request.Proxy = new WebProxy( config.ProxyHost, config.ProxyPort );
 			}
-			request.UserAgent = this.config.UserAgent;
+			request.UserAgent = config.UserAgent;
 			request.Method = "POST";
 			request.Timeout = 50000;
 			request.ContentType = "application/x-www-form-urlencoded; charset=utf-8";
@@ -509,7 +507,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 
 		private T Invoke< T >( IDictionary< String, String > parameters )
 		{
-			return this.Invoke< T, Object >( parameters, null );
+			return Invoke< T, Object >( parameters, null );
 		}
 
 		/**
@@ -526,21 +524,21 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			ResponseHeaderMetadata rhm = null;
 
 			// Verify service URL is set.
-			if( String.IsNullOrEmpty( this.config.ServiceURL ) )
+			if( String.IsNullOrEmpty( config.ServiceURL ) )
 			{
 				throw new MarketplaceWebServiceException( new ArgumentException(
 					"Missing serviceUrl configuration value. You may obtain a list of valid MWS URLs by consulting the MWS Developer's Guide, or reviewing the sample code published along side this library." ) );
 			}
 
 			/* Add required request parameters */
-			this.AddRequiredParameters( parameters );
+			AddRequiredParameters( parameters );
 
-			String queryString = this.GetParametersAsString( parameters );
+			String queryString = GetParametersAsString( parameters );
 			byte[] requestData = new UTF8Encoding().GetBytes( queryString );
 
 			HttpWebRequest request;
 
-			bool isStreamingResponse = this.ExpectStreamingResponse( typeof( K ) );
+			bool isStreamingResponse = ExpectStreamingResponse( typeof( K ) );
 			var clazzStream = string.Empty;
 			bool shouldRetry = true;
 			int retries = 0;
@@ -549,7 +547,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 				/* Submit the request and read response body */
 				try
 				{
-					RequestType requestType = this.GetMarketplaceWebServiceRequestType( typeof( K ) );
+					RequestType requestType = GetMarketplaceWebServiceRequestType( typeof( K ) );
 					switch( requestType )
 					{
 						case RequestType.STREAMING:
@@ -558,22 +556,22 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 							if( req != null )
 							{
 								// SubmitFeedRequests can configure the content type.
-								request = this.ConfigureWebRequest( queryString, req.ContentType );
+								request = ConfigureWebRequest( queryString, req.ContentType );
 							}
 							else
 							{
 								// Send request using a default content-type.
-								request = this.ConfigureWebRequest( queryString, new ContentType( MediaType.OctetStream ) );
+								request = ConfigureWebRequest( queryString, new ContentType( MediaType.OctetStream ) );
 							}
 						}
 							break;
 						default:
-							request = this.ConfigureWebRequest( requestData.Length );
+							request = ConfigureWebRequest( requestData.Length );
 							break;
 					}
 
 					WebHeaderCollection headers = request.Headers;
-					IDictionary< String, String > headerMap = this.GetHttpHeaderValues( clazz );
+					IDictionary< String, String > headerMap = GetHttpHeaderValues( clazz );
 					foreach( String key in headerMap.Keys )
 					{
 						headers.Add( key, headerMap[ key ] );
@@ -584,12 +582,12 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 						switch( requestType )
 						{
 							case RequestType.STREAMING:
-								Stream inputStream = this.GetTransferStream( clazz, StreamType.REQUEST_STREAM );
+								Stream inputStream = GetTransferStream( clazz, StreamType.REQUEST_STREAM );
 								inputStream.Position = 0;
-								this.CopyStream( inputStream, requestStream );
+								CopyStream( inputStream, requestStream );
 
 								inputStream.Position = 0;
-								using (var reader = new StreamReader(inputStream))
+								using( var reader = new StreamReader( inputStream ) )
 								{
 									clazzStream = reader.ReadToEnd();
 								}
@@ -612,7 +610,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 
 						if( isStreamingResponse && statusCode == HttpStatusCode.OK )
 						{
-							response = this.HandleStreamingResponse< T >( httpResponse, clazz );
+							response = HandleStreamingResponse< T >( httpResponse, clazz );
 						}
 						else
 						{
@@ -657,9 +655,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 						bool retriableError = ( statusCode == HttpStatusCode.InternalServerError || statusCode == HttpStatusCode.ServiceUnavailable );
 						retriableError = retriableError && error.Code != "RequestThrottled";
 
-						if( retriableError && retries < this.config.MaxErrorRetry )
+						if( retriableError && retries < config.MaxErrorRetry )
 						{
-							this.PauseOnRetry( ++retries );
+							PauseOnRetry( ++retries );
 							shouldRetry = true;
 							continue;
 						}
@@ -682,14 +680,14 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 					catch( Exception e )
 					{
 						this.Log().Debug( "query string: {0}, clazz: {1}", queryString, clazzStream );
-						
+
 						if( e is MarketplaceWebServiceException )
 						{
 							throw e;
 						}
 						else
 						{
-							MarketplaceWebServiceException se = this.ReportAnyErrors( responseBody, statusCode, e, rhm );
+							MarketplaceWebServiceException se = ReportAnyErrors( responseBody, statusCode, e, rhm );
 							throw se;
 						}
 					}
@@ -883,9 +881,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 
 		private T HandleStreamingResponse< T >( HttpWebResponse webResponse, object clazz )
 		{
-			Stream receiverStream = this.GetTransferStream( clazz, StreamType.RECEIVE_STREAM );
+			Stream receiverStream = GetTransferStream( clazz, StreamType.RECEIVE_STREAM );
 
-			this.CopyStream( webResponse.GetResponseStream(), receiverStream );
+			CopyStream( webResponse.GetResponseStream(), receiverStream );
 			receiverStream.Position = 0;
 
 			WebHeaderCollection headers = webResponse.Headers;
@@ -905,7 +903,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			parameters.Add( "RequestId", headers.Get( "x-amz-request-id" ) );
 			parameters.Add( "ContentMD5", headers.Get( "Content-MD5" ) );
 
-			return this.DeserializeStreamingResponse< T >( parameters );
+			return DeserializeStreamingResponse< T >( parameters );
 		}
 
 		/**
@@ -1009,10 +1007,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		private void AddRequiredParameters( IDictionary< String, String > parameters )
 		{
 			parameters.Add( "AWSAccessKeyId", this.awsAccessKeyId );
-			parameters.Add( "Timestamp", this.GetFormattedTimestamp( DateTime.Now ) );
-			parameters.Add( "Version", this.config.ServiceVersion );
-			parameters.Add( "SignatureVersion", this.config.SignatureVersion );
-			parameters.Add( "Signature", this.SignParameters( parameters, this.awsSecretAccessKey ) );
+			parameters.Add( "Timestamp", GetFormattedTimestamp( DateTime.Now ) );
+			parameters.Add( "Version", config.ServiceVersion );
+			parameters.Add( "SignatureVersion", config.SignatureVersion );
+			parameters.Add( "Signature", SignParameters( parameters, this.awsSecretAccessKey ) );
 		}
 
 		/**
@@ -1029,7 +1027,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 				{
 					data.Append( key );
 					data.Append( '=' );
-					data.Append( this.UrlEncode( value, false ) );
+					data.Append( UrlEncode( value, false ) );
 					data.Append( '&' );
 				}
 			}
@@ -1077,17 +1075,17 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			String stringToSign = null;
 			if( "2".Equals( signatureVersion ) )
 			{
-				String signatureMethod = this.config.SignatureMethod;
+				String signatureMethod = config.SignatureMethod;
 				algorithm = KeyedHashAlgorithm.Create( signatureMethod.ToUpper() );
 				parameters.Add( "SignatureMethod", signatureMethod );
-				stringToSign = this.CalculateStringToSignV2( parameters );
+				stringToSign = CalculateStringToSignV2( parameters );
 			}
 			else
 			{
 				throw new Exception( "Invalid Signature Version specified" );
 			}
 
-			return this.Sign( stringToSign, key, algorithm );
+			return Sign( stringToSign, key, algorithm );
 		}
 
 		private String CalculateStringToSignV2( IDictionary< String, String > parameters )
@@ -1097,7 +1095,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 				new SortedDictionary< String, String >( parameters, StringComparer.Ordinal );
 			data.Append( "POST" );
 			data.Append( "\n" );
-			Uri endpoint = new Uri( this.config.ServiceURL.ToLower() );
+			Uri endpoint = new Uri( config.ServiceURL.ToLower() );
 
 			data.Append( endpoint.Host );
 			if( endpoint.Port != 443 && endpoint.Port != 80 )
@@ -1111,15 +1109,15 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			{
 				uri = "/";
 			}
-			data.Append( this.UrlEncode( uri, true ) );
+			data.Append( UrlEncode( uri, true ) );
 			data.Append( "\n" );
 			foreach( KeyValuePair< String, String > pair in sorted )
 			{
 				if( pair.Value != null )
 				{
-					data.Append( this.UrlEncode( pair.Key, false ) );
+					data.Append( UrlEncode( pair.Key, false ) );
 					data.Append( "=" );
-					data.Append( this.UrlEncode( pair.Value, false ) );
+					data.Append( UrlEncode( pair.Value, false ) );
 					data.Append( "&" );
 				}
 
@@ -1382,11 +1380,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			}
 			if( request.IsSetAvailableFromDate() )
 			{
-				parameters.Add( "AvailableFromDate", this.GetFormattedTimestamp( request.AvailableFromDate ) );
+				parameters.Add( "AvailableFromDate", GetFormattedTimestamp( request.AvailableFromDate ) );
 			}
 			if( request.IsSetAvailableToDate() )
 			{
-				parameters.Add( "AvailableToDate", this.GetFormattedTimestamp( request.AvailableToDate ) );
+				parameters.Add( "AvailableToDate", GetFormattedTimestamp( request.AvailableToDate ) );
 			}
 
 			return parameters;
@@ -1456,11 +1454,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			}
 			if( request.IsSetSubmittedFromDate() )
 			{
-				parameters.Add( "SubmittedFromDate", this.GetFormattedTimestamp( request.SubmittedFromDate ) );
+				parameters.Add( "SubmittedFromDate", GetFormattedTimestamp( request.SubmittedFromDate ) );
 			}
 			if( request.IsSetSubmittedToDate() )
 			{
-				parameters.Add( "SubmittedToDate", this.GetFormattedTimestamp( request.SubmittedToDate ) );
+				parameters.Add( "SubmittedToDate", GetFormattedTimestamp( request.SubmittedToDate ) );
 			}
 
 			return parameters;
@@ -1501,11 +1499,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			}
 			if( request.IsSetStartDate() )
 			{
-				parameters.Add( "StartDate", this.GetFormattedTimestamp( request.StartDate ) );
+				parameters.Add( "StartDate", GetFormattedTimestamp( request.StartDate ) );
 			}
 			if( request.IsSetEndDate() )
 			{
-				parameters.Add( "EndDate", this.GetFormattedTimestamp( request.EndDate ) );
+				parameters.Add( "EndDate", GetFormattedTimestamp( request.EndDate ) );
 			}
 			if( request.IsSetReportOptions() )
 			{
@@ -1553,11 +1551,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			}
 			if( request.IsSetSubmittedFromDate() )
 			{
-				parameters.Add( "SubmittedFromDate", this.GetFormattedTimestamp( request.SubmittedFromDate ) );
+				parameters.Add( "SubmittedFromDate", GetFormattedTimestamp( request.SubmittedFromDate ) );
 			}
 			if( request.IsSetSubmittedToDate() )
 			{
-				parameters.Add( "SubmittedToDate", this.GetFormattedTimestamp( request.SubmittedToDate ) );
+				parameters.Add( "SubmittedToDate", GetFormattedTimestamp( request.SubmittedToDate ) );
 			}
 
 			return parameters;
@@ -1610,11 +1608,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			}
 			if( request.IsSetRequestedFromDate() )
 			{
-				parameters.Add( "RequestedFromDate", this.GetFormattedTimestamp( request.RequestedFromDate ) );
+				parameters.Add( "RequestedFromDate", GetFormattedTimestamp( request.RequestedFromDate ) );
 			}
 			if( request.IsSetRequestedToDate() )
 			{
-				parameters.Add( "RequestedToDate", this.GetFormattedTimestamp( request.RequestedToDate ) );
+				parameters.Add( "RequestedToDate", GetFormattedTimestamp( request.RequestedToDate ) );
 			}
 
 			return parameters;
@@ -1657,11 +1655,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			}
 			if( request.IsSetAvailableFromDate() )
 			{
-				parameters.Add( "AvailableFromDate", this.GetFormattedTimestamp( request.AvailableFromDate ) );
+				parameters.Add( "AvailableFromDate", GetFormattedTimestamp( request.AvailableFromDate ) );
 			}
 			if( request.IsSetAvailableToDate() )
 			{
-				parameters.Add( "AvailableToDate", this.GetFormattedTimestamp( request.AvailableToDate ) );
+				parameters.Add( "AvailableToDate", GetFormattedTimestamp( request.AvailableToDate ) );
 			}
 			if( request.IsSetReportRequestIdList() )
 			{
@@ -1753,11 +1751,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			}
 			if( request.IsSetSubmittedFromDate() )
 			{
-				parameters.Add( "SubmittedFromDate", this.GetFormattedTimestamp( request.SubmittedFromDate ) );
+				parameters.Add( "SubmittedFromDate", GetFormattedTimestamp( request.SubmittedFromDate ) );
 			}
 			if( request.IsSetSubmittedToDate() )
 			{
-				parameters.Add( "SubmittedToDate", this.GetFormattedTimestamp( request.SubmittedToDate ) );
+				parameters.Add( "SubmittedToDate", GetFormattedTimestamp( request.SubmittedToDate ) );
 			}
 
 			return parameters;
@@ -1814,11 +1812,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			}
 			if( request.IsSetRequestedFromDate() )
 			{
-				parameters.Add( "RequestedFromDate", this.GetFormattedTimestamp( request.RequestedFromDate ) );
+				parameters.Add( "RequestedFromDate", GetFormattedTimestamp( request.RequestedFromDate ) );
 			}
 			if( request.IsSetRequestedToDate() )
 			{
-				parameters.Add( "RequestedToDate", this.GetFormattedTimestamp( request.RequestedToDate ) );
+				parameters.Add( "RequestedToDate", GetFormattedTimestamp( request.RequestedToDate ) );
 			}
 
 			return parameters;
@@ -1902,9 +1900,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			{
 				parameters.Add( "Schedule", request.Schedule );
 			}
-			if( request.IsSetScheduledDate() )
+			if( request.IsSetScheduleDate() )
 			{
-				parameters.Add( "ScheduledDate", this.GetFormattedTimestamp( request.ScheduledDate ) );
+				parameters.Add( "ScheduleDate", GetFormattedTimestamp( request.ScheduleDate ) );
 			}
 
 			return parameters;
@@ -1948,11 +1946,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			}
 			if( request.IsSetRequestedFromDate() )
 			{
-				parameters.Add( "RequestedFromDate", this.GetFormattedTimestamp( request.RequestedFromDate ) );
+				parameters.Add( "RequestedFromDate", GetFormattedTimestamp( request.RequestedFromDate ) );
 			}
 			if( request.IsSetRequestedToDate() )
 			{
-				parameters.Add( "RequestedToDate", this.GetFormattedTimestamp( request.RequestedToDate ) );
+				parameters.Add( "RequestedToDate", GetFormattedTimestamp( request.RequestedToDate ) );
 			}
 
 			return parameters;

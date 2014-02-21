@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using AmazonAccess.Models;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
 using MarketplaceWebService;
+using MarketplaceWebService.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 {

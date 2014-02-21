@@ -19,12 +19,12 @@ using System;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Text;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
-    [XmlType(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
-    [XmlRoot(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
+    [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
+    [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
     public class ErrorResponse
     {
     
@@ -36,7 +36,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the Error property.
         /// </summary>
-        [XmlElement(ElementName = "Error")]
+        [XmlElementAttribute(ElementName = "Error")]
         public List<Error> Error
         {
             get
@@ -61,7 +61,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         {
             foreach (Error item in list)
             {
-                this.Error.Add(item);
+                Error.Add(item);
             }
             return this;
         }          
@@ -74,14 +74,14 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <returns>true if Error property is set</returns>
         public Boolean IsSetError()
         {
-            return (this.Error.Count > 0);
+            return (Error.Count > 0);
         }
 
 
         /// <summary>
         /// Gets and sets the RequestId property.
         /// </summary>
-        [XmlElement(ElementName = "RequestID")]
+        [XmlElementAttribute(ElementName = "RequestID")]
         public String RequestId
         {
             get { return this.requestIdField ; }
@@ -130,9 +130,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
                 xml.Append(error.ToXMLFragment());
                 xml.Append("</Error>");
             }
-            if (this.IsSetRequestId()) {
+            if (IsSetRequestId()) {
                 xml.Append("<RequestId>");
-                xml.Append(this.EscapeXML(this.RequestId));
+                xml.Append(EscapeXML(this.RequestId));
                 xml.Append("</RequestId>");
             }
             xml.Append("</ErrorResponse>");
@@ -175,7 +175,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 
         public ResponseHeaderMetadata ResponseHeaderMetadata
         {
-          get { return this.responseHeaderMetadata; }
+          get { return responseHeaderMetadata; }
           set { this.responseHeaderMetadata = value; }
         }
 

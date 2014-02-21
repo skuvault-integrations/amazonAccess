@@ -20,7 +20,7 @@ using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Net;
 using MarketplaceWebService;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
+using MarketplaceWebService.Model;
 
 namespace MarketplaceWebService
 {

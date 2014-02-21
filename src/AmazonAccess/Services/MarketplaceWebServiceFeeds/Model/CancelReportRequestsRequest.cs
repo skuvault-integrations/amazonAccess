@@ -17,14 +17,16 @@
 
 using System;
 using System.Xml.Serialization;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Attributes;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
+using System.Collections.Generic;
+using System.Text;
+using MarketplaceWebService.Attributes;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
-    [XmlType(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
-    [XmlRoot(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
-    [MarketplaceWebService(RequestType = RequestType.DEFAULT, ResponseType = ResponseType.DEFAULT)]
+    [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
+    [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
+    [MarketplaceWebServiceAttribute(RequestType = RequestType.DEFAULT, ResponseType = ResponseType.DEFAULT)]
     public class CancelReportRequestsRequest
     {
     
@@ -43,7 +45,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the Marketplace property.
         /// </summary>
-        [XmlElement(ElementName = "Marketplace")]
+        [XmlElementAttribute(ElementName = "Marketplace")]
         [System.Obsolete("Not used anymore. MWS ignores this parameter, but it is left in here for backwards compatibility.")]
         public String Marketplace
         {
@@ -82,7 +84,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the Merchant property.
         /// </summary>
-        [XmlElement(ElementName = "Merchant")]
+        [XmlElementAttribute(ElementName = "Merchant")]
         public String Merchant
         {
             get { return this.merchantField ; }
@@ -118,7 +120,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the ReportRequestIdList property.
         /// </summary>
-        [XmlElement(ElementName = "ReportRequestIdList")]
+        [XmlElementAttribute(ElementName = "ReportRequestIdList")]
         public IdList ReportRequestIdList
         {
             get { return this.reportRequestIdListField ; }
@@ -155,7 +157,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the ReportTypeList property.
         /// </summary>
-        [XmlElement(ElementName = "ReportTypeList")]
+        [XmlElementAttribute(ElementName = "ReportTypeList")]
         public TypeList ReportTypeList
         {
             get { return this.reportTypeListField ; }
@@ -192,7 +194,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the ReportProcessingStatusList property.
         /// </summary>
-        [XmlElement(ElementName = "ReportProcessingStatusList")]
+        [XmlElementAttribute(ElementName = "ReportProcessingStatusList")]
         public StatusList ReportProcessingStatusList
         {
             get { return this.reportProcessingStatusListField ; }
@@ -229,7 +231,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the RequestedFromDate property.
         /// </summary>
-        [XmlElement(ElementName = "RequestedFromDate")]
+        [XmlElementAttribute(ElementName = "RequestedFromDate")]
         public DateTime RequestedFromDate
         {
             get { return this.requestedFromDateField.GetValueOrDefault() ; }
@@ -265,7 +267,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the RequestedToDate property.
         /// </summary>
-        [XmlElement(ElementName = "RequestedToDate")]
+        [XmlElementAttribute(ElementName = "RequestedToDate")]
         public DateTime RequestedToDate
         {
             get { return this.requestedToDateField.GetValueOrDefault() ; }

@@ -17,14 +17,17 @@
 
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
+using System.Text;
 using System.IO;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Attributes;
+using MarketplaceWebService.Attributes;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
-    [XmlType(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
-    [XmlRoot(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
-    [MarketplaceWebService(RequestType = RequestType.DEFAULT, ResponseType = ResponseType.STREAMING)]
+    [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
+    [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
+    [MarketplaceWebServiceAttribute(RequestType = RequestType.DEFAULT, ResponseType = ResponseType.STREAMING)]
     public class GetReportRequest
     {
     
@@ -52,7 +55,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the Marketplace property.
         /// </summary>
-        [XmlElement(ElementName = "Marketplace")]
+        [XmlElementAttribute(ElementName = "Marketplace")]
         [System.Obsolete("Not used anymore. MWS ignores this parameter, but it is left in here for backwards compatibility.")]
         public String Marketplace
         {
@@ -91,7 +94,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the Merchant property.
         /// </summary>
-        [XmlElement(ElementName = "Merchant")]
+        [XmlElementAttribute(ElementName = "Merchant")]
         public String Merchant
         {
             get { return this.merchantField ; }
@@ -127,7 +130,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the ReportId property.
         /// </summary>
-        [XmlElement(ElementName = "ReportId")]
+        [XmlElementAttribute(ElementName = "ReportId")]
         public String ReportId
         {
             get { return this.reportIdField ; }

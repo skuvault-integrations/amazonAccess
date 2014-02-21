@@ -17,12 +17,14 @@
 
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 using System.Text;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
-    [XmlType(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
-    [XmlRoot(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
+    [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
+    [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
     public class FeedSubmissionInfo
     {
     
@@ -42,7 +44,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the FeedSubmissionId property.
         /// </summary>
-        [XmlElement(ElementName = "FeedSubmissionId")]
+        [XmlElementAttribute(ElementName = "FeedSubmissionId")]
         public String FeedSubmissionId
         {
             get { return this.feedSubmissionIdField ; }
@@ -78,7 +80,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the FeedType property.
         /// </summary>
-        [XmlElement(ElementName = "FeedType")]
+        [XmlElementAttribute(ElementName = "FeedType")]
         public String FeedType
         {
             get { return this.feedTypeField ; }
@@ -114,7 +116,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the SubmittedDate property.
         /// </summary>
-        [XmlElement(ElementName = "SubmittedDate")]
+        [XmlElementAttribute(ElementName = "SubmittedDate")]
         public String SubmittedDate
         {
             get { return this.submittedDateField ; }
@@ -150,7 +152,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the FeedProcessingStatus property.
         /// </summary>
-        [XmlElement(ElementName = "FeedProcessingStatus")]
+        [XmlElementAttribute(ElementName = "FeedProcessingStatus")]
         public String FeedProcessingStatus
         {
             get { return this.feedProcessingStatusField ; }
@@ -186,7 +188,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the StartedProcessingDate property.
         /// </summary>
-        [XmlElement(ElementName = "StartedProcessingDate")]
+        [XmlElementAttribute(ElementName = "StartedProcessingDate")]
         public DateTime StartedProcessingDate
         {
             get { return this.startedProcessingDateField.GetValueOrDefault() ; }
@@ -222,7 +224,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the CompletedProcessingDate property.
         /// </summary>
-        [XmlElement(ElementName = "CompletedProcessingDate")]
+        [XmlElementAttribute(ElementName = "CompletedProcessingDate")]
         public DateTime CompletedProcessingDate
         {
             get { return this.completedProcessingDateField.GetValueOrDefault() ; }
@@ -269,32 +271,32 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 
         protected internal String ToXMLFragment() {
             StringBuilder xml = new StringBuilder();
-            if (this.IsSetFeedSubmissionId()) {
+            if (IsSetFeedSubmissionId()) {
                 xml.Append("<FeedSubmissionId>");
-                xml.Append(this.EscapeXML(this.FeedSubmissionId));
+                xml.Append(EscapeXML(this.FeedSubmissionId));
                 xml.Append("</FeedSubmissionId>");
             }
-            if (this.IsSetFeedType()) {
+            if (IsSetFeedType()) {
                 xml.Append("<FeedType>");
-                xml.Append(this.EscapeXML(this.FeedType));
+                xml.Append(EscapeXML(this.FeedType));
                 xml.Append("</FeedType>");
             }
-            if (this.IsSetSubmittedDate()) {
+            if (IsSetSubmittedDate()) {
                 xml.Append("<SubmittedDate>");
-                xml.Append(this.EscapeXML(this.SubmittedDate));
+                xml.Append(EscapeXML(this.SubmittedDate));
                 xml.Append("</SubmittedDate>");
             }
-            if (this.IsSetFeedProcessingStatus()) {
+            if (IsSetFeedProcessingStatus()) {
                 xml.Append("<FeedProcessingStatus>");
-                xml.Append(this.EscapeXML(this.FeedProcessingStatus));
+                xml.Append(EscapeXML(this.FeedProcessingStatus));
                 xml.Append("</FeedProcessingStatus>");
             }
-            if (this.IsSetStartedProcessingDate()) {
+            if (IsSetStartedProcessingDate()) {
                 xml.Append("<StartedProcessingDate>");
                 xml.Append(this.StartedProcessingDate);
                 xml.Append("</StartedProcessingDate>");
             }
-            if (this.IsSetCompletedProcessingDate()) {
+            if (IsSetCompletedProcessingDate()) {
                 xml.Append("<CompletedProcessingDate>");
                 xml.Append(this.CompletedProcessingDate);
                 xml.Append("</CompletedProcessingDate>");

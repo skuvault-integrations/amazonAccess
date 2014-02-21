@@ -19,10 +19,9 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
+using MarketplaceWebService.Model;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
+namespace MarketplaceWebService.Mock
 {
 
     /// <summary>
@@ -36,8 +35,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
     /// 
     /// Note, current Mock Service implementation does not valiadate requests
     /// </remarks>
-    public  class MarketplaceWebServiceMock : MarketplaceWebService.IMarketplaceWebService {
-    
+    public  class MarketplaceWebServiceMock : IMarketplaceWebService {
+
 
         // Public API ------------------------------------------------------------//
     
@@ -55,7 +54,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetReportResponse GetReport(GetReportRequest request)
         {
-            return this.Invoke<GetReportResponse>("GetReportResponse.xml");
+            return Invoke<GetReportResponse>("GetReportResponse.xml");
         }
         
         /// <summary>
@@ -69,7 +68,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetReportScheduleCountResponse GetReportScheduleCount(GetReportScheduleCountRequest request)
         {
-            return this.Invoke<GetReportScheduleCountResponse>("GetReportScheduleCountResponse.xml");
+            return Invoke<GetReportScheduleCountResponse>("GetReportScheduleCountResponse.xml");
         }
         
         /// <summary>
@@ -83,7 +82,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetReportRequestListByNextTokenResponse GetReportRequestListByNextToken(GetReportRequestListByNextTokenRequest request)
         {
-            return this.Invoke<GetReportRequestListByNextTokenResponse>("GetReportRequestListByNextTokenResponse.xml");
+            return Invoke<GetReportRequestListByNextTokenResponse>("GetReportRequestListByNextTokenResponse.xml");
         }
         
         /// <summary>
@@ -97,7 +96,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public UpdateReportAcknowledgementsResponse UpdateReportAcknowledgements(UpdateReportAcknowledgementsRequest request)
         {
-            return this.Invoke<UpdateReportAcknowledgementsResponse>("UpdateReportAcknowledgementsResponse.xml");
+            return Invoke<UpdateReportAcknowledgementsResponse>("UpdateReportAcknowledgementsResponse.xml");
         }
         
         /// <summary>
@@ -115,7 +114,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public SubmitFeedResponse SubmitFeed(SubmitFeedRequest request)
         {
-            return this.Invoke<SubmitFeedResponse>("SubmitFeedResponse.xml");
+            return Invoke<SubmitFeedResponse>("SubmitFeedResponse.xml");
         }
         
         /// <summary>
@@ -131,7 +130,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetReportCountResponse GetReportCount(GetReportCountRequest request)
         {
-            return this.Invoke<GetReportCountResponse>("GetReportCountResponse.xml");
+            return Invoke<GetReportCountResponse>("GetReportCountResponse.xml");
         }
         
         /// <summary>
@@ -145,7 +144,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetFeedSubmissionListByNextTokenResponse GetFeedSubmissionListByNextToken(GetFeedSubmissionListByNextTokenRequest request)
         {
-            return this.Invoke<GetFeedSubmissionListByNextTokenResponse>("GetFeedSubmissionListByNextTokenResponse.xml");
+            return Invoke<GetFeedSubmissionListByNextTokenResponse>("GetFeedSubmissionListByNextTokenResponse.xml");
         }
         
         /// <summary>
@@ -160,7 +159,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public CancelFeedSubmissionsResponse CancelFeedSubmissions(CancelFeedSubmissionsRequest request)
         {
-            return this.Invoke<CancelFeedSubmissionsResponse>("CancelFeedSubmissionsResponse.xml");
+            return Invoke<CancelFeedSubmissionsResponse>("CancelFeedSubmissionsResponse.xml");
         }
         
         /// <summary>
@@ -174,7 +173,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public RequestReportResponse RequestReport(RequestReportRequest request)
         {
-            return this.Invoke<RequestReportResponse>("RequestReportResponse.xml");
+            return Invoke<RequestReportResponse>("RequestReportResponse.xml");
         }
         
         /// <summary>
@@ -188,7 +187,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetFeedSubmissionCountResponse GetFeedSubmissionCount(GetFeedSubmissionCountRequest request)
         {
-            return this.Invoke<GetFeedSubmissionCountResponse>("GetFeedSubmissionCountResponse.xml");
+            return Invoke<GetFeedSubmissionCountResponse>("GetFeedSubmissionCountResponse.xml");
         }
         
         /// <summary>
@@ -203,7 +202,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public CancelReportRequestsResponse CancelReportRequests(CancelReportRequestsRequest request)
         {
-            return this.Invoke<CancelReportRequestsResponse>("CancelReportRequestsResponse.xml");
+            return Invoke<CancelReportRequestsResponse>("CancelReportRequestsResponse.xml");
         }
         
         /// <summary>
@@ -218,7 +217,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetReportListResponse GetReportList(GetReportListRequest request)
         {
-            return this.Invoke<GetReportListResponse>("GetReportListResponse.xml");
+            return Invoke<GetReportListResponse>("GetReportListResponse.xml");
         }
         
         /// <summary>
@@ -232,7 +231,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetFeedSubmissionResultResponse GetFeedSubmissionResult(GetFeedSubmissionResultRequest request)
         {
-            return this.Invoke<GetFeedSubmissionResultResponse>("GetFeedSubmissionResultResponse.xml");
+            return Invoke<GetFeedSubmissionResultResponse>("GetFeedSubmissionResultResponse.xml");
         }
         
         /// <summary>
@@ -246,7 +245,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetFeedSubmissionListResponse GetFeedSubmissionList(GetFeedSubmissionListRequest request)
         {
-            return this.Invoke<GetFeedSubmissionListResponse>("GetFeedSubmissionListResponse.xml");
+            return Invoke<GetFeedSubmissionListResponse>("GetFeedSubmissionListResponse.xml");
         }
         
         /// <summary>
@@ -260,7 +259,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetReportRequestListResponse GetReportRequestList(GetReportRequestListRequest request)
         {
-            return this.Invoke<GetReportRequestListResponse>("GetReportRequestListResponse.xml");
+            return Invoke<GetReportRequestListResponse>("GetReportRequestListResponse.xml");
         }
         
         /// <summary>
@@ -274,7 +273,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetReportScheduleListByNextTokenResponse GetReportScheduleListByNextToken(GetReportScheduleListByNextTokenRequest request)
         {
-            return this.Invoke<GetReportScheduleListByNextTokenResponse>("GetReportScheduleListByNextTokenResponse.xml");
+            return Invoke<GetReportScheduleListByNextTokenResponse>("GetReportScheduleListByNextTokenResponse.xml");
         }
         
         /// <summary>
@@ -288,7 +287,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetReportListByNextTokenResponse GetReportListByNextToken(GetReportListByNextTokenRequest request)
         {
-            return this.Invoke<GetReportListByNextTokenResponse>("GetReportListByNextTokenResponse.xml");
+            return Invoke<GetReportListByNextTokenResponse>("GetReportListByNextTokenResponse.xml");
         }
         
         /// <summary>
@@ -303,7 +302,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public ManageReportScheduleResponse ManageReportSchedule(ManageReportScheduleRequest request)
         {
-            return this.Invoke<ManageReportScheduleResponse>("ManageReportScheduleResponse.xml");
+            return Invoke<ManageReportScheduleResponse>("ManageReportScheduleResponse.xml");
         }
         
         /// <summary>
@@ -318,7 +317,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetReportRequestCountResponse GetReportRequestCount(GetReportRequestCountRequest request)
         {
-            return this.Invoke<GetReportRequestCountResponse>("GetReportRequestCountResponse.xml");
+            return Invoke<GetReportRequestCountResponse>("GetReportRequestCountResponse.xml");
         }
         
         /// <summary>
@@ -332,16 +331,29 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
         /// </remarks>
         public GetReportScheduleListResponse GetReportScheduleList(GetReportScheduleListRequest request)
         {
-            return this.Invoke<GetReportScheduleListResponse>("GetReportScheduleListResponse.xml");
+            return Invoke<GetReportScheduleListResponse>("GetReportScheduleListResponse.xml");
         }
 
         // Private API ------------------------------------------------------------//
 
         private T Invoke<T>(String xmlResource)
         {
-            XmlSerializer serlizer = new XmlSerializer(typeof(T));
+            Type typeObj = typeof(T);
+            XmlSerializer serializer = new XmlSerializer(typeObj);
             Stream xmlStream = Assembly.GetAssembly(this.GetType()).GetManifestResourceStream(xmlResource);
-            return (T)serlizer.Deserialize(xmlStream);
+            T response = (T)serializer.Deserialize(xmlStream);
+            AddResponseHeaderMetadata(typeObj, response);
+            
+            return response;
+        }
+
+        private void AddResponseHeaderMetadata(Type type, Object obj) 
+        {
+            object[] parameters = new object[] {new ResponseHeaderMetadata("5131519d-02d4-416f-8252-fe88a8b9865d",
+                "1jOaKSW7LhzBEETHOVENSmWhIWw7mqbBIRTHDAYublG+zputqh0cgyVg0UmaikD761KvWxaGxNmTOT6Te4dUa8a1hBRe,qDPCFI2XSb60iVhQw+173wAVHZ2kJMfrAXxQDWNRguHZnFHHyWN1ZvDeeIxpUUkLNo3B+H9pUho=",
+                "2013-12-16T14:31:45.446Z")};
+            type.InvokeMember("ResponseHeaderMetadata", BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty, Type.DefaultBinder, obj, parameters);
+        
         }
     }
 }

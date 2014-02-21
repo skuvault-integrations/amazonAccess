@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+namespace MarketplaceWebService.Model
 {
     public interface IContentTypeParameter
     {

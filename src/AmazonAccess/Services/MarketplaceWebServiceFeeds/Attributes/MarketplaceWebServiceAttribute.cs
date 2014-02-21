@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Attributes
+namespace MarketplaceWebService.Attributes
 {
-	// create custom attribute to be assigned to class members
+    using System;
+    using System.Reflection;
+
+    // create custom attribute to be assigned to class members
     [AttributeUsage(
        AttributeTargets.Class |
        AttributeTargets.Constructor |

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+namespace MarketplaceWebService.Model
 {
     /// <summary>
     /// Defines the content type, encoding, and character set used to
@@ -16,7 +16,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         
         private void AddParameter(IContentTypeParameter parameter)
         {
-            this._parameters.Add(parameter);
+            _parameters.Add(parameter);
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// </summary>
         public MediaType Type
         {
-            get { return this._contentType; }
+            get { return _contentType; }
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// </summary>
         public ContentType(MediaType contentType)
         {
-            this._contentType = contentType;
+            _contentType = contentType;
         }
 
         public override string ToString()
@@ -50,10 +50,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
             // Pick the "Description" attribute off the specified enum value.  This will throw an exception
             // if the attribute is not present or the enum value is not valid.
             System.ComponentModel.DescriptionAttribute descAttribute = (System.ComponentModel.DescriptionAttribute)
-                typeof(MediaType).GetField(this._contentType.ToString(), BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public)
+                typeof(MediaType).GetField(_contentType.ToString(), BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public)
                 .GetCustomAttributes(typeof(System.ComponentModel.DescriptionAttribute), false)[0];
             sb.Append(descAttribute.Description);
-            foreach (IContentTypeParameter param in this._parameters)
+            foreach (IContentTypeParameter param in _parameters)
             {
                 sb.Append(";" + param.ToString());
             }

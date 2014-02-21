@@ -18,7 +18,7 @@
 using System;
 using System.Text;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+namespace MarketplaceWebService.Model
 {
   public class ResponseHeaderMetadata
   {

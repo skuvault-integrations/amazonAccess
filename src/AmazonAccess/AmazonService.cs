@@ -7,11 +7,11 @@ using AmazonAccess.Services;
 using AmazonAccess.Services.FbaInventoryServiceMws;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
 using AmazonAccess.Services.MarketplaceWebServiceFeeds;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
 using AmazonAccess.Services.MarketplaceWebServiceOrders;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using CuttingEdge.Conditions;
 using MarketplaceWebService;
+using MarketplaceWebService.Model;
 
 namespace AmazonAccess
 {

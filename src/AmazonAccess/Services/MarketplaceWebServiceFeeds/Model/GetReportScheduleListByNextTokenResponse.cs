@@ -17,12 +17,14 @@
 
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 using System.Text;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
-    [XmlType(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
-    [XmlRoot(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
+    [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
+    [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
     public class GetReportScheduleListByNextTokenResponse
     {
     
@@ -32,7 +34,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the GetReportScheduleListByNextTokenResult property.
         /// </summary>
-        [XmlElement(ElementName = "GetReportScheduleListByNextTokenResult")]
+        [XmlElementAttribute(ElementName = "GetReportScheduleListByNextTokenResult")]
         public GetReportScheduleListByNextTokenResult GetReportScheduleListByNextTokenResult
         {
             get { return this.getReportScheduleListByNextTokenResultField ; }
@@ -69,7 +71,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the ResponseMetadata property.
         /// </summary>
-        [XmlElement(ElementName = "ResponseMetadata")]
+        [XmlElementAttribute(ElementName = "ResponseMetadata")]
         public ResponseMetadata ResponseMetadata
         {
             get { return this.responseMetadataField ; }
@@ -113,13 +115,13 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         public String ToXML() {
             StringBuilder xml = new StringBuilder();
             xml.Append("<GetReportScheduleListByNextTokenResponse xmlns=\"http://mws.amazonaws.com/doc/2009-01-01/\">");
-            if (this.IsSetGetReportScheduleListByNextTokenResult()) {
+            if (IsSetGetReportScheduleListByNextTokenResult()) {
                 GetReportScheduleListByNextTokenResult  getReportScheduleListByNextTokenResult = this.GetReportScheduleListByNextTokenResult;
                 xml.Append("<GetReportScheduleListByNextTokenResult>");
                 xml.Append(getReportScheduleListByNextTokenResult.ToXMLFragment());
                 xml.Append("</GetReportScheduleListByNextTokenResult>");
             } 
-            if (this.IsSetResponseMetadata()) {
+            if (IsSetResponseMetadata()) {
                 ResponseMetadata  responseMetadata = this.ResponseMetadata;
                 xml.Append("<ResponseMetadata>");
                 xml.Append(responseMetadata.ToXMLFragment());
@@ -165,7 +167,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 
         public ResponseHeaderMetadata ResponseHeaderMetadata
         {
-          get { return this.responseHeaderMetadata; }
+          get { return responseHeaderMetadata; }
           set { this.responseHeaderMetadata = value; }
         }
 

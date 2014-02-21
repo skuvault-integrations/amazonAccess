@@ -17,18 +17,20 @@
 
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 using System.Text;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
-    [XmlType(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
-    [XmlRoot(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
+    [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
+    [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
     public class GetReportResult
     {
 
         private String contentMd5;
 
-        [XmlElement(ElementName = "ContentMD5")]
+        [XmlElementAttribute(ElementName = "ContentMD5")]
         public String ContentMD5
         {
             get { return this.contentMd5; }

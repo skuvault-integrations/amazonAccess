@@ -17,14 +17,16 @@
 
 using System;
 using System.Xml.Serialization;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Attributes;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
+using System.Collections.Generic;
+using System.Text;
+using MarketplaceWebService.Attributes;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
-    [XmlType(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
-    [XmlRoot(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
-    [MarketplaceWebService(RequestType = RequestType.DEFAULT, ResponseType = ResponseType.DEFAULT)]
+    [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
+    [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
+    [MarketplaceWebServiceAttribute(RequestType = RequestType.DEFAULT, ResponseType = ResponseType.DEFAULT)]
     public class CancelFeedSubmissionsRequest
     {
 
@@ -42,7 +44,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// Gets and sets the Marketplace property.
         /// </summary>
         [System.Obsolete("Not used anymore. MWS ignores this parameter, but it is left in here for backwards compatibility.")]
-        [XmlElement(ElementName = "Marketplace")]
+        [XmlElementAttribute(ElementName = "Marketplace")]
         public String Marketplace
         {
             get { return this.marketplaceField ; }
@@ -80,7 +82,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the Merchant property.
         /// </summary>
-        [XmlElement(ElementName = "Merchant")]
+        [XmlElementAttribute(ElementName = "Merchant")]
         public String Merchant
         {
             get { return this.merchantField ; }
@@ -116,7 +118,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the FeedSubmissionIdList property.
         /// </summary>
-        [XmlElement(ElementName = "FeedSubmissionIdList")]
+        [XmlElementAttribute(ElementName = "FeedSubmissionIdList")]
         public IdList FeedSubmissionIdList
         {
             get { return this.feedSubmissionIdListField ; }
@@ -153,7 +155,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the FeedTypeList property.
         /// </summary>
-        [XmlElement(ElementName = "FeedTypeList")]
+        [XmlElementAttribute(ElementName = "FeedTypeList")]
         public TypeList FeedTypeList
         {
             get { return this.feedTypeListField ; }
@@ -190,7 +192,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the SubmittedFromDate property.
         /// </summary>
-        [XmlElement(ElementName = "SubmittedFromDate")]
+        [XmlElementAttribute(ElementName = "SubmittedFromDate")]
         public DateTime SubmittedFromDate
         {
             get { return this.submittedFromDateField.GetValueOrDefault() ; }
@@ -226,7 +228,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the SubmittedToDate property.
         /// </summary>
-        [XmlElement(ElementName = "SubmittedToDate")]
+        [XmlElementAttribute(ElementName = "SubmittedToDate")]
         public DateTime SubmittedToDate
         {
             get { return this.submittedToDateField.GetValueOrDefault() ; }

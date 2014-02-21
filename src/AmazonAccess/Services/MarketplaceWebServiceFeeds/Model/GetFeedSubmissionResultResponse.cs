@@ -17,13 +17,14 @@
 
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 using System.Text;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
-    [XmlType(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
-    [XmlRoot(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
+    [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
+    [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
     public class GetFeedSubmissionResultResponse
     {
     
@@ -33,7 +34,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the GetFeedSubmissionResultResult property.
         /// </summary>
-        [XmlElement(ElementName = "GetFeedSubmissionResultResult")]
+        [XmlElementAttribute(ElementName = "GetFeedSubmissionResultResult")]
         public GetFeedSubmissionResultResult GetFeedSubmissionResultResult
         {
             get { return this.getFeedSubmissionResultResultField ; }
@@ -70,7 +71,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the ResponseMetadata property.
         /// </summary>
-        [XmlElement(ElementName = "ResponseMetadata")]
+        [XmlElementAttribute(ElementName = "ResponseMetadata")]
         public ResponseMetadata ResponseMetadata
         {
             get { return this.responseMetadataField ; }
@@ -114,13 +115,13 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         public String ToXML() {
             StringBuilder xml = new StringBuilder();
             xml.Append("<GetFeedSubmissionResultResponse xmlns=\"http://mws.amazonaws.com/doc/2009-01-01/\">");
-            if (this.IsSetGetFeedSubmissionResultResult()) {
+            if (IsSetGetFeedSubmissionResultResult()) {
                 GetFeedSubmissionResultResult  getFeedSubmissionResultResult = this.GetFeedSubmissionResultResult;
                 xml.Append("<GetFeedSubmissionResultResult>");
                 xml.Append(getFeedSubmissionResultResult.ToXMLFragment());
                 xml.Append("</GetFeedSubmissionResultResult>");
             } 
-            if (this.IsSetResponseMetadata()) {
+            if (IsSetResponseMetadata()) {
                 ResponseMetadata  responseMetadata = this.ResponseMetadata;
                 xml.Append("<ResponseMetadata>");
                 xml.Append(responseMetadata.ToXMLFragment());
@@ -166,7 +167,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 
         public ResponseHeaderMetadata ResponseHeaderMetadata
         {
-          get { return this.responseHeaderMetadata; }
+          get { return responseHeaderMetadata; }
           set { this.responseHeaderMetadata = value; }
         }
 

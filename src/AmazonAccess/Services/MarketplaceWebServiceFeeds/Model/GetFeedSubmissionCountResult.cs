@@ -17,12 +17,14 @@
 
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 using System.Text;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
-    [XmlType(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
-    [XmlRoot(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
+    [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
+    [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
     public class GetFeedSubmissionCountResult
     {
     
@@ -32,7 +34,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the Count property.
         /// </summary>
-        [XmlElement(ElementName = "Count")]
+        [XmlElementAttribute(ElementName = "Count")]
         public Decimal Count
         {
             get { return this.countField.GetValueOrDefault() ; }
@@ -79,7 +81,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 
         protected internal String ToXMLFragment() {
             StringBuilder xml = new StringBuilder();
-            if (this.IsSetCount()) {
+            if (IsSetCount()) {
                 xml.Append("<Count>");
                 xml.Append(this.Count);
                 xml.Append("</Count>");

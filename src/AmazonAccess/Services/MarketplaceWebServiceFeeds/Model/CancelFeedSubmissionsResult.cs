@@ -19,12 +19,12 @@ using System;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Text;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
-    [XmlType(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
-    [XmlRoot(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
+    [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
+    [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
     public class CancelFeedSubmissionsResult
     {
     
@@ -36,7 +36,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the Count property.
         /// </summary>
-        [XmlElement(ElementName = "Count")]
+        [XmlElementAttribute(ElementName = "Count")]
         public Decimal Count
         {
             get { return this.countField.GetValueOrDefault() ; }
@@ -72,7 +72,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the FeedSubmissionInfo property.
         /// </summary>
-        [XmlElement(ElementName = "FeedSubmissionInfo")]
+        [XmlElementAttribute(ElementName = "FeedSubmissionInfo")]
         public List<FeedSubmissionInfo> FeedSubmissionInfo
         {
             get
@@ -97,7 +97,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         {
             foreach (FeedSubmissionInfo item in list)
             {
-                this.FeedSubmissionInfo.Add(item);
+                FeedSubmissionInfo.Add(item);
             }
             return this;
         }          
@@ -110,7 +110,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <returns>true if FeedSubmissionInfo property is set</returns>
         public Boolean IsSetFeedSubmissionInfo()
         {
-            return (this.FeedSubmissionInfo.Count > 0);
+            return (FeedSubmissionInfo.Count > 0);
         }
 
 
@@ -128,7 +128,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 
         protected internal String ToXMLFragment() {
             StringBuilder xml = new StringBuilder();
-            if (this.IsSetCount()) {
+            if (IsSetCount()) {
                 xml.Append("<Count>");
                 xml.Append(this.Count);
                 xml.Append("</Count>");

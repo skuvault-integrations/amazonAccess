@@ -19,12 +19,12 @@ using System;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Text;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
-    [XmlType(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
-    [XmlRoot(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
+    [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
+    [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
     public class GetReportListByNextTokenResult
     {
     
@@ -38,7 +38,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the NextToken property.
         /// </summary>
-        [XmlElement(ElementName = "NextToken")]
+        [XmlElementAttribute(ElementName = "NextToken")]
         public String NextToken
         {
             get { return this.nextTokenField ; }
@@ -60,20 +60,21 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 
 
 
-	    /// <summary>
-	    /// Checks if NextToken property is set
-	    /// </summary>
-	    /// <returns>true if NextToken property is set</returns>
-	    public Boolean IsSetNextToken()
-	    {
-		    return !string.IsNullOrEmpty( this.nextTokenField );
-	    }
+        /// <summary>
+        /// Checks if NextToken property is set
+        /// </summary>
+        /// <returns>true if NextToken property is set</returns>
+        public Boolean IsSetNextToken()
+        {
+            return  this.nextTokenField != null;
+
+        }
 
 
-	    /// <summary>
+        /// <summary>
         /// Gets and sets the HasNext property.
         /// </summary>
-        [XmlElement(ElementName = "HasNext")]
+        [XmlElementAttribute(ElementName = "HasNext")]
         public Boolean HasNext
         {
             get { return this.hasNextField.GetValueOrDefault() ; }
@@ -109,7 +110,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the ReportInfo property.
         /// </summary>
-        [XmlElement(ElementName = "ReportInfo")]
+        [XmlElementAttribute(ElementName = "ReportInfo")]
         public List<ReportInfo> ReportInfo
         {
             get
@@ -134,7 +135,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         {
             foreach (ReportInfo item in list)
             {
-                this.ReportInfo.Add(item);
+                ReportInfo.Add(item);
             }
             return this;
         }          
@@ -147,7 +148,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <returns>true if ReportInfo property is set</returns>
         public Boolean IsSetReportInfo()
         {
-            return (this.ReportInfo.Count > 0);
+            return (ReportInfo.Count > 0);
         }
 
 
@@ -165,12 +166,12 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 
         protected internal String ToXMLFragment() {
             StringBuilder xml = new StringBuilder();
-            if (this.IsSetNextToken()) {
+            if (IsSetNextToken()) {
                 xml.Append("<NextToken>");
-                xml.Append(this.EscapeXML(this.NextToken));
+                xml.Append(EscapeXML(this.NextToken));
                 xml.Append("</NextToken>");
             }
-            if (this.IsSetHasNext()) {
+            if (IsSetHasNext()) {
                 xml.Append("<HasNext>");
                 xml.Append(this.HasNext);
                 xml.Append("</HasNext>");

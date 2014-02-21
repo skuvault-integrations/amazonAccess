@@ -17,12 +17,14 @@
 
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 using System.Text;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
-    [XmlType(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
-    [XmlRoot(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
+    [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
+    [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
     public class Error
     {
     
@@ -37,7 +39,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the Type property.
         /// </summary>
-        [XmlElement(ElementName = "Type")]
+        [XmlElementAttribute(ElementName = "Type")]
         public String Type
         {
             get { return this.typeField ; }
@@ -73,7 +75,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the Code property.
         /// </summary>
-        [XmlElement(ElementName = "Code")]
+        [XmlElementAttribute(ElementName = "Code")]
         public String Code
         {
             get { return this.codeField ; }
@@ -109,7 +111,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the Message property.
         /// </summary>
-        [XmlElement(ElementName = "Message")]
+        [XmlElementAttribute(ElementName = "Message")]
         public String Message
         {
             get { return this.messageField ; }
@@ -145,7 +147,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the Detail property.
         /// </summary>
-        [XmlElement(ElementName = "Detail")]
+        [XmlElementAttribute(ElementName = "Detail")]
         public Object Detail
         {
             get { return this.detailField ; }
@@ -193,22 +195,22 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 
         protected internal String ToXMLFragment() {
             StringBuilder xml = new StringBuilder();
-            if (this.IsSetType()) {
+            if (IsSetType()) {
                 xml.Append("<Type>");
                 xml.Append(this.Type);
                 xml.Append("</Type>");
             }
-            if (this.IsSetCode()) {
+            if (IsSetCode()) {
                 xml.Append("<Code>");
-                xml.Append(this.EscapeXML(this.Code));
+                xml.Append(EscapeXML(this.Code));
                 xml.Append("</Code>");
             }
-            if (this.IsSetMessage()) {
+            if (IsSetMessage()) {
                 xml.Append("<Message>");
-                xml.Append(this.EscapeXML(this.Message));
+                xml.Append(EscapeXML(this.Message));
                 xml.Append("</Message>");
             }
-            if (this.IsSetDetail()) {
+            if (IsSetDetail()) {
                 Object  detail = this.Detail;
                 xml.Append("<Detail>");
                 xml.Append(detail.ToString());

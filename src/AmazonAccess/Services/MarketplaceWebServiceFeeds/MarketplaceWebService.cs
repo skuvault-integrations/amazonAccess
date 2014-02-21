@@ -18,8 +18,7 @@
 using System;
 using System.Xml.Serialization;
 using System.Collections.Generic;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
+using MarketplaceWebService.Model;
 
 namespace MarketplaceWebService
 {

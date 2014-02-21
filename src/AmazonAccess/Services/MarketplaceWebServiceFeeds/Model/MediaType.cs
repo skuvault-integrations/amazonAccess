@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+namespace MarketplaceWebService.Model
 {
     /// <summary>
     /// Enumeration of valid media types for the ContentType object.  The description attribute

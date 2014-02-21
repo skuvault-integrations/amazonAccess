@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Attributes
+namespace MarketplaceWebService.Attributes
 {
     [AttributeUsage(
         AttributeTargets.Field |

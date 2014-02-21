@@ -19,13 +19,14 @@ using System;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Text;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Attributes;
+using MarketplaceWebService.Attributes;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
     [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
     [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
-    [MarketplaceWebService(RequestType = RequestType.DEFAULT, ResponseType = ResponseType.DEFAULT)]
+    [MarketplaceWebServiceAttribute(RequestType = RequestType.DEFAULT, ResponseType = ResponseType.DEFAULT)]
     public class ManageReportScheduleRequest
     {
     
@@ -37,7 +38,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 
         private String scheduleField;
 
-        private DateTime? scheduledDateField;
+        private DateTime? scheduleDateField;
 
 
         /// <summary>
@@ -188,37 +189,37 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 
 
         /// <summary>
-        /// Gets and sets the ScheduledDate property.
+        /// Gets and sets the ScheduleDate property.
         /// </summary>
-        [XmlElementAttribute(ElementName = "ScheduledDate")]
-        public DateTime ScheduledDate
+        [XmlElementAttribute(ElementName = "ScheduleDate")]
+        public DateTime ScheduleDate
         {
-            get { return this.scheduledDateField.GetValueOrDefault() ; }
-            set { this.scheduledDateField= value; }
+            get { return this.scheduleDateField.GetValueOrDefault() ; }
+            set { this.scheduleDateField= value; }
         }
 
 
 
         /// <summary>
-        /// Sets the ScheduledDate property
+        /// Sets the ScheduleDate property
         /// </summary>
-        /// <param name="scheduledDate">ScheduledDate property</param>
+        /// <param name="scheduleDate">ScheduleDate property</param>
         /// <returns>this instance</returns>
-        public ManageReportScheduleRequest WithScheduledDate(DateTime scheduledDate)
+        public ManageReportScheduleRequest WithScheduleDate(DateTime scheduleDate)
         {
-            this.scheduledDateField = scheduledDate;
+            this.scheduleDateField = scheduleDate;
             return this;
         }
 
 
 
         /// <summary>
-        /// Checks if ScheduledDate property is set
+        /// Checks if ScheduleDate property is set
         /// </summary>
-        /// <returns>true if ScheduledDate property is set</returns>
-        public Boolean IsSetScheduledDate()
+        /// <returns>true if ScheduleDate property is set</returns>
+        public Boolean IsSetScheduleDate()
         {
-            return  this.scheduledDateField.HasValue;
+            return  this.scheduleDateField.HasValue;
 
         }
 

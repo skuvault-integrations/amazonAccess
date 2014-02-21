@@ -17,13 +17,14 @@
 
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 using System.Text;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds.Model;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
+
+namespace MarketplaceWebService.Model
 {
-    [XmlType(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
-    [XmlRoot(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
+    [XmlTypeAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/")]
+    [XmlRootAttribute(Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false)]
     public class GetReportScheduleCountResponse
     {
     
@@ -33,7 +34,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the GetReportScheduleCountResult property.
         /// </summary>
-        [XmlElement(ElementName = "GetReportScheduleCountResult")]
+        [XmlElementAttribute(ElementName = "GetReportScheduleCountResult")]
         public GetReportScheduleCountResult GetReportScheduleCountResult
         {
             get { return this.getReportScheduleCountResultField ; }
@@ -70,7 +71,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         /// <summary>
         /// Gets and sets the ResponseMetadata property.
         /// </summary>
-        [XmlElement(ElementName = "ResponseMetadata")]
+        [XmlElementAttribute(ElementName = "ResponseMetadata")]
         public ResponseMetadata ResponseMetadata
         {
             get { return this.responseMetadataField ; }
@@ -114,13 +115,13 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
         public String ToXML() {
             StringBuilder xml = new StringBuilder();
             xml.Append("<GetReportScheduleCountResponse xmlns=\"http://mws.amazonaws.com/doc/2009-01-01/\">");
-            if (this.IsSetGetReportScheduleCountResult()) {
+            if (IsSetGetReportScheduleCountResult()) {
                 GetReportScheduleCountResult  getReportScheduleCountResult = this.GetReportScheduleCountResult;
                 xml.Append("<GetReportScheduleCountResult>");
                 xml.Append(getReportScheduleCountResult.ToXMLFragment());
                 xml.Append("</GetReportScheduleCountResult>");
             } 
-            if (this.IsSetResponseMetadata()) {
+            if (IsSetResponseMetadata()) {
                 ResponseMetadata  responseMetadata = this.ResponseMetadata;
                 xml.Append("<ResponseMetadata>");
                 xml.Append(responseMetadata.ToXMLFragment());
@@ -166,7 +167,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 
         public ResponseHeaderMetadata ResponseHeaderMetadata
         {
-          get { return this.responseHeaderMetadata; }
+          get { return responseHeaderMetadata; }
           set { this.responseHeaderMetadata = value; }
         }
 
