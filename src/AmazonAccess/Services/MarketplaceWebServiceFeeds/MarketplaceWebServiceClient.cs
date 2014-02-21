@@ -586,9 +586,10 @@ namespace MarketplaceWebService
 								inputStream.Position = 0;
 								CopyStream( inputStream, requestStream );
 
-								inputStream.Position = 0;
-								using( var reader = new StreamReader( inputStream ) )
+								if( string.IsNullOrEmpty( clazzStream ) )
 								{
+									inputStream.Position = 0;
+									var reader = new StreamReader( inputStream );
 									clazzStream = reader.ReadToEnd();
 								}
 
@@ -679,7 +680,9 @@ namespace MarketplaceWebService
 						/* Rethrow on deserializer error */
 					catch( Exception e )
 					{
-						this.Log().Debug( "query string: {0}, clazz: {1}", queryString, clazzStream );
+						this.Log().Debug( @"Amazon request: query string: {0}
+Clazz: {1}
+Response: {2}", queryString, clazzStream, responseBody );
 
 						if( e is MarketplaceWebServiceException )
 						{
