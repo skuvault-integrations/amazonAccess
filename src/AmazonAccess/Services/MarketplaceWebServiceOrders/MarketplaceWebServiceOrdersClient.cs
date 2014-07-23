@@ -202,6 +202,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		private T Invoke< T >( IDictionary< String, String > parameters )
 		{
+			LogServices.Logger.Trace( "Orders. Seller: {0}. Begin invoke...", this._sellerId );
+
 			var response = default( T );
 			ResponseHeaderMetadata rhm = null;
 			if( String.IsNullOrEmpty( this.config.ServiceURL ) )
@@ -232,6 +234,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					{
 						requestStream.Write( requestData, 0, requestData.Length );
 					}
+
+					LogServices.Logger.Trace( "Orders. Seller {0}. Getting response.", this._sellerId );
+
 					using( var httpResponse = request.GetResponse() as HttpWebResponse )
 					{
 						rhm = new ResponseHeaderMetadata(
@@ -241,6 +246,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 						var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
 						responseBody = reader.ReadToEnd();
+
+						LogServices.Logger.Trace( "Orders. Seller: {0}\nResponse received: {1}", this._sellerId, responseBody );
 					}
 
 					ActionPolicies.CreateApiDelay( 30 ).Wait();
@@ -256,23 +263,27 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					}
 					shouldRetry = false;
 				}
-
-					/* Web exception is thrown on unsucessful responses */
-				catch( WebException we )
+				catch( WebException we ) // Web exception is thrown on unsucessful responses
 				{
+					LogServices.Logger.Trace( "Orders. Seller: {0}. Exception occurred. Getting web exception message.", this._sellerId );
+
 					HttpStatusCode statusCode;
 					using( var httpErrorResponse = ( HttpWebResponse )we.Response )
 					{
 						if( httpErrorResponse == null )
 						{
+							responseBody = we.Message;
+							LogServices.Logger.Trace( "Orders. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
+
 							throw new MarketplaceWebServiceOrdersException( we );
 						}
 						statusCode = httpErrorResponse.StatusCode;
 						using( var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 ) )
 						{
 							responseBody = reader.ReadToEnd();
+							LogServices.Logger.Trace( "Orders. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
 						}
-						
+
 						ActionPolicies.CreateApiDelay( 30 ).Wait();
 					}
 
@@ -307,8 +318,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 								errorResponse.ToXML(),
 								rhm );
 						}
-						catch( MarketplaceWebServiceOrdersException e)
+						catch( MarketplaceWebServiceOrdersException e )
 						{
+							LogServices.Logger.Trace( "Orders. Seller: {0}\nMarketplace exception message: {1}", this._sellerId, e.Message );
 							throw;
 						}
 						catch( Exception e )
@@ -321,9 +333,12 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					/* Catch other exceptions, attempt to convert to formatted exception, else rethrow wrapped exception */
 				catch( Exception e )
 				{
+					LogServices.Logger.Trace( "Orders. Seller: {0}\nUndefined exception message: {1}", this._sellerId, e.Message );
+
 					throw new MarketplaceWebServiceOrdersException( e );
 				}
 			} while( shouldRetry );
+			LogServices.Logger.Trace( "Orders. Seller: {0}. End invoke...", this._sellerId );
 
 			return response;
 		}
