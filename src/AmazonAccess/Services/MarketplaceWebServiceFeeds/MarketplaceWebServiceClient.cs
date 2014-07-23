@@ -16,20 +16,22 @@
  */
 
 using System;
-using System.Reflection;
-using System.Net;
-using System.Text;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Security.Cryptography;
-using System.Globalization;
-using System.Xml.Serialization;
 using System.Collections.Generic;
-using MarketplaceWebService.Model;
+using System.Globalization;
+using System.IO;
+using System.Net;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Xml.Serialization;
+using AmazonAccess.Misc;
+using MarketplaceWebService;
 using MarketplaceWebService.Attributes;
+using MarketplaceWebService.Model;
 using Netco.Logging;
 
-namespace MarketplaceWebService
+namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 {
 	/**
 
@@ -112,7 +114,7 @@ namespace MarketplaceWebService
 			this.awsSecretAccessKey = awsSecretAccessKey;
 			this.config = config;
 
-			buildUserAgentHeader( applicationName, applicationVersion, config );
+			this.buildUserAgentHeader( applicationName, applicationVersion, config );
 		}
 
 		private const string mwsClientVersion = "2011-08-01";
@@ -149,7 +151,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetReportResponse GetReport( GetReportRequest request )
 		{
-			return Invoke< GetReportResponse, GetReportRequest >( ConvertGetReport( request ), request );
+			return this.Invoke< GetReportResponse, GetReportRequest >( this.ConvertGetReport( request ), request );
 		}
 
 
@@ -164,7 +166,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetReportScheduleCountResponse GetReportScheduleCount( GetReportScheduleCountRequest request )
 		{
-			return Invoke< GetReportScheduleCountResponse >( ConvertGetReportScheduleCount( request ) );
+			return this.Invoke< GetReportScheduleCountResponse >( this.ConvertGetReportScheduleCount( request ) );
 		}
 
 
@@ -179,7 +181,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetReportRequestListByNextTokenResponse GetReportRequestListByNextToken( GetReportRequestListByNextTokenRequest request )
 		{
-			return Invoke< GetReportRequestListByNextTokenResponse >( ConvertGetReportRequestListByNextToken( request ) );
+			return this.Invoke< GetReportRequestListByNextTokenResponse >( this.ConvertGetReportRequestListByNextToken( request ) );
 		}
 
 
@@ -194,7 +196,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public UpdateReportAcknowledgementsResponse UpdateReportAcknowledgements( UpdateReportAcknowledgementsRequest request )
 		{
-			return Invoke< UpdateReportAcknowledgementsResponse >( ConvertUpdateReportAcknowledgements( request ) );
+			return this.Invoke< UpdateReportAcknowledgementsResponse >( this.ConvertUpdateReportAcknowledgements( request ) );
 		}
 
 
@@ -213,7 +215,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public SubmitFeedResponse SubmitFeed( SubmitFeedRequest request )
 		{
-			return Invoke< SubmitFeedResponse, SubmitFeedRequest >( ConvertSubmitFeed( request ), request );
+			return this.Invoke< SubmitFeedResponse, SubmitFeedRequest >( this.ConvertSubmitFeed( request ), request );
 		}
 
 
@@ -230,7 +232,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetReportCountResponse GetReportCount( GetReportCountRequest request )
 		{
-			return Invoke< GetReportCountResponse >( ConvertGetReportCount( request ) );
+			return this.Invoke< GetReportCountResponse >( this.ConvertGetReportCount( request ) );
 		}
 
 
@@ -245,7 +247,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetFeedSubmissionListByNextTokenResponse GetFeedSubmissionListByNextToken( GetFeedSubmissionListByNextTokenRequest request )
 		{
-			return Invoke< GetFeedSubmissionListByNextTokenResponse >( ConvertGetFeedSubmissionListByNextToken( request ) );
+			return this.Invoke< GetFeedSubmissionListByNextTokenResponse >( this.ConvertGetFeedSubmissionListByNextToken( request ) );
 		}
 
 
@@ -261,7 +263,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public CancelFeedSubmissionsResponse CancelFeedSubmissions( CancelFeedSubmissionsRequest request )
 		{
-			return Invoke< CancelFeedSubmissionsResponse >( ConvertCancelFeedSubmissions( request ) );
+			return this.Invoke< CancelFeedSubmissionsResponse >( this.ConvertCancelFeedSubmissions( request ) );
 		}
 
 
@@ -276,7 +278,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public RequestReportResponse RequestReport( RequestReportRequest request )
 		{
-			return Invoke< RequestReportResponse >( ConvertRequestReport( request ) );
+			return this.Invoke< RequestReportResponse >( this.ConvertRequestReport( request ) );
 		}
 
 
@@ -291,7 +293,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetFeedSubmissionCountResponse GetFeedSubmissionCount( GetFeedSubmissionCountRequest request )
 		{
-			return Invoke< GetFeedSubmissionCountResponse >( ConvertGetFeedSubmissionCount( request ) );
+			return this.Invoke< GetFeedSubmissionCountResponse >( this.ConvertGetFeedSubmissionCount( request ) );
 		}
 
 
@@ -307,7 +309,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public CancelReportRequestsResponse CancelReportRequests( CancelReportRequestsRequest request )
 		{
-			return Invoke< CancelReportRequestsResponse >( ConvertCancelReportRequests( request ) );
+			return this.Invoke< CancelReportRequestsResponse >( this.ConvertCancelReportRequests( request ) );
 		}
 
 
@@ -323,7 +325,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetReportListResponse GetReportList( GetReportListRequest request )
 		{
-			return Invoke< GetReportListResponse >( ConvertGetReportList( request ) );
+			return this.Invoke< GetReportListResponse >( this.ConvertGetReportList( request ) );
 		}
 
 
@@ -338,7 +340,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetFeedSubmissionResultResponse GetFeedSubmissionResult( GetFeedSubmissionResultRequest request )
 		{
-			return Invoke< GetFeedSubmissionResultResponse, GetFeedSubmissionResultRequest >( ConvertGetFeedSubmissionResult( request ), request );
+			return this.Invoke< GetFeedSubmissionResultResponse, GetFeedSubmissionResultRequest >( this.ConvertGetFeedSubmissionResult( request ), request );
 		}
 
 
@@ -353,7 +355,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetFeedSubmissionListResponse GetFeedSubmissionList( GetFeedSubmissionListRequest request )
 		{
-			return Invoke< GetFeedSubmissionListResponse >( ConvertGetFeedSubmissionList( request ) );
+			return this.Invoke< GetFeedSubmissionListResponse >( this.ConvertGetFeedSubmissionList( request ) );
 		}
 
 
@@ -368,7 +370,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetReportRequestListResponse GetReportRequestList( GetReportRequestListRequest request )
 		{
-			return Invoke< GetReportRequestListResponse >( ConvertGetReportRequestList( request ) );
+			return this.Invoke< GetReportRequestListResponse >( this.ConvertGetReportRequestList( request ) );
 		}
 
 
@@ -383,7 +385,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetReportScheduleListByNextTokenResponse GetReportScheduleListByNextToken( GetReportScheduleListByNextTokenRequest request )
 		{
-			return Invoke< GetReportScheduleListByNextTokenResponse >( ConvertGetReportScheduleListByNextToken( request ) );
+			return this.Invoke< GetReportScheduleListByNextTokenResponse >( this.ConvertGetReportScheduleListByNextToken( request ) );
 		}
 
 
@@ -398,7 +400,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetReportListByNextTokenResponse GetReportListByNextToken( GetReportListByNextTokenRequest request )
 		{
-			return Invoke< GetReportListByNextTokenResponse >( ConvertGetReportListByNextToken( request ) );
+			return this.Invoke< GetReportListByNextTokenResponse >( this.ConvertGetReportListByNextToken( request ) );
 		}
 
 
@@ -414,7 +416,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public ManageReportScheduleResponse ManageReportSchedule( ManageReportScheduleRequest request )
 		{
-			return Invoke< ManageReportScheduleResponse >( ConvertManageReportSchedule( request ) );
+			return this.Invoke< ManageReportScheduleResponse >( this.ConvertManageReportSchedule( request ) );
 		}
 
 
@@ -430,7 +432,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetReportRequestCountResponse GetReportRequestCount( GetReportRequestCountRequest request )
 		{
-			return Invoke< GetReportRequestCountResponse >( ConvertGetReportRequestCount( request ) );
+			return this.Invoke< GetReportRequestCountResponse >( this.ConvertGetReportRequestCount( request ) );
 		}
 
 
@@ -445,7 +447,7 @@ namespace MarketplaceWebService
 		/// </remarks>
 		public GetReportScheduleListResponse GetReportScheduleList( GetReportScheduleListRequest request )
 		{
-			return Invoke< GetReportScheduleListResponse >( ConvertGetReportScheduleList( request ) );
+			return this.Invoke< GetReportScheduleListResponse >( this.ConvertGetReportScheduleList( request ) );
 		}
 
 		// Private API ------------------------------------------------------------//
@@ -453,27 +455,27 @@ namespace MarketplaceWebService
 		private HttpWebRequest ConfigureWebRequest( String queryParameters, ContentType contentType )
 		{
 			string serviceUrl;
-			if( config.ServiceURL.EndsWith( "/" ) )
+			if( this.config.ServiceURL.EndsWith( "/" ) )
 			{
-				serviceUrl = config.ServiceURL.Substring( 0, config.ServiceURL.Length - 1 );
+				serviceUrl = this.config.ServiceURL.Substring( 0, this.config.ServiceURL.Length - 1 );
 			}
 			else
 			{
-				serviceUrl = config.ServiceURL;
+				serviceUrl = this.config.ServiceURL;
 			}
 
 			HttpWebRequest request = WebRequest.Create(
 				serviceUrl + "/?" + queryParameters ) as HttpWebRequest;
 
-			if( config.IsSetProxyHost() )
+			if( this.config.IsSetProxyHost() )
 			{
-				request.Proxy = new WebProxy( config.ProxyHost, config.ProxyPort );
+				request.Proxy = new WebProxy( this.config.ProxyHost, this.config.ProxyPort );
 			}
 
-			request.UserAgent = config.UserAgent;
+			request.UserAgent = this.config.UserAgent;
 
 			request.Method = "POST";
-			request.Timeout = config.RequestTimeout;
+			request.Timeout = this.config.RequestTimeout;
 
 			request.ContentType = contentType.ToString();
 
@@ -490,13 +492,13 @@ namespace MarketplaceWebService
 
 		private HttpWebRequest ConfigureWebRequest( int contentLength )
 		{
-			HttpWebRequest request = WebRequest.Create( config.ServiceURL ) as HttpWebRequest;
+			HttpWebRequest request = WebRequest.Create( this.config.ServiceURL ) as HttpWebRequest;
 
-			if( config.IsSetProxyHost() )
+			if( this.config.IsSetProxyHost() )
 			{
-				request.Proxy = new WebProxy( config.ProxyHost, config.ProxyPort );
+				request.Proxy = new WebProxy( this.config.ProxyHost, this.config.ProxyPort );
 			}
-			request.UserAgent = config.UserAgent;
+			request.UserAgent = this.config.UserAgent;
 			request.Method = "POST";
 			request.Timeout = 50000;
 			request.ContentType = "application/x-www-form-urlencoded; charset=utf-8";
@@ -507,7 +509,7 @@ namespace MarketplaceWebService
 
 		private T Invoke< T >( IDictionary< String, String > parameters )
 		{
-			return Invoke< T, Object >( parameters, null );
+			return this.Invoke< T, Object >( parameters, null );
 		}
 
 		/**
@@ -516,75 +518,72 @@ namespace MarketplaceWebService
 
 		private T Invoke< T, K >( IDictionary< String, String > parameters, K clazz )
 		{
-
-			String actionName = parameters[ "Action" ];
-			T response = default( T );
-			String responseBody = null;
-			HttpStatusCode statusCode = default( HttpStatusCode );
+			var response = default( T );
 			ResponseHeaderMetadata rhm = null;
 
 			// Verify service URL is set.
-			if( String.IsNullOrEmpty( config.ServiceURL ) )
+			if( String.IsNullOrEmpty( this.config.ServiceURL ) )
 			{
 				throw new MarketplaceWebServiceException( new ArgumentException(
 					"Missing serviceUrl configuration value. You may obtain a list of valid MWS URLs by consulting the MWS Developer's Guide, or reviewing the sample code published along side this library." ) );
 			}
 
 			/* Add required request parameters */
-			AddRequiredParameters( parameters );
+			this.AddRequiredParameters( parameters );
 
-			String queryString = GetParametersAsString( parameters );
-			byte[] requestData = new UTF8Encoding().GetBytes( queryString );
+			var queryString = this.GetParametersAsString( parameters );
+			var requestData = new UTF8Encoding().GetBytes( queryString );
 
-			HttpWebRequest request;
-
-			bool isStreamingResponse = ExpectStreamingResponse( typeof( K ) );
+			var isStreamingResponse = this.ExpectStreamingResponse( typeof( K ) );
 			var clazzStream = string.Empty;
-			bool shouldRetry = true;
-			int retries = 0;
+			bool shouldRetry;
+			var retries = 0;
 			do
 			{
 				/* Submit the request and read response body */
+				String responseBody;
+				HttpStatusCode statusCode;
 				try
 				{
-					RequestType requestType = GetMarketplaceWebServiceRequestType( typeof( K ) );
+					var requestType = this.GetMarketplaceWebServiceRequestType( typeof( K ) );
+					HttpWebRequest request;
 					switch( requestType )
 					{
 						case RequestType.STREAMING:
 						{
-							SubmitFeedRequest req = clazz as SubmitFeedRequest;
+							var req = clazz as SubmitFeedRequest;
 							if( req != null )
 							{
 								// SubmitFeedRequests can configure the content type.
-								request = ConfigureWebRequest( queryString, req.ContentType );
+								request = this.ConfigureWebRequest( queryString, req.ContentType );
 							}
 							else
 							{
 								// Send request using a default content-type.
-								request = ConfigureWebRequest( queryString, new ContentType( MediaType.OctetStream ) );
+								request = this.ConfigureWebRequest( queryString, new ContentType( MediaType.OctetStream ) );
 							}
 						}
 							break;
 						default:
-							request = ConfigureWebRequest( requestData.Length );
+							request = this.ConfigureWebRequest( requestData.Length );
 							break;
 					}
 
-					WebHeaderCollection headers = request.Headers;
-					IDictionary< String, String > headerMap = GetHttpHeaderValues( clazz );
-					foreach( String key in headerMap.Keys )
+					var headers = request.Headers;
+					var headerMap = this.GetHttpHeaderValues( clazz );
+					foreach( var key in headerMap.Keys )
 					{
 						headers.Add( key, headerMap[ key ] );
 					}
 
-					using( Stream requestStream = request.GetRequestStream() )
+					using( var requestStream = request.GetRequestStream() )
 					{
 						switch( requestType )
 						{
 							case RequestType.STREAMING:
-								Stream inputStream = GetTransferStream( clazz, StreamType.REQUEST_STREAM );
+								var inputStream = this.GetTransferStream( clazz, StreamType.REQUEST_STREAM );
 								inputStream.Position = 0;
-								CopyStream( inputStream, requestStream );
+								this.CopyStream( inputStream, requestStream );
 
 								inputStream.Position = 0;
 								using( var reader = new StreamReader( inputStream ) )
@@ -600,7 +599,7 @@ namespace MarketplaceWebService
 						requestStream.Close();
 					}
 
-					using( HttpWebResponse httpResponse = request.GetResponse() as HttpWebResponse )
+					using( var httpResponse = request.GetResponse() as HttpWebResponse )
 					{
 						statusCode = httpResponse.StatusCode;
 						rhm = new ResponseHeaderMetadata(
@@ -610,22 +609,23 @@ namespace MarketplaceWebService
 
 						if( isStreamingResponse && statusCode == HttpStatusCode.OK )
 						{
-							response = HandleStreamingResponse< T >( httpResponse, clazz );
+							response = this.HandleStreamingResponse< T >( httpResponse, clazz );
 						}
 						else
 						{
 
-							StreamReader reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
+							var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
 							responseBody = reader.ReadToEnd();
-							XmlSerializer serlizer = new XmlSerializer( typeof( T ) );
+							var serlizer = new XmlSerializer( typeof( T ) );
 							response = ( T )serlizer.Deserialize( new StringReader( responseBody ) );
 						}
 
-						PropertyInfo pi = typeof( T ).GetProperty( "ResponseHeaderMetadata" );
+						var pi = typeof( T ).GetProperty( "ResponseHeaderMetadata" );
 						pi.SetValue( response, rhm, null );
 
 						shouldRetry = false;
 					}
+					ActionPolicies.CreateApiDelay( 2 ).Wait();
 
 					/* Attempt to deserialize response into <Action> Response type */
 
@@ -633,37 +633,34 @@ namespace MarketplaceWebService
 					/* Web exception is thrown on unsucessful responses */
 				catch( WebException we )
 				{
-					shouldRetry = false;
-					using( HttpWebResponse httpErrorResponse = ( HttpWebResponse )we.Response as HttpWebResponse )
+					using( var httpErrorResponse = ( HttpWebResponse )we.Response )
 					{
 						if( httpErrorResponse == null )
 						{
 							throw new MarketplaceWebServiceException( we );
 						}
 						statusCode = httpErrorResponse.StatusCode;
-						StreamReader reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 );
+						var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 );
 						responseBody = reader.ReadToEnd();
+
+						ActionPolicies.CreateApiDelay( 2 ).Wait();
 					}
 
 					/* Attempt to deserialize response into ErrorResponse type */
 					try
 					{
-						XmlSerializer serlizer = new XmlSerializer( typeof( ErrorResponse ) );
-						ErrorResponse errorResponse = ( ErrorResponse )serlizer.Deserialize( new StringReader( responseBody ) );
-						Error error = errorResponse.Error[ 0 ];
+						var serlizer = new XmlSerializer( typeof( ErrorResponse ) );
+						var errorResponse = ( ErrorResponse )serlizer.Deserialize( new StringReader( responseBody ) );
+						var error = errorResponse.Error[ 0 ];
 
-						bool retriableError = ( statusCode == HttpStatusCode.InternalServerError || statusCode == HttpStatusCode.ServiceUnavailable );
+						var retriableError = ( statusCode == HttpStatusCode.InternalServerError || statusCode == HttpStatusCode.ServiceUnavailable );
 						retriableError = retriableError && error.Code != "RequestThrottled";
 
-						if( retriableError && retries < config.MaxErrorRetry )
+						if( retriableError && retries < this.config.MaxErrorRetry )
 						{
-							PauseOnRetry( ++retries );
+							this.PauseOnRetry( ++retries );
 							shouldRetry = true;
 							continue;
-						}
-						else
-						{
-							shouldRetry = false;
 						}
 
 						/* Throw formatted exception with information available from the error response */
@@ -683,13 +680,10 @@ namespace MarketplaceWebService
 
 						if( e is MarketplaceWebServiceException )
 						{
-							throw e;
+							throw;
 						}
-						else
-						{
-							MarketplaceWebServiceException se = ReportAnyErrors( responseBody, statusCode, e, rhm );
-							throw se;
-						}
+						MarketplaceWebServiceException se = this.ReportAnyErrors( responseBody, statusCode, e, rhm );
+						throw se;
 					}
 				}
 
@@ -881,9 +875,9 @@ namespace MarketplaceWebService
 
 		private T HandleStreamingResponse< T >( HttpWebResponse webResponse, object clazz )
 		{
-			Stream receiverStream = GetTransferStream( clazz, StreamType.RECEIVE_STREAM );
+			Stream receiverStream = this.GetTransferStream( clazz, StreamType.RECEIVE_STREAM );
 
-			CopyStream( webResponse.GetResponseStream(), receiverStream );
+			this.CopyStream( webResponse.GetResponseStream(), receiverStream );
 			receiverStream.Position = 0;
 
 			WebHeaderCollection headers = webResponse.Headers;
@@ -903,7 +897,7 @@ namespace MarketplaceWebService
 			parameters.Add( "RequestId", headers.Get( "x-amz-request-id" ) );
 			parameters.Add( "ContentMD5", headers.Get( "Content-MD5" ) );
 
-			return DeserializeStreamingResponse< T >( parameters );
+			return this.DeserializeStreamingResponse< T >( parameters );
 		}
 
 		/**
@@ -1007,10 +1001,10 @@ namespace MarketplaceWebService
 		private void AddRequiredParameters( IDictionary< String, String > parameters )
 		{
 			parameters.Add( "AWSAccessKeyId", this.awsAccessKeyId );
-			parameters.Add( "Timestamp", GetFormattedTimestamp( DateTime.Now ) );
-			parameters.Add( "Version", config.ServiceVersion );
-			parameters.Add( "SignatureVersion", config.SignatureVersion );
-			parameters.Add( "Signature", SignParameters( parameters, this.awsSecretAccessKey ) );
+			parameters.Add( "Timestamp", this.GetFormattedTimestamp( DateTime.Now ) );
+			parameters.Add( "Version", this.config.ServiceVersion );
+			parameters.Add( "SignatureVersion", this.config.SignatureVersion );
+			parameters.Add( "Signature", this.SignParameters( parameters, this.awsSecretAccessKey ) );
 		}
 
 		/**
@@ -1027,7 +1021,7 @@ namespace MarketplaceWebService
 				{
 					data.Append( key );
 					data.Append( '=' );
-					data.Append( UrlEncode( value, false ) );
+					data.Append( this.UrlEncode( value, false ) );
 					data.Append( '&' );
 				}
 			}
@@ -1075,17 +1069,17 @@ namespace MarketplaceWebService
 			String stringToSign = null;
 			if( "2".Equals( signatureVersion ) )
 			{
-				String signatureMethod = config.SignatureMethod;
+				String signatureMethod = this.config.SignatureMethod;
 				algorithm = KeyedHashAlgorithm.Create( signatureMethod.ToUpper() );
 				parameters.Add( "SignatureMethod", signatureMethod );
-				stringToSign = CalculateStringToSignV2( parameters );
+				stringToSign = this.CalculateStringToSignV2( parameters );
 			}
 			else
 			{
 				throw new Exception( "Invalid Signature Version specified" );
 			}
 
-			return Sign( stringToSign, key, algorithm );
+			return this.Sign( stringToSign, key, algorithm );
 		}
 
 		private String CalculateStringToSignV2( IDictionary< String, String > parameters )
@@ -1095,7 +1089,7 @@ namespace MarketplaceWebService
 				new SortedDictionary< String, String >( parameters, StringComparer.Ordinal );
 			data.Append( "POST" );
 			data.Append( "\n" );
-			Uri endpoint = new Uri( config.ServiceURL.ToLower() );
+			Uri endpoint = new Uri( this.config.ServiceURL.ToLower() );
 
 			data.Append( endpoint.Host );
 			if( endpoint.Port != 443 && endpoint.Port != 80 )
@@ -1109,15 +1103,15 @@ namespace MarketplaceWebService
 			{
 				uri = "/";
 			}
-			data.Append( UrlEncode( uri, true ) );
+			data.Append( this.UrlEncode( uri, true ) );
 			data.Append( "\n" );
 			foreach( KeyValuePair< String, String > pair in sorted )
 			{
 				if( pair.Value != null )
 				{
-					data.Append( UrlEncode( pair.Key, false ) );
+					data.Append( this.UrlEncode( pair.Key, false ) );
 					data.Append( "=" );
-					data.Append( UrlEncode( pair.Value, false ) );
+					data.Append( this.UrlEncode( pair.Value, false ) );
 					data.Append( "&" );
 				}
 
@@ -1380,11 +1374,11 @@ namespace MarketplaceWebService
 			}
 			if( request.IsSetAvailableFromDate() )
 			{
-				parameters.Add( "AvailableFromDate", GetFormattedTimestamp( request.AvailableFromDate ) );
+				parameters.Add( "AvailableFromDate", this.GetFormattedTimestamp( request.AvailableFromDate ) );
 			}
 			if( request.IsSetAvailableToDate() )
 			{
-				parameters.Add( "AvailableToDate", GetFormattedTimestamp( request.AvailableToDate ) );
+				parameters.Add( "AvailableToDate", this.GetFormattedTimestamp( request.AvailableToDate ) );
 			}
 
 			return parameters;
@@ -1454,11 +1448,11 @@ namespace MarketplaceWebService
 			}
 			if( request.IsSetSubmittedFromDate() )
 			{
-				parameters.Add( "SubmittedFromDate", GetFormattedTimestamp( request.SubmittedFromDate ) );
+				parameters.Add( "SubmittedFromDate", this.GetFormattedTimestamp( request.SubmittedFromDate ) );
 			}
 			if( request.IsSetSubmittedToDate() )
 			{
-				parameters.Add( "SubmittedToDate", GetFormattedTimestamp( request.SubmittedToDate ) );
+				parameters.Add( "SubmittedToDate", this.GetFormattedTimestamp( request.SubmittedToDate ) );
 			}
 
 			return parameters;
@@ -1499,11 +1493,11 @@ namespace MarketplaceWebService
 			}
 			if( request.IsSetStartDate() )
 			{
-				parameters.Add( "StartDate", GetFormattedTimestamp( request.StartDate ) );
+				parameters.Add( "StartDate", this.GetFormattedTimestamp( request.StartDate ) );
 			}
 			if( request.IsSetEndDate() )
 			{
-				parameters.Add( "EndDate", GetFormattedTimestamp( request.EndDate ) );
+				parameters.Add( "EndDate", this.GetFormattedTimestamp( request.EndDate ) );
 			}
 			if( request.IsSetReportOptions() )
 			{
@@ -1551,11 +1545,11 @@ namespace MarketplaceWebService
 			}
 			if( request.IsSetSubmittedFromDate() )
 			{
-				parameters.Add( "SubmittedFromDate", GetFormattedTimestamp( request.SubmittedFromDate ) );
+				parameters.Add( "SubmittedFromDate", this.GetFormattedTimestamp( request.SubmittedFromDate ) );
 			}
 			if( request.IsSetSubmittedToDate() )
 			{
-				parameters.Add( "SubmittedToDate", GetFormattedTimestamp( request.SubmittedToDate ) );
+				parameters.Add( "SubmittedToDate", this.GetFormattedTimestamp( request.SubmittedToDate ) );
 			}
 
 			return parameters;
@@ -1608,11 +1602,11 @@ namespace MarketplaceWebService
 			}
 			if( request.IsSetRequestedFromDate() )
 			{
-				parameters.Add( "RequestedFromDate", GetFormattedTimestamp( request.RequestedFromDate ) );
+				parameters.Add( "RequestedFromDate", this.GetFormattedTimestamp( request.RequestedFromDate ) );
 			}
 			if( request.IsSetRequestedToDate() )
 			{
-				parameters.Add( "RequestedToDate", GetFormattedTimestamp( request.RequestedToDate ) );
+				parameters.Add( "RequestedToDate", this.GetFormattedTimestamp( request.RequestedToDate ) );
 			}
 
 			return parameters;
@@ -1655,11 +1649,11 @@ namespace MarketplaceWebService
 			}
 			if( request.IsSetAvailableFromDate() )
 			{
-				parameters.Add( "AvailableFromDate", GetFormattedTimestamp( request.AvailableFromDate ) );
+				parameters.Add( "AvailableFromDate", this.GetFormattedTimestamp( request.AvailableFromDate ) );
 			}
 			if( request.IsSetAvailableToDate() )
 			{
-				parameters.Add( "AvailableToDate", GetFormattedTimestamp( request.AvailableToDate ) );
+				parameters.Add( "AvailableToDate", this.GetFormattedTimestamp( request.AvailableToDate ) );
 			}
 			if( request.IsSetReportRequestIdList() )
 			{
@@ -1751,11 +1745,11 @@ namespace MarketplaceWebService
 			}
 			if( request.IsSetSubmittedFromDate() )
 			{
-				parameters.Add( "SubmittedFromDate", GetFormattedTimestamp( request.SubmittedFromDate ) );
+				parameters.Add( "SubmittedFromDate", this.GetFormattedTimestamp( request.SubmittedFromDate ) );
 			}
 			if( request.IsSetSubmittedToDate() )
 			{
-				parameters.Add( "SubmittedToDate", GetFormattedTimestamp( request.SubmittedToDate ) );
+				parameters.Add( "SubmittedToDate", this.GetFormattedTimestamp( request.SubmittedToDate ) );
 			}
 
 			return parameters;
@@ -1812,11 +1806,11 @@ namespace MarketplaceWebService
 			}
 			if( request.IsSetRequestedFromDate() )
 			{
-				parameters.Add( "RequestedFromDate", GetFormattedTimestamp( request.RequestedFromDate ) );
+				parameters.Add( "RequestedFromDate", this.GetFormattedTimestamp( request.RequestedFromDate ) );
 			}
 			if( request.IsSetRequestedToDate() )
 			{
-				parameters.Add( "RequestedToDate", GetFormattedTimestamp( request.RequestedToDate ) );
+				parameters.Add( "RequestedToDate", this.GetFormattedTimestamp( request.RequestedToDate ) );
 			}
 
 			return parameters;
@@ -1902,7 +1896,7 @@ namespace MarketplaceWebService
 			}
 			if( request.IsSetScheduleDate() )
 			{
-				parameters.Add( "ScheduleDate", GetFormattedTimestamp( request.ScheduleDate ) );
+				parameters.Add( "ScheduleDate", this.GetFormattedTimestamp( request.ScheduleDate ) );
 			}
 
 			return parameters;
@@ -1946,11 +1940,11 @@ namespace MarketplaceWebService
 			}
 			if( request.IsSetRequestedFromDate() )
 			{
-				parameters.Add( "RequestedFromDate", GetFormattedTimestamp( request.RequestedFromDate ) );
+				parameters.Add( "RequestedFromDate", this.GetFormattedTimestamp( request.RequestedFromDate ) );
 			}
 			if( request.IsSetRequestedToDate() )
 			{
-				parameters.Add( "RequestedToDate", GetFormattedTimestamp( request.RequestedToDate ) );
+				parameters.Add( "RequestedToDate", this.GetFormattedTimestamp( request.RequestedToDate ) );
 			}
 
 			return parameters;

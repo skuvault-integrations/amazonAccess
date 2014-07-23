@@ -1,20 +1,15 @@
 ﻿using System.Collections.Generic;
-using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
-using CuttingEdge.Conditions;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 {
-	internal class OrderItemsService
+	internal sealed class OrderItemsService
 	{
 		private readonly IMarketplaceWebServiceOrders _client;
 		private readonly ListOrderItemsRequest _request;
 
-		public OrderItemsService( IMarketplaceWebServiceOrders client, ListOrderItemsRequest request )
+		public OrderItemsService( IMarketplaceWebServiceOrders client, ListOrderItemsRequest request)
 		{
-			Condition.Requires( client, "client" ).IsNotNull();
-			Condition.Requires( request, "request" ).IsNotNull();
-
 			this._client = client;
 			this._request = request;
 		}
@@ -23,7 +18,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		{
 			var orderItems = new List< OrderItem >();
 			var response = this._client.ListOrderItems( this._request );
-			ActionPolicies.CreateApiDelay( 2 ).Wait();
+
+			LogServices.Logger.Trace( "Loading order items for seller {0}", this._request.SellerId );
 
 			if( response.IsSetListOrderItemsResult() )
 			{
@@ -33,15 +29,16 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				if( listInventorySupplyResult.IsSetNextToken() )
 				{
 					var nextResponse = this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
-						{
-							SellerId = this._request.SellerId,
-							NextToken = listInventorySupplyResult.NextToken
-						} );
-					ActionPolicies.CreateApiDelay( 2 ).Wait();
+					{
+						SellerId = this._request.SellerId,
+						NextToken = listInventorySupplyResult.NextToken
+					} );
 
 					this.LoadNextOrderItemsInfoPage( nextResponse.ListOrderItemsByNextTokenResult, orderItems );
 				}
 			}
+
+			LogServices.Logger.Trace( "Order items for seller {0} loaded", this._request.SellerId );
 
 			return orderItems;
 		}
@@ -50,14 +47,14 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		{
 			if( listOrderItemsSupplyResult.IsSetOrderItems() )
 				orderItems.AddRange( listOrderItemsSupplyResult.OrderItems.OrderItem );
+
 			if( listOrderItemsSupplyResult.IsSetNextToken() )
 			{
 				var response = this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
-					{
-						SellerId = this._request.SellerId,
-						NextToken = listOrderItemsSupplyResult.NextToken
-					} );
-				ActionPolicies.CreateApiDelay( 2 ).Wait();
+				{
+					SellerId = this._request.SellerId,
+					NextToken = listOrderItemsSupplyResult.NextToken
+				} );
 
 				this.LoadNextOrderItemsInfoPage( response.ListOrderItemsByNextTokenResult, orderItems );
 			}

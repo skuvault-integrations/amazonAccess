@@ -24,6 +24,7 @@ using System.Security.Cryptography;
 using System.Globalization;
 using System.Xml.Serialization;
 using System.Collections.Generic;
+using AmazonAccess.Misc;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
 
 namespace AmazonAccess.Services.FbaInventoryServiceMws
@@ -241,7 +242,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 
 		private T Invoke< T >( IDictionary< String, String > parameters )
 		{
-			T response = default( T );
+			var response = default( T );
 
 			// Verify service URL is set.
 			if( String.IsNullOrEmpty( this._config.ServiceURL ) )
@@ -253,11 +254,11 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 			/* Add required request parameters */
 			this.AddRequiredParameters( parameters );
 
-			String queryString = this.GetParametersAsString( parameters );
+			var queryString = this.GetParametersAsString( parameters );
 
-			byte[] requestData = new UTF8Encoding().GetBytes( queryString );
+			var requestData = new UTF8Encoding().GetBytes( queryString );
 			bool shouldRetry;
-			int retries = 0;
+			var retries = 0;
 			do
 			{
 				var request = this.ConfigureWebRequest( requestData.Length );
@@ -265,7 +266,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 				String responseBody;
 				try
 				{
-					using( Stream requestStream = request.GetRequestStream() )
+					using( var requestStream = request.GetRequestStream() )
 					{
 						requestStream.Write( requestData, 0, requestData.Length );
 					}
@@ -274,6 +275,9 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 						var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
 						responseBody = reader.ReadToEnd();
 					}
+
+					ActionPolicies.CreateApiDelay( 2 ).Wait();
+
 					/* Attempt to deserialize response into <Action> Response type */
 					var serlizer = new XmlSerializer( typeof( T ) );
 					response = ( T )serlizer.Deserialize( new StringReader( responseBody ) );
@@ -294,12 +298,14 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 						responseBody = reader.ReadToEnd();
 					}
 
+					ActionPolicies.CreateApiDelay( 2 ).Wait();
+
 					/* Attempt to deserialize response into ErrorResponse type */
 					try
 					{
 						var serlizer = new XmlSerializer( typeof( ErrorResponse ) );
 						var errorResponse = ( ErrorResponse )serlizer.Deserialize( new StringReader( responseBody ) );
-						Error error = errorResponse.Error[ 0 ];
+						var error = errorResponse.Error[ 0 ];
 
 						bool retriableError = ( statusCode == HttpStatusCode.InternalServerError || statusCode == HttpStatusCode.ServiceUnavailable );
 						retriableError = retriableError && error.Code != "RequestThrottled";
@@ -310,10 +316,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 							shouldRetry = true;
 							continue;
 						}
-						else
-						{
-							shouldRetry = false;
-						}
+
 						/* Throw formatted exception with information available from the error response */
 						throw new FbaInventoryServiceMwsException(
 							error.Message,
@@ -328,13 +331,9 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 					{
 						if( e is FbaInventoryServiceMwsException )
 						{
-							throw e;
+							throw;
 						}
-						else
-						{
-							FbaInventoryServiceMwsException se = this.ReportAnyErrors( responseBody, statusCode, e );
-							throw se;
-						}
+						throw this.ReportAnyErrors( responseBody, statusCode, e );
 					}
 				}
 
@@ -361,9 +360,9 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 			if( responseBody != null && responseBody.StartsWith( "<" ) )
 			{
 				Match errorMatcherOne = Regex.Match( responseBody, "<RequestId>(.*)</RequestId>.*<Error>" +
-					"<Code>(.*)</Code><Message>(.*)</Message></Error>.*(<Error>)?", RegexOptions.Multiline );
+				                                                   "<Code>(.*)</Code><Message>(.*)</Message></Error>.*(<Error>)?", RegexOptions.Multiline );
 				Match errorMatcherTwo = Regex.Match( responseBody, "<Error><Code>(.*)</Code><Message>(.*)" +
-					"</Message></Error>.*(<Error>)?.*<RequestID>(.*)</RequestID>", RegexOptions.Multiline );
+				                                                   "</Message></Error>.*(<Error>)?.*<RequestID>(.*)</RequestID>", RegexOptions.Multiline );
 
 				if( errorMatcherOne.Success )
 				{

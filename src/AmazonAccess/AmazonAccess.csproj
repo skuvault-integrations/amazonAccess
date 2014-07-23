@@ -89,6 +89,7 @@
     <Compile Include="Services\FbaInventoryServiceMws\Model\SellerSkuList.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\Timepoint.cs" />
     <Compile Include="Services\IAmazonClientsFactory.cs" />
+    <Compile Include="Services\LogServices.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeeds\FeedsService.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeeds\Model\InventoryFeed.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeeds\ReportsService.cs" />

@@ -44,8 +44,13 @@ namespace AmazonAccess
 					//LastUpdatedBefore = dateTo,
 					MarketplaceId = new MarketplaceIdList { Id = this._credentials.MarketplaceIds }
 				};
+
+				LogServices.Logger.Trace( "Loading orders for seller {0}", this._credentials.SellerId );
+
 				var service = new OrdersService( client, request );
 				orders.AddRange( service.LoadOrders() );
+
+				LogServices.Logger.Trace( "Orders for seller {0} loaded", this._credentials.SellerId );
 			} );
 
 			return orders;
@@ -56,6 +61,9 @@ namespace AmazonAccess
 		public void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems )
 		{
 			var client = this._factory.CreateFeedsReportsClient();
+
+			LogServices.Logger.Trace( "Updating inventory for seller {0}", this._credentials.SellerId );
+
 			if( inventoryItems.Count() > Updateitemslimit )
 			{
 				var partsCount = inventoryItems.Count() / Updateitemslimit + 1;
@@ -68,6 +76,8 @@ namespace AmazonAccess
 			{
 				this.SubmitInventoryUpdateRequest( client, inventoryItems );
 			}
+
+			LogServices.Logger.Trace( "Inventory for seller {0} loaded", this._credentials.SellerId );
 		}
 
 		private SubmitFeedRequest InitInventoryFeedRequest( IEnumerable< AmazonInventoryItem > inventoryItems )
@@ -115,7 +125,12 @@ namespace AmazonAccess
 					QueryStartDateTime = DateTime.MinValue
 				};
 				var service = new InventorySupplyService( client, request );
+
+				LogServices.Logger.Trace( "Loading FBA inventory for seller {0}", this._credentials.SellerId );
+
 				inventory.AddRange( service.LoadInventory() );
+
+				LogServices.Logger.Trace( "FBA inventiry for seller {0} loaded", this._credentials.SellerId );
 			} );
 
 			return inventory;

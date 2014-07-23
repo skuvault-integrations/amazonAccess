@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using CuttingEdge.Conditions;
 
@@ -23,9 +22,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		public IEnumerable< ComposedOrder > LoadOrders()
 		{
 			var orders = new List< ComposedOrder >();
-
 			var response = this._client.ListOrders( this._request );
-			ActionPolicies.CreateApiDelay( 2 ).Wait();
 
 			if( response.IsSetListOrdersResult() )
 			{
@@ -35,11 +32,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				if( listInventorySupplyResult.IsSetNextToken() )
 				{
 					var nextResponse = this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
-						{
-							SellerId = this._request.SellerId,
-							NextToken = listInventorySupplyResult.NextToken
-						} );
-					ActionPolicies.CreateApiDelay( 2 ).Wait();
+					{
+						SellerId = this._request.SellerId,
+						NextToken = listInventorySupplyResult.NextToken
+					} );
 
 					this.LoadNextOrdersInfoPage( nextResponse.ListOrdersByNextTokenResult, orders );
 				}
@@ -54,14 +50,14 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		{
 			if( listInventorySupplyResult.IsSetOrders() )
 				orders.AddRange( listInventorySupplyResult.Orders.Order.Select( o => new ComposedOrder( o ) ).ToList() );
+
 			if( listInventorySupplyResult.IsSetNextToken() )
 			{
 				var response = this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
-					{
-						SellerId = this._request.SellerId,
-						NextToken = listInventorySupplyResult.NextToken
-					} );
-				ActionPolicies.CreateApiDelay( 2 ).Wait();
+				{
+					SellerId = this._request.SellerId,
+					NextToken = listInventorySupplyResult.NextToken
+				} );
 
 				this.LoadNextOrdersInfoPage( response.ListOrdersByNextTokenResult, orders );
 			}
@@ -72,10 +68,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			foreach( var order in orders )
 			{
 				var itemsService = new OrderItemsService( this._client, new ListOrderItemsRequest
-					{
-						AmazonOrderId = order.AmazonOrder.AmazonOrderId,
-						SellerId = this._request.SellerId
-					} );
+				{
+					AmazonOrderId = order.AmazonOrder.AmazonOrderId,
+					SellerId = this._request.SellerId
+				} );
 				order.OrderItems = itemsService.LoadOrderItems();
 			}
 		}
