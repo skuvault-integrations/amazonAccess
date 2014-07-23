@@ -43,6 +43,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		private String awsSecretAccessKey = null;
 		private MarketplaceWebServiceOrdersConfig config = null;
 		private const String REQUEST_THROTTLED_ERROR_CODE = "RequestThrottled";
+		private string _sellerId = string.Empty;
 
 		/// <summary>
 		/// Constructs MarketplaceWebServiceOrdersClient with AWS Access Key ID and AWS Secret Key
@@ -84,6 +85,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		/// </remarks>
 		public ListOrdersByNextTokenResponse ListOrdersByNextToken( ListOrdersByNextTokenRequest request )
 		{
+			this._sellerId = request.SellerId;
 			return this.Invoke< ListOrdersByNextTokenResponse >( this.ConvertListOrdersByNextToken( request ) );
 		}
 
@@ -101,6 +103,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		/// </remarks>
 		public ListOrderItemsByNextTokenResponse ListOrderItemsByNextToken( ListOrderItemsByNextTokenRequest request )
 		{
+			this._sellerId = request.SellerId;
 			return this.Invoke< ListOrderItemsByNextTokenResponse >( this.ConvertListOrderItemsByNextToken( request ) );
 		}
 
@@ -116,6 +119,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		/// </remarks>
 		public GetOrderResponse GetOrder( GetOrderRequest request )
 		{
+			this._sellerId = request.SellerId;
 			return this.Invoke< GetOrderResponse >( this.ConvertGetOrder( request ) );
 		}
 
@@ -132,6 +136,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		/// </remarks>
 		public ListOrderItemsResponse ListOrderItems( ListOrderItemsRequest request )
 		{
+			this._sellerId = request.SellerId;
 			return this.Invoke< ListOrderItemsResponse >( this.ConvertListOrderItems( request ) );
 		}
 
@@ -147,6 +152,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		/// </remarks>
 		public ListOrdersResponse ListOrders( ListOrdersRequest request )
 		{
+			this._sellerId = request.SellerId;
 			return this.Invoke< ListOrdersResponse >( this.ConvertListOrders( request ) );
 		}
 
@@ -237,7 +243,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						responseBody = reader.ReadToEnd();
 					}
 
-					ActionPolicies.CreateApiDelay( 2 ).Wait();
+					ActionPolicies.CreateApiDelay( 30 ).Wait();
 
 					/* Attempt to deserialize response into <Action> Response type */
 					var serializer = new XmlSerializer( typeof( T ) );
@@ -267,7 +273,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 							responseBody = reader.ReadToEnd();
 						}
 						
-						ActionPolicies.CreateApiDelay( 2 ).Wait();
+						ActionPolicies.CreateApiDelay( 30 ).Wait();
 					}
 
 					/* Attempt to deserialize response into ErrorResponse type */
@@ -377,6 +383,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			if( retries <= this.config.MaxErrorRetry )
 			{
 				int delay = ( int )Math.Pow( 4, retries ) * 100;
+				LogServices.Logger.Trace( "Orders. Pause on retry. Seller {0}", this._sellerId );
 				System.Threading.Thread.Sleep( delay );
 			}
 			else

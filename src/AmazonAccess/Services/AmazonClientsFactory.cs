@@ -20,7 +20,7 @@ namespace AmazonAccess.Services
 
 		public IFbaInventoryServiceMws CreateFbaInventoryClient()
 		{
-			var config = new FbaInventoryServiceMwsConfig { ServiceURL = "https://mws.amazonservices.com/FulfillmentInventory/2010-10-01/" };
+			var config = new FbaInventoryServiceMwsConfig { ServiceURL = "https://mws.amazonservices.com/FulfillmentInventory/2010-10-01/", MaxErrorRetry = 4 };
 			config.SetUserAgentHeader( "C#", "-1", "3" );
 
 			return new FbaInventoryServiceMwsClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
@@ -28,7 +28,7 @@ namespace AmazonAccess.Services
 
 		public IMarketplaceWebService CreateFeedsReportsClient()
 		{
-			var config = new MarketplaceWebServiceConfig { ServiceURL = "https://mws.amazonservices.com" };
+			var config = new MarketplaceWebServiceConfig { ServiceURL = "https://mws.amazonservices.com", MaxErrorRetry = 4 };
 			config.SetUserAgentHeader( "C#", "-1", "3" );
 
 			return new MarketplaceWebServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
@@ -36,7 +36,7 @@ namespace AmazonAccess.Services
 
 		public IMarketplaceWebServiceOrders CreateOrdersClient( string applicationName, string applicationVersion )
 		{
-			var config = new MarketplaceWebServiceOrdersConfig { ServiceURL = "https://mws.amazonservices.com/Orders/2011-01-01/" };
+			var config = new MarketplaceWebServiceOrdersConfig { ServiceURL = "https://mws.amazonservices.com/Orders/2011-01-01/", MaxErrorRetry = 4 };
 
 			return new MarketplaceWebServiceOrdersClient( applicationName, applicationVersion, this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
 		}

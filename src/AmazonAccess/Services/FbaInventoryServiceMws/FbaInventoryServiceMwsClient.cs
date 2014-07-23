@@ -41,7 +41,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 		private readonly String _awsAccessKeyId;
 		private readonly String _awsSecretAccessKey;
 		private readonly FbaInventoryServiceMwsConfig _config;
-
+		private string _sellerId = string.Empty;
 		/// <summary>
 		/// Constructs FbaInventoryServiceMwsClient with AWS Access Key ID and AWS Secret Key
 		/// </summary>
@@ -150,6 +150,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 		/// </remarks>
 		public ListInventorySupplyByNextTokenResponse ListInventorySupplyByNextToken( ListInventorySupplyByNextTokenRequest request )
 		{
+			this._sellerId = request.SellerId;
 			return this.Invoke< ListInventorySupplyByNextTokenResponse >( this.ConvertListInventorySupplyByNextToken( request ) );
 		}
 
@@ -190,6 +191,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 		/// </remarks>
 		public ListInventorySupplyResponse ListInventorySupply( ListInventorySupplyRequest request )
 		{
+			this._sellerId = request.SellerId;
 			return this.Invoke< ListInventorySupplyResponse >( this.ConvertListInventorySupply( request ) );
 		}
 
@@ -208,6 +210,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 		/// </remarks>
 		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request )
 		{
+			this._sellerId = request.SellerId;
 			return this.Invoke< GetServiceStatusResponse >( this.ConvertGetServiceStatus( request ) );
 		}
 
@@ -276,7 +279,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 						responseBody = reader.ReadToEnd();
 					}
 
-					ActionPolicies.CreateApiDelay( 2 ).Wait();
+					ActionPolicies.CreateApiDelay( 30 ).Wait();
 
 					/* Attempt to deserialize response into <Action> Response type */
 					var serlizer = new XmlSerializer( typeof( T ) );
@@ -298,7 +301,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 						responseBody = reader.ReadToEnd();
 					}
 
-					ActionPolicies.CreateApiDelay( 2 ).Wait();
+					ActionPolicies.CreateApiDelay( 30 ).Wait();
 
 					/* Attempt to deserialize response into ErrorResponse type */
 					try
@@ -400,6 +403,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 		private void PauseOnRetry( int retries )
 		{
 			int delay = ( int )Math.Pow( 4, retries ) * 100;
+			LogServices.Logger.Trace( "Inventory. Pause on retry. Seller {0}", this._sellerId );
 			System.Threading.Thread.Sleep( delay );
 		}
 

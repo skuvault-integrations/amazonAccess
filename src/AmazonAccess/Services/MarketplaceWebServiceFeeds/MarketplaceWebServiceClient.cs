@@ -46,6 +46,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		private String awsAccessKeyId = null;
 		private String awsSecretAccessKey = null;
 		private MarketplaceWebServiceConfig config = null;
+		private string _sellerId = string.Empty;
 
 		/// <summary>
 		/// Constructs MarketplaceWebServiceClient with AWS Access Key ID and AWS Secret Key.
@@ -151,6 +152,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportResponse GetReport( GetReportRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetReportResponse, GetReportRequest >( this.ConvertGetReport( request ), request );
 		}
 
@@ -166,6 +168,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportScheduleCountResponse GetReportScheduleCount( GetReportScheduleCountRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetReportScheduleCountResponse >( this.ConvertGetReportScheduleCount( request ) );
 		}
 
@@ -181,6 +184,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportRequestListByNextTokenResponse GetReportRequestListByNextToken( GetReportRequestListByNextTokenRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetReportRequestListByNextTokenResponse >( this.ConvertGetReportRequestListByNextToken( request ) );
 		}
 
@@ -196,6 +200,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public UpdateReportAcknowledgementsResponse UpdateReportAcknowledgements( UpdateReportAcknowledgementsRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< UpdateReportAcknowledgementsResponse >( this.ConvertUpdateReportAcknowledgements( request ) );
 		}
 
@@ -215,6 +220,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public SubmitFeedResponse SubmitFeed( SubmitFeedRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< SubmitFeedResponse, SubmitFeedRequest >( this.ConvertSubmitFeed( request ), request );
 		}
 
@@ -232,6 +238,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportCountResponse GetReportCount( GetReportCountRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetReportCountResponse >( this.ConvertGetReportCount( request ) );
 		}
 
@@ -247,6 +254,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetFeedSubmissionListByNextTokenResponse GetFeedSubmissionListByNextToken( GetFeedSubmissionListByNextTokenRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetFeedSubmissionListByNextTokenResponse >( this.ConvertGetFeedSubmissionListByNextToken( request ) );
 		}
 
@@ -263,6 +271,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public CancelFeedSubmissionsResponse CancelFeedSubmissions( CancelFeedSubmissionsRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< CancelFeedSubmissionsResponse >( this.ConvertCancelFeedSubmissions( request ) );
 		}
 
@@ -278,6 +287,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public RequestReportResponse RequestReport( RequestReportRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< RequestReportResponse >( this.ConvertRequestReport( request ) );
 		}
 
@@ -293,6 +303,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetFeedSubmissionCountResponse GetFeedSubmissionCount( GetFeedSubmissionCountRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetFeedSubmissionCountResponse >( this.ConvertGetFeedSubmissionCount( request ) );
 		}
 
@@ -309,6 +320,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public CancelReportRequestsResponse CancelReportRequests( CancelReportRequestsRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< CancelReportRequestsResponse >( this.ConvertCancelReportRequests( request ) );
 		}
 
@@ -325,6 +337,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportListResponse GetReportList( GetReportListRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetReportListResponse >( this.ConvertGetReportList( request ) );
 		}
 
@@ -340,6 +353,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetFeedSubmissionResultResponse GetFeedSubmissionResult( GetFeedSubmissionResultRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetFeedSubmissionResultResponse, GetFeedSubmissionResultRequest >( this.ConvertGetFeedSubmissionResult( request ), request );
 		}
 
@@ -355,6 +369,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetFeedSubmissionListResponse GetFeedSubmissionList( GetFeedSubmissionListRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetFeedSubmissionListResponse >( this.ConvertGetFeedSubmissionList( request ) );
 		}
 
@@ -370,6 +385,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportRequestListResponse GetReportRequestList( GetReportRequestListRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetReportRequestListResponse >( this.ConvertGetReportRequestList( request ) );
 		}
 
@@ -385,6 +401,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportScheduleListByNextTokenResponse GetReportScheduleListByNextToken( GetReportScheduleListByNextTokenRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetReportScheduleListByNextTokenResponse >( this.ConvertGetReportScheduleListByNextToken( request ) );
 		}
 
@@ -400,6 +417,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportListByNextTokenResponse GetReportListByNextToken( GetReportListByNextTokenRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetReportListByNextTokenResponse >( this.ConvertGetReportListByNextToken( request ) );
 		}
 
@@ -416,6 +434,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public ManageReportScheduleResponse ManageReportSchedule( ManageReportScheduleRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< ManageReportScheduleResponse >( this.ConvertManageReportSchedule( request ) );
 		}
 
@@ -432,6 +451,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportRequestCountResponse GetReportRequestCount( GetReportRequestCountRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetReportRequestCountResponse >( this.ConvertGetReportRequestCount( request ) );
 		}
 
@@ -447,6 +467,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// </remarks>
 		public GetReportScheduleListResponse GetReportScheduleList( GetReportScheduleListRequest request )
 		{
+			this._sellerId = request.Merchant;
 			return this.Invoke< GetReportScheduleListResponse >( this.ConvertGetReportScheduleList( request ) );
 		}
 
@@ -626,7 +647,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 
 						shouldRetry = false;
 					}
-					ActionPolicies.CreateApiDelay( 2 ).Wait();
+					ActionPolicies.CreateApiDelay( 30 ).Wait();
 
 					/* Attempt to deserialize response into <Action> Response type */
 
@@ -644,7 +665,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 						var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 );
 						responseBody = reader.ReadToEnd();
 
-						ActionPolicies.CreateApiDelay( 2 ).Wait();
+						ActionPolicies.CreateApiDelay( 30 ).Wait();
 					}
 
 					/* Attempt to deserialize response into ErrorResponse type */
@@ -677,10 +698,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 						/* Rethrow on deserializer error */
 					catch( Exception e )
 					{
-						this.Log().Debug( @"Amazon request: query string: {0}
-Clazz: {1}
-Response: {2}", queryString, clazzStream, responseBody );
-
+						this.Log().Debug( @"Amazon request: query string: {0}Clazz: {1}Response: {2}", queryString, clazzStream, responseBody );
 						if( e is MarketplaceWebServiceException )
 						{
 							throw;
@@ -994,6 +1012,7 @@ Response: {2}", queryString, clazzStream, responseBody );
 		private void PauseOnRetry( int retries )
 		{
 			int delay = ( int )Math.Pow( 4, retries ) * 100;
+			LogServices.Logger.Trace( "Feeds. Pause on retry. Seller {0}", this._sellerId );
 			System.Threading.Thread.Sleep( delay );
 		}
 
