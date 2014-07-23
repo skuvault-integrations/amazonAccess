@@ -647,7 +647,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 
 						shouldRetry = false;
 					}
-					ActionPolicies.CreateApiDelay( 30 ).Wait();
+
+					ActionPolicies.CreateApiDelay( 1200 ).Wait();
 
 					/* Attempt to deserialize response into <Action> Response type */
 
@@ -664,8 +665,6 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 						statusCode = httpErrorResponse.StatusCode;
 						var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 );
 						responseBody = reader.ReadToEnd();
-
-						ActionPolicies.CreateApiDelay( 30 ).Wait();
 					}
 
 					/* Attempt to deserialize response into ErrorResponse type */

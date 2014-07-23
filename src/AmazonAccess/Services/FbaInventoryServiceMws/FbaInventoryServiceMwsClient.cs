@@ -279,7 +279,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 						responseBody = reader.ReadToEnd();
 					}
 
-					ActionPolicies.CreateApiDelay( 30 ).Wait();
+					ActionPolicies.CreateApiDelay( 2 ).Wait();
 
 					/* Attempt to deserialize response into <Action> Response type */
 					var serlizer = new XmlSerializer( typeof( T ) );
@@ -301,7 +301,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 						responseBody = reader.ReadToEnd();
 					}
 
-					ActionPolicies.CreateApiDelay( 30 ).Wait();
+					ActionPolicies.CreateApiDelay( 2 ).Wait();
 
 					/* Attempt to deserialize response into ErrorResponse type */
 					try
