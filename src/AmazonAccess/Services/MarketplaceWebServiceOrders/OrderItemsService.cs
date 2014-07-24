@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
+using Netco.Logging;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 {
@@ -19,7 +20,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			var orderItems = new List< OrderItem >();
 			var response = this._client.ListOrderItems( this._request );
 
-			LogServices.Logger.Trace( "Loading order items for seller {0}", this._request.SellerId );
+			this.Log().Trace( "[amazon]Loading order items for seller {0}", this._request.SellerId );
 
 			if( response.IsSetListOrderItemsResult() )
 			{
@@ -38,7 +39,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				}
 			}
 
-			LogServices.Logger.Trace( "Order items for seller {0} loaded", this._request.SellerId );
+			this.Log().Trace( "[amazon] Order items for seller {0} loaded", this._request.SellerId );
 
 			return orderItems;
 		}

@@ -539,6 +539,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 
 		private T Invoke< T, K >( IDictionary< String, String > parameters, K clazz )
 		{
+			this.Log().Trace( "[amazon] Feeds. Seller: {0}. Begin invoke...", this._sellerId );
+
 			var response = default( T );
 			ResponseHeaderMetadata rhm = null;
 
@@ -620,7 +622,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 						}
 						requestStream.Close();
 					}
-
+					this.Log().Trace( "[amazon] Feeds. Seller {0}. Getting response.", this._sellerId );
 					using( var httpResponse = request.GetResponse() as HttpWebResponse )
 					{
 						statusCode = httpResponse.StatusCode;
@@ -629,15 +631,16 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 							httpResponse.GetResponseHeader( "x-mws-response-context" ),
 							httpResponse.GetResponseHeader( "x-mws-timestamp" ) );
 
+						var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
+						responseBody = reader.ReadToEnd();
+						this.Log().Trace( "[amazon] Feeds. Seller: {0}\nResponse received: {1}", this._sellerId, responseBody );
+
 						if( isStreamingResponse && statusCode == HttpStatusCode.OK )
 						{
 							response = this.HandleStreamingResponse< T >( httpResponse, clazz );
 						}
 						else
 						{
-
-							var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
-							responseBody = reader.ReadToEnd();
 							var serlizer = new XmlSerializer( typeof( T ) );
 							response = ( T )serlizer.Deserialize( new StringReader( responseBody ) );
 						}
@@ -647,7 +650,6 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 
 						shouldRetry = false;
 					}
-
 					ActionPolicies.CreateApiDelay( 1200 ).Wait();
 
 					/* Attempt to deserialize response into <Action> Response type */
@@ -665,6 +667,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 						statusCode = httpErrorResponse.StatusCode;
 						var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 );
 						responseBody = reader.ReadToEnd();
+						this.Log().Trace( "[amazon] Feeds. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
 					}
 
 					/* Attempt to deserialize response into ErrorResponse type */
@@ -703,6 +706,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 							throw;
 						}
 						MarketplaceWebServiceException se = this.ReportAnyErrors( responseBody, statusCode, e, rhm );
+						this.Log().Trace( "[amazon] Feeds. Seller: {0}\nDeserialization exception message: {1}", this._sellerId, e.Message );
 						throw se;
 					}
 				}
@@ -711,9 +715,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
                  * else rethrow wrapped exception */
 				catch( Exception e )
 				{
+					this.Log().Trace( "[amazon] Feeds. Seller: {0}\nUndefined exception message: {1}", this._sellerId, e.Message );
 					throw new MarketplaceWebServiceException( e );
 				}
 			} while( shouldRetry );
+			this.Log().Trace( "[amazon] Feeds. Seller: {0}. End invoke...", this._sellerId );
 
 			return response;
 		}
@@ -1011,7 +1017,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		private void PauseOnRetry( int retries )
 		{
 			int delay = ( int )Math.Pow( 4, retries ) * 100;
-			LogServices.Logger.Trace( "Feeds. Pause on retry. Seller {0}", this._sellerId );
+			this.Log().Trace( "[amazon] Feeds. Pause on retry. Seller {0}", this._sellerId );
 			System.Threading.Thread.Sleep( delay );
 		}
 
