@@ -102,7 +102,7 @@ namespace AmazonAccess
 			var request = this.InitInventoryFeedRequest( inventoryItems );
 			var service = new FeedsService();
 
-			ActionPolicies.AmazonGetPolicy.Do( () =>
+			ActionPolicies.AmazonSubmitPolicy.Do( () =>
 			{
 				service.SubmitFeed( client, request );
 				request.FeedContent.Close();
