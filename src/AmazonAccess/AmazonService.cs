@@ -12,7 +12,6 @@ using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using CuttingEdge.Conditions;
 using MarketplaceWebService;
 using MarketplaceWebService.Model;
-using Netco.Logging;
 
 namespace AmazonAccess
 {
@@ -46,12 +45,12 @@ namespace AmazonAccess
 					MarketplaceId = new MarketplaceIdList { Id = this._credentials.MarketplaceIds }
 				};
 
-				this.Log().Trace( "[amazon] Loading orders for seller {0}", this._credentials.SellerId );
+				AmazonLogger.Log.Trace( "[amazon] Loading orders for seller {0}", this._credentials.SellerId );
 
 				var service = new OrdersService( client, request );
 				orders.AddRange( service.LoadOrders() );
 
-				this.Log().Trace( "[amazon] Orders for seller {0} loaded", this._credentials.SellerId );
+				AmazonLogger.Log.Trace( "[amazon] Orders for seller {0} loaded", this._credentials.SellerId );
 			} );
 
 			return orders;
@@ -63,7 +62,7 @@ namespace AmazonAccess
 		{
 			var client = this._factory.CreateFeedsReportsClient();
 
-			this.Log().Trace( "[amazon] Updating inventory for seller {0}", this._credentials.SellerId );
+			AmazonLogger.Log.Trace( "[amazon] Updating inventory for seller {0}", this._credentials.SellerId );
 
 			if( inventoryItems.Count() > Updateitemslimit )
 			{
@@ -78,7 +77,7 @@ namespace AmazonAccess
 				this.SubmitInventoryUpdateRequest( client, inventoryItems );
 			}
 
-			this.Log().Trace( "[amazon] Inventory for seller {0} loaded", this._credentials.SellerId );
+			AmazonLogger.Log.Trace( "[amazon] Inventory for seller {0} loaded", this._credentials.SellerId );
 		}
 
 		private SubmitFeedRequest InitInventoryFeedRequest( IEnumerable< AmazonInventoryItem > inventoryItems )
@@ -127,11 +126,11 @@ namespace AmazonAccess
 				};
 				var service = new InventorySupplyService( client, request );
 
-				this.Log().Trace( "[amazon] Loading FBA inventory for seller {0}", this._credentials.SellerId );
+				AmazonLogger.Log.Trace( "[amazon] Loading FBA inventory for seller {0}", this._credentials.SellerId );
 
 				inventory.AddRange( service.LoadInventory() );
 
-				this.Log().Trace( "[amazon] FBA inventiry for seller {0} loaded", this._credentials.SellerId );
+				AmazonLogger.Log.Trace( "[amazon] FBA inventiry for seller {0} loaded", this._credentials.SellerId );
 			} );
 
 			return inventory;

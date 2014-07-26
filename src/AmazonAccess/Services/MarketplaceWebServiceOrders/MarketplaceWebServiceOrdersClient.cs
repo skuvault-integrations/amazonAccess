@@ -25,7 +25,6 @@ using System.Xml.Serialization;
 using System.Collections.Generic;
 using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
-using Netco.Logging;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 {
@@ -202,7 +201,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		private T Invoke< T >( IDictionary< String, String > parameters )
 		{
-			this.Log().Trace( "[amazon] Orders. Seller: {0}. Begin invoke...", this._sellerId );
+			AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}. Begin invoke...", this._sellerId );
 
 			var response = default( T );
 			ResponseHeaderMetadata rhm = null;
@@ -222,7 +221,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			bool shouldRetry;
 			var retries = 0;
 
-			this.Log().Trace( "[amazon] Amazon query string: {0}", queryString );
+			AmazonLogger.Log.Trace( "[amazon] Amazon query string: {0}", queryString );
 			do
 			{
 				var request = this.ConfigureWebRequest( requestData.Length );
@@ -235,7 +234,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						requestStream.Write( requestData, 0, requestData.Length );
 					}
 
-					this.Log().Trace( "[amazon] Orders. Seller {0}. Getting response.", this._sellerId );
+					AmazonLogger.Log.Trace( "[amazon] Orders. Seller {0}. Getting response.", this._sellerId );
 
 					using( var httpResponse = request.GetResponse() as HttpWebResponse )
 					{
@@ -247,7 +246,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
 						responseBody = reader.ReadToEnd();
 
-						this.Log().Trace( "[amazon] Orders. Seller: {0}\nResponse received: {1}", this._sellerId, responseBody );
+						AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nResponse received: {1}", this._sellerId, responseBody );
 					}
 
 					ActionPolicies.CreateApiDelay( 30 ).Wait();
@@ -265,7 +264,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				}
 				catch( WebException we ) // Web exception is thrown on unsucessful responses
 				{
-					this.Log().Trace( "[amazon] Orders. Seller: {0}. Exception occurred. Getting web exception message.", this._sellerId );
+					AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}. Exception occurred. Getting web exception message.", this._sellerId );
 
 					HttpStatusCode statusCode;
 					using( var httpErrorResponse = ( HttpWebResponse )we.Response )
@@ -273,7 +272,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						if( httpErrorResponse == null )
 						{
 							responseBody = we.Message;
-							this.Log().Trace( "[amazon] Orders. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
+							AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
 
 							throw new MarketplaceWebServiceOrdersException( we );
 						}
@@ -281,7 +280,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						using( var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 ) )
 						{
 							responseBody = reader.ReadToEnd();
-							this.Log().Trace( "[amazon] Orders. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
+							AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
 						}
 
 						ActionPolicies.CreateApiDelay( 30 ).Wait();
@@ -320,7 +319,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						}
 						catch( MarketplaceWebServiceOrdersException e )
 						{
-							this.Log().Trace( "[amazon] Orders. Seller: {0}\nDeserialization exception message: {1}", this._sellerId, e.Message );
+							AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nDeserialization exception message: {1}", this._sellerId, e.Message );
 							throw;
 						}
 						catch( Exception e )
@@ -333,12 +332,12 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					/* Catch other exceptions, attempt to convert to formatted exception, else rethrow wrapped exception */
 				catch( Exception e )
 				{
-					this.Log().Trace( "[amazon] Orders. Seller: {0}\nUndefined exception message: {1}", this._sellerId, e.Message );
+					AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nUndefined exception message: {1}", this._sellerId, e.Message );
 
 					throw new MarketplaceWebServiceOrdersException( e );
 				}
 			} while( shouldRetry );
-			this.Log().Trace( "[amazon] Orders. Seller: {0}. End invoke...", this._sellerId );
+			AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}. End invoke...", this._sellerId );
 
 			return response;
 		}
@@ -398,7 +397,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			if( retries <= this.config.MaxErrorRetry )
 			{
 				int delay = ( int )Math.Pow( 4, retries ) * 100;
-				this.Log().Trace( "[amazon]Orders. Pause on retry. Seller {0}", this._sellerId );
+				AmazonLogger.Log.Trace( "[amazon]Orders. Pause on retry. Seller {0}", this._sellerId );
 				System.Threading.Thread.Sleep( delay );
 			}
 			else
