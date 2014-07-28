@@ -85,7 +85,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		public ListOrdersByNextTokenResponse ListOrdersByNextToken( ListOrdersByNextTokenRequest request )
 		{
 			this._sellerId = request.SellerId;
-			return this.Invoke< ListOrdersByNextTokenResponse >( this.ConvertListOrdersByNextToken( request ) );
+			return this.Invoke< ListOrdersByNextTokenResponse >( this.ConvertListOrdersByNextToken( request ), true );
 		}
 
 
@@ -103,7 +103,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		public ListOrderItemsByNextTokenResponse ListOrderItemsByNextToken( ListOrderItemsByNextTokenRequest request )
 		{
 			this._sellerId = request.SellerId;
-			return this.Invoke< ListOrderItemsByNextTokenResponse >( this.ConvertListOrderItemsByNextToken( request ) );
+			return this.Invoke< ListOrderItemsByNextTokenResponse >( this.ConvertListOrderItemsByNextToken( request ),false );
 		}
 
 
@@ -119,7 +119,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		public GetOrderResponse GetOrder( GetOrderRequest request )
 		{
 			this._sellerId = request.SellerId;
-			return this.Invoke< GetOrderResponse >( this.ConvertGetOrder( request ) );
+			return this.Invoke< GetOrderResponse >( this.ConvertGetOrder( request ), true );
 		}
 
 
@@ -136,7 +136,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		public ListOrderItemsResponse ListOrderItems( ListOrderItemsRequest request )
 		{
 			this._sellerId = request.SellerId;
-			return this.Invoke< ListOrderItemsResponse >( this.ConvertListOrderItems( request ) );
+			return this.Invoke< ListOrderItemsResponse >( this.ConvertListOrderItems( request ), false );
 		}
 
 
@@ -152,7 +152,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		public ListOrdersResponse ListOrders( ListOrdersRequest request )
 		{
 			this._sellerId = request.SellerId;
-			return this.Invoke< ListOrdersResponse >( this.ConvertListOrders( request ) );
+			return this.Invoke< ListOrdersResponse >( this.ConvertListOrders( request ), true );
 		}
 
 
@@ -168,7 +168,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		/// </remarks>
 		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request )
 		{
-			return this.Invoke< GetServiceStatusResponse >( this.ConvertGetServiceStatus( request ) );
+			return this.Invoke< GetServiceStatusResponse >( this.ConvertGetServiceStatus( request ),false );
 		}
 
 		// Private API ------------------------------------------------------------//
@@ -199,9 +199,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
          * Invoke request and return response
          */
 
-		private T Invoke< T >( IDictionary< String, String > parameters )
+		private T Invoke< T >( IDictionary< String, String > parameters, bool ordersRequest )
 		{
 			AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}. Begin invoke...", this._sellerId );
+
+			var requestDelay = ordersRequest ? 30 : 2;
 
 			var response = default( T );
 			ResponseHeaderMetadata rhm = null;
@@ -249,7 +251,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nResponse received: {1}", this._sellerId, responseBody );
 					}
 
-					ActionPolicies.CreateApiDelay( 30 ).Wait();
+					ActionPolicies.CreateApiDelay( requestDelay ).Wait();
 
 					/* Attempt to deserialize response into <Action> Response type */
 					var serializer = new XmlSerializer( typeof( T ) );
@@ -283,7 +285,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 							AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
 						}
 
-						ActionPolicies.CreateApiDelay( 30 ).Wait();
+						ActionPolicies.CreateApiDelay( requestDelay ).Wait();
 					}
 
 					/* Attempt to deserialize response into ErrorResponse type */
