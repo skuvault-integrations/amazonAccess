@@ -29,6 +29,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				var listInventorySupplyResult = response.ListOrdersResult;
 				if( listInventorySupplyResult.IsSetOrders() )
 					orders.AddRange( listInventorySupplyResult.Orders.Order.Select( o => new ComposedOrder( o ) ).ToList() );
+
 				if( listInventorySupplyResult.IsSetNextToken() )
 				{
 					var nextResponse = this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
@@ -58,6 +59,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					SellerId = this._request.SellerId,
 					NextToken = listInventorySupplyResult.NextToken
 				} );
+
 
 				this.LoadNextOrdersInfoPage( response.ListOrdersByNextTokenResult, orders );
 			}

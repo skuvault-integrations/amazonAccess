@@ -203,7 +203,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		{
 			AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}. Begin invoke...", this._sellerId );
 
-			var requestDelay = ordersRequest ? 30 : 2;
+			var requestDelay = ordersRequest ? 60 : 2;
 
 			var response = default( T );
 			ResponseHeaderMetadata rhm = null;
