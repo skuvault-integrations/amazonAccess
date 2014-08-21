@@ -5,7 +5,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 	public class ComposedOrder
 	{
 		public Order AmazonOrder { get; private set; }
-		public List< OrderItem > OrderItems { get; set; }
+		public IEnumerable< OrderItem > OrderItems { get; set; }
 
 		public ComposedOrder( Order amazonOrder )
 		{

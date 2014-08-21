@@ -75,7 +75,7 @@ task NuGet Package, Version, {
 <package>
 	<metadata>
 		<id>$project_name</id>
-		<version>$Version-alpha5</version>
+		<version>$Version-alpha6</version>
 		<authors>Agile Harbor</authors>
 		<owners>Agile Harbor</owners>
 		<projectUrl>https://github.com/agileharbor/$project_name</projectUrl>

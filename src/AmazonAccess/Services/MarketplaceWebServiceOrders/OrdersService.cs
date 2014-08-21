@@ -28,7 +28,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			{
 				var listInventorySupplyResult = response.ListOrdersResult;
 				if( listInventorySupplyResult.IsSetOrders() )
+				{
 					orders.AddRange( listInventorySupplyResult.Orders.Order.Select( o => new ComposedOrder( o ) ).ToList() );
+					this.FillOrders( orders );
+				}
 
 				if( listInventorySupplyResult.IsSetNextToken() )
 				{
@@ -37,12 +40,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						SellerId = this._request.SellerId,
 						NextToken = listInventorySupplyResult.NextToken
 					} );
-
 					this.LoadNextOrdersInfoPage( nextResponse.ListOrdersByNextTokenResult, orders );
 				}
 			}
-
-			this.GetOrderItems( orders );
 
 			return orders;
 		}
@@ -50,7 +50,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		private void LoadNextOrdersInfoPage( ListOrdersByNextTokenResult listInventorySupplyResult, List< ComposedOrder > orders )
 		{
 			if( listInventorySupplyResult.IsSetOrders() )
+			{
 				orders.AddRange( listInventorySupplyResult.Orders.Order.Select( o => new ComposedOrder( o ) ).ToList() );
+				this.FillOrders( orders );
+			}
 
 			if( listInventorySupplyResult.IsSetNextToken() )
 			{
@@ -59,22 +62,30 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					SellerId = this._request.SellerId,
 					NextToken = listInventorySupplyResult.NextToken
 				} );
-
-
 				this.LoadNextOrdersInfoPage( response.ListOrdersByNextTokenResult, orders );
 			}
 		}
 
-		private void GetOrderItems( IEnumerable< ComposedOrder > orders )
+		private void FillOrders( IEnumerable< ComposedOrder > orders )
 		{
 			foreach( var order in orders )
 			{
-				var itemsService = new OrderItemsService( this._client, new ListOrderItemsRequest
-				{
-					AmazonOrderId = order.AmazonOrder.AmazonOrderId,
-					SellerId = this._request.SellerId
-				} );
-				order.OrderItems = itemsService.LoadOrderItems();
+				order.OrderItems = this.GetOrderItems( order.AmazonOrder.AmazonOrderId );
+			}
+		}
+
+		private IEnumerable< OrderItem > GetOrderItems( string orderId )
+		{
+			var itemsService = new OrderItemsService( this._client, new ListOrderItemsRequest
+			{
+				AmazonOrderId = orderId,
+				SellerId = this._request.SellerId
+			} );
+
+			var orderItems = itemsService.LoadOrderItems();
+			foreach( var item in orderItems )
+			{
+				yield return item;
 			}
 		}
 	}
