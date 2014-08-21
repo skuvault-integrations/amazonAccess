@@ -320,10 +320,6 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 							AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nDeserialization exception message: {1}", this._sellerId, e.Message );
 							throw;
 						}
-						catch( Exception e )
-						{
-							throw this.ReportAnyErrors( responseBody, statusCode, rhm, e );
-						}
 					}
 				}
 					/* Catch other exceptions, attempt to convert to formatted exception, else rethrow wrapped exception */
