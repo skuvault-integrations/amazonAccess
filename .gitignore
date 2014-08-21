@@ -30,11 +30,15 @@ _TeamCity*/
 *.ReSharper
 *.docstates
 _rltm*
+src/AmazonAccessTests/Feeds/*.cs
+src/AmazonAccessTests/Inventory/*.cs
+src/AmazonAccessTests/Orders/*.cs
 
 #Ignore common build files
 build/*
 log
 deployment
+tools/Invoke-Build/*
 
 #Exceptions
 !ReleaseNotes/
