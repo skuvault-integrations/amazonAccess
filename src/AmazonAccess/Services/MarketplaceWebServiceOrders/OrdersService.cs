@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using CuttingEdge.Conditions;
 
@@ -21,8 +22,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		public IEnumerable< ComposedOrder > LoadOrders()
 		{
+			var requestQuota = 6;
 			var orders = new List< ComposedOrder >();
 			var response = this._client.ListOrders( this._request );
+			requestQuota--;
 
 			if( response.IsSetListOrdersResult() )
 			{
@@ -33,21 +36,23 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					this.FillOrders( orders );
 				}
 
-				if( listInventorySupplyResult.IsSetNextToken() )
+				if( !listInventorySupplyResult.IsSetNextToken() )
+					return orders;
+
+				var nextResponse = this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
 				{
-					var nextResponse = this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
-					{
-						SellerId = this._request.SellerId,
-						NextToken = listInventorySupplyResult.NextToken
-					} );
-					this.LoadNextOrdersInfoPage( nextResponse.ListOrdersByNextTokenResult, orders );
-				}
+					SellerId = this._request.SellerId,
+					NextToken = listInventorySupplyResult.NextToken
+				} );
+
+				requestQuota --;
+				this.LoadNextOrdersInfoPage( nextResponse.ListOrdersByNextTokenResult, orders, requestQuota );
 			}
 
 			return orders;
 		}
 
-		private void LoadNextOrdersInfoPage( ListOrdersByNextTokenResult listInventorySupplyResult, List< ComposedOrder > orders )
+		private void LoadNextOrdersInfoPage( ListOrdersByNextTokenResult listInventorySupplyResult, List< ComposedOrder > orders, int requestQuota )
 		{
 			if( listInventorySupplyResult.IsSetOrders() )
 			{
@@ -55,15 +60,23 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				this.FillOrders( orders );
 			}
 
-			if( listInventorySupplyResult.IsSetNextToken() )
+			if( !listInventorySupplyResult.IsSetNextToken() )
+				return;
+
+			if( requestQuota == 0 )
 			{
-				var response = this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
-				{
-					SellerId = this._request.SellerId,
-					NextToken = listInventorySupplyResult.NextToken
-				} );
-				this.LoadNextOrdersInfoPage( response.ListOrdersByNextTokenResult, orders );
+				ActionPolicies.CreateApiDelay( 60 ).Wait();
+				requestQuota++;
 			}
+
+			var response = this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
+			{
+				SellerId = this._request.SellerId,
+				NextToken = listInventorySupplyResult.NextToken
+			} );
+
+			requestQuota--;
+			this.LoadNextOrdersInfoPage( response.ListOrdersByNextTokenResult, orders, requestQuota );
 		}
 
 		private void FillOrders( IEnumerable< ComposedOrder > orders )

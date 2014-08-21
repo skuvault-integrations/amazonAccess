@@ -38,9 +38,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 	public class MarketplaceWebServiceOrdersClient : IMarketplaceWebServiceOrders
 	{
 
-		private String awsAccessKeyId = null;
-		private String awsSecretAccessKey = null;
-		private MarketplaceWebServiceOrdersConfig config = null;
+		private readonly String awsAccessKeyId;
+		private readonly String awsSecretAccessKey;
+		private readonly MarketplaceWebServiceOrdersConfig config;
 		private const String REQUEST_THROTTLED_ERROR_CODE = "RequestThrottled";
 		private string _sellerId = string.Empty;
 
@@ -85,7 +85,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		public ListOrdersByNextTokenResponse ListOrdersByNextToken( ListOrdersByNextTokenRequest request )
 		{
 			this._sellerId = request.SellerId;
-			return this.Invoke< ListOrdersByNextTokenResponse >( this.ConvertListOrdersByNextToken( request ), true );
+			return this.Invoke< ListOrdersByNextTokenResponse >( this.ConvertListOrdersByNextToken( request ) );
 		}
 
 
@@ -103,7 +103,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		public ListOrderItemsByNextTokenResponse ListOrderItemsByNextToken( ListOrderItemsByNextTokenRequest request )
 		{
 			this._sellerId = request.SellerId;
-			return this.Invoke< ListOrderItemsByNextTokenResponse >( this.ConvertListOrderItemsByNextToken( request ),false );
+			return this.Invoke< ListOrderItemsByNextTokenResponse >( this.ConvertListOrderItemsByNextToken( request ) );
 		}
 
 
@@ -119,7 +119,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		public GetOrderResponse GetOrder( GetOrderRequest request )
 		{
 			this._sellerId = request.SellerId;
-			return this.Invoke< GetOrderResponse >( this.ConvertGetOrder( request ), true );
+			return this.Invoke< GetOrderResponse >( this.ConvertGetOrder( request ) );
 		}
 
 
@@ -136,7 +136,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		public ListOrderItemsResponse ListOrderItems( ListOrderItemsRequest request )
 		{
 			this._sellerId = request.SellerId;
-			return this.Invoke< ListOrderItemsResponse >( this.ConvertListOrderItems( request ), false );
+			return this.Invoke< ListOrderItemsResponse >( this.ConvertListOrderItems( request ) );
 		}
 
 
@@ -152,7 +152,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		public ListOrdersResponse ListOrders( ListOrdersRequest request )
 		{
 			this._sellerId = request.SellerId;
-			return this.Invoke< ListOrdersResponse >( this.ConvertListOrders( request ), true );
+			return this.Invoke< ListOrdersResponse >( this.ConvertListOrders( request ) );
 		}
 
 
@@ -168,7 +168,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		/// </remarks>
 		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request )
 		{
-			return this.Invoke< GetServiceStatusResponse >( this.ConvertGetServiceStatus( request ),false );
+			return this.Invoke< GetServiceStatusResponse >( this.ConvertGetServiceStatus( request ) );
 		}
 
 		// Private API ------------------------------------------------------------//
@@ -199,11 +199,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
          * Invoke request and return response
          */
 
-		private T Invoke< T >( IDictionary< String, String > parameters, bool ordersRequest )
+		private T Invoke< T >( IDictionary< String, String > parameters )
 		{
 			AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}. Begin invoke...", this._sellerId );
-
-			var requestDelay = ordersRequest ? 60 : 2;
 
 			var response = default( T );
 			ResponseHeaderMetadata rhm = null;
@@ -251,8 +249,6 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nResponse received: {1}", this._sellerId, responseBody );
 					}
 
-					ActionPolicies.CreateApiDelay( requestDelay ).Wait();
-
 					/* Attempt to deserialize response into <Action> Response type */
 					var serializer = new XmlSerializer( typeof( T ) );
 					using( var responseReader = new StringReader( responseBody ) )
@@ -285,7 +281,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 							AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
 						}
 
-						ActionPolicies.CreateApiDelay( requestDelay ).Wait();
+						ActionPolicies.CreateApiDelay( 60 ).Wait();
 					}
 
 					/* Attempt to deserialize response into ErrorResponse type */
@@ -330,13 +326,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						}
 					}
 				}
-
 					/* Catch other exceptions, attempt to convert to formatted exception, else rethrow wrapped exception */
 				catch( Exception e )
 				{
 					AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nUndefined exception message: {1}", this._sellerId, e.Message );
-
-					throw new MarketplaceWebServiceOrdersException( e );
+					throw;
 				}
 			} while( shouldRetry );
 			AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}. End invoke...", this._sellerId );

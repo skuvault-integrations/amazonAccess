@@ -15,10 +15,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			this._request = request;
 		}
 
-		public List< OrderItem > LoadOrderItems()
+		public IEnumerable< OrderItem > LoadOrderItems()
 		{
 			var orderItems = new List< OrderItem >();
 			var response = this._client.ListOrderItems( this._request );
+			ActionPolicies.CreateApiDelay( 2 ).Wait();
 
 			AmazonLogger.Log.Trace( "[amazon]Loading order items for seller {0}", this._request.SellerId );
 
@@ -36,6 +37,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					} );
 
 					this.LoadNextOrderItemsInfoPage( nextResponse.ListOrderItemsByNextTokenResult, orderItems );
+					ActionPolicies.CreateApiDelay( 2 ).Wait();
 				}
 			}
 
@@ -58,6 +60,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				} );
 
 				this.LoadNextOrderItemsInfoPage( response.ListOrderItemsByNextTokenResult, orderItems );
+				ActionPolicies.CreateApiDelay( 2 ).Wait();
 			}
 		}
 	}
