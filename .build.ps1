@@ -19,13 +19,13 @@ $release_dir = "$BuildRoot\release"
 $archive_dir = "$release_dir\archive"
 
 $src_dir = "$BuildRoot\src"
-$solution_file = "$src_dir\$($project_name).sln"
+$solution_file = "$src_dir\$project_name\$project_name.csproj"
 	
 # Use MSBuild.
 use Framework\v4.0.30319 MSBuild
 
 task Clean { 
-	exec { MSBuild "$solution_file" /t:Clean /p:Configuration=Release /p:Platform="Any CPU" /v:quiet } 
+	exec { MSBuild "$solution_file" /t:Clean /p:Configuration=Release /p:Platform="AnyCPU" /v:quiet } 
 	Remove-Item -force -recurse $build_dir -ErrorAction SilentlyContinue | Out-Null
 }
 
@@ -36,7 +36,7 @@ task Init Clean, {
 }
 
 task Build {
-	exec { MSBuild "$solution_file" /t:Build /p:Configuration=Release /p:Platform="Any CPU" /v:minimal /p:OutDir="$build_artifacts_dir\" }
+	exec { MSBuild "$solution_file" /t:Build /p:Configuration=Release /p:Platform="AnyCPU" /v:minimal /p:OutDir="$build_artifacts_dir\" }
 }
 
 task Package  {

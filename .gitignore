@@ -38,7 +38,6 @@ src/AmazonAccessTests/Orders/*.cs
 build/*
 log
 deployment
-tools/Invoke-Build/*
 
 #Exceptions
 !ReleaseNotes/
