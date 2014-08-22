@@ -15,7 +15,7 @@ using MarketplaceWebService.Model;
 
 namespace AmazonAccess
 {
-	public sealed class AmazonService : IAmazonService
+	public sealed class AmazonService: IAmazonService
 	{
 		private const int Updateitemslimit = 3000;
 		private readonly AmazonCredentials _credentials;
@@ -32,28 +32,24 @@ namespace AmazonAccess
 		#region Orders
 		public IEnumerable< ComposedOrder > GetOrders( DateTime dateFrom, DateTime dateTo )
 		{
-			var orders = new List< ComposedOrder >();
-
-			ActionPolicies.AmazonGetPolicy.Do( () =>
+			var client = this._factory.CreateOrdersClient( "SkuVault", "1.0" );
+			var request = new ListOrdersRequest
 			{
-				var client = this._factory.CreateOrdersClient( "SkuVault", "1.0" );
-				var request = new ListOrdersRequest
-				{
-					SellerId = this._credentials.SellerId,
-					LastUpdatedAfter = dateFrom,
-					//LastUpdatedBefore = dateTo,
-					MarketplaceId = new MarketplaceIdList { Id = this._credentials.MarketplaceIds }
-				};
+				SellerId = this._credentials.SellerId,
+				LastUpdatedAfter = dateFrom,
+				//LastUpdatedBefore = dateTo,
+				MarketplaceId = new MarketplaceIdList { Id = this._credentials.MarketplaceIds }
+			};
 
-				AmazonLogger.Log.Trace( "[amazon] Loading orders for seller {0}", this._credentials.SellerId );
+			AmazonLogger.Log.Trace( "[amazon] Loading orders for seller {0}", this._credentials.SellerId );
 
-				var service = new OrdersService( client, request );
-				orders.AddRange( service.LoadOrders() );
+			var service = new OrdersService( client, request );
+			foreach( var order in service.LoadOrders() )
+			{
+				yield return order;
+			}
 
-				AmazonLogger.Log.Trace( "[amazon] Orders for seller {0} loaded", this._credentials.SellerId );
-			} );
-
-			return orders;
+			AmazonLogger.Log.Trace( "[amazon] Orders for seller {0} loaded", this._credentials.SellerId );
 		}
 		#endregion
 
@@ -70,12 +66,12 @@ namespace AmazonAccess
 				var parts = inventoryItems.Split( partsCount );
 
 				foreach( var part in parts )
+				{
 					this.SubmitInventoryUpdateRequest( client, part );
+				}
 			}
 			else
-			{
 				this.SubmitInventoryUpdateRequest( client, inventoryItems );
-			}
 
 			AmazonLogger.Log.Trace( "[amazon] Inventory for seller {0} loaded", this._credentials.SellerId );
 		}
