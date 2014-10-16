@@ -57,7 +57,6 @@ namespace AmazonAccess.Misc
 						MessageId = i + 1,
 						Inventory = new Inventory
 							{
-								FulfillmentLatency = 1,
 								Quantity = this._inventoryItems[ i ].Quantity,
 								Sku = this._inventoryItems[ i ].Sku
 							}
