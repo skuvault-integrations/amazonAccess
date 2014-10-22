@@ -27,7 +27,7 @@ namespace AmazonAccess.Misc
 			var stream = new MemoryStream();
 			var ser = new XmlSerializer( typeof( AmazonEnvelope ) );
 
-			ser.Serialize( stream, _document );
+			ser.Serialize( stream, this._document );
 			stream.Position = 0;
 
 			return stream;
@@ -47,9 +47,9 @@ namespace AmazonAccess.Misc
 			return document;
 		}
 
-		public string GetDocumentString( Stream stream )
+		public string GetDocumentString(  )
 		{
-			var reader = new StreamReader( stream );
+			var reader = new StreamReader( this.GetDocumentStream() );
 			return reader.ReadToEnd();
 		}
 
