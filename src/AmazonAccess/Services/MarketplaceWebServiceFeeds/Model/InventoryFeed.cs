@@ -57,8 +57,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 		[ XmlElement ]
 		public int Quantity { get; set; }
 
-		[ XmlElement ]
-		public int FulfillmentLatency { get; set; }
+		//[ XmlElement ]
+		//public int FulfillmentLatency { get; set; }
 	}
 
 	public enum OperationType

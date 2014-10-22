@@ -47,6 +47,12 @@ namespace AmazonAccess.Misc
 			return document;
 		}
 
+		public string GetDocumentString( Stream stream )
+		{
+			var reader = new StreamReader( stream );
+			return reader.ReadToEnd();
+		}
+
 		private void CreateMessageNodes( AmazonEnvelope document )
 		{
 			for( var i = 0; i < this._inventoryItems.Count(); i++ )

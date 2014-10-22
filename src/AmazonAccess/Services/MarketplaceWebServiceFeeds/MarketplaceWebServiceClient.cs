@@ -650,7 +650,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 
 						shouldRetry = false;
 					}
-					ActionPolicies.CreateApiDelay( 1200 ).Wait();
+					ActionPolicies.CreateApiDelay( 120 ).Wait();
 
 					/* Attempt to deserialize response into <Action> Response type */
 

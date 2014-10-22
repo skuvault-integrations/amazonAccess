@@ -80,6 +80,9 @@ namespace AmazonAccess
 		{
 			var xmlService = new InventoryFeedXmlService( inventoryItems, this._credentials.SellerId );
 			var contentStream = xmlService.GetDocumentStream();
+			var contentString = xmlService.GetDocumentString( contentStream );
+
+			AmazonLogger.Log.Trace( "[amazon] Inventory document for seller {0}\n{1}",  this._credentials.SellerId, contentString );
 
 			var request = new SubmitFeedRequest
 			{
