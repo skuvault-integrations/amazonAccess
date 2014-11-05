@@ -64,7 +64,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Model
 	public enum OperationType
 	{
 		Unknown,
-		Update
+		Update,
+		PartialUpdate
 	}
 
 	public enum MessageType

@@ -59,7 +59,7 @@ namespace AmazonAccess.Misc
 			{
 				var message = new Message
 					{
-						OperationType = OperationType.Update,
+						OperationType = OperationType.PartialUpdate,
 						MessageId = i + 1,
 						Inventory = new Inventory
 							{
