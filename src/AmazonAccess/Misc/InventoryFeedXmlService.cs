@@ -36,18 +36,18 @@ namespace AmazonAccess.Misc
 		private AmazonEnvelope CreateDocument( string sellerId )
 		{
 			var document = new AmazonEnvelope
-				{
-					Header = new Header { MerchantIdentifier = sellerId, DocumentVersion = "1.01" },
-					MessageType = MessageType.Inventory,
-					Message = new Message[ this._inventoryItems.Count() ]
-				};
+			{
+				Header = new Header { MerchantIdentifier = sellerId, DocumentVersion = "1.01" },
+				MessageType = MessageType.Inventory,
+				Message = new Message[ this._inventoryItems.Count() ]
+			};
 
 			this.CreateMessageNodes( document );
 
 			return document;
 		}
 
-		public string GetDocumentString(  )
+		public string GetDocumentString()
 		{
 			var reader = new StreamReader( this.GetDocumentStream() );
 			return reader.ReadToEnd();
@@ -58,15 +58,16 @@ namespace AmazonAccess.Misc
 			for( var i = 0; i < this._inventoryItems.Count(); i++ )
 			{
 				var message = new Message
+				{
+					OperationType = OperationType.Update,
+					MessageId = i + 1,
+					Inventory = new Inventory
 					{
-						OperationType = OperationType.PartialUpdate,
-						MessageId = i + 1,
-						Inventory = new Inventory
-							{
-								Quantity = this._inventoryItems[ i ].Quantity,
-								Sku = this._inventoryItems[ i ].Sku
-							}
-					};
+						Quantity = this._inventoryItems[ i ].Quantity,
+						Sku = this._inventoryItems[ i ].Sku,
+						FulfillmentLatency = this._inventoryItems[ i ].FulfillmentLatency
+					}
+				};
 				document.Message[ i ] = message;
 			}
 		}
