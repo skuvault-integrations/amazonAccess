@@ -36,6 +36,15 @@ namespace AmazonAccessTests.Inventory
 		}
 
 		[ Test ]
+		public void LoadFbaInventory()
+		{
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId );
+
+			var inventory = service.GetFbaInventory();
+			inventory.Count().Should().BeGreaterThan( 0 );
+		}
+
+		[ Test ]
 		public void UpdateInventory()
 		{
 			//var service = this.AmazonFactory.CreateService( "" );
