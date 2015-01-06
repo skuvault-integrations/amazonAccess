@@ -121,7 +121,8 @@ namespace AmazonAccess
 				var request = new ListInventorySupplyRequest
 				{
 					SellerId = this._credentials.SellerId,
-					QueryStartDateTime = DateTime.MinValue
+					QueryStartDateTime = DateTime.MinValue,
+					ResponseGroup = "Detailed"
 				};
 				var service = new InventorySupplyService( client, request );
 
