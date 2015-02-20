@@ -28,7 +28,7 @@ namespace AmazonAccessTests.Orders
 		[ Test ]
 		public void LoadOrders()
 		{
-			var marketplace = new AmazonMarketplace( CountryCodesEnum.Us );
+			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, marketplace );
 
 			var orders = service.GetOrders( DateTime.UtcNow - TimeSpan.FromDays( 2 ), DateTime.UtcNow );

@@ -29,7 +29,7 @@ namespace AmazonAccessTests.Feeds
 		[ Test ]
 		public void SubmitFeed()
 		{
-			var marketplace = new AmazonMarketplace( CountryCodesEnum.Us );
+			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, marketplace );
 
 			var itemsList = new List< AmazonInventoryItem >();

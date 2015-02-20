@@ -30,7 +30,7 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void LoadInventory()
 		{
-			var marketplace = new AmazonMarketplace( CountryCodesEnum.Us );
+			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, marketplace );
 
 			var inventory = service.GetInventory();
@@ -40,7 +40,7 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void LoadFbaInventory()
 		{
-			var marketplace = new AmazonMarketplace( CountryCodesEnum.Us );
+			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, marketplace );
 
 			var inventory = service.GetFbaInventory();
@@ -50,7 +50,7 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void UpdateInventory()
 		{
-			var marketplace = new AmazonMarketplace( CountryCodesEnum.Us );
+			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
 			//var service = this.AmazonFactory.CreateService( "" );
 			var service = this.AmazonFactory.CreateService( "", marketplace );
 			//var inventory = service.GetFbaInventory();
