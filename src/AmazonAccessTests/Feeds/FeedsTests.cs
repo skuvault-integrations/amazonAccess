@@ -21,16 +21,16 @@ namespace AmazonAccessTests.Feeds
 
 			var cc = new CsvContext();
 			this.Config = cc.Read< TestConfig >( credentialsFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ).FirstOrDefault();
-			var marketplace = new AmazonMarketplace( CountryCodesEnum.Us );
 
 			if( this.Config != null )
-				this.AmazonFactory = new AmazonFactory( this.Config.AccessKeyId, this.Config.SecretAccessKeyId , marketplace);
+				this.AmazonFactory = new AmazonFactory( this.Config.AccessKeyId, this.Config.SecretAccessKeyId );
 		}
 
 		[ Test ]
 		public void SubmitFeed()
 		{
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId );
+			var marketplace = new AmazonMarketplace( CountryCodesEnum.Us );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, marketplace );
 
 			var itemsList = new List< AmazonInventoryItem >();
 			for( var i = 0; i < 100; i++ )

@@ -5,31 +5,29 @@ namespace AmazonAccess
 {
 	public interface IAmazonFactory
 	{
-		IAmazonService CreateService( string sellerId );
+		IAmazonService CreateService( string sellerId, AmazonMarketplace amazonMarketplace );
 	}
 
 	public sealed class AmazonFactory: IAmazonFactory
 	{
 		private readonly string _accessKeyId;
 		private readonly string _secretAccessKeyId;
-		private readonly AmazonMarketplace _amazonMarketplace;
 
-		public AmazonFactory( string accessKeyId, string secretAccessKeyId, AmazonMarketplace amazonMarketplace )
+		public AmazonFactory( string accessKeyId, string secretAccessKeyId )
 		{
 			Condition.Requires( accessKeyId, "accessKeyId" ).IsNotNullOrWhiteSpace();
 			Condition.Requires( secretAccessKeyId, "secretAccessKeyId" ).IsNotNullOrWhiteSpace();
-			Condition.Requires( amazonMarketplace, "amazonMarketplace" ).IsNotNull();
 
 			this._accessKeyId = accessKeyId;
 			this._secretAccessKeyId = secretAccessKeyId;
-			this._amazonMarketplace = amazonMarketplace;
 		}
 
-		public IAmazonService CreateService( string sellerId )
+		public IAmazonService CreateService( string sellerId, AmazonMarketplace amazonMarketplace )
 		{
 			Condition.Requires( sellerId, "sellerId" ).IsNotNullOrWhiteSpace();
+			Condition.Requires( amazonMarketplace, "amazonMarketplace" ).IsNotNull();
 
-			return new AmazonService( new AmazonCredentials( this._accessKeyId, this._secretAccessKeyId, sellerId, this._amazonMarketplace ) );
+			return new AmazonService( new AmazonCredentials( this._accessKeyId, this._secretAccessKeyId, sellerId, amazonMarketplace ) );
 		}
 	}
 }

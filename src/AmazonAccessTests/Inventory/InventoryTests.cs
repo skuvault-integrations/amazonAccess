@@ -22,16 +22,16 @@ namespace AmazonAccessTests.Inventory
 
 			var cc = new CsvContext();
 			this.Config = cc.Read< TestConfig >( credentialsFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ).FirstOrDefault();
-			var marketplace = new AmazonMarketplace( CountryCodesEnum.Us );
 
 			if( this.Config != null )
-				this.AmazonFactory = new AmazonFactory( this.Config.AccessKeyId, this.Config.SecretAccessKeyId, marketplace );
+				this.AmazonFactory = new AmazonFactory( this.Config.AccessKeyId, this.Config.SecretAccessKeyId );
 		}
 
 		[ Test ]
 		public void LoadInventory()
 		{
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId );
+			var marketplace = new AmazonMarketplace( CountryCodesEnum.Us );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, marketplace );
 
 			var inventory = service.GetInventory();
 			inventory.Count().Should().BeGreaterThan( 0 );
@@ -40,7 +40,8 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void LoadFbaInventory()
 		{
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId );
+			var marketplace = new AmazonMarketplace( CountryCodesEnum.Us );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, marketplace );
 
 			var inventory = service.GetFbaInventory();
 			inventory.Count().Should().BeGreaterThan( 0 );
@@ -49,8 +50,9 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void UpdateInventory()
 		{
+			var marketplace = new AmazonMarketplace( CountryCodesEnum.Us );
 			//var service = this.AmazonFactory.CreateService( "" );
-			var service = this.AmazonFactory.CreateService( "" );
+			var service = this.AmazonFactory.CreateService( "", marketplace );
 			//var inventory = service.GetFbaInventory();
 
 			//var item = inventory.FirstOrDefault();
