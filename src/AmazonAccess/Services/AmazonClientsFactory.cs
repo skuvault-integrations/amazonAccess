@@ -7,7 +7,7 @@ using MarketplaceWebService;
 
 namespace AmazonAccess.Services
 {
-	public class AmazonClientsFactory : IAmazonClientsFactory
+	public sealed class AmazonClientsFactory: IAmazonClientsFactory
 	{
 		private readonly AmazonCredentials _credentials;
 
@@ -20,23 +20,23 @@ namespace AmazonAccess.Services
 
 		public IFbaInventoryServiceMws CreateFbaInventoryClient()
 		{
-			var config = new FbaInventoryServiceMwsConfig { ServiceURL = "https://mws.amazonservices.com/FulfillmentInventory/2010-10-01/", MaxErrorRetry = 4 };
+			var config = new FbaInventoryServiceMwsConfig { ServiceURL = this._credentials.AmazonMarketplace.FbaInventoryServiceUrl, MaxErrorRetry = 4 };
 			config.SetUserAgentHeader( "C#", "-1", "3" );
 
 			return new FbaInventoryServiceMwsClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
 		}
 
-		public IMarketplaceWebService CreateFeedsReportsClient()
+		public IMarketplaceWebServiceFeeds CreateFeedsReportsClient()
 		{
-			var config = new MarketplaceWebServiceConfig { ServiceURL = "https://mws.amazonservices.com", MaxErrorRetry = 4 };
+			var config = new MarketplaceWebServiceFeedsConfig { ServiceURL = this._credentials.AmazonMarketplace.FeedsServiceUrl, MaxErrorRetry = 4 };
 			config.SetUserAgentHeader( "C#", "-1", "3" );
 
-			return new MarketplaceWebServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
+			return new MarketplaceWebServiceFeedsClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
 		}
 
 		public IMarketplaceWebServiceOrders CreateOrdersClient( string applicationName, string applicationVersion )
 		{
-			var config = new MarketplaceWebServiceOrdersConfig { ServiceURL = "https://mws.amazonservices.com/Orders/2011-01-01/", MaxErrorRetry = 4 };
+			var config = new MarketplaceWebServiceOrdersConfig { ServiceURL = this._credentials.AmazonMarketplace.OrdersServiceUrl, MaxErrorRetry = 4 };
 
 			return new MarketplaceWebServiceOrdersClient( applicationName, applicationVersion, this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
 		}

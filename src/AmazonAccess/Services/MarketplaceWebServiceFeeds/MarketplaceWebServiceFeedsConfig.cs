@@ -16,17 +16,16 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace MarketplaceWebService
+namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 {
 
     /// <summary>
     /// Configuration for accessing Marketplace Web Service  service
     /// </summary>
-    public class MarketplaceWebServiceConfig
+    public class MarketplaceWebServiceFeedsConfig
     {
     
         private String serviceVersion = "2009-01-01";
@@ -69,7 +68,7 @@ namespace MarketplaceWebService
         /// </summary>
         /// <param name="signatureMethod">SignatureMethod property</param>
         /// <returns>this instance</returns>
-        public MarketplaceWebServiceConfig WithSignatureMethod(String signatureMethod)
+        public MarketplaceWebServiceFeedsConfig WithSignatureMethod(String signatureMethod)
         {
             this.signatureMethod = signatureMethod;
             return this;
@@ -98,7 +97,7 @@ namespace MarketplaceWebService
         /// </summary>
         /// <param name="signatureVersion">SignatureVersion property</param>
         /// <returns>this instance</returns>
-        public MarketplaceWebServiceConfig WithSignatureVersion(String signatureVersion)
+        public MarketplaceWebServiceFeedsConfig WithSignatureVersion(String signatureVersion)
         {
             this.signatureVersion = signatureVersion;
             return this;
@@ -126,7 +125,7 @@ namespace MarketplaceWebService
         /// </summary>
         /// <param name="userAgent">UserAgent property</param>
         /// <returns>this instance</returns>
-        public MarketplaceWebServiceConfig WithUserAgent(String userAgent)
+        public MarketplaceWebServiceFeedsConfig WithUserAgent(String userAgent)
         {
             this.userAgent = userAgent;
             return this;
@@ -155,7 +154,7 @@ namespace MarketplaceWebService
         /// </summary>
         /// <param name="serviceURL">ServiceURL property</param>
         /// <returns>this instance</returns>
-        public MarketplaceWebServiceConfig WithServiceURL(String serviceURL)
+        public MarketplaceWebServiceFeedsConfig WithServiceURL(String serviceURL)
         {
             this.serviceURL = serviceURL;
             return this;
@@ -184,7 +183,7 @@ namespace MarketplaceWebService
         /// </summary>
         /// <param name="proxyHost">ProxyHost property</param>
         /// <returns>this instance</returns>
-        public MarketplaceWebServiceConfig WithProxyHost(String proxyHost)
+        public MarketplaceWebServiceFeedsConfig WithProxyHost(String proxyHost)
         {
             this.proxyHost = proxyHost;
             return this;
@@ -213,7 +212,7 @@ namespace MarketplaceWebService
         /// </summary>
         /// <param name="proxyPort">ProxyPort property</param>
         /// <returns>this instance</returns>
-        public MarketplaceWebServiceConfig WithProxyPort(int proxyPort)
+        public MarketplaceWebServiceFeedsConfig WithProxyPort(int proxyPort)
         {
             this.proxyPort = proxyPort;
             return this;
@@ -242,7 +241,7 @@ namespace MarketplaceWebService
         /// </summary>
         /// <param name="maxErrorRetry">MaxErrorRetry property</param>
         /// <returns>this instance</returns>
-        public MarketplaceWebServiceConfig WithMaxErrorRetry(int maxErrorRetry)
+        public MarketplaceWebServiceFeedsConfig WithMaxErrorRetry(int maxErrorRetry)
         {
             this.maxErrorRetry = maxErrorRetry;
             return this;

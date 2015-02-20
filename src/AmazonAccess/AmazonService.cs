@@ -10,7 +10,6 @@ using AmazonAccess.Services.MarketplaceWebServiceFeeds;
 using AmazonAccess.Services.MarketplaceWebServiceOrders;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using CuttingEdge.Conditions;
-using MarketplaceWebService;
 using MarketplaceWebService.Model;
 
 namespace AmazonAccess
@@ -38,7 +37,7 @@ namespace AmazonAccess
 				SellerId = this._credentials.SellerId,
 				LastUpdatedAfter = dateFrom,
 				//LastUpdatedBefore = dateTo,
-				MarketplaceId = new MarketplaceIdList { Id = this._credentials.MarketplaceIds }
+				MarketplaceId = new MarketplaceIdList { Id = this._credentials.AmazonMarketplace.GetMarketplaceIdAsList() }
 			};
 
 			AmazonLogger.Log.Trace( "[amazon] Loading orders for seller {0}", this._credentials.SellerId );
@@ -86,17 +85,17 @@ namespace AmazonAccess
 
 			var request = new SubmitFeedRequest
 			{
-				MarketplaceIdList = new IdList { Id = this._credentials.MarketplaceIds },
+				MarketplaceIdList = new IdList { Id = this._credentials.AmazonMarketplace.GetMarketplaceIdAsList() },
 				Merchant = this._credentials.SellerId,
 				FeedType = FeedType.InventoryQuantityUpdate.Description,
 				FeedContent = contentStream,
-				ContentMD5 = MarketplaceWebServiceClient.CalculateContentMD5( contentStream )
+				ContentMD5 = MarketplaceWebServiceFeedsClient.CalculateContentMD5( contentStream )
 			};
 
 			return request;
 		}
 
-		private void SubmitInventoryUpdateRequest( IMarketplaceWebService client, IEnumerable< AmazonInventoryItem > inventoryItems )
+		private void SubmitInventoryUpdateRequest( IMarketplaceWebServiceFeeds client, IEnumerable< AmazonInventoryItem > inventoryItems )
 		{
 			var request = this.InitInventoryFeedRequest( inventoryItems );
 			var service = new FeedsService();

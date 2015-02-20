@@ -19,6 +19,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
+using AmazonAccess.Services.MarketplaceWebServiceFeeds;
 using MarketplaceWebService.Model;
 
 namespace MarketplaceWebService.Mock
@@ -35,7 +36,7 @@ namespace MarketplaceWebService.Mock
     /// 
     /// Note, current Mock Service implementation does not valiadate requests
     /// </remarks>
-    public  class MarketplaceWebServiceMock : IMarketplaceWebService {
+    public  class MarketplaceWebServiceMock : IMarketplaceWebServiceFeeds {
 
 
         // Public API ------------------------------------------------------------//

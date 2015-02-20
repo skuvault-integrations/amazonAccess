@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AmazonAccess;
+using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
 using FluentAssertions;
 using LINQtoCSV;
@@ -21,9 +22,10 @@ namespace AmazonAccessTests.Inventory
 
 			var cc = new CsvContext();
 			this.Config = cc.Read< TestConfig >( credentialsFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ).FirstOrDefault();
+			var marketplace = new AmazonMarketplace( CountryCodesEnum.Us );
 
 			if( this.Config != null )
-				this.AmazonFactory = new AmazonFactory( this.Config.AccessKeyId, this.Config.SecretAccessKeyId );
+				this.AmazonFactory = new AmazonFactory( this.Config.AccessKeyId, this.Config.SecretAccessKeyId, marketplace );
 		}
 
 		[ Test ]

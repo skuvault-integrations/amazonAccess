@@ -26,10 +26,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using AmazonAccess.Misc;
-using MarketplaceWebService;
 using MarketplaceWebService.Attributes;
 using MarketplaceWebService.Model;
-using Netco.Logging;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 {
@@ -40,12 +38,12 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
     *
     */
 
-	public class MarketplaceWebServiceClient : IMarketplaceWebService
+	public class MarketplaceWebServiceFeedsClient : IMarketplaceWebServiceFeeds
 	{
 
 		private String awsAccessKeyId = null;
 		private String awsSecretAccessKey = null;
-		private MarketplaceWebServiceConfig config = null;
+		private MarketplaceWebServiceFeedsConfig config = null;
 		private string _sellerId = string.Empty;
 
 		/// <summary>
@@ -56,17 +54,17 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// <param name="awsAccessKeyId">AWS Access Key ID</param>
 		/// <param name="awsSecretAccessKey">AWS Secret Access Key</param>
 		/// <param name="config">Custom Configuration (User-Agent is set)</param>
-		public MarketplaceWebServiceClient(
+		public MarketplaceWebServiceFeedsClient(
 			String awsAccessKeyId,
 			String awsSecretAccessKey,
-			MarketplaceWebServiceConfig config )
+			MarketplaceWebServiceFeedsConfig config )
 		{
 			this.awsAccessKeyId = awsAccessKeyId;
 			this.awsSecretAccessKey = awsSecretAccessKey;
 
 			if( !config.IsSetUserAgent() )
 			{
-				throw new MarketplaceWebServiceException( "Missing required value: User-Agent." );
+				throw new MarketplaceWebServiceFeedsException( "Missing required value: User-Agent." );
 			}
 
 			this.config = config;
@@ -80,7 +78,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// <param name="awsSecretAccessKey">AWS Secret Access Key</param>
 		/// <param name="applicationName">Application Name</param>
 		/// <param name="applicationVersion">Application Version</param>
-		public MarketplaceWebServiceClient(
+		public MarketplaceWebServiceFeedsClient(
 			String awsAccessKeyId,
 			String awsSecretAccessKey,
 			String applicationName,
@@ -90,7 +88,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 				awsSecretAccessKey,
 				applicationName,
 				applicationVersion,
-				new MarketplaceWebServiceConfig() )
+				new MarketplaceWebServiceFeedsConfig() )
 		{
 		}
 
@@ -104,12 +102,12 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		/// <param name="applicationName">Application Name</param>
 		/// <param name="applicationVersion">Application Version</param>
 		/// /// <param name="applicationVersion">Custom Configuration (User-Agent not set)</param>
-		public MarketplaceWebServiceClient(
+		public MarketplaceWebServiceFeedsClient(
 			String awsAccessKeyId,
 			String awsSecretAccessKey,
 			String applicationName,
 			String applicationVersion,
-			MarketplaceWebServiceConfig config )
+			MarketplaceWebServiceFeedsConfig config )
 		{
 			this.awsAccessKeyId = awsAccessKeyId;
 			this.awsSecretAccessKey = awsSecretAccessKey;
@@ -123,7 +121,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 		private void buildUserAgentHeader(
 			string applicationName,
 			string applicationVersion,
-			MarketplaceWebServiceConfig config )
+			MarketplaceWebServiceFeedsConfig config )
 		{
 			config.SetUserAgentHeader(
 				applicationName,
@@ -547,7 +545,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			// Verify service URL is set.
 			if( String.IsNullOrEmpty( this.config.ServiceURL ) )
 			{
-				throw new MarketplaceWebServiceException( new ArgumentException(
+				throw new MarketplaceWebServiceFeedsException( new ArgumentException(
 					"Missing serviceUrl configuration value. You may obtain a list of valid MWS URLs by consulting the MWS Developer's Guide, or reviewing the sample code published along side this library." ) );
 			}
 
@@ -662,7 +660,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 					{
 						if( httpErrorResponse == null )
 						{
-							throw new MarketplaceWebServiceException( we );
+							throw new MarketplaceWebServiceFeedsException( we );
 						}
 						statusCode = httpErrorResponse.StatusCode;
 						var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 );
@@ -688,7 +686,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 						}
 
 						/* Throw formatted exception with information available from the error response */
-						throw new MarketplaceWebServiceException(
+						throw new MarketplaceWebServiceFeedsException(
 							error.Message,
 							statusCode,
 							error.Code,
@@ -701,11 +699,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 					catch( Exception e )
 					{
 						AmazonLogger.Log.Debug( @"Amazon request: query string: {0}Clazz: {1}Response: {2}", queryString, clazzStream, responseBody );
-						if( e is MarketplaceWebServiceException )
+						if( e is MarketplaceWebServiceFeedsException )
 						{
 							throw;
 						}
-						MarketplaceWebServiceException se = this.ReportAnyErrors( responseBody, statusCode, e, rhm );
+						MarketplaceWebServiceFeedsException se = this.ReportAnyErrors( responseBody, statusCode, e, rhm );
 						AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}\nDeserialization exception message: {1}", this._sellerId, e.Message );
 						throw se;
 					}
@@ -716,7 +714,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 				catch( Exception e )
 				{
 					AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}\nUndefined exception message: {1}", this._sellerId, e.Message );
-					throw new MarketplaceWebServiceException( e );
+					throw new MarketplaceWebServiceFeedsException( e );
 				}
 			} while( shouldRetry );
 			AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}. End invoke...", this._sellerId );
@@ -914,7 +912,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 
 			if( receivedContentMD5 != expectedContentMD5 )
 			{
-				throw new MarketplaceWebServiceException(
+				throw new MarketplaceWebServiceFeedsException(
 					"Received Content MD5 value " + receivedContentMD5 +
 					" doesn't match computed value " + expectedContentMD5 + "." );
 			}
@@ -969,10 +967,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
          * Look for additional error strings in the response and return formatted exception
          */
 
-		private MarketplaceWebServiceException ReportAnyErrors( String responseBody, HttpStatusCode status, Exception e, ResponseHeaderMetadata rhm )
+		private MarketplaceWebServiceFeedsException ReportAnyErrors( String responseBody, HttpStatusCode status, Exception e, ResponseHeaderMetadata rhm )
 		{
 
-			MarketplaceWebServiceException ex = null;
+			MarketplaceWebServiceFeedsException ex = null;
 
 			if( responseBody != null && responseBody.StartsWith( "<" ) )
 			{
@@ -987,7 +985,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 					String code = errorMatcherOne.Groups[ 2 ].Value;
 					String message = errorMatcherOne.Groups[ 3 ].Value;
 
-					ex = new MarketplaceWebServiceException( message, status, code, "Unknown", requestId, responseBody, rhm );
+					ex = new MarketplaceWebServiceFeedsException( message, status, code, "Unknown", requestId, responseBody, rhm );
 
 				}
 				else if( errorMatcherTwo.Success )
@@ -996,16 +994,16 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 					String message = errorMatcherTwo.Groups[ 2 ].Value;
 					String requestId = errorMatcherTwo.Groups[ 4 ].Value;
 
-					ex = new MarketplaceWebServiceException( message, status, code, "Unknown", requestId, responseBody, rhm );
+					ex = new MarketplaceWebServiceFeedsException( message, status, code, "Unknown", requestId, responseBody, rhm );
 				}
 				else
 				{
-					ex = new MarketplaceWebServiceException( "Internal Error", status, rhm );
+					ex = new MarketplaceWebServiceFeedsException( "Internal Error", status, rhm );
 				}
 			}
 			else
 			{
-				ex = new MarketplaceWebServiceException( "Internal Error", status, rhm );
+				ex = new MarketplaceWebServiceFeedsException( "Internal Error", status, rhm );
 			}
 			return ex;
 		}

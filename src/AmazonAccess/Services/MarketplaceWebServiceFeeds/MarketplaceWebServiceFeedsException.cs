@@ -16,19 +16,16 @@
  */
 
 using System;
-using System.Xml.Serialization;
-using System.Collections.Generic;
 using System.Net;
-using MarketplaceWebService;
 using MarketplaceWebService.Model;
 
-namespace MarketplaceWebService
+namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 {
     /// <summary>
     /// Marketplace Web Service  Exception provides details of errors 
     /// returned by Marketplace Web Service  service
     /// </summary>
-    public class MarketplaceWebServiceException : Exception 
+    public class MarketplaceWebServiceFeedsException : Exception 
     {
     
         private String message = null;
@@ -44,7 +41,7 @@ namespace MarketplaceWebService
         /// Constructs MarketplaceWebServiceException with message
         /// </summary>
         /// <param name="message">Overview of error</param>
-        public MarketplaceWebServiceException(String message) {
+        public MarketplaceWebServiceFeedsException(String message) {
             this.message = message;
         }
     
@@ -54,7 +51,7 @@ namespace MarketplaceWebService
         /// <param name="message">Overview of error</param>
         /// <param name="statusCode">HTTP status code for error response</param>
         /// <param name="rhm">Response Header Metadata</param>
-        public MarketplaceWebServiceException(String message, HttpStatusCode statusCode, ResponseHeaderMetadata rhm) : this (message)
+        public MarketplaceWebServiceFeedsException(String message, HttpStatusCode statusCode, ResponseHeaderMetadata rhm) : this (message)
         {
             this.statusCode = statusCode;
             this.responseHeaderMetadata = rhm;
@@ -65,7 +62,7 @@ namespace MarketplaceWebService
         /// Constructs MarketplaceWebServiceException with wrapped exception
         /// </summary>
         /// <param name="t">Wrapped exception</param>
-        public MarketplaceWebServiceException(Exception t) : this (t.Message, t) {
+        public MarketplaceWebServiceFeedsException(Exception t) : this (t.Message, t) {
 
         }
     
@@ -74,11 +71,11 @@ namespace MarketplaceWebService
         /// </summary>
         /// <param name="message">Overview of error</param>
         /// <param name="t">Wrapped exception</param>
-        public MarketplaceWebServiceException(String message, Exception t) : base (message, t) {
+        public MarketplaceWebServiceFeedsException(String message, Exception t) : base (message, t) {
             this.message = message;
-            if (t is MarketplaceWebServiceException)
+            if (t is MarketplaceWebServiceFeedsException)
             {
-                MarketplaceWebServiceException ex = (MarketplaceWebServiceException)t;
+                MarketplaceWebServiceFeedsException ex = (MarketplaceWebServiceFeedsException)t;
                 this.statusCode = ex.StatusCode;
                 this.errorCode = ex.ErrorCode;
                 this.errorType = ex.ErrorType;
@@ -99,7 +96,7 @@ namespace MarketplaceWebService
         /// <param name="requestId">Request ID returned by the service</param>
         /// <param name="xml">Compete xml found in response</param>
         /// <param name="rhm">Response Header Metadata</param>
-        public MarketplaceWebServiceException(String message, HttpStatusCode statusCode, String errorCode, String errorType, String requestId, String xml, ResponseHeaderMetadata rhm) : this (message, statusCode, rhm)
+        public MarketplaceWebServiceFeedsException(String message, HttpStatusCode statusCode, String errorCode, String errorType, String requestId, String xml, ResponseHeaderMetadata rhm) : this (message, statusCode, rhm)
         {
             this.errorCode = errorCode;
             this.errorType = errorType;

@@ -1,27 +1,25 @@
-﻿using System.Collections.Generic;
-using CuttingEdge.Conditions;
+﻿using CuttingEdge.Conditions;
 
 namespace AmazonAccess.Models
 {
-	public class AmazonCredentials
+	public sealed class AmazonCredentials
 	{
 		public string AccessKeyId { get; private set; }
 		public string SecretAccessKeyId { get; private set; }
 		public string SellerId { get; private set; }
-		public List< string > MarketplaceIds { get; private set; }
+		public AmazonMarketplace AmazonMarketplace { get; private set; }
 
-		public AmazonCredentials( string accessKeyId, string secretAccessKeyId, string sellerId )
+		public AmazonCredentials( string accessKeyId, string secretAccessKeyId, string sellerId, AmazonMarketplace amazonMarketplace )
 		{
 			Condition.Requires( accessKeyId, "accessKeyId" ).IsNotNullOrWhiteSpace();
 			Condition.Requires( secretAccessKeyId, "secretAccessKeyId" ).IsNotNullOrWhiteSpace();
 			Condition.Requires( sellerId, "sellerId" ).IsNotNullOrWhiteSpace();
+			Condition.Requires( amazonMarketplace, "amazonMarketplace" ).IsNotNull();
 
 			this.AccessKeyId = accessKeyId;
 			this.SecretAccessKeyId = secretAccessKeyId;
 			this.SellerId = sellerId;
-
-			//countries ids. Only USA support for now
-			this.MarketplaceIds = new List< string > { "ATVPDKIKX0DER" };
+			this.AmazonMarketplace = amazonMarketplace;
 		}
 	}
 }

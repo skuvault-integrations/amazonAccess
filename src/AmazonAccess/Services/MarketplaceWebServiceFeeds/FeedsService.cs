@@ -10,7 +10,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 {
 	public class FeedsService
 	{
-		public void SubmitFeed( IMarketplaceWebService client, SubmitFeedRequest request )
+		public void SubmitFeed( IMarketplaceWebServiceFeeds client, SubmitFeedRequest request )
 		{
 			var response = client.SubmitFeed( request );
 			
@@ -36,7 +36,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 
 		//}
 
-		private bool IsReportReady( IMarketplaceWebService client, string feedSubmissionId, string merchant )
+		private bool IsReportReady( IMarketplaceWebServiceFeeds client, string feedSubmissionId, string merchant )
 		{
 			var ready = false;
 			var response = client.GetFeedSubmissionList( new GetFeedSubmissionListRequest

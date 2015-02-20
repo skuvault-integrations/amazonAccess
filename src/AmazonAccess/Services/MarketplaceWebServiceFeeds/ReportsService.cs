@@ -9,7 +9,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 {
 	public class ReportsService
 	{
-		public void GetInventoryReport( IMarketplaceWebService client )
+		public void GetInventoryReport( IMarketplaceWebServiceFeeds client )
 		{
 
 			var reportId = this.GetReportId( client, new GetReportListRequest
@@ -26,7 +26,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			}
 		}
 
-		private string GetReportId( IMarketplaceWebService client, GetReportListRequest request )
+		private string GetReportId( IMarketplaceWebServiceFeeds client, GetReportListRequest request )
 		{
 			var reportRequestId = this.GetReportRequestId( client, new RequestReportRequest
 				{
@@ -62,7 +62,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			return reportId;
 		}
 
-		private string GetReportIdInNextPages( GetReportListByNextTokenResult reportListByNextTokenResult, IMarketplaceWebService client, string reportRequestId, string reportId )
+		private string GetReportIdInNextPages( GetReportListByNextTokenResult reportListByNextTokenResult, IMarketplaceWebServiceFeeds client, string reportRequestId, string reportId )
 		{
 			if( !string.IsNullOrEmpty( reportId ) )
 				return reportId;
@@ -86,7 +86,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			return reportId;
 		}
 
-		private string GetGeneratedReportId( IMarketplaceWebService client, string reportRequestId )
+		private string GetGeneratedReportId( IMarketplaceWebServiceFeeds client, string reportRequestId )
 		{
 			var reportId = string.Empty;
 			var response = client.GetReportRequestList( new GetReportRequestListRequest
@@ -112,7 +112,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			return reportId;
 		}
 
-		private string GetGeneratedReportIdFromNextPages( GetReportRequestListByNextTokenResult reportRequestListByNextTokenResult, IMarketplaceWebService client, string reportRequestId, string reportId )
+		private string GetGeneratedReportIdFromNextPages( GetReportRequestListByNextTokenResult reportRequestListByNextTokenResult, IMarketplaceWebServiceFeeds client, string reportRequestId, string reportId )
 		{
 			if( !string.IsNullOrEmpty( reportId ) )
 				return reportId;
@@ -136,7 +136,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			return reportId;
 		}
 
-		private string GetReportRequestId( IMarketplaceWebService client, RequestReportRequest request )
+		private string GetReportRequestId( IMarketplaceWebServiceFeeds client, RequestReportRequest request )
 		{
 			var reportId = string.Empty;
 

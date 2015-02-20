@@ -60,6 +60,7 @@
     <Compile Include="Misc\LinqExtensions.cs" />
     <Compile Include="Misc\InventoryFeedXmlService.cs" />
     <Compile Include="Models\AmazonCredentials.cs" />
+    <Compile Include="Models\AmazonMarketplace.cs" />
     <Compile Include="Models\FeedType.cs" />
     <Compile Include="Models\ReportType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -150,10 +151,10 @@
     <Compile Include="Services\MarketplaceWebServiceFeeds\Attributes\RequestType.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeeds\Attributes\ResponseType.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeeds\Attributes\StreamType.cs" />
-    <Compile Include="Services\MarketplaceWebServiceFeeds\MarketplaceWebService.cs" />
-    <Compile Include="Services\MarketplaceWebServiceFeeds\MarketplaceWebServiceClient.cs" />
-    <Compile Include="Services\MarketplaceWebServiceFeeds\MarketplaceWebServiceConfig.cs" />
-    <Compile Include="Services\MarketplaceWebServiceFeeds\MarketplaceWebServiceException.cs" />
+    <Compile Include="Services\MarketplaceWebServiceFeeds\MarketplaceWebServiceFeeds.cs" />
+    <Compile Include="Services\MarketplaceWebServiceFeeds\MarketplaceWebServiceFeedsClient.cs" />
+    <Compile Include="Services\MarketplaceWebServiceFeeds\MarketplaceWebServiceFeedsConfig.cs" />
+    <Compile Include="Services\MarketplaceWebServiceFeeds\MarketplaceWebServiceFeedsException.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeeds\Mock\MarketplaceWebServiceMock.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeeds\Model\CancelFeedSubmissionsRequest.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeeds\Model\CancelFeedSubmissionsResponse.cs" />

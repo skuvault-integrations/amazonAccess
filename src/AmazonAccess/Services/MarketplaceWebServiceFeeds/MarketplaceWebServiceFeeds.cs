@@ -15,12 +15,9 @@
  * 
  */
 
-using System;
-using System.Xml.Serialization;
-using System.Collections.Generic;
 using MarketplaceWebService.Model;
 
-namespace MarketplaceWebService
+namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 {
 
 
@@ -28,7 +25,7 @@ namespace MarketplaceWebService
     /// The Amazon Marketplace Web Service contain APIs for inventory and order management.
     /// 
     /// </summary>
-    public interface  IMarketplaceWebService {
+    public interface  IMarketplaceWebServiceFeeds {
     
                 
         /// <summary>
