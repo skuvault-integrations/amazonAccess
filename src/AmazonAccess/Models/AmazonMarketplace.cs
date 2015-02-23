@@ -11,33 +11,48 @@ namespace AmazonAccess.Models
 		public string OrdersServiceUrl{ get; private set; }
 		private readonly AmazonCountryCodesEnum _countryCode;
 
-		public readonly Dictionary< AmazonCountryCodesEnum, AmazonMarketplace > Marketplaces = new Dictionary< AmazonCountryCodesEnum, AmazonMarketplace >
-		{
-			{ AmazonCountryCodesEnum.Us, new AmazonMarketplace( "ATVPDKIKX0DER", "https://mws.amazonservices.com/Orders/2011-01-01/", "https://mws.amazonservices.com/FulfillmentInventory/2010-10-01/", "https://mws.amazonservices.com" ) },
-			{ AmazonCountryCodesEnum.Uk, new AmazonMarketplace( "A1F83G8C2ARO7P", "https://mws-eu.amazonservices.com/Orders/2011-01-01/", "https://mws-eu.amazonservices.com/FulfillmentInventory/2010-10-01/", "https://mws-eu.amazonservices.com" ) },
-			{ AmazonCountryCodesEnum.Fr, new AmazonMarketplace( "A13V1IB3VIYZZH", "https://mws-eu.amazonservices.com/Orders/2011-01-01/", "https://mws-eu.amazonservices.com/FulfillmentInventory/2010-10-01/", "https://mws-eu.amazonservices.com" ) },
-			{ AmazonCountryCodesEnum.Ca, new AmazonMarketplace( "A2EUQ1WTGCTBG2", "https://mws.amazonservices.ca/Orders/2011-01-01/", "https://mws.amazonservices.ca/FulfillmentInventory/2010-10-01/", "https://mws.amazonservices.ca" ) }
-
-		};
-
 		public AmazonMarketplace( AmazonCountryCodesEnum countryCode )
 		{
 			Condition.Requires( countryCode, "countryCode" ).IsGreaterThan( AmazonCountryCodesEnum.Unknown );
 
 			this._countryCode = countryCode;
+			this.InitMarketplace();
 		}
 
-		private AmazonMarketplace( string marketplaceId, string ordersServiceUrl, string fbaInventoryServiceUrl, string feedsServiceUrl )
+		private void InitMarketplace()
 		{
-			this.MarketplaceId = marketplaceId;
-			this.OrdersServiceUrl = ordersServiceUrl;
-			this.FbaInventoryServiceUrl = fbaInventoryServiceUrl;
-			this.FeedsServiceUrl = feedsServiceUrl;
+			switch( this._countryCode )
+			{
+				case AmazonCountryCodesEnum.Us:
+					this.MarketplaceId = "ATVPDKIKX0DER";
+					this.OrdersServiceUrl = "https://mws.amazonservices.com/Orders/2011-01-01/";
+					this.FbaInventoryServiceUrl = "https://mws.amazonservices.com/FulfillmentInventory/2010-10-01/";
+					this.FeedsServiceUrl = "https://mws.amazonservices.com";
+					break;
+				case AmazonCountryCodesEnum.Uk:
+					this.MarketplaceId = "A1F83G8C2ARO7P";
+					this.OrdersServiceUrl = "https://mws-eu.amazonservices.com/Orders/2011-01-01/";
+					this.FbaInventoryServiceUrl = "https://mws-eu.amazonservices.com/FulfillmentInventory/2010-10-01/";
+					this.FeedsServiceUrl = "https://mws-eu.amazonservices.com";
+					break;
+				case AmazonCountryCodesEnum.Fr:
+					this.MarketplaceId = "A13V1IB3VIYZZH";
+					this.OrdersServiceUrl = "https://mws-eu.amazonservices.com/Orders/2011-01-01/";
+					this.FbaInventoryServiceUrl = "https://mws-eu.amazonservices.com/FulfillmentInventory/2010-10-01/";
+					this.FeedsServiceUrl = "https://mws-eu.amazonservices.com";
+					break;
+				case AmazonCountryCodesEnum.Ca:
+					this.MarketplaceId = "A2EUQ1WTGCTBG2";
+					this.OrdersServiceUrl = "https://mws.amazonservices.ca/Orders/2011-01-01/";
+					this.FbaInventoryServiceUrl = "https://mws.amazonservices.ca/FulfillmentInventory/2010-10-01/";
+					this.FeedsServiceUrl = "https://mws.amazonservices.ca";
+					break;
+			}
 		}
 
 		public List< string > GetMarketplaceIdAsList()
 		{
-			return new List< string > { this.Marketplaces[ this._countryCode ].MarketplaceId };
+			return new List< string > { this.MarketplaceId };
 		}
 	}
 
