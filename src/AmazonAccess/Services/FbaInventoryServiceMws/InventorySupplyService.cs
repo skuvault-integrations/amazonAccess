@@ -79,10 +79,11 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 				if( listInventorySupplyResult.IsSetNextToken() )
 				{
 					var nextResponse = this._client.ListInventorySupplyByNextToken( new ListInventorySupplyByNextTokenRequest
-						{
-							SellerId = this._request.SellerId,
-							NextToken = listInventorySupplyResult.NextToken
-						} );
+					{
+						SellerId = this._request.SellerId,
+						NextToken = listInventorySupplyResult.NextToken,
+						MWSAuthToken = this._request.MWSAuthToken
+					} );
 
 					this.LoadNextInventoryInfoPage( nextResponse.ListInventorySupplyByNextTokenResult, inventory );
 				}
@@ -98,10 +99,11 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 			if( listInventorySupplyResult.IsSetNextToken() )
 			{
 				var response = this._client.ListInventorySupplyByNextToken( new ListInventorySupplyByNextTokenRequest
-					{
-						SellerId = this._request.SellerId,
-						NextToken = listInventorySupplyResult.NextToken
-					} );
+				{
+					SellerId = this._request.SellerId,
+					NextToken = listInventorySupplyResult.NextToken,
+					MWSAuthToken = this._request.MWSAuthToken
+				} );
 
 				this.LoadNextInventoryInfoPage( response.ListInventorySupplyByNextTokenResult, inventory );
 			}

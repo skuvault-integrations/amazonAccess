@@ -36,11 +36,17 @@ namespace MarketplaceWebService.Model
 
         private DateTime? endDateField;
 
+        private Boolean scheduledField;
+
         private DateTime? submittedDateField;
 
         private String reportProcessingStatusField;
 
         private String generatedReportIdField;
+
+        private DateTime? startedProcessingDateField;
+
+        private DateTime? completedDateField;
 
 
         /// <summary>
@@ -188,6 +194,41 @@ namespace MarketplaceWebService.Model
 
 
         /// <summary>
+        /// Gets and sets the Scheduled property.
+        /// </summary>
+        [XmlElementAttribute(ElementName = "Scheduled")]
+        public Boolean Scheduled
+        {
+            get { return this.scheduledField; }
+            set { this.scheduledField = value; }
+        }
+
+
+
+        /// <summary>
+        /// Sets the Scheduled property
+        /// </summary>
+        /// <param name="scheduled">Scheduled property</param>
+        /// <returns>this instance</returns>
+        public ReportRequestInfo WithScheduled(Boolean scheduled)
+        {
+            this.scheduledField = scheduled;
+            return this;
+        }
+
+
+
+        /// <summary>
+        /// Checks if Scheduled property is set
+        /// </summary>
+        /// <returns>true if Scheduled property is set</returns>
+        public Boolean IsSetScheduled()
+        {
+            return this.scheduledField != null;
+        }
+
+
+        /// <summary>
         /// Gets and sets the SubmittedDate property.
         /// </summary>
         [XmlElementAttribute(ElementName = "SubmittedDate")]
@@ -296,6 +337,76 @@ namespace MarketplaceWebService.Model
 
 
         /// <summary>
+        /// Gets and sets the StartedProcessingDate property.
+        /// </summary>
+        [XmlElementAttribute(ElementName = "StartedProcessingDate")]
+        public DateTime StartedProcessingDate
+        {
+            get { return this.startedProcessingDateField.GetValueOrDefault() ; }
+            set { this.startedProcessingDateField = value; }
+        }
+
+
+
+        /// <summary>
+        /// Sets the StartedProcessingDate property
+        /// </summary>
+        /// <param name="startedProcessingDate">StartedProcessingDate property</param>
+        /// <returns>this instance</returns>
+        public ReportRequestInfo WithStartedProcessingDate(DateTime startedProcessingDate)
+        {
+            this.startedProcessingDateField = startedProcessingDate;
+            return this;
+        }
+
+
+
+        /// <summary>
+        /// Checks if StartedProcessingDate property is set
+        /// </summary>
+        /// <returns>true if StartedProcessingDate property is set</returns>
+        public Boolean IsSetStartedProcessingDate()
+        {
+            return  this.startedProcessingDateField.HasValue;
+        }
+
+
+        /// <summary>
+        /// Gets and sets the CompletedDate property.
+        /// </summary>
+        [XmlElementAttribute(ElementName = "CompletedDate")]
+        public DateTime CompletedDate
+        {
+            get { return this.completedDateField.GetValueOrDefault() ; }
+            set { this.completedDateField = value; }
+        }
+
+
+
+        /// <summary>
+        /// Sets the CompletedDate property
+        /// </summary>
+        /// <param name="completedDate">CompletedDate property</param>
+        /// <returns>this instance</returns>
+        public ReportRequestInfo WithCompletedDate(DateTime completedDate)
+        {
+            this.completedDateField = completedDate;
+            return this;
+        }
+
+
+
+        /// <summary>
+        /// Checks if CompletedDate property is set
+        /// </summary>
+        /// <returns>true if CompletedDate property is set</returns>
+        public Boolean IsSetCompletedDate()
+        {
+            return  this.completedDateField.HasValue;
+        }
+
+
+        /// <summary>
         /// XML fragment representation of this object
         /// </summary>
         /// <returns>XML fragment for this object.</returns>
@@ -327,6 +438,11 @@ namespace MarketplaceWebService.Model
                 xml.Append(this.EndDate);
                 xml.Append("</EndDate>");
             }
+            if (IsSetScheduled()) {
+                xml.Append("<Scheduled>");
+                xml.Append(this.Scheduled);
+                xml.Append("</Scheduled>");
+            }
             if (IsSetSubmittedDate()) {
                 xml.Append("<SubmittedDate>");
                 xml.Append(this.SubmittedDate);
@@ -336,6 +452,21 @@ namespace MarketplaceWebService.Model
                 xml.Append("<ReportProcessingStatus>");
                 xml.Append(EscapeXML(this.ReportProcessingStatus));
                 xml.Append("</ReportProcessingStatus>");
+            }
+            if (IsSetGeneratedReportId()) {
+                xml.Append("<GeneratedReportId>");
+                xml.Append(EscapeXML(this.GeneratedReportId));
+                xml.Append("</GeneratedReportId>");
+            }
+            if (IsSetStartedProcessingDate()) {
+                xml.Append("<StartedProcessingDate>");
+                xml.Append(this.StartedProcessingDate);
+                xml.Append("</StartedProcessingDate>");
+            }
+            if (IsSetCompletedDate()) {
+                xml.Append("<CompletedDate>");
+                xml.Append(this.CompletedDate);
+                xml.Append("</CompletedDate>");
             }
             return xml.ToString();
         }

@@ -1,176 +1,141 @@
-/******************************************************************************* 
- *  Copyright 2008-2012 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *  Licensed under the Apache License, Version 2.0 (the "License"); 
- *  
- *  You may not use this file except in compliance with the License. 
- *  You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
- *  This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
- *  CONDITIONS OF ANY KIND, either express or implied. See the License for the 
- *  specific language governing permissions and limitations under the License.
- * ***************************************************************************** 
- * 
- *  Marketplace Web Service Orders CSharp Library
- *  API Version: 2011-01-01
- * 
+/*******************************************************************************
+ * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ *
+ * You may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
+ * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+ * specific language governing permissions and limitations under the License.
+ *******************************************************************************
+ * List Orders Response
+ * API Version: 2013-09-01
+ * Library Version: 2015-02-13
+ * Generated: Tue Feb 10 22:00:52 UTC 2015
  */
 
-using System;
-using System.Xml.Serialization;
-using System.Text;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
+using System;
+using System.Xml;
+using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
+using AmazonAccess.Services.Utils;
+
+namespace MarketplaceWebServiceOrders.Model
 {
-    [XmlType(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01")]
-    [XmlRoot(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01", IsNullable = false)]
-    public class ListOrdersResponse
+    public class ListOrdersResponse : AbstractMwsObject, IMWSResponse
     {
-    
-        private  ListOrdersResult listOrdersResultField;
-        private  ResponseMetadata responseMetadataField;
+
+        private ListOrdersResult _listOrdersResult;
+        private ResponseMetadata _responseMetadata;
+        private ResponseHeaderMetadata _responseHeaderMetadata;
 
         /// <summary>
         /// Gets and sets the ListOrdersResult property.
         /// </summary>
-        [XmlElement(ElementName = "ListOrdersResult")]
         public ListOrdersResult ListOrdersResult
         {
-            get { return this.listOrdersResultField ; }
-            set { this.listOrdersResultField = value; }
+            get { return this._listOrdersResult; }
+            set { this._listOrdersResult = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the ListOrdersResult property
+        /// Sets the ListOrdersResult property.
         /// </summary>
-        /// <param name="listOrdersResult">ListOrdersResult property</param>
-        /// <returns>this instance</returns>
+        /// <param name="listOrdersResult">ListOrdersResult property.</param>
+        /// <returns>this instance.</returns>
         public ListOrdersResponse WithListOrdersResult(ListOrdersResult listOrdersResult)
         {
-            this.listOrdersResultField = listOrdersResult;
+            this._listOrdersResult = listOrdersResult;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if ListOrdersResult property is set
+        /// Checks if ListOrdersResult property is set.
         /// </summary>
-        /// <returns>true if ListOrdersResult property is set</returns>
-        public Boolean IsSetListOrdersResult()
+        /// <returns>true if ListOrdersResult property is set.</returns>
+        public bool IsSetListOrdersResult()
         {
-            return this.listOrdersResultField != null;
+            return this._listOrdersResult != null;
         }
-
-
-
 
         /// <summary>
         /// Gets and sets the ResponseMetadata property.
         /// </summary>
-        [XmlElement(ElementName = "ResponseMetadata")]
         public ResponseMetadata ResponseMetadata
         {
-            get { return this.responseMetadataField ; }
-            set { this.responseMetadataField = value; }
+            get { return this._responseMetadata; }
+            set { this._responseMetadata = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the ResponseMetadata property
+        /// Sets the ResponseMetadata property.
         /// </summary>
-        /// <param name="responseMetadata">ResponseMetadata property</param>
-        /// <returns>this instance</returns>
+        /// <param name="responseMetadata">ResponseMetadata property.</param>
+        /// <returns>this instance.</returns>
         public ListOrdersResponse WithResponseMetadata(ResponseMetadata responseMetadata)
         {
-            this.responseMetadataField = responseMetadata;
+            this._responseMetadata = responseMetadata;
             return this;
         }
 
-
+        /// <summary>
+        /// Checks if ResponseMetadata property is set.
+        /// </summary>
+        /// <returns>true if ResponseMetadata property is set.</returns>
+        public bool IsSetResponseMetadata()
+        {
+            return this._responseMetadata != null;
+        }
 
         /// <summary>
-        /// Checks if ResponseMetadata property is set
+        /// Gets and sets the ResponseHeaderMetadata property.
         /// </summary>
-        /// <returns>true if ResponseMetadata property is set</returns>
-        public Boolean IsSetResponseMetadata()
+        public ResponseHeaderMetadata ResponseHeaderMetadata
         {
-            return this.responseMetadataField != null;
+            get { return this._responseHeaderMetadata; }
+            set { this._responseHeaderMetadata = value; }
         }
-
-
-
-
-
 
         /// <summary>
-        /// XML Representation for this object
+        /// Sets the ResponseHeaderMetadata property.
         /// </summary>
-        /// <returns>XML String</returns>
-
-        public String ToXML() {
-            StringBuilder xml = new StringBuilder();
-            xml.Append("<ListOrdersResponse xmlns=\"https://mws.amazonservices.com/Orders/2011-01-01\">");
-            if (this.IsSetListOrdersResult()) {
-                ListOrdersResult  listOrdersResult = this.ListOrdersResult;
-                xml.Append("<ListOrdersResult>");
-                xml.Append(listOrdersResult.ToXMLFragment());
-                xml.Append("</ListOrdersResult>");
-            } 
-            if (this.IsSetResponseMetadata()) {
-                ResponseMetadata  responseMetadata = this.ResponseMetadata;
-                xml.Append("<ResponseMetadata>");
-                xml.Append(responseMetadata.ToXMLFragment());
-                xml.Append("</ResponseMetadata>");
-            } 
-            xml.Append("</ListOrdersResponse>");
-            return xml.ToString();
-        }
-
-        /**
-         * 
-         * Escape XML special characters
-         */
-        private String EscapeXML(String str) {
-            if (str == null)
-                return "null";
-            StringBuilder sb = new StringBuilder();
-            foreach (Char c in str)
-            {
-                switch (c) {
-                case '&':
-                    sb.Append("&amp;");
-                    break;
-                case '<':
-                    sb.Append("&lt;");
-                    break;
-                case '>':
-                    sb.Append("&gt;");
-                    break;
-                case '\'':
-                    sb.Append("&#039;");
-                    break;
-                case '"':
-                    sb.Append("&quot;");
-                    break;
-                default:
-                    sb.Append(c);
-                    break;
-                }
-            }
-            return sb.ToString();
-        }
-
-        private ResponseHeaderMetadata responseHeaderMetadata;
-                public ResponseHeaderMetadata ResponseHeaderMetadata
+        /// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
+        /// <returns>this instance.</returns>
+        public ListOrdersResponse WithResponseHeaderMetadata(ResponseHeaderMetadata responseHeaderMetadata)
         {
-            get { return this.responseHeaderMetadata; }
-            set { this.responseHeaderMetadata = value; }
+            this._responseHeaderMetadata = responseHeaderMetadata;
+            return this;
+        }
+
+        /// <summary>
+        /// Checks if ResponseHeaderMetadata property is set.
+        /// </summary>
+        /// <returns>true if ResponseHeaderMetadata property is set.</returns>
+        public bool IsSetResponseHeaderMetadata()
+        {
+            return this._responseHeaderMetadata != null;
         }
 
 
+        public override void ReadFragmentFrom(IMwsReader reader)
+        {
+            _listOrdersResult = reader.Read<ListOrdersResult>("ListOrdersResult");
+            _responseMetadata = reader.Read<ResponseMetadata>("ResponseMetadata");
+        }
 
+        public override void WriteFragmentTo(IMwsWriter writer)
+        {
+            writer.Write("ListOrdersResult", _listOrdersResult);
+            writer.Write("ResponseMetadata", _responseMetadata);
+        }
+
+        public override void WriteTo(IMwsWriter writer)
+        {
+            writer.Write("https://mws.amazonservices.com/Orders/2013-09-01", "ListOrdersResponse", this);
+        }
+
+        public ListOrdersResponse() : base()
+        {
+        }
     }
-
 }

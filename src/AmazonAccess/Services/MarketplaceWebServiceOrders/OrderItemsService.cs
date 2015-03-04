@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AmazonAccess.Misc;
-using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
+using MarketplaceWebServiceOrders.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 {
@@ -27,13 +27,14 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			{
 				var listInventorySupplyResult = response.ListOrderItemsResult;
 				if( listInventorySupplyResult.IsSetOrderItems() )
-					orderItems.AddRange( listInventorySupplyResult.OrderItems.OrderItem );
+					orderItems.AddRange( listInventorySupplyResult.OrderItems );
 				if( listInventorySupplyResult.IsSetNextToken() )
 				{
 					var nextResponse = this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
 					{
 						SellerId = this._request.SellerId,
-						NextToken = listInventorySupplyResult.NextToken
+						NextToken = listInventorySupplyResult.NextToken,
+						MWSAuthToken = this._request.MWSAuthToken
 					} );
 
 					this.LoadNextOrderItemsInfoPage( nextResponse.ListOrderItemsByNextTokenResult, orderItems );
@@ -49,14 +50,15 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		private void LoadNextOrderItemsInfoPage( ListOrderItemsByNextTokenResult listOrderItemsSupplyResult, List< OrderItem > orderItems )
 		{
 			if( listOrderItemsSupplyResult.IsSetOrderItems() )
-				orderItems.AddRange( listOrderItemsSupplyResult.OrderItems.OrderItem );
+				orderItems.AddRange( listOrderItemsSupplyResult.OrderItems );
 
 			if( listOrderItemsSupplyResult.IsSetNextToken() )
 			{
 				var response = this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
 				{
 					SellerId = this._request.SellerId,
-					NextToken = listOrderItemsSupplyResult.NextToken
+					NextToken = listOrderItemsSupplyResult.NextToken,
+					MWSAuthToken = this._request.MWSAuthToken
 				} );
 
 				this.LoadNextOrderItemsInfoPage( response.ListOrderItemsByNextTokenResult, orderItems );

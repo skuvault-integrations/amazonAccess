@@ -18,13 +18,13 @@ using System;
 using System.Net;
 using System.Text;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 using System.Globalization;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
+using MarketplaceWebServiceOrders.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 {
@@ -35,7 +35,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
     *
     */
 
-	public class MarketplaceWebServiceOrdersClient : IMarketplaceWebServiceOrders
+	public class MarketplaceWebServiceOrdersClient: IMarketplaceWebServiceOrders
 	{
 
 		private readonly String awsAccessKeyId;
@@ -180,11 +180,12 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		private HttpWebRequest ConfigureWebRequest( int contentLength )
 		{
-			HttpWebRequest request = WebRequest.Create( this.config.ServiceURL ) as HttpWebRequest;
+			var request = WebRequest.Create( this.config.ServiceURL ) as HttpWebRequest;
 
 			if( this.config.IsSetProxyHost() )
 			{
-				request.Proxy = new WebProxy( this.config.ProxyHost, this.config.ProxyPort );
+				if( request != null )
+					request.Proxy = new WebProxy( this.config.ProxyHost, this.config.ProxyPort );
 			}
 			request.UserAgent = this.config.UserAgent;
 			request.Method = "POST";
@@ -226,7 +227,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			{
 				var request = this.ConfigureWebRequest( requestData.Length );
 				/* Submit the request and read response body */
-				String responseBody;
+				var responseBody = string.Empty;
 				try
 				{
 					using( var requestStream = request.GetRequestStream() )
@@ -238,13 +239,19 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 					using( var httpResponse = request.GetResponse() as HttpWebResponse )
 					{
-						rhm = new ResponseHeaderMetadata(
-							httpResponse.GetResponseHeader( "x-mws-request-id" ),
-							httpResponse.GetResponseHeader( "x-mws-response-context" ),
-							httpResponse.GetResponseHeader( "x-mws-timestamp" ) );
+						if( httpResponse != null )
+						{
+							rhm = new ResponseHeaderMetadata(
+								httpResponse.GetResponseHeader( "x-mws-request-id" ),
+								httpResponse.GetResponseHeader( "x-mws-response-context" ),
+								httpResponse.GetResponseHeader( "x-mws-timestamp" ),
+								null,
+								null,
+								null );
 
-						var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
-						responseBody = reader.ReadToEnd();
+							var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
+							responseBody = reader.ReadToEnd();
+						}
 
 						AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nResponse received: {1}", this._sellerId, responseBody );
 					}
@@ -335,52 +342,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		}
 
 
-		/**
-         * Look for additional error strings in the response and return formatted exception
-         */
-
-		private MarketplaceWebServiceOrdersException ReportAnyErrors( String responseBody, HttpStatusCode status, ResponseHeaderMetadata rhm, Exception e )
-		{
-
-			MarketplaceWebServiceOrdersException ex = null;
-
-			if( responseBody != null && responseBody.StartsWith( "<" ) )
-			{
-				Match errorMatcherOne = Regex.Match( responseBody, "<RequestId>(.*)</RequestId>.*<Error>" +
-				                                                   "<Code>(.*)</Code><Message>(.*)</Message></Error>.*(<Error>)?", RegexOptions.Multiline );
-				Match errorMatcherTwo = Regex.Match( responseBody, "<Error><Code>(.*)</Code><Message>(.*)" +
-				                                                   "</Message></Error>.*(<Error>)?.*<RequestID>(.*)</RequestID>", RegexOptions.Multiline );
-
-				if( errorMatcherOne.Success )
-				{
-					String requestId = errorMatcherOne.Groups[ 1 ].Value;
-					String code = errorMatcherOne.Groups[ 2 ].Value;
-					String message = errorMatcherOne.Groups[ 3 ].Value;
-
-					ex = new MarketplaceWebServiceOrdersException( message, status, code, "Unknown", requestId, responseBody, rhm );
-
-				}
-				else if( errorMatcherTwo.Success )
-				{
-					String code = errorMatcherTwo.Groups[ 1 ].Value;
-					String message = errorMatcherTwo.Groups[ 2 ].Value;
-					String requestId = errorMatcherTwo.Groups[ 4 ].Value;
-
-					ex = new MarketplaceWebServiceOrdersException( message, status, code, "Unknown", requestId, responseBody, rhm );
-				}
-				else
-				{
-					ex = new MarketplaceWebServiceOrdersException( "Internal Error", status, rhm );
-				}
-			}
-			else
-			{
-				ex = new MarketplaceWebServiceOrdersException( "Internal Error", status, rhm );
-			}
-			return ex;
-		}
-
-		/**
+	   /*
          * Exponential sleep on failed request
          */
 
@@ -417,10 +379,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		private string GetParametersAsString( IDictionary< String, String > parameters )
 		{
-			StringBuilder data = new StringBuilder();
-			foreach( String key in ( IEnumerable< String > )parameters.Keys )
+			var data = new StringBuilder();
+			foreach( var key in parameters.Keys )
 			{
-				String value = parameters[ key ];
+				var value = parameters[ key ];
 				if( value != null )
 				{
 					data.Append( key );
@@ -429,7 +391,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					data.Append( '&' );
 				}
 			}
-			String result = data.ToString();
+			var result = data.ToString();
 			return result.Remove( result.Length - 1 );
 		}
 
@@ -470,7 +432,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 			KeyedHashAlgorithm algorithm = new HMACSHA1();
 
-			String stringToSign = null;
+			String stringToSign;
 			if( "0".Equals( signatureVersion ) )
 			{
 				stringToSign = this.CalculateStringToSignV0( parameters );
@@ -496,14 +458,14 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		private String CalculateStringToSignV0( IDictionary< String, String > parameters )
 		{
-			StringBuilder data = new StringBuilder();
+			var data = new StringBuilder();
 			return data.Append( parameters[ "Action" ] ).Append( parameters[ "Timestamp" ] ).ToString();
 
 		}
 
 		private String CalculateStringToSignV1( IDictionary< String, String > parameters )
 		{
-			StringBuilder data = new StringBuilder();
+			var data = new StringBuilder();
 			IDictionary< String, String > sorted =
 				new SortedDictionary< String, String >( parameters, StringComparer.OrdinalIgnoreCase );
 			foreach( KeyValuePair< String, String > pair in sorted )
@@ -519,12 +481,12 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		private String CalculateStringToSignV2( IDictionary< String, String > parameters )
 		{
-			StringBuilder data = new StringBuilder();
+			var data = new StringBuilder();
 			IDictionary< String, String > sorted =
 				new SortedDictionary< String, String >( parameters, StringComparer.Ordinal );
 			data.Append( "POST" );
 			data.Append( "\n" );
-			Uri endpoint = new Uri( this.config.ServiceURL );
+			var endpoint = new Uri( this.config.ServiceURL );
 
 			data.Append( endpoint.Host );
 			if( endpoint.Port != 80 && endpoint.Port != 443 )
@@ -558,10 +520,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		private String UrlEncode( String data, bool path )
 		{
-			StringBuilder encoded = new StringBuilder();
-			String unreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~" + ( path ? "/" : "" );
+			var encoded = new StringBuilder();
+			var unreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~" + ( path ? "/" : "" );
 
-			foreach( char symbol in System.Text.Encoding.UTF8.GetBytes( data ) )
+			foreach( char symbol in Encoding.UTF8.GetBytes( data ) )
 			{
 				if( unreservedChars.IndexOf( symbol ) != -1 )
 				{
@@ -627,12 +589,15 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		private IDictionary< String, String > ConvertListOrdersByNextToken( ListOrdersByNextTokenRequest request )
 		{
-
 			IDictionary< String, String > parameters = new Dictionary< String, String >();
 			parameters.Add( "Action", "ListOrdersByNextToken" );
 			if( request.IsSetSellerId() )
 			{
 				parameters.Add( "SellerId", request.SellerId );
+			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
 			}
 			if( request.IsSetNextToken() )
 			{
@@ -656,6 +621,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			{
 				parameters.Add( "SellerId", request.SellerId );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetNextToken() )
 			{
 				parameters.Add( "NextToken", request.NextToken );
@@ -671,19 +640,22 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		private IDictionary< String, String > ConvertGetOrder( GetOrderRequest request )
 		{
-
 			IDictionary< String, String > parameters = new Dictionary< String, String >();
 			parameters.Add( "Action", "GetOrder" );
 			if( request.IsSetSellerId() )
 			{
 				parameters.Add( "SellerId", request.SellerId );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetAmazonOrderId() )
 			{
-				OrderIdList getOrderRequestAmazonOrderId = request.AmazonOrderId;
-				List< String > amazonOrderIdIdList = getOrderRequestAmazonOrderId.Id;
-				int amazonOrderIdIdListIndex = 1;
-				foreach( String amazonOrderIdId in amazonOrderIdIdList )
+				var getOrderRequestAmazonOrderId = request.AmazonOrderId;
+				var amazonOrderIdIdList = getOrderRequestAmazonOrderId;
+				var amazonOrderIdIdListIndex = 1;
+				foreach( var amazonOrderIdId in amazonOrderIdIdList )
 				{
 					parameters.Add( "AmazonOrderId" + "." + "Id" + "." + amazonOrderIdIdListIndex, amazonOrderIdId );
 					amazonOrderIdIdListIndex++;
@@ -707,6 +679,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			{
 				parameters.Add( "SellerId", request.SellerId );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetAmazonOrderId() )
 			{
 				parameters.Add( "AmazonOrderId", request.AmazonOrderId );
@@ -729,6 +705,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			{
 				parameters.Add( "SellerId", request.SellerId );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetCreatedAfter() )
 			{
 				parameters.Add( "CreatedAfter", this.GetFormattedTimestamp( request.CreatedAfter ) );
@@ -747,10 +727,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			}
 			if( request.IsSetOrderStatus() )
 			{
-				OrderStatusList listOrdersRequestOrderStatus = request.OrderStatus;
-				List< OrderStatusEnum > orderStatusStatusList = listOrdersRequestOrderStatus.Status;
-				int orderStatusStatusListIndex = 1;
-				foreach( OrderStatusEnum orderStatusStatus in orderStatusStatusList )
+				var listOrdersRequestOrderStatus = request.OrderStatus;
+				var orderStatusStatusList = listOrdersRequestOrderStatus;
+				var orderStatusStatusListIndex = 1;
+				foreach( var orderStatusStatus in orderStatusStatusList )
 				{
 					parameters.Add( "OrderStatus" + "." + "Status" + "." + orderStatusStatusListIndex, orderStatusStatus + "" );
 					orderStatusStatusListIndex++;
@@ -758,10 +738,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			}
 			if( request.IsSetMarketplaceId() )
 			{
-				MarketplaceIdList listOrdersRequestMarketplaceId = request.MarketplaceId;
-				List< String > marketplaceIdIdList = listOrdersRequestMarketplaceId.Id;
-				int marketplaceIdIdListIndex = 1;
-				foreach( String marketplaceIdId in marketplaceIdIdList )
+				var listOrdersRequestMarketplaceId = request.MarketplaceId;
+				var marketplaceIdIdList = listOrdersRequestMarketplaceId;
+				var marketplaceIdIdListIndex = 1;
+				foreach( var marketplaceIdId in marketplaceIdIdList )
 				{
 					parameters.Add( "MarketplaceId" + "." + "Id" + "." + marketplaceIdIdListIndex, marketplaceIdId );
 					marketplaceIdIdListIndex++;
@@ -769,10 +749,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			}
 			if( request.IsSetFulfillmentChannel() )
 			{
-				FulfillmentChannelList listOrdersRequestFulfillmentChannel = request.FulfillmentChannel;
-				List< FulfillmentChannelEnum > fulfillmentChannelChannelList = listOrdersRequestFulfillmentChannel.Channel;
-				int fulfillmentChannelChannelListIndex = 1;
-				foreach( FulfillmentChannelEnum fulfillmentChannelChannel in fulfillmentChannelChannelList )
+				var listOrdersRequestFulfillmentChannel = request.FulfillmentChannel;
+				var fulfillmentChannelChannelList = listOrdersRequestFulfillmentChannel;
+				var fulfillmentChannelChannelListIndex = 1;
+				foreach( var fulfillmentChannelChannel in fulfillmentChannelChannelList )
 				{
 					parameters.Add( "FulfillmentChannel" + "." + "Channel" + "." + fulfillmentChannelChannelListIndex, fulfillmentChannelChannel + "" );
 					fulfillmentChannelChannelListIndex++;
@@ -780,10 +760,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			}
 			if( request.IsSetPaymentMethod() )
 			{
-				PaymentMethodList listOrdersRequestPaymentMethod = request.PaymentMethod;
-				List< PaymentMethodEnum > paymentMethodMethodList = listOrdersRequestPaymentMethod.Method;
-				int paymentMethodMethodListIndex = 1;
-				foreach( PaymentMethodEnum paymentMethodMethod in paymentMethodMethodList )
+				var listOrdersRequestPaymentMethod = request.PaymentMethod;
+				var paymentMethodMethodList = listOrdersRequestPaymentMethod;
+				var paymentMethodMethodListIndex = 1;
+				foreach( var paymentMethodMethod in paymentMethodMethodList )
 				{
 					parameters.Add( "PaymentMethod" + "." + "Method" + "." + paymentMethodMethodListIndex, paymentMethodMethod + "" );
 					paymentMethodMethodListIndex++;
@@ -803,10 +783,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			}
 			if( request.IsSetTFMShipmentStatus() )
 			{
-				TFMShipmentStatusList listOrdersRequestTFMShipmentStatus = request.TFMShipmentStatus;
-				List< String > TFMShipmentStatusStatusList = listOrdersRequestTFMShipmentStatus.Status;
-				int TFMShipmentStatusStatusListIndex = 1;
-				foreach( String TFMShipmentStatusStatus in TFMShipmentStatusStatusList )
+				var listOrdersRequestTFMShipmentStatus = request.TFMShipmentStatus;
+				var TFMShipmentStatusStatusList = listOrdersRequestTFMShipmentStatus;
+				var TFMShipmentStatusStatusListIndex = 1;
+				foreach( var TFMShipmentStatusStatus in TFMShipmentStatusStatusList )
 				{
 					parameters.Add( "TFMShipmentStatus" + "." + "Status" + "." + TFMShipmentStatusStatusListIndex, TFMShipmentStatusStatus );
 					TFMShipmentStatusStatusListIndex++;
@@ -830,11 +810,12 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			{
 				parameters.Add( "SellerId", request.SellerId );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 
 			return parameters;
 		}
-
-
-
 	}
 }

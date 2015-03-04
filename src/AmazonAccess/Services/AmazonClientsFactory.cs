@@ -3,7 +3,6 @@ using AmazonAccess.Services.FbaInventoryServiceMws;
 using AmazonAccess.Services.MarketplaceWebServiceFeeds;
 using AmazonAccess.Services.MarketplaceWebServiceOrders;
 using CuttingEdge.Conditions;
-using MarketplaceWebService;
 
 namespace AmazonAccess.Services
 {

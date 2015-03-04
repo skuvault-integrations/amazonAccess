@@ -620,6 +620,10 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 			{
 				parameters.Add( "SellerId", request.SellerId );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetMarketplace() )
 			{
 				parameters.Add( "Marketplace", request.Marketplace );
@@ -649,6 +653,10 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 			if( request.IsSetSellerId() )
 			{
 				parameters.Add( "SellerId", request.SellerId );
+			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
 			}
 			if( request.IsSetMarketplace() )
 			{
@@ -694,6 +702,10 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 			if( request.IsSetSellerId() )
 			{
 				parameters.Add( "SellerId", request.SellerId );
+			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
 			}
 			if( request.IsSetMarketplace() )
 			{

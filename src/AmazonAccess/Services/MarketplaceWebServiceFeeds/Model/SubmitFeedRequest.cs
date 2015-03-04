@@ -36,6 +36,7 @@ namespace MarketplaceWebService.Model
         private IdList marketplaceIdListField;
 
         private String merchantField;
+        private String mwsAuthTokenField;
 
         private Stream feedContentField;
 
@@ -173,6 +174,41 @@ namespace MarketplaceWebService.Model
         {
             return  this.merchantField != null;
 
+        }
+
+        
+        /// <summary>
+        /// Gets and sets the MWSAuthToken property.
+        /// </summary>
+        [XmlElementAttribute(ElementName = "MWSAuthToken")]
+        public String MWSAuthToken
+        {
+            get { return this.mwsAuthTokenField; }
+            set { this.mwsAuthTokenField = value; }
+        }
+
+
+
+        /// <summary>
+        /// Sets the MWSAuthToken property
+        /// </summary>
+        /// <param name="mwsAuthToken">MWSAuthToken property</param>
+        /// <returns>this instance</returns>
+        public SubmitFeedRequest WithMWSAuthToken(String mwsAuthToken)
+        {
+            this.mwsAuthTokenField = mwsAuthToken;
+            return this;
+        }
+
+
+
+        /// <summary>
+        /// Checks if MWSAuthToken property is set
+        /// </summary>
+        /// <returns>true if MWSAuthToken property is set</returns>
+        public Boolean IsSetMWSAuthToken()
+        {
+            return this.mwsAuthTokenField != null;
         }
 
         

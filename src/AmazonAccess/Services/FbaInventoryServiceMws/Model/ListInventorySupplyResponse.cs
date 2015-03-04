@@ -1,33 +1,32 @@
-/******************************************************************************* 
- *  Copyright 2009 Amazon Services. All Rights Reserved.
- *  Licensed under the Apache License, Version 2.0 (the "License"); 
- *  
- *  You may not use this file except in compliance with the License. 
- *  You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
- *  This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
- *  CONDITIONS OF ANY KIND, either express or implied. See the License for the 
- *  specific language governing permissions and limitations under the License.
- * ***************************************************************************** 
- * 
- *  FBA Inventory Service MWS CSharp Library
- *  API Version: 2010-10-01
- *  Generated: Fri Oct 22 09:53:30 UTC 2010 
- * 
+/*******************************************************************************
+ * Copyright 2009-2014 Amazon Services. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ *
+ * You may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
+ * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+ * specific language governing permissions and limitations under the License.
+ *******************************************************************************
+ * List Inventory Supply Response
+ * API Version: 2010-10-01
+ * Library Version: 2014-09-30
+ * Generated: Fri Sep 26 16:01:24 GMT 2014
  */
 
-using System;
 using System.Xml.Serialization;
-using System.Text;
+using AmazonAccess.Services.Utils;
 
 namespace AmazonAccess.Services.FbaInventoryServiceMws.Model
 {
     [XmlType(Namespace = "http://mws.amazonaws.com/FulfillmentInventory/2010-10-01/")]
     [XmlRoot(Namespace = "http://mws.amazonaws.com/FulfillmentInventory/2010-10-01/", IsNullable = false)]
-    public class ListInventorySupplyResponse
+    public class ListInventorySupplyResponse : AbstractMwsObject, IMWSResponse
     {
-    
-        private  ListInventorySupplyResult listInventorySupplyResultField;
-        private  ResponseMetadata responseMetadataField;
+
+        private ListInventorySupplyResult _listInventorySupplyResult;
+        private ResponseMetadata _responseMetadata;
+        private ResponseHeaderMetadata _responseHeaderMetadata;
 
         /// <summary>
         /// Gets and sets the ListInventorySupplyResult property.
@@ -35,36 +34,29 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws.Model
         [XmlElement(ElementName = "ListInventorySupplyResult")]
         public ListInventorySupplyResult ListInventorySupplyResult
         {
-            get { return this.listInventorySupplyResultField ; }
-            set { this.listInventorySupplyResultField = value; }
+            get { return this._listInventorySupplyResult; }
+            set { this._listInventorySupplyResult = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the ListInventorySupplyResult property
+        /// Sets the ListInventorySupplyResult property.
         /// </summary>
-        /// <param name="listInventorySupplyResult">ListInventorySupplyResult property</param>
-        /// <returns>this instance</returns>
+        /// <param name="listInventorySupplyResult">ListInventorySupplyResult property.</param>
+        /// <returns>this instance.</returns>
         public ListInventorySupplyResponse WithListInventorySupplyResult(ListInventorySupplyResult listInventorySupplyResult)
         {
-            this.listInventorySupplyResultField = listInventorySupplyResult;
+            this._listInventorySupplyResult = listInventorySupplyResult;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if ListInventorySupplyResult property is set
+        /// Checks if ListInventorySupplyResult property is set.
         /// </summary>
-        /// <returns>true if ListInventorySupplyResult property is set</returns>
-        public Boolean IsSetListInventorySupplyResult()
+        /// <returns>true if ListInventorySupplyResult property is set.</returns>
+        public bool IsSetListInventorySupplyResult()
         {
-            return this.listInventorySupplyResultField != null;
+            return this._listInventorySupplyResult != null;
         }
-
-
-
 
         /// <summary>
         /// Gets and sets the ResponseMetadata property.
@@ -72,97 +64,80 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws.Model
         [XmlElement(ElementName = "ResponseMetadata")]
         public ResponseMetadata ResponseMetadata
         {
-            get { return this.responseMetadataField ; }
-            set { this.responseMetadataField = value; }
+            get { return this._responseMetadata; }
+            set { this._responseMetadata = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the ResponseMetadata property
+        /// Sets the ResponseMetadata property.
         /// </summary>
-        /// <param name="responseMetadata">ResponseMetadata property</param>
-        /// <returns>this instance</returns>
+        /// <param name="responseMetadata">ResponseMetadata property.</param>
+        /// <returns>this instance.</returns>
         public ListInventorySupplyResponse WithResponseMetadata(ResponseMetadata responseMetadata)
         {
-            this.responseMetadataField = responseMetadata;
+            this._responseMetadata = responseMetadata;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if ResponseMetadata property is set
+        /// Checks if ResponseMetadata property is set.
         /// </summary>
-        /// <returns>true if ResponseMetadata property is set</returns>
-        public Boolean IsSetResponseMetadata()
+        /// <returns>true if ResponseMetadata property is set.</returns>
+        public bool IsSetResponseMetadata()
         {
-            return this.responseMetadataField != null;
+            return this._responseMetadata != null;
         }
-
-
-
-
-
 
         /// <summary>
-        /// XML Representation for this object
+        /// Gets and sets the ResponseHeaderMetadata property.
         /// </summary>
-        /// <returns>XML String</returns>
-
-        public String ToXML() {
-            StringBuilder xml = new StringBuilder();
-            xml.Append("<ListInventorySupplyResponse xmlns=\"http://mws.amazonaws.com/FulfillmentInventory/2010-10-01/\">");
-            if (this.IsSetListInventorySupplyResult()) {
-                ListInventorySupplyResult  listInventorySupplyResult = this.ListInventorySupplyResult;
-                xml.Append("<ListInventorySupplyResult>");
-                xml.Append(listInventorySupplyResult.ToXMLFragment());
-                xml.Append("</ListInventorySupplyResult>");
-            } 
-            if (this.IsSetResponseMetadata()) {
-                ResponseMetadata  responseMetadata = this.ResponseMetadata;
-                xml.Append("<ResponseMetadata>");
-                xml.Append(responseMetadata.ToXMLFragment());
-                xml.Append("</ResponseMetadata>");
-            } 
-            xml.Append("</ListInventorySupplyResponse>");
-            return xml.ToString();
+        [XmlElement(ElementName = "ResponseHeaderMetadata")]
+        public ResponseHeaderMetadata ResponseHeaderMetadata
+        {
+            get { return this._responseHeaderMetadata; }
+            set { this._responseHeaderMetadata = value; }
         }
 
-        /**
-         * 
-         * Escape XML special characters
-         */
-        private String EscapeXML(String str) {
-            StringBuilder sb = new StringBuilder();
-            foreach (Char c in str)
-            {
-                switch (c) {
-                case '&':
-                    sb.Append("&amp;");
-                    break;
-                case '<':
-                    sb.Append("&lt;");
-                    break;
-                case '>':
-                    sb.Append("&gt;");
-                    break;
-                case '\'':
-                    sb.Append("&#039;");
-                    break;
-                case '"':
-                    sb.Append("&quot;");
-                    break;
-                default:
-                    sb.Append(c);
-                    break;
-                }
-            }
-            return sb.ToString();
+        /// <summary>
+        /// Sets the ResponseHeaderMetadata property.
+        /// </summary>
+        /// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
+        /// <returns>this instance.</returns>
+        public ListInventorySupplyResponse WithResponseHeaderMetadata(ResponseHeaderMetadata responseHeaderMetadata)
+        {
+            this._responseHeaderMetadata = responseHeaderMetadata;
+            return this;
+        }
+
+        /// <summary>
+        /// Checks if ResponseHeaderMetadata property is set.
+        /// </summary>
+        /// <returns>true if ResponseHeaderMetadata property is set.</returns>
+        public bool IsSetResponseHeaderMetadata()
+        {
+            return this._responseHeaderMetadata != null;
         }
 
 
+        public override void ReadFragmentFrom(IMwsReader reader)
+        {
+            this._listInventorySupplyResult = reader.Read<ListInventorySupplyResult>("ListInventorySupplyResult");
+            this._responseMetadata = reader.Read<ResponseMetadata>("ResponseMetadata");
+        }
 
+        public override void WriteFragmentTo(IMwsWriter writer)
+        {
+            writer.Write("ListInventorySupplyResult", this._listInventorySupplyResult);
+            writer.Write("ResponseMetadata", this._responseMetadata);
+        }
+
+        public override void WriteTo(IMwsWriter writer)
+        {
+            writer.Write("http://mws.amazonaws.com/FulfillmentInventory/2010-10-01/", "ListInventorySupplyResponse", this);
+        }
+
+        public ListInventorySupplyResponse() : base()
+        {
+        }
     }
-
 }

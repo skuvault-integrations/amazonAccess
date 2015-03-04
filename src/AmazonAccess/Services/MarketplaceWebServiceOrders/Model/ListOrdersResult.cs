@@ -1,257 +1,182 @@
-/******************************************************************************* 
- *  Copyright 2008-2012 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *  Licensed under the Apache License, Version 2.0 (the "License"); 
- *  
- *  You may not use this file except in compliance with the License. 
- *  You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
- *  This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
- *  CONDITIONS OF ANY KIND, either express or implied. See the License for the 
- *  specific language governing permissions and limitations under the License.
- * ***************************************************************************** 
- * 
- *  Marketplace Web Service Orders CSharp Library
- *  API Version: 2011-01-01
- * 
+/*******************************************************************************
+ * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ *
+ * You may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
+ * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+ * specific language governing permissions and limitations under the License.
+ *******************************************************************************
+ * List Orders Result
+ * API Version: 2013-09-01
+ * Library Version: 2015-02-13
+ * Generated: Tue Feb 10 22:00:52 UTC 2015
  */
 
+
 using System;
-using System.Xml.Serialization;
-using System.Text;
+using System.Xml;
+using System.Collections.Generic;
+using AmazonAccess.Services.Utils;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
+namespace MarketplaceWebServiceOrders.Model
 {
-    [XmlType(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01")]
-    [XmlRoot(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01", IsNullable = false)]
-    public class ListOrdersResult
+    public class ListOrdersResult : AbstractMwsObject
     {
-    
-        private String nextTokenField;
 
-        private DateTime? createdBeforeField;
-
-        private DateTime? lastUpdatedBeforeField;
-
-        private  OrderList ordersField;
+        private string _nextToken;
+        private DateTime? _createdBefore;
+        private DateTime? _lastUpdatedBefore;
+        private List<Order> _orders;
 
         /// <summary>
         /// Gets and sets the NextToken property.
         /// </summary>
-        [XmlElement(ElementName = "NextToken")]
-        public String NextToken
+        public string NextToken
         {
-            get { return this.nextTokenField ; }
-            set { this.nextTokenField= value; }
+            get { return this._nextToken; }
+            set { this._nextToken = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the NextToken property
+        /// Sets the NextToken property.
         /// </summary>
-        /// <param name="nextToken">NextToken property</param>
-        /// <returns>this instance</returns>
-        public ListOrdersResult WithNextToken(String nextToken)
+        /// <param name="nextToken">NextToken property.</param>
+        /// <returns>this instance.</returns>
+        public ListOrdersResult WithNextToken(string nextToken)
         {
-            this.nextTokenField = nextToken;
+            this._nextToken = nextToken;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if NextToken property is set
+        /// Checks if NextToken property is set.
         /// </summary>
-        /// <returns>true if NextToken property is set</returns>
-        public Boolean IsSetNextToken()
+        /// <returns>true if NextToken property is set.</returns>
+        public bool IsSetNextToken()
         {
-            return  this.nextTokenField != null;
-
+            return this._nextToken != null;
         }
-
 
         /// <summary>
         /// Gets and sets the CreatedBefore property.
         /// </summary>
-        [XmlElement(ElementName = "CreatedBefore")]
         public DateTime CreatedBefore
         {
-            get { return this.createdBeforeField.GetValueOrDefault() ; }
-            set { this.createdBeforeField= value; }
+            get { return this._createdBefore.GetValueOrDefault(); }
+            set { this._createdBefore = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the CreatedBefore property
+        /// Sets the CreatedBefore property.
         /// </summary>
-        /// <param name="createdBefore">CreatedBefore property</param>
-        /// <returns>this instance</returns>
+        /// <param name="createdBefore">CreatedBefore property.</param>
+        /// <returns>this instance.</returns>
         public ListOrdersResult WithCreatedBefore(DateTime createdBefore)
         {
-            this.createdBeforeField = createdBefore;
+            this._createdBefore = createdBefore;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if CreatedBefore property is set
+        /// Checks if CreatedBefore property is set.
         /// </summary>
-        /// <returns>true if CreatedBefore property is set</returns>
-        public Boolean IsSetCreatedBefore()
+        /// <returns>true if CreatedBefore property is set.</returns>
+        public bool IsSetCreatedBefore()
         {
-            return  this.createdBeforeField.HasValue;
-
+            return this._createdBefore != null;
         }
-
 
         /// <summary>
         /// Gets and sets the LastUpdatedBefore property.
         /// </summary>
-        [XmlElement(ElementName = "LastUpdatedBefore")]
         public DateTime LastUpdatedBefore
         {
-            get { return this.lastUpdatedBeforeField.GetValueOrDefault() ; }
-            set { this.lastUpdatedBeforeField= value; }
+            get { return this._lastUpdatedBefore.GetValueOrDefault(); }
+            set { this._lastUpdatedBefore = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the LastUpdatedBefore property
+        /// Sets the LastUpdatedBefore property.
         /// </summary>
-        /// <param name="lastUpdatedBefore">LastUpdatedBefore property</param>
-        /// <returns>this instance</returns>
+        /// <param name="lastUpdatedBefore">LastUpdatedBefore property.</param>
+        /// <returns>this instance.</returns>
         public ListOrdersResult WithLastUpdatedBefore(DateTime lastUpdatedBefore)
         {
-            this.lastUpdatedBeforeField = lastUpdatedBefore;
+            this._lastUpdatedBefore = lastUpdatedBefore;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if LastUpdatedBefore property is set
+        /// Checks if LastUpdatedBefore property is set.
         /// </summary>
-        /// <returns>true if LastUpdatedBefore property is set</returns>
-        public Boolean IsSetLastUpdatedBefore()
+        /// <returns>true if LastUpdatedBefore property is set.</returns>
+        public bool IsSetLastUpdatedBefore()
         {
-            return  this.lastUpdatedBeforeField.HasValue;
-
+            return this._lastUpdatedBefore != null;
         }
-
 
         /// <summary>
         /// Gets and sets the Orders property.
         /// </summary>
-        [XmlElement(ElementName = "Orders")]
-        public OrderList Orders
+        public List<Order> Orders
         {
-            get { return this.ordersField ; }
-            set { this.ordersField = value; }
+            get
+            {
+                if(this._orders == null)
+                {
+                    this._orders = new List<Order>();
+                }
+                return this._orders;
+            }
+            set { this._orders = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the Orders property
+        /// Sets the Orders property.
         /// </summary>
-        /// <param name="orders">Orders property</param>
-        /// <returns>this instance</returns>
-        public ListOrdersResult WithOrders(OrderList orders)
+        /// <param name="orders">Orders property.</param>
+        /// <returns>this instance.</returns>
+        public ListOrdersResult WithOrders(Order[] orders)
         {
-            this.ordersField = orders;
+            this._orders.AddRange(orders);
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if Orders property is set
+        /// Checks if Orders property is set.
         /// </summary>
-        /// <returns>true if Orders property is set</returns>
-        public Boolean IsSetOrders()
+        /// <returns>true if Orders property is set.</returns>
+        public bool IsSetOrders()
         {
-            return this.ordersField != null;
+            return this.Orders.Count > 0;
         }
 
 
-
-
-
-
-        /// <summary>
-        /// XML fragment representation of this object
-        /// </summary>
-        /// <returns>XML fragment for this object.</returns>
-        /// <remarks>
-        /// Name for outer tag expected to be set by calling method. 
-        /// This fragment returns inner properties representation only
-        /// </remarks>
-
-
-        protected internal String ToXMLFragment() {
-            StringBuilder xml = new StringBuilder();
-            if (this.IsSetNextToken()) {
-                xml.Append("<NextToken>");
-                xml.Append(this.EscapeXML(this.NextToken));
-                xml.Append("</NextToken>");
-            }
-            if (this.IsSetCreatedBefore()) {
-                xml.Append("<CreatedBefore>");
-                xml.Append(this.CreatedBefore);
-                xml.Append("</CreatedBefore>");
-            }
-            if (this.IsSetLastUpdatedBefore()) {
-                xml.Append("<LastUpdatedBefore>");
-                xml.Append(this.LastUpdatedBefore);
-                xml.Append("</LastUpdatedBefore>");
-            }
-            if (this.IsSetOrders()) {
-                OrderList  ordersObj = this.Orders;
-                xml.Append("<Orders>");
-                xml.Append(ordersObj.ToXMLFragment());
-                xml.Append("</Orders>");
-            } 
-            return xml.ToString();
+        public override void ReadFragmentFrom(IMwsReader reader)
+        {
+            _nextToken = reader.Read<string>("NextToken");
+            _createdBefore = reader.Read<DateTime?>("CreatedBefore");
+            _lastUpdatedBefore = reader.Read<DateTime?>("LastUpdatedBefore");
+            _orders = reader.ReadList<Order>("Orders", "Order");
         }
 
-        /**
-         * 
-         * Escape XML special characters
-         */
-        private String EscapeXML(String str) {
-            if (str == null)
-                return "null";
-            StringBuilder sb = new StringBuilder();
-            foreach (Char c in str)
-            {
-                switch (c) {
-                case '&':
-                    sb.Append("&amp;");
-                    break;
-                case '<':
-                    sb.Append("&lt;");
-                    break;
-                case '>':
-                    sb.Append("&gt;");
-                    break;
-                case '\'':
-                    sb.Append("&#039;");
-                    break;
-                case '"':
-                    sb.Append("&quot;");
-                    break;
-                default:
-                    sb.Append(c);
-                    break;
-                }
-            }
-            return sb.ToString();
+        public override void WriteFragmentTo(IMwsWriter writer)
+        {
+            writer.Write("NextToken", _nextToken);
+            writer.Write("CreatedBefore", _createdBefore);
+            writer.Write("LastUpdatedBefore", _lastUpdatedBefore);
+            writer.WriteList("Orders", "Order", _orders);
         }
 
+        public override void WriteTo(IMwsWriter writer)
+        {
+            writer.Write("https://mws.amazonservices.com/Orders/2013-09-01", "ListOrdersResult", this);
+        }
 
-
+        public ListOrdersResult() : base()
+        {
+        }
     }
-
 }

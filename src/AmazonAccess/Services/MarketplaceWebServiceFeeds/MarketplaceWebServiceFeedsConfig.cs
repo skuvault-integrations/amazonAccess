@@ -21,342 +21,342 @@ using System.Text.RegularExpressions;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 {
+	/// <summary>
+	/// Configuration for accessing Marketplace Web Service  service
+	/// </summary>
+	public class MarketplaceWebServiceFeedsConfig
+	{
+		private String serviceVersion = "2009-01-01";
+		private String serviceURL = null;
+		private String userAgent = null;
+		private String signatureVersion = "2";
+		private String signatureMethod = "HmacSHA256";
+		private String proxyHost = null;
+		private int proxyPort = -1;
+		private int maxErrorRetry = 3;
+		private int requestTimeout = 50000;
 
-    /// <summary>
-    /// Configuration for accessing Marketplace Web Service  service
-    /// </summary>
-    public class MarketplaceWebServiceFeedsConfig
-    {
-    
-        private String serviceVersion = "2009-01-01";
-        private String serviceURL = null;
-        private String userAgent = null;
-        private String signatureVersion = "2";
-        private String signatureMethod = "HmacSHA256";
-        private String proxyHost = null;
-        private int proxyPort = -1;
-        private int maxErrorRetry = 3;
-        private int requestTimeout = 50000;
+		/// <summary>
+		/// Gets and sets the request time-out value in milliseconds.
+		/// </summary>
+		public int RequestTimeout
+		{
+			get { return this.requestTimeout; }
+			set { this.requestTimeout = value; }
+		}
 
-        /// <summary>
-        /// Gets and sets the request time-out value in milliseconds.
-        /// </summary>
-        public int RequestTimeout
-        {
-            get { return this.requestTimeout; }
-            set { this.requestTimeout = value; }
-        }
+		/// <summary>
+		/// Gets Service Version
+		/// </summary>
+		public String ServiceVersion
+		{
+			get { return this.serviceVersion; }
+		}
 
-        /// <summary>
-        /// Gets Service Version
-        /// </summary>
-        public String ServiceVersion
-        {
-            get { return this.serviceVersion ; }
-        }
-        /// <summary>
-        /// Gets and sets of the signatureMethod property.
-        /// </summary>
-        public String SignatureMethod
-        {
-            get { return this.signatureMethod; }
-            set { this.signatureMethod = value; }
-        }
+		/// <summary>
+		/// Gets and sets of the signatureMethod property.
+		/// </summary>
+		public String SignatureMethod
+		{
+			get { return this.signatureMethod; }
+			set { this.signatureMethod = value; }
+		}
 
-        /// <summary>
-        /// Sets the SignatureMethod property
-        /// </summary>
-        /// <param name="signatureMethod">SignatureMethod property</param>
-        /// <returns>this instance</returns>
-        public MarketplaceWebServiceFeedsConfig WithSignatureMethod(String signatureMethod)
-        {
-            this.signatureMethod = signatureMethod;
-            return this;
-        }
+		/// <summary>
+		/// Sets the SignatureMethod property
+		/// </summary>
+		/// <param name="signatureMethod">SignatureMethod property</param>
+		/// <returns>this instance</returns>
+		public MarketplaceWebServiceFeedsConfig WithSignatureMethod( String signatureMethod )
+		{
+			this.signatureMethod = signatureMethod;
+			return this;
+		}
 
 
-        /// <summary>
-        /// Checks if SignatureMethod property is set
-        /// </summary>
-        /// <returns>true if SignatureMethod property is set</returns>
-        public Boolean IsSetSignatureMethod()
-        {
-            return this.signatureMethod != null;
-        }
-        /// <summary>
-        /// Gets and sets of the SignatureVersion property.
-        /// </summary>
-        public String SignatureVersion
-        {
-            get { return this.signatureVersion ; }
-            set { this.signatureVersion = value; }
-        }
+		/// <summary>
+		/// Checks if SignatureMethod property is set
+		/// </summary>
+		/// <returns>true if SignatureMethod property is set</returns>
+		public Boolean IsSetSignatureMethod()
+		{
+			return this.signatureMethod != null;
+		}
 
-        /// <summary>
-        /// Sets the SignatureVersion property
-        /// </summary>
-        /// <param name="signatureVersion">SignatureVersion property</param>
-        /// <returns>this instance</returns>
-        public MarketplaceWebServiceFeedsConfig WithSignatureVersion(String signatureVersion)
-        {
-            this.signatureVersion = signatureVersion;
-            return this;
-        }
+		/// <summary>
+		/// Gets and sets of the SignatureVersion property.
+		/// </summary>
+		public String SignatureVersion
+		{
+			get { return this.signatureVersion; }
+			set { this.signatureVersion = value; }
+		}
 
-        /// <summary>
-        /// Checks if SignatureVersion property is set
-        /// </summary>
-        /// <returns>true if SignatureVersion property is set</returns>
-        public Boolean IsSetSignatureVersion()
-        {
-            return this.signatureVersion != null;
-        }
-    
-        /// <summary>
-        /// Gets and sets of the UserAgent property.
-        /// </summary>
-        public String UserAgent
-        {
-            get { return this.userAgent ; }
-        }
+		/// <summary>
+		/// Sets the SignatureVersion property
+		/// </summary>
+		/// <param name="signatureVersion">SignatureVersion property</param>
+		/// <returns>this instance</returns>
+		public MarketplaceWebServiceFeedsConfig WithSignatureVersion( String signatureVersion )
+		{
+			this.signatureVersion = signatureVersion;
+			return this;
+		}
 
-        /// <summary>
-        /// Sets the UserAgent property
-        /// </summary>
-        /// <param name="userAgent">UserAgent property</param>
-        /// <returns>this instance</returns>
-        public MarketplaceWebServiceFeedsConfig WithUserAgent(String userAgent)
-        {
-            this.userAgent = userAgent;
-            return this;
-        }
+		/// <summary>
+		/// Checks if SignatureVersion property is set
+		/// </summary>
+		/// <returns>true if SignatureVersion property is set</returns>
+		public Boolean IsSetSignatureVersion()
+		{
+			return this.signatureVersion != null;
+		}
 
-        /// <summary>
-        /// Checks if UserAgent property is set
-        /// </summary>
-        /// <returns>true if UserAgent property is set</returns>
-        public Boolean IsSetUserAgent()
-        {
-            return this.userAgent != null;
-        }
+		/// <summary>
+		/// Gets and sets of the UserAgent property.
+		/// </summary>
+		public String UserAgent
+		{
+			get { return this.userAgent; }
+		}
 
-        /// <summary>
-        /// Gets the ServiceURL property.
-        /// </summary>
-        public String ServiceURL
-        {
-            get { return this.serviceURL ; }
-            set { this.serviceURL = value; }
-        }
+		/// <summary>
+		/// Sets the UserAgent property
+		/// </summary>
+		/// <param name="userAgent">UserAgent property</param>
+		/// <returns>this instance</returns>
+		public MarketplaceWebServiceFeedsConfig WithUserAgent( String userAgent )
+		{
+			this.userAgent = userAgent;
+			return this;
+		}
 
-        /// <summary>
-        /// Sets the ServiceURL property
-        /// </summary>
-        /// <param name="serviceURL">ServiceURL property</param>
-        /// <returns>this instance</returns>
-        public MarketplaceWebServiceFeedsConfig WithServiceURL(String serviceURL)
-        {
-            this.serviceURL = serviceURL;
-            return this;
-        }
+		/// <summary>
+		/// Checks if UserAgent property is set
+		/// </summary>
+		/// <returns>true if UserAgent property is set</returns>
+		public Boolean IsSetUserAgent()
+		{
+			return this.userAgent != null;
+		}
 
-        /// <summary>
-        /// Checks if ServiceURL property is set
-        /// </summary>
-        /// <returns>true if ServiceURL property is set</returns>
-        public Boolean IsSetServiceURL()
-        {
-            return this.serviceURL != null;
-        }
+		/// <summary>
+		/// Gets the ServiceURL property.
+		/// </summary>
+		public String ServiceURL
+		{
+			get { return this.serviceURL; }
+			set { this.serviceURL = value; }
+		}
 
-        /// <summary>
-        /// Gets and sets of the ProxyHost property.
-        /// </summary>
-        public String ProxyHost
-        {
-            get { return this.proxyHost; }
-            set { this.proxyHost = value; }
-        }
+		/// <summary>
+		/// Sets the ServiceURL property
+		/// </summary>
+		/// <param name="serviceURL">ServiceURL property</param>
+		/// <returns>this instance</returns>
+		public MarketplaceWebServiceFeedsConfig WithServiceURL( String serviceURL )
+		{
+			this.serviceURL = serviceURL;
+			return this;
+		}
 
-        /// <summary>
-        /// Sets the ProxyHost property
-        /// </summary>
-        /// <param name="proxyHost">ProxyHost property</param>
-        /// <returns>this instance</returns>
-        public MarketplaceWebServiceFeedsConfig WithProxyHost(String proxyHost)
-        {
-            this.proxyHost = proxyHost;
-            return this;
-        }
+		/// <summary>
+		/// Checks if ServiceURL property is set
+		/// </summary>
+		/// <returns>true if ServiceURL property is set</returns>
+		public Boolean IsSetServiceURL()
+		{
+			return this.serviceURL != null;
+		}
 
-        /// <summary>
-        /// Checks if ProxyHost property is set
-        /// </summary>
-        /// <returns>true if ProxyHost property is set</returns>
-        public Boolean IsSetProxyHost()
-        {
-            return this.proxyHost != null;
-        }
+		/// <summary>
+		/// Gets and sets of the ProxyHost property.
+		/// </summary>
+		public String ProxyHost
+		{
+			get { return this.proxyHost; }
+			set { this.proxyHost = value; }
+		}
 
-        /// <summary>
-        /// Gets and sets of the ProxyPort property.
-        /// </summary>
-        public int ProxyPort
-        {
-            get { return this.proxyPort; }
-            set { this.proxyPort = value; }
-        }
+		/// <summary>
+		/// Sets the ProxyHost property
+		/// </summary>
+		/// <param name="proxyHost">ProxyHost property</param>
+		/// <returns>this instance</returns>
+		public MarketplaceWebServiceFeedsConfig WithProxyHost( String proxyHost )
+		{
+			this.proxyHost = proxyHost;
+			return this;
+		}
 
-        /// <summary>
-        /// Sets the ProxyPort property
-        /// </summary>
-        /// <param name="proxyPort">ProxyPort property</param>
-        /// <returns>this instance</returns>
-        public MarketplaceWebServiceFeedsConfig WithProxyPort(int proxyPort)
-        {
-            this.proxyPort = proxyPort;
-            return this;
-        }
+		/// <summary>
+		/// Checks if ProxyHost property is set
+		/// </summary>
+		/// <returns>true if ProxyHost property is set</returns>
+		public Boolean IsSetProxyHost()
+		{
+			return this.proxyHost != null;
+		}
 
-        /// <summary>
-        /// Checks if ProxyPort property is set
-        /// </summary>
-        /// <returns>true if ProxyPort property is set</returns>
-        public Boolean IsSetProxyPort()
-        {
-            return this.proxyPort != -1;
-        }
+		/// <summary>
+		/// Gets and sets of the ProxyPort property.
+		/// </summary>
+		public int ProxyPort
+		{
+			get { return this.proxyPort; }
+			set { this.proxyPort = value; }
+		}
 
-        /// <summary>
-        /// Gets and sets of the MaxErrorRetry property.
-        /// </summary>
-        public int MaxErrorRetry
-        {
-            get { return this.maxErrorRetry; }
-            set { this.maxErrorRetry = value; }
-        }
+		/// <summary>
+		/// Sets the ProxyPort property
+		/// </summary>
+		/// <param name="proxyPort">ProxyPort property</param>
+		/// <returns>this instance</returns>
+		public MarketplaceWebServiceFeedsConfig WithProxyPort( int proxyPort )
+		{
+			this.proxyPort = proxyPort;
+			return this;
+		}
 
-        /// <summary>
-        /// Sets the MaxErrorRetry property
-        /// </summary>
-        /// <param name="maxErrorRetry">MaxErrorRetry property</param>
-        /// <returns>this instance</returns>
-        public MarketplaceWebServiceFeedsConfig WithMaxErrorRetry(int maxErrorRetry)
-        {
-            this.maxErrorRetry = maxErrorRetry;
-            return this;
-        }
+		/// <summary>
+		/// Checks if ProxyPort property is set
+		/// </summary>
+		/// <returns>true if ProxyPort property is set</returns>
+		public Boolean IsSetProxyPort()
+		{
+			return this.proxyPort != -1;
+		}
 
-        /// <summary>
-        /// Checks if MaxErrorRetry property is set
-        /// </summary>
-        /// <returns>true if MaxErrorRetry property is set</returns>
-        public Boolean IsSetMaxErrorRetry()
-        {
-            return this.maxErrorRetry != -1;
-        }
+		/// <summary>
+		/// Gets and sets of the MaxErrorRetry property.
+		/// </summary>
+		public int MaxErrorRetry
+		{
+			get { return this.maxErrorRetry; }
+			set { this.maxErrorRetry = value; }
+		}
 
-        public void SetUserAgentHeader(
-            string applicationName,
-            string applicationVersion,
-            string programmingLanguage,
-            params string[] additionalNameValuePairs)
-        {
-            if (applicationName == null)
-            {
-                throw new ArgumentNullException("applicationName cannot be null.");
-            }
+		/// <summary>
+		/// Sets the MaxErrorRetry property
+		/// </summary>
+		/// <param name="maxErrorRetry">MaxErrorRetry property</param>
+		/// <returns>this instance</returns>
+		public MarketplaceWebServiceFeedsConfig WithMaxErrorRetry( int maxErrorRetry )
+		{
+			this.maxErrorRetry = maxErrorRetry;
+			return this;
+		}
 
-            if (applicationVersion == null)
-            {
-                throw new ArgumentNullException("applicationVersion cannot be null.");
-            }
+		/// <summary>
+		/// Checks if MaxErrorRetry property is set
+		/// </summary>
+		/// <returns>true if MaxErrorRetry property is set</returns>
+		public Boolean IsSetMaxErrorRetry()
+		{
+			return this.maxErrorRetry != -1;
+		}
 
-            if (programmingLanguage == null)
-            {
-                throw new ArgumentNullException("programmingLanguage cannot be null.");
-            }
+		public void SetUserAgentHeader(
+			string applicationName,
+			string applicationVersion,
+			string programmingLanguage,
+			params string[] additionalNameValuePairs )
+		{
+			if( applicationName == null )
+			{
+				throw new ArgumentNullException( "applicationName cannot be null." );
+			}
 
-            if (additionalNameValuePairs.Length % 2 != 0)
-            {
-                throw new ArgumentException("Every name must have a corresponding value.");
-            }
+			if( applicationVersion == null )
+			{
+				throw new ArgumentNullException( "applicationVersion cannot be null." );
+			}
 
-            StringBuilder sb = new StringBuilder();
+			if( programmingLanguage == null )
+			{
+				throw new ArgumentNullException( "programmingLanguage cannot be null." );
+			}
 
-            sb.Append(QuoteApplicationName(applicationName));
-            sb.Append("/");
-            sb.Append(QuoteApplicationVersion(applicationVersion));
-            sb.Append(" (");
-            sb.Append("Language=");
-            sb.Append(QuoteAttributeValue(programmingLanguage));
+			if( additionalNameValuePairs.Length % 2 != 0 )
+			{
+				throw new ArgumentException( "Every name must have a corresponding value." );
+			}
 
-            int i = 0;
-            while (i < additionalNameValuePairs.Length)
-            {
-                string name = additionalNameValuePairs[i];
-                string value = additionalNameValuePairs[++i];
-                sb.Append("; ");
-                sb.Append(QuoteAttributeName(name));
-                sb.Append("=");
-                sb.Append(QuoteAttributeValue(value));
+			StringBuilder sb = new StringBuilder();
 
-                i++;
-            }
+			sb.Append( QuoteApplicationName( applicationName ) );
+			sb.Append( "/" );
+			sb.Append( QuoteApplicationVersion( applicationVersion ) );
+			sb.Append( " (" );
+			sb.Append( "Language=" );
+			sb.Append( QuoteAttributeValue( programmingLanguage ) );
 
-            sb.Append(")");
+			int i = 0;
+			while( i < additionalNameValuePairs.Length )
+			{
+				string name = additionalNameValuePairs[ i ];
+				string value = additionalNameValuePairs[ ++i ];
+				sb.Append( "; " );
+				sb.Append( QuoteAttributeName( name ) );
+				sb.Append( "=" );
+				sb.Append( QuoteAttributeValue( value ) );
 
-            this.userAgent = sb.ToString();
-        }
+				i++;
+			}
 
-        /// <summary>
-        /// Replace all whitespace characters by a single space.
-        /// </summary>
-        public static string Clean(string s)
-        {
-            // matched character sequences are passed to a MatchEvaluator
-            // delegate. The returned string from the delegate replaces
-            // the matched sequence.
-            return Regex.Replace(s, @" {2,}|\s", delegate(Match m)
-            {
-                return  " ";
-            });
-        }
+			sb.Append( ")" );
 
-        /// <summary>
-        /// Collapse whitespace, and escape the following characters are escaped:
-        /// '\', and '/'.
-        /// </summary>
-        public static string QuoteApplicationName(string s)
-        {
-            return Clean(s).Replace(@"\", @"\\").Replace("@/", @"\/");
-        }
+			this.userAgent = sb.ToString();
+		}
 
-        /// <summary>
-        /// Collapse whitespace, and escape the following characters are escaped:
-        /// '\', and '('.
-        /// </summary>
-        public static string QuoteApplicationVersion(string s)
-        {
-            return Clean(s).Replace(@"\", @"\\").Replace(@"(", @"\(");
-        }
+		/// <summary>
+		/// Replace all whitespace characters by a single space.
+		/// </summary>
+		public static string Clean( string s )
+		{
+			// matched character sequences are passed to a MatchEvaluator
+			// delegate. The returned string from the delegate replaces
+			// the matched sequence.
+			return Regex.Replace( s, @" {2,}|\s", delegate( Match m )
+			{
+				return " ";
+			} );
+		}
 
-        /// <summary>
-        /// Collapse whitespace, and escape the following characters are escaped:
-        /// '\', and '='.
-        /// </summary>
-        public static string QuoteAttributeName(string s)
-        {
-            return Clean(s).Replace(@"\", @"\\").Replace(@"=", @"\=");
-        }
+		/// <summary>
+		/// Collapse whitespace, and escape the following characters are escaped:
+		/// '\', and '/'.
+		/// </summary>
+		public static string QuoteApplicationName( string s )
+		{
+			return Clean( s ).Replace( @"\", @"\\" ).Replace( "@/", @"\/" );
+		}
 
-        /// <summary>
-        /// Collapse whitespace, and escape the following characters are escaped:
-        /// ')', '\', and ';'.
-        /// </summary>
-        public static string QuoteAttributeValue(string s)
-        {
-            return Clean(s).Replace(@"\", @"\\").Replace(@";", @"\;").Replace(@")", @"\)");
-        }
-    }
+		/// <summary>
+		/// Collapse whitespace, and escape the following characters are escaped:
+		/// '\', and '('.
+		/// </summary>
+		public static string QuoteApplicationVersion( string s )
+		{
+			return Clean( s ).Replace( @"\", @"\\" ).Replace( @"(", @"\(" );
+		}
+
+		/// <summary>
+		/// Collapse whitespace, and escape the following characters are escaped:
+		/// '\', and '='.
+		/// </summary>
+		public static string QuoteAttributeName( string s )
+		{
+			return Clean( s ).Replace( @"\", @"\\" ).Replace( @"=", @"\=" );
+		}
+
+		/// <summary>
+		/// Collapse whitespace, and escape the following characters are escaped:
+		/// ')', '\', and ';'.
+		/// </summary>
+		public static string QuoteAttributeValue( string s )
+		{
+			return Clean( s ).Replace( @"\", @"\\" ).Replace( @";", @"\;" ).Replace( @")", @"\)" );
+		}
+	}
 }

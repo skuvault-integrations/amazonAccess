@@ -1,109 +1,93 @@
-/******************************************************************************* 
- *  Copyright 2009 Amazon Services. All Rights Reserved.
- *  Licensed under the Apache License, Version 2.0 (the "License"); 
- *  
- *  You may not use this file except in compliance with the License. 
- *  You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
- *  This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
- *  CONDITIONS OF ANY KIND, either express or implied. See the License for the 
- *  specific language governing permissions and limitations under the License.
- * ***************************************************************************** 
- * 
- *  FBA Inventory Service MWS CSharp Library
- *  API Version: 2010-10-01
- *  Generated: Fri Oct 22 09:53:30 UTC 2010 
- * 
+/*******************************************************************************
+ * Copyright 2009-2014 Amazon Services. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ *
+ * You may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
+ * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+ * specific language governing permissions and limitations under the License.
+ *******************************************************************************
+ * Inventory Supply Detail
+ * API Version: 2010-10-01
+ * Library Version: 2014-09-30
+ * Generated: Fri Sep 26 16:01:24 GMT 2014
  */
 
-using System;
 using System.Xml.Serialization;
-using System.Text;
+using AmazonAccess.Services.Utils;
 
 namespace AmazonAccess.Services.FbaInventoryServiceMws.Model
 {
     [XmlType(Namespace = "http://mws.amazonaws.com/FulfillmentInventory/2010-10-01/")]
     [XmlRoot(Namespace = "http://mws.amazonaws.com/FulfillmentInventory/2010-10-01/", IsNullable = false)]
-    public class InventorySupplyDetail
+    public class InventorySupplyDetail : AbstractMwsObject
     {
-    
-        private Decimal? quantityField;
 
-        private String supplyTypeField;
-
-        private  Timepoint earliestAvailableToPickField;
-        private  Timepoint latestAvailableToPickField;
+        private decimal? _quantity;
+        private string _supplyType;
+        private Timepoint _earliestAvailableToPick;
+        private Timepoint _latestAvailableToPick;
 
         /// <summary>
         /// Gets and sets the Quantity property.
         /// </summary>
         [XmlElement(ElementName = "Quantity")]
-        public Decimal Quantity
+        public decimal Quantity
         {
-            get { return this.quantityField.GetValueOrDefault() ; }
-            set { this.quantityField= value; }
+            get { return this._quantity.GetValueOrDefault(); }
+            set { this._quantity = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the Quantity property
+        /// Sets the Quantity property.
         /// </summary>
-        /// <param name="quantity">Quantity property</param>
-        /// <returns>this instance</returns>
-        public InventorySupplyDetail WithQuantity(Decimal quantity)
+        /// <param name="quantity">Quantity property.</param>
+        /// <returns>this instance.</returns>
+        public InventorySupplyDetail WithQuantity(decimal quantity)
         {
-            this.quantityField = quantity;
+            this._quantity = quantity;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if Quantity property is set
+        /// Checks if Quantity property is set.
         /// </summary>
-        /// <returns>true if Quantity property is set</returns>
-        public Boolean IsSetQuantity()
+        /// <returns>true if Quantity property is set.</returns>
+        public bool IsSetQuantity()
         {
-            return  this.quantityField.HasValue;
-
+            return this._quantity != null;
         }
-
 
         /// <summary>
         /// Gets and sets the SupplyType property.
         /// </summary>
         [XmlElement(ElementName = "SupplyType")]
-        public String SupplyType
+        public string SupplyType
         {
-            get { return this.supplyTypeField ; }
-            set { this.supplyTypeField= value; }
+            get { return this._supplyType; }
+            set { this._supplyType = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the SupplyType property
+        /// Sets the SupplyType property.
         /// </summary>
-        /// <param name="supplyType">SupplyType property</param>
-        /// <returns>this instance</returns>
-        public InventorySupplyDetail WithSupplyType(String supplyType)
+        /// <param name="supplyType">SupplyType property.</param>
+        /// <returns>this instance.</returns>
+        public InventorySupplyDetail WithSupplyType(string supplyType)
         {
-            this.supplyTypeField = supplyType;
+            this._supplyType = supplyType;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if SupplyType property is set
+        /// Checks if SupplyType property is set.
         /// </summary>
-        /// <returns>true if SupplyType property is set</returns>
-        public Boolean IsSetSupplyType()
+        /// <returns>true if SupplyType property is set.</returns>
+        public bool IsSetSupplyType()
         {
-            return  this.supplyTypeField != null;
-
+            return this._supplyType != null;
         }
-
 
         /// <summary>
         /// Gets and sets the EarliestAvailableToPick property.
@@ -111,36 +95,29 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws.Model
         [XmlElement(ElementName = "EarliestAvailableToPick")]
         public Timepoint EarliestAvailableToPick
         {
-            get { return this.earliestAvailableToPickField ; }
-            set { this.earliestAvailableToPickField = value; }
+            get { return this._earliestAvailableToPick; }
+            set { this._earliestAvailableToPick = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the EarliestAvailableToPick property
+        /// Sets the EarliestAvailableToPick property.
         /// </summary>
-        /// <param name="earliestAvailableToPick">EarliestAvailableToPick property</param>
-        /// <returns>this instance</returns>
+        /// <param name="earliestAvailableToPick">EarliestAvailableToPick property.</param>
+        /// <returns>this instance.</returns>
         public InventorySupplyDetail WithEarliestAvailableToPick(Timepoint earliestAvailableToPick)
         {
-            this.earliestAvailableToPickField = earliestAvailableToPick;
+            this._earliestAvailableToPick = earliestAvailableToPick;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if EarliestAvailableToPick property is set
+        /// Checks if EarliestAvailableToPick property is set.
         /// </summary>
-        /// <returns>true if EarliestAvailableToPick property is set</returns>
-        public Boolean IsSetEarliestAvailableToPick()
+        /// <returns>true if EarliestAvailableToPick property is set.</returns>
+        public bool IsSetEarliestAvailableToPick()
         {
-            return this.earliestAvailableToPickField != null;
+            return this._earliestAvailableToPick != null;
         }
-
-
-
 
         /// <summary>
         /// Gets and sets the LatestAvailableToPick property.
@@ -148,110 +125,54 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws.Model
         [XmlElement(ElementName = "LatestAvailableToPick")]
         public Timepoint LatestAvailableToPick
         {
-            get { return this.latestAvailableToPickField ; }
-            set { this.latestAvailableToPickField = value; }
+            get { return this._latestAvailableToPick; }
+            set { this._latestAvailableToPick = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the LatestAvailableToPick property
+        /// Sets the LatestAvailableToPick property.
         /// </summary>
-        /// <param name="latestAvailableToPick">LatestAvailableToPick property</param>
-        /// <returns>this instance</returns>
+        /// <param name="latestAvailableToPick">LatestAvailableToPick property.</param>
+        /// <returns>this instance.</returns>
         public InventorySupplyDetail WithLatestAvailableToPick(Timepoint latestAvailableToPick)
         {
-            this.latestAvailableToPickField = latestAvailableToPick;
+            this._latestAvailableToPick = latestAvailableToPick;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if LatestAvailableToPick property is set
+        /// Checks if LatestAvailableToPick property is set.
         /// </summary>
-        /// <returns>true if LatestAvailableToPick property is set</returns>
-        public Boolean IsSetLatestAvailableToPick()
+        /// <returns>true if LatestAvailableToPick property is set.</returns>
+        public bool IsSetLatestAvailableToPick()
         {
-            return this.latestAvailableToPickField != null;
+            return this._latestAvailableToPick != null;
         }
 
 
-
-
-
-
-        /// <summary>
-        /// XML fragment representation of this object
-        /// </summary>
-        /// <returns>XML fragment for this object.</returns>
-        /// <remarks>
-        /// Name for outer tag expected to be set by calling method. 
-        /// This fragment returns inner properties representation only
-        /// </remarks>
-
-
-        protected internal String ToXMLFragment() {
-            StringBuilder xml = new StringBuilder();
-            if (this.IsSetQuantity()) {
-                xml.Append("<Quantity>");
-                xml.Append(this.Quantity);
-                xml.Append("</Quantity>");
-            }
-            if (this.IsSetSupplyType()) {
-                xml.Append("<SupplyType>");
-                xml.Append(this.EscapeXML(this.SupplyType));
-                xml.Append("</SupplyType>");
-            }
-            if (this.IsSetEarliestAvailableToPick()) {
-                Timepoint  earliestAvailableToPickObj = this.EarliestAvailableToPick;
-                xml.Append("<EarliestAvailableToPick>");
-                xml.Append(earliestAvailableToPickObj.ToXMLFragment());
-                xml.Append("</EarliestAvailableToPick>");
-            } 
-            if (this.IsSetLatestAvailableToPick()) {
-                Timepoint  latestAvailableToPickObj = this.LatestAvailableToPick;
-                xml.Append("<LatestAvailableToPick>");
-                xml.Append(latestAvailableToPickObj.ToXMLFragment());
-                xml.Append("</LatestAvailableToPick>");
-            } 
-            return xml.ToString();
+        public override void ReadFragmentFrom(IMwsReader reader)
+        {
+            this._quantity = reader.Read<decimal?>("Quantity");
+            this._supplyType = reader.Read<string>("SupplyType");
+            this._earliestAvailableToPick = reader.Read<Timepoint>("EarliestAvailableToPick");
+            this._latestAvailableToPick = reader.Read<Timepoint>("LatestAvailableToPick");
         }
 
-        /**
-         * 
-         * Escape XML special characters
-         */
-        private String EscapeXML(String str) {
-            StringBuilder sb = new StringBuilder();
-            foreach (Char c in str)
-            {
-                switch (c) {
-                case '&':
-                    sb.Append("&amp;");
-                    break;
-                case '<':
-                    sb.Append("&lt;");
-                    break;
-                case '>':
-                    sb.Append("&gt;");
-                    break;
-                case '\'':
-                    sb.Append("&#039;");
-                    break;
-                case '"':
-                    sb.Append("&quot;");
-                    break;
-                default:
-                    sb.Append(c);
-                    break;
-                }
-            }
-            return sb.ToString();
+        public override void WriteFragmentTo(IMwsWriter writer)
+        {
+            writer.Write("Quantity", this._quantity);
+            writer.Write("SupplyType", this._supplyType);
+            writer.Write("EarliestAvailableToPick", this._earliestAvailableToPick);
+            writer.Write("LatestAvailableToPick", this._latestAvailableToPick);
         }
 
+        public override void WriteTo(IMwsWriter writer)
+        {
+            writer.Write("http://mws.amazonaws.com/FulfillmentInventory/2010-10-01/", "InventorySupplyDetail", this);
+        }
 
-
+        public InventorySupplyDetail() : base()
+        {
+        }
     }
-
 }

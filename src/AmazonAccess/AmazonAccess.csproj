@@ -71,12 +71,14 @@
     <Compile Include="Services\FbaInventoryServiceMws\FbaInventoryServiceMwsException.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\InventorySupplyService.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Mock\FbaInventoryServiceMws.cs" />
+    <Compile Include="Services\FbaInventoryServiceMws\Mock\FBAInventoryServiceMWSMock.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\AmazonInventoryItem.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\Error.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\ErrorResponse.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\GetServiceStatusRequest.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\GetServiceStatusResponse.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\GetServiceStatusResult.cs" />
+    <Compile Include="Services\FbaInventoryServiceMws\Model\IMWSResponse.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\InventorySupply.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\InventorySupplyDetail.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\InventorySupplyDetailList.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Services\FbaInventoryServiceMws\Model\ListInventorySupplyRequest.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\ListInventorySupplyResponse.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\ListInventorySupplyResult.cs" />
+    <Compile Include="Services\FbaInventoryServiceMws\Model\ResponseHeaderMetadata.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\ResponseMetadata.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\SellerSkuList.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\Timepoint.cs" />
@@ -95,7 +98,7 @@
     <Compile Include="Services\MarketplaceWebServiceFeeds\Model\InventoryFeed.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeeds\ReportsService.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\ComposedOrder.cs" />
-    <Compile Include="Services\MarketplaceWebServiceOrders\MarketplaceWebServiceOrders.cs" />
+    <Compile Include="Services\MarketplaceWebServiceOrders\IMarketplaceWebServiceOrders.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\MarketplaceWebServiceOrdersClient.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\MarketplaceWebServiceOrdersConfig.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\MarketplaceWebServiceOrdersException.cs" />
@@ -111,6 +114,7 @@
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\GetServiceStatusRequest.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\GetServiceStatusResponse.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\GetServiceStatusResult.cs" />
+    <Compile Include="Services\MarketplaceWebServiceOrders\Model\IMWSResponse.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\InvoiceData.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\ListOrderItemsByNextTokenRequest.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\ListOrderItemsByNextTokenResponse.cs" />
@@ -140,6 +144,7 @@
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\PaymentExecutionDetailItemList.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\PaymentMethodEnum.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\PaymentMethodList.cs" />
+    <Compile Include="Services\MarketplaceWebServiceOrders\Model\PointsGrantedDetail.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\PromotionIdList.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\ResponseHeaderMetadata.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\ResponseMetadata.cs" />
@@ -240,12 +245,30 @@
     <Compile Include="Services\MarketplaceWebServiceFeeds\Model\UpdateReportAcknowledgementsResult.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\OrderItemsService.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\OrdersService.cs" />
+    <Compile Include="Services\Utils\AbstractMwsObject.cs" />
+    <Compile Include="Services\Utils\IMwsCall.cs" />
+    <Compile Include="Services\Utils\IMwsObject.cs" />
+    <Compile Include="Services\Utils\IMwsReader.cs" />
+    <Compile Include="Services\Utils\IMwsRequestType.cs" />
+    <Compile Include="Services\Utils\IMwsWriter.cs" />
+    <Compile Include="Services\Utils\MwsAQCall.cs" />
+    <Compile Include="Services\Utils\MwsConnection.cs" />
+    <Compile Include="Services\Utils\MwsException.cs" />
+    <Compile Include="Services\Utils\MwsResponseHeaderMetadata.cs" />
+    <Compile Include="Services\Utils\MwsResponseMetadata.cs" />
+    <Compile Include="Services\Utils\MwsUtil.cs" />
+    <Compile Include="Services\Utils\MwsXmlBuilder.cs" />
+    <Compile Include="Services\Utils\MwsXmlReader.cs" />
+    <Compile Include="Services\Utils\MwsXmlWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Services\FbaInventoryServiceMws\Mock\ErrorResponse.xml" />
+    <Content Include="Services\FbaInventoryServiceMws\Mock\FBAInventoryServiceMWS.Model.GetServiceStatusResponse.xml" />
+    <Content Include="Services\FbaInventoryServiceMws\Mock\FBAInventoryServiceMWS.Model.ListInventorySupplyByNextTokenResponse.xml" />
+    <Content Include="Services\FbaInventoryServiceMws\Mock\FBAInventoryServiceMWS.Model.ListInventorySupplyResponse.xml" />
     <Content Include="Services\FbaInventoryServiceMws\Mock\GetServiceStatusResponse.xml" />
     <Content Include="Services\FbaInventoryServiceMws\Mock\ListInventorySupplyByNextTokenResponse.xml" />
     <Content Include="Services\FbaInventoryServiceMws\Mock\ListInventorySupplyResponse.xml" />
@@ -278,6 +301,7 @@
     <Content Include="Services\MarketplaceWebServiceFeeds\Mock\SubmitFeedResponse.xml" />
     <Content Include="Services\MarketplaceWebServiceFeeds\Mock\UpdateReportAcknowledgementsResponse.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -30,7 +30,7 @@ namespace AmazonAccessTests.Feeds
 		public void SubmitFeed()
 		{
 			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, marketplace );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			var itemsList = new List< AmazonInventoryItem >();
 			for( var i = 0; i < 100; i++ )

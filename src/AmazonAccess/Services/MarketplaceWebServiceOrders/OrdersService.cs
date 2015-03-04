@@ -3,10 +3,11 @@ using System.Linq;
 using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using CuttingEdge.Conditions;
+using MarketplaceWebServiceOrders.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 {
-	public class OrdersService
+	public sealed class OrdersService
 	{
 		private readonly IMarketplaceWebServiceOrders _client;
 		private readonly ListOrdersRequest _request;
@@ -45,7 +46,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		{
 			if( listInventorySupplyResult.IsSetOrders() )
 			{
-				var orders = listInventorySupplyResult.Orders.Order.Select( o => new ComposedOrder( o ) ).ToList();
+				var orders = listInventorySupplyResult.Orders.Select( o => new ComposedOrder( o ) ).ToList();
 				this.FillOrders( orders );
 				foreach( var order in orders )
 				{
@@ -64,7 +65,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				var nextResponse = this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
 				{
 					SellerId = this._request.SellerId,
-					NextToken = nextToken
+					NextToken = nextToken,
+					MWSAuthToken = this._request.MWSAuthToken
 				} );
 				requestQuota = requestQuota == 0 ? 0 : requestQuota - 1;
 
@@ -74,7 +76,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				if( !listInventorySupplyResult.IsSetOrders() )
 					continue;
 				
-				var orders = listInventorySupplyResult.Orders.Order.Select( o => new ComposedOrder( o ) ).ToList();
+				var orders = listInventorySupplyResult.Orders.Select( o => new ComposedOrder( o ) ).ToList();
 				this.FillOrders( orders );
 				foreach( var order in orders )
 				{
@@ -96,7 +98,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			var itemsService = new OrderItemsService( this._client, new ListOrderItemsRequest
 			{
 				AmazonOrderId = orderId,
-				SellerId = this._request.SellerId
+				SellerId = this._request.SellerId,
+				MWSAuthToken = this._request.MWSAuthToken
 			} );
 
 			return itemsService.LoadOrderItems();

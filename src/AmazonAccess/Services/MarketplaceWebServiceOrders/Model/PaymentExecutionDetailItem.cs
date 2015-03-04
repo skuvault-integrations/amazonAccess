@@ -1,171 +1,110 @@
-/******************************************************************************* 
- *  Copyright 2008-2012 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *  Licensed under the Apache License, Version 2.0 (the "License"); 
- *  
- *  You may not use this file except in compliance with the License. 
- *  You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
- *  This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
- *  CONDITIONS OF ANY KIND, either express or implied. See the License for the 
- *  specific language governing permissions and limitations under the License.
- * ***************************************************************************** 
- * 
- *  Marketplace Web Service Orders CSharp Library
- *  API Version: 2011-01-01
- * 
+/*******************************************************************************
+ * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ *
+ * You may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
+ * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+ * specific language governing permissions and limitations under the License.
+ *******************************************************************************
+ * Payment Execution Detail Item
+ * API Version: 2013-09-01
+ * Library Version: 2015-02-13
+ * Generated: Tue Feb 10 22:00:52 UTC 2015
  */
 
+
 using System;
-using System.Xml.Serialization;
-using System.Text;
+using System.Xml;
+using AmazonAccess.Services.Utils;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
+namespace MarketplaceWebServiceOrders.Model
 {
-    [XmlType(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01")]
-    [XmlRoot(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01", IsNullable = false)]
-    public class PaymentExecutionDetailItem
+    public class PaymentExecutionDetailItem : AbstractMwsObject
     {
-    
-        private  Money paymentField;
-        private String paymentMethodField;
 
+        private Money _payment;
+        private string _paymentMethod;
 
         /// <summary>
         /// Gets and sets the Payment property.
         /// </summary>
-        [XmlElement(ElementName = "Payment")]
         public Money Payment
         {
-            get { return this.paymentField ; }
-            set { this.paymentField = value; }
+            get { return this._payment; }
+            set { this._payment = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the Payment property
+        /// Sets the Payment property.
         /// </summary>
-        /// <param name="payment">Payment property</param>
-        /// <returns>this instance</returns>
+        /// <param name="payment">Payment property.</param>
+        /// <returns>this instance.</returns>
         public PaymentExecutionDetailItem WithPayment(Money payment)
         {
-            this.paymentField = payment;
+            this._payment = payment;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if Payment property is set
+        /// Checks if Payment property is set.
         /// </summary>
-        /// <returns>true if Payment property is set</returns>
-        public Boolean IsSetPayment()
+        /// <returns>true if Payment property is set.</returns>
+        public bool IsSetPayment()
         {
-            return this.paymentField != null;
+            return this._payment != null;
         }
-
-
-
 
         /// <summary>
         /// Gets and sets the PaymentMethod property.
         /// </summary>
-        [XmlElement(ElementName = "PaymentMethod")]
-        public String PaymentMethod
+        public string PaymentMethod
         {
-            get { return this.paymentMethodField ; }
-            set { this.paymentMethodField= value; }
+            get { return this._paymentMethod; }
+            set { this._paymentMethod = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the PaymentMethod property
+        /// Sets the PaymentMethod property.
         /// </summary>
-        /// <param name="paymentMethod">PaymentMethod property</param>
-        /// <returns>this instance</returns>
-        public PaymentExecutionDetailItem WithPaymentMethod(String paymentMethod)
+        /// <param name="paymentMethod">PaymentMethod property.</param>
+        /// <returns>this instance.</returns>
+        public PaymentExecutionDetailItem WithPaymentMethod(string paymentMethod)
         {
-            this.paymentMethodField = paymentMethod;
+            this._paymentMethod = paymentMethod;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if PaymentMethod property is set
+        /// Checks if PaymentMethod property is set.
         /// </summary>
-        /// <returns>true if PaymentMethod property is set</returns>
-        public Boolean IsSetPaymentMethod()
+        /// <returns>true if PaymentMethod property is set.</returns>
+        public bool IsSetPaymentMethod()
         {
-            return  this.paymentMethodField != null;
-
+            return this._paymentMethod != null;
         }
 
 
-
-
-        /// <summary>
-        /// XML fragment representation of this object
-        /// </summary>
-        /// <returns>XML fragment for this object.</returns>
-        /// <remarks>
-        /// Name for outer tag expected to be set by calling method. 
-        /// This fragment returns inner properties representation only
-        /// </remarks>
-
-
-        protected internal String ToXMLFragment() {
-            StringBuilder xml = new StringBuilder();
-            if (this.IsSetPayment()) {
-                Money  paymentObj = this.Payment;
-                xml.Append("<Payment>");
-                xml.Append(paymentObj.ToXMLFragment());
-                xml.Append("</Payment>");
-            } 
-            if (this.IsSetPaymentMethod()) {
-                xml.Append("<PaymentMethod>");
-                xml.Append(this.EscapeXML(this.PaymentMethod));
-                xml.Append("</PaymentMethod>");
-            }
-            return xml.ToString();
+        public override void ReadFragmentFrom(IMwsReader reader)
+        {
+            _payment = reader.Read<Money>("Payment");
+            _paymentMethod = reader.Read<string>("PaymentMethod");
         }
 
-        /**
-         * 
-         * Escape XML special characters
-         */
-        private String EscapeXML(String str) {
-            if (str == null)
-                return "null";
-            StringBuilder sb = new StringBuilder();
-            foreach (Char c in str)
-            {
-                switch (c) {
-                case '&':
-                    sb.Append("&amp;");
-                    break;
-                case '<':
-                    sb.Append("&lt;");
-                    break;
-                case '>':
-                    sb.Append("&gt;");
-                    break;
-                case '\'':
-                    sb.Append("&#039;");
-                    break;
-                case '"':
-                    sb.Append("&quot;");
-                    break;
-                default:
-                    sb.Append(c);
-                    break;
-                }
-            }
-            return sb.ToString();
+        public override void WriteFragmentTo(IMwsWriter writer)
+        {
+            writer.Write("Payment", _payment);
+            writer.Write("PaymentMethod", _paymentMethod);
         }
 
+        public override void WriteTo(IMwsWriter writer)
+        {
+            writer.Write("https://mws.amazonservices.com/Orders/2013-09-01", "PaymentExecutionDetailItem", this);
+        }
 
-
+        public PaymentExecutionDetailItem() : base()
+        {
+        }
     }
-
 }

@@ -12,5 +12,8 @@ namespace AmazonAccessTests
 
 		[ CsvColumn( Name = "SellerId", FieldIndex = 3 ) ]
 		public string SellerId{ get; set; }
+
+		[ CsvColumn( Name = "MWSAuthToken ", FieldIndex = 3 ) ]
+		public string MwsAuthToken{ get; set; }
 	}
 }

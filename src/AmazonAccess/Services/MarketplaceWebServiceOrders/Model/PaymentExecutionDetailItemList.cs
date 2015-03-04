@@ -18,6 +18,7 @@ using System;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Text;
+using MarketplaceWebServiceOrders.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {

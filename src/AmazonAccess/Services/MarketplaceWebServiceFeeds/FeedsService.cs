@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using AmazonAccess.Misc;
-using MarketplaceWebService;
 using MarketplaceWebService.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
@@ -17,7 +16,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			if( response.IsSetSubmitFeedResult() )
 			{
 				var feedSubmissionId = response.SubmitFeedResult.FeedSubmissionInfo.FeedSubmissionId;
-				while( !this.IsReportReady( client, feedSubmissionId, request.Merchant ) )
+				while( !this.IsReportReady( client, feedSubmissionId, request.Merchant, request.MWSAuthToken ) )
 				{
 					//waiting for the report
 					Thread.Sleep( TimeSpan.FromMinutes( 1 ) );
@@ -36,13 +35,14 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 
 		//}
 
-		private bool IsReportReady( IMarketplaceWebServiceFeeds client, string feedSubmissionId, string merchant )
+		private bool IsReportReady( IMarketplaceWebServiceFeeds client, string feedSubmissionId, string merchant, string mwsAuthToken )
 		{
 			var ready = false;
 			var response = client.GetFeedSubmissionList( new GetFeedSubmissionListRequest
 				{
 					FeedSubmissionIdList = new IdList { Id = new List< string > { feedSubmissionId } },
-					Merchant = merchant
+					Merchant = merchant,
+					MWSAuthToken = mwsAuthToken
 				} );
 			ActionPolicies.CreateApiDelay( 2 ).Wait();
 

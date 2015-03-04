@@ -1,1250 +1,918 @@
-/******************************************************************************* 
- *  Copyright 2008-2012 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *  Licensed under the Apache License, Version 2.0 (the "License"); 
- *  
- *  You may not use this file except in compliance with the License. 
- *  You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
- *  This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
- *  CONDITIONS OF ANY KIND, either express or implied. See the License for the 
- *  specific language governing permissions and limitations under the License.
- * ***************************************************************************** 
- * 
- *  Marketplace Web Service Orders CSharp Library
- *  API Version: 2011-01-01
- * 
+/*******************************************************************************
+ * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ *
+ * You may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
+ * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+ * specific language governing permissions and limitations under the License.
+ *******************************************************************************
+ * Order
+ * API Version: 2013-09-01
+ * Library Version: 2015-02-13
+ * Generated: Tue Feb 10 22:00:52 UTC 2015
  */
 
+
 using System;
-using System.Xml.Serialization;
-using System.Text;
+using System.Xml;
+using System.Collections.Generic;
+using AmazonAccess.Services.Utils;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
+namespace MarketplaceWebServiceOrders.Model
 {
-    [XmlType(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01")]
-    [XmlRoot(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01", IsNullable = false)]
-    public class Order
+    public class Order : AbstractMwsObject
     {
-    
-        private String amazonOrderIdField;
 
-        private String sellerOrderIdField;
-
-        private DateTime? purchaseDateField;
-
-        private DateTime? lastUpdateDateField;
-
-        private OrderStatusEnum? orderStatusField;
-
-        private FulfillmentChannelEnum? fulfillmentChannelField;
-
-        private String salesChannelField;
-
-        private String orderChannelField;
-
-        private String shipServiceLevelField;
-
-        private  Address shippingAddressField;
-        private  Money orderTotalField;
-        private Decimal? numberOfItemsShippedField;
-
-        private Decimal? numberOfItemsUnshippedField;
-
-        private  PaymentExecutionDetailItemList paymentExecutionDetailField;
-        private PaymentMethodEnum? paymentMethodField;
-
-        private String marketplaceIdField;
-
-        private String buyerEmailField;
-
-        private String buyerNameField;
-
-        private String shipmentServiceLevelCategoryField;
-
-        private Boolean? shippedByAmazonTFMField;
-
-        private String TFMShipmentStatusField;
-        
-        private String cbaDisplayableShippingLabelField;
-        
-        private String orderTypeField;
-        
-        private DateTime? earliestShipDateField;
-        
-        private DateTime? latestShipDateField;
-
+        private string _amazonOrderId;
+        private string _sellerOrderId;
+        private DateTime? _purchaseDate;
+        private DateTime? _lastUpdateDate;
+        private string _orderStatus;
+        private string _fulfillmentChannel;
+        private string _salesChannel;
+        private string _orderChannel;
+        private string _shipServiceLevel;
+        private Address _shippingAddress;
+        private Money _orderTotal;
+        private decimal? _numberOfItemsShipped;
+        private decimal? _numberOfItemsUnshipped;
+        private List<PaymentExecutionDetailItem> _paymentExecutionDetail;
+        private string _paymentMethod;
+        private string _marketplaceId;
+        private string _buyerEmail;
+        private string _buyerName;
+        private string _shipmentServiceLevelCategory;
+        private bool? _shippedByAmazonTFM;
+        private string _tfmShipmentStatus;
+        private string _cbaDisplayableShippingLabel;
+        private string _orderType;
+        private DateTime? _earliestShipDate;
+        private DateTime? _latestShipDate;
+        private DateTime? _earliestDeliveryDate;
+        private DateTime? _latestDeliveryDate;
 
         /// <summary>
         /// Gets and sets the AmazonOrderId property.
         /// </summary>
-        [XmlElement(ElementName = "AmazonOrderId")]
-        public String AmazonOrderId
+        public string AmazonOrderId
         {
-            get { return this.amazonOrderIdField ; }
-            set { this.amazonOrderIdField= value; }
+            get { return this._amazonOrderId; }
+            set { this._amazonOrderId = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the AmazonOrderId property
+        /// Sets the AmazonOrderId property.
         /// </summary>
-        /// <param name="amazonOrderId">AmazonOrderId property</param>
-        /// <returns>this instance</returns>
-        public Order WithAmazonOrderId(String amazonOrderId)
+        /// <param name="amazonOrderId">AmazonOrderId property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithAmazonOrderId(string amazonOrderId)
         {
-            this.amazonOrderIdField = amazonOrderId;
+            this._amazonOrderId = amazonOrderId;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if AmazonOrderId property is set
+        /// Checks if AmazonOrderId property is set.
         /// </summary>
-        /// <returns>true if AmazonOrderId property is set</returns>
-        public Boolean IsSetAmazonOrderId()
+        /// <returns>true if AmazonOrderId property is set.</returns>
+        public bool IsSetAmazonOrderId()
         {
-            return  this.amazonOrderIdField != null;
-
+            return this._amazonOrderId != null;
         }
-
 
         /// <summary>
         /// Gets and sets the SellerOrderId property.
         /// </summary>
-        [XmlElement(ElementName = "SellerOrderId")]
-        public String SellerOrderId
+        public string SellerOrderId
         {
-            get { return this.sellerOrderIdField ; }
-            set { this.sellerOrderIdField= value; }
+            get { return this._sellerOrderId; }
+            set { this._sellerOrderId = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the SellerOrderId property
+        /// Sets the SellerOrderId property.
         /// </summary>
-        /// <param name="sellerOrderId">SellerOrderId property</param>
-        /// <returns>this instance</returns>
-        public Order WithSellerOrderId(String sellerOrderId)
+        /// <param name="sellerOrderId">SellerOrderId property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithSellerOrderId(string sellerOrderId)
         {
-            this.sellerOrderIdField = sellerOrderId;
+            this._sellerOrderId = sellerOrderId;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if SellerOrderId property is set
+        /// Checks if SellerOrderId property is set.
         /// </summary>
-        /// <returns>true if SellerOrderId property is set</returns>
-        public Boolean IsSetSellerOrderId()
+        /// <returns>true if SellerOrderId property is set.</returns>
+        public bool IsSetSellerOrderId()
         {
-            return  this.sellerOrderIdField != null;
-
+            return this._sellerOrderId != null;
         }
-
 
         /// <summary>
         /// Gets and sets the PurchaseDate property.
         /// </summary>
-        [XmlElement(ElementName = "PurchaseDate")]
         public DateTime PurchaseDate
         {
-            get { return this.purchaseDateField.GetValueOrDefault() ; }
-            set { this.purchaseDateField= value; }
+            get { return this._purchaseDate.GetValueOrDefault(); }
+            set { this._purchaseDate = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the PurchaseDate property
+        /// Sets the PurchaseDate property.
         /// </summary>
-        /// <param name="purchaseDate">PurchaseDate property</param>
-        /// <returns>this instance</returns>
+        /// <param name="purchaseDate">PurchaseDate property.</param>
+        /// <returns>this instance.</returns>
         public Order WithPurchaseDate(DateTime purchaseDate)
         {
-            this.purchaseDateField = purchaseDate;
+            this._purchaseDate = purchaseDate;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if PurchaseDate property is set
+        /// Checks if PurchaseDate property is set.
         /// </summary>
-        /// <returns>true if PurchaseDate property is set</returns>
-        public Boolean IsSetPurchaseDate()
+        /// <returns>true if PurchaseDate property is set.</returns>
+        public bool IsSetPurchaseDate()
         {
-            return  this.purchaseDateField.HasValue;
-
+            return this._purchaseDate != null;
         }
-
 
         /// <summary>
         /// Gets and sets the LastUpdateDate property.
         /// </summary>
-        [XmlElement(ElementName = "LastUpdateDate")]
         public DateTime LastUpdateDate
         {
-            get { return this.lastUpdateDateField.GetValueOrDefault() ; }
-            set { this.lastUpdateDateField= value; }
+            get { return this._lastUpdateDate.GetValueOrDefault(); }
+            set { this._lastUpdateDate = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the LastUpdateDate property
+        /// Sets the LastUpdateDate property.
         /// </summary>
-        /// <param name="lastUpdateDate">LastUpdateDate property</param>
-        /// <returns>this instance</returns>
+        /// <param name="lastUpdateDate">LastUpdateDate property.</param>
+        /// <returns>this instance.</returns>
         public Order WithLastUpdateDate(DateTime lastUpdateDate)
         {
-            this.lastUpdateDateField = lastUpdateDate;
+            this._lastUpdateDate = lastUpdateDate;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if LastUpdateDate property is set
+        /// Checks if LastUpdateDate property is set.
         /// </summary>
-        /// <returns>true if LastUpdateDate property is set</returns>
-        public Boolean IsSetLastUpdateDate()
+        /// <returns>true if LastUpdateDate property is set.</returns>
+        public bool IsSetLastUpdateDate()
         {
-            return  this.lastUpdateDateField.HasValue;
-
+            return this._lastUpdateDate != null;
         }
-
 
         /// <summary>
         /// Gets and sets the OrderStatus property.
         /// </summary>
-        [XmlElement(ElementName = "OrderStatus")]
-        public OrderStatusEnum OrderStatus
+        public string OrderStatus
         {
-            get { return this.orderStatusField.GetValueOrDefault() ; }
-            set { this.orderStatusField= value; }
+            get { return this._orderStatus; }
+            set { this._orderStatus = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the OrderStatus property
+        /// Sets the OrderStatus property.
         /// </summary>
-        /// <param name="orderStatus">OrderStatus property</param>
-        /// <returns>this instance</returns>
-        public Order WithOrderStatus(OrderStatusEnum orderStatus)
+        /// <param name="orderStatus">OrderStatus property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithOrderStatus(string orderStatus)
         {
-            this.orderStatusField = orderStatus;
+            this._orderStatus = orderStatus;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if OrderStatus property is set
+        /// Checks if OrderStatus property is set.
         /// </summary>
-        /// <returns>true if OrderStatus property is set</returns>
-        public Boolean IsSetOrderStatus()
+        /// <returns>true if OrderStatus property is set.</returns>
+        public bool IsSetOrderStatus()
         {
-            return this.orderStatusField.HasValue;
-
+            return this._orderStatus != null;
         }
-
 
         /// <summary>
         /// Gets and sets the FulfillmentChannel property.
         /// </summary>
-        [XmlElement(ElementName = "FulfillmentChannel")]
-        public FulfillmentChannelEnum FulfillmentChannel
+        public string FulfillmentChannel
         {
-            get { return this.fulfillmentChannelField.GetValueOrDefault() ; }
-            set { this.fulfillmentChannelField= value; }
+            get { return this._fulfillmentChannel; }
+            set { this._fulfillmentChannel = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the FulfillmentChannel property
+        /// Sets the FulfillmentChannel property.
         /// </summary>
-        /// <param name="fulfillmentChannel">FulfillmentChannel property</param>
-        /// <returns>this instance</returns>
-        public Order WithFulfillmentChannel(FulfillmentChannelEnum fulfillmentChannel)
+        /// <param name="fulfillmentChannel">FulfillmentChannel property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithFulfillmentChannel(string fulfillmentChannel)
         {
-            this.fulfillmentChannelField = fulfillmentChannel;
+            this._fulfillmentChannel = fulfillmentChannel;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if FulfillmentChannel property is set
+        /// Checks if FulfillmentChannel property is set.
         /// </summary>
-        /// <returns>true if FulfillmentChannel property is set</returns>
-        public Boolean IsSetFulfillmentChannel()
+        /// <returns>true if FulfillmentChannel property is set.</returns>
+        public bool IsSetFulfillmentChannel()
         {
-            return this.fulfillmentChannelField.HasValue;
-
+            return this._fulfillmentChannel != null;
         }
-
 
         /// <summary>
         /// Gets and sets the SalesChannel property.
         /// </summary>
-        [XmlElement(ElementName = "SalesChannel")]
-        public String SalesChannel
+        public string SalesChannel
         {
-            get { return this.salesChannelField ; }
-            set { this.salesChannelField= value; }
+            get { return this._salesChannel; }
+            set { this._salesChannel = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the SalesChannel property
+        /// Sets the SalesChannel property.
         /// </summary>
-        /// <param name="salesChannel">SalesChannel property</param>
-        /// <returns>this instance</returns>
-        public Order WithSalesChannel(String salesChannel)
+        /// <param name="salesChannel">SalesChannel property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithSalesChannel(string salesChannel)
         {
-            this.salesChannelField = salesChannel;
+            this._salesChannel = salesChannel;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if SalesChannel property is set
+        /// Checks if SalesChannel property is set.
         /// </summary>
-        /// <returns>true if SalesChannel property is set</returns>
-        public Boolean IsSetSalesChannel()
+        /// <returns>true if SalesChannel property is set.</returns>
+        public bool IsSetSalesChannel()
         {
-            return  this.salesChannelField != null;
-
+            return this._salesChannel != null;
         }
-
 
         /// <summary>
         /// Gets and sets the OrderChannel property.
         /// </summary>
-        [XmlElement(ElementName = "OrderChannel")]
-        public String OrderChannel
+        public string OrderChannel
         {
-            get { return this.orderChannelField ; }
-            set { this.orderChannelField= value; }
+            get { return this._orderChannel; }
+            set { this._orderChannel = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the OrderChannel property
+        /// Sets the OrderChannel property.
         /// </summary>
-        /// <param name="orderChannel">OrderChannel property</param>
-        /// <returns>this instance</returns>
-        public Order WithOrderChannel(String orderChannel)
+        /// <param name="orderChannel">OrderChannel property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithOrderChannel(string orderChannel)
         {
-            this.orderChannelField = orderChannel;
+            this._orderChannel = orderChannel;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if OrderChannel property is set
+        /// Checks if OrderChannel property is set.
         /// </summary>
-        /// <returns>true if OrderChannel property is set</returns>
-        public Boolean IsSetOrderChannel()
+        /// <returns>true if OrderChannel property is set.</returns>
+        public bool IsSetOrderChannel()
         {
-            return  this.orderChannelField != null;
-
+            return this._orderChannel != null;
         }
-
 
         /// <summary>
         /// Gets and sets the ShipServiceLevel property.
         /// </summary>
-        [XmlElement(ElementName = "ShipServiceLevel")]
-        public String ShipServiceLevel
+        public string ShipServiceLevel
         {
-            get { return this.shipServiceLevelField ; }
-            set { this.shipServiceLevelField= value; }
+            get { return this._shipServiceLevel; }
+            set { this._shipServiceLevel = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the ShipServiceLevel property
+        /// Sets the ShipServiceLevel property.
         /// </summary>
-        /// <param name="shipServiceLevel">ShipServiceLevel property</param>
-        /// <returns>this instance</returns>
-        public Order WithShipServiceLevel(String shipServiceLevel)
+        /// <param name="shipServiceLevel">ShipServiceLevel property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithShipServiceLevel(string shipServiceLevel)
         {
-            this.shipServiceLevelField = shipServiceLevel;
+            this._shipServiceLevel = shipServiceLevel;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if ShipServiceLevel property is set
+        /// Checks if ShipServiceLevel property is set.
         /// </summary>
-        /// <returns>true if ShipServiceLevel property is set</returns>
-        public Boolean IsSetShipServiceLevel()
+        /// <returns>true if ShipServiceLevel property is set.</returns>
+        public bool IsSetShipServiceLevel()
         {
-            return  this.shipServiceLevelField != null;
-
+            return this._shipServiceLevel != null;
         }
-
 
         /// <summary>
         /// Gets and sets the ShippingAddress property.
         /// </summary>
-        [XmlElement(ElementName = "ShippingAddress")]
         public Address ShippingAddress
         {
-            get { return this.shippingAddressField ; }
-            set { this.shippingAddressField = value; }
+            get { return this._shippingAddress; }
+            set { this._shippingAddress = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the ShippingAddress property
+        /// Sets the ShippingAddress property.
         /// </summary>
-        /// <param name="shippingAddress">ShippingAddress property</param>
-        /// <returns>this instance</returns>
+        /// <param name="shippingAddress">ShippingAddress property.</param>
+        /// <returns>this instance.</returns>
         public Order WithShippingAddress(Address shippingAddress)
         {
-            this.shippingAddressField = shippingAddress;
+            this._shippingAddress = shippingAddress;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if ShippingAddress property is set
+        /// Checks if ShippingAddress property is set.
         /// </summary>
-        /// <returns>true if ShippingAddress property is set</returns>
-        public Boolean IsSetShippingAddress()
+        /// <returns>true if ShippingAddress property is set.</returns>
+        public bool IsSetShippingAddress()
         {
-            return this.shippingAddressField != null;
+            return this._shippingAddress != null;
         }
-
-
-
 
         /// <summary>
         /// Gets and sets the OrderTotal property.
         /// </summary>
-        [XmlElement(ElementName = "OrderTotal")]
         public Money OrderTotal
         {
-            get { return this.orderTotalField ; }
-            set { this.orderTotalField = value; }
+            get { return this._orderTotal; }
+            set { this._orderTotal = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the OrderTotal property
+        /// Sets the OrderTotal property.
         /// </summary>
-        /// <param name="orderTotal">OrderTotal property</param>
-        /// <returns>this instance</returns>
+        /// <param name="orderTotal">OrderTotal property.</param>
+        /// <returns>this instance.</returns>
         public Order WithOrderTotal(Money orderTotal)
         {
-            this.orderTotalField = orderTotal;
+            this._orderTotal = orderTotal;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if OrderTotal property is set
+        /// Checks if OrderTotal property is set.
         /// </summary>
-        /// <returns>true if OrderTotal property is set</returns>
-        public Boolean IsSetOrderTotal()
+        /// <returns>true if OrderTotal property is set.</returns>
+        public bool IsSetOrderTotal()
         {
-            return this.orderTotalField != null;
+            return this._orderTotal != null;
         }
-
-
-
 
         /// <summary>
         /// Gets and sets the NumberOfItemsShipped property.
         /// </summary>
-        [XmlElement(ElementName = "NumberOfItemsShipped")]
-        public Decimal NumberOfItemsShipped
+        public decimal NumberOfItemsShipped
         {
-            get { return this.numberOfItemsShippedField.GetValueOrDefault() ; }
-            set { this.numberOfItemsShippedField= value; }
+            get { return this._numberOfItemsShipped.GetValueOrDefault(); }
+            set { this._numberOfItemsShipped = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the NumberOfItemsShipped property
+        /// Sets the NumberOfItemsShipped property.
         /// </summary>
-        /// <param name="numberOfItemsShipped">NumberOfItemsShipped property</param>
-        /// <returns>this instance</returns>
-        public Order WithNumberOfItemsShipped(Decimal numberOfItemsShipped)
+        /// <param name="numberOfItemsShipped">NumberOfItemsShipped property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithNumberOfItemsShipped(decimal numberOfItemsShipped)
         {
-            this.numberOfItemsShippedField = numberOfItemsShipped;
+            this._numberOfItemsShipped = numberOfItemsShipped;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if NumberOfItemsShipped property is set
+        /// Checks if NumberOfItemsShipped property is set.
         /// </summary>
-        /// <returns>true if NumberOfItemsShipped property is set</returns>
-        public Boolean IsSetNumberOfItemsShipped()
+        /// <returns>true if NumberOfItemsShipped property is set.</returns>
+        public bool IsSetNumberOfItemsShipped()
         {
-            return  this.numberOfItemsShippedField.HasValue;
-
+            return this._numberOfItemsShipped != null;
         }
-
 
         /// <summary>
         /// Gets and sets the NumberOfItemsUnshipped property.
         /// </summary>
-        [XmlElement(ElementName = "NumberOfItemsUnshipped")]
-        public Decimal NumberOfItemsUnshipped
+        public decimal NumberOfItemsUnshipped
         {
-            get { return this.numberOfItemsUnshippedField.GetValueOrDefault() ; }
-            set { this.numberOfItemsUnshippedField= value; }
+            get { return this._numberOfItemsUnshipped.GetValueOrDefault(); }
+            set { this._numberOfItemsUnshipped = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the NumberOfItemsUnshipped property
+        /// Sets the NumberOfItemsUnshipped property.
         /// </summary>
-        /// <param name="numberOfItemsUnshipped">NumberOfItemsUnshipped property</param>
-        /// <returns>this instance</returns>
-        public Order WithNumberOfItemsUnshipped(Decimal numberOfItemsUnshipped)
+        /// <param name="numberOfItemsUnshipped">NumberOfItemsUnshipped property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithNumberOfItemsUnshipped(decimal numberOfItemsUnshipped)
         {
-            this.numberOfItemsUnshippedField = numberOfItemsUnshipped;
+            this._numberOfItemsUnshipped = numberOfItemsUnshipped;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if NumberOfItemsUnshipped property is set
+        /// Checks if NumberOfItemsUnshipped property is set.
         /// </summary>
-        /// <returns>true if NumberOfItemsUnshipped property is set</returns>
-        public Boolean IsSetNumberOfItemsUnshipped()
+        /// <returns>true if NumberOfItemsUnshipped property is set.</returns>
+        public bool IsSetNumberOfItemsUnshipped()
         {
-            return  this.numberOfItemsUnshippedField.HasValue;
-
+            return this._numberOfItemsUnshipped != null;
         }
-
 
         /// <summary>
         /// Gets and sets the PaymentExecutionDetail property.
         /// </summary>
-        [XmlElement(ElementName = "PaymentExecutionDetail")]
-        public PaymentExecutionDetailItemList PaymentExecutionDetail
+        public List<PaymentExecutionDetailItem> PaymentExecutionDetail
         {
-            get { return this.paymentExecutionDetailField ; }
-            set { this.paymentExecutionDetailField = value; }
+            get
+            {
+                if(this._paymentExecutionDetail == null)
+                {
+                    this._paymentExecutionDetail = new List<PaymentExecutionDetailItem>();
+                }
+                return this._paymentExecutionDetail;
+            }
+            set { this._paymentExecutionDetail = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the PaymentExecutionDetail property
+        /// Sets the PaymentExecutionDetail property.
         /// </summary>
-        /// <param name="paymentExecutionDetail">PaymentExecutionDetail property</param>
-        /// <returns>this instance</returns>
-        public Order WithPaymentExecutionDetail(PaymentExecutionDetailItemList paymentExecutionDetail)
+        /// <param name="paymentExecutionDetail">PaymentExecutionDetail property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithPaymentExecutionDetail(PaymentExecutionDetailItem[] paymentExecutionDetail)
         {
-            this.paymentExecutionDetailField = paymentExecutionDetail;
+            this._paymentExecutionDetail.AddRange(paymentExecutionDetail);
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if PaymentExecutionDetail property is set
+        /// Checks if PaymentExecutionDetail property is set.
         /// </summary>
-        /// <returns>true if PaymentExecutionDetail property is set</returns>
-        public Boolean IsSetPaymentExecutionDetail()
+        /// <returns>true if PaymentExecutionDetail property is set.</returns>
+        public bool IsSetPaymentExecutionDetail()
         {
-            return this.paymentExecutionDetailField != null;
+            return this.PaymentExecutionDetail.Count > 0;
         }
-
-
-
 
         /// <summary>
         /// Gets and sets the PaymentMethod property.
         /// </summary>
-        [XmlElement(ElementName = "PaymentMethod")]
-        public PaymentMethodEnum PaymentMethod
+        public string PaymentMethod
         {
-            get { return this.paymentMethodField.GetValueOrDefault() ; }
-            set { this.paymentMethodField= value; }
+            get { return this._paymentMethod; }
+            set { this._paymentMethod = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the PaymentMethod property
+        /// Sets the PaymentMethod property.
         /// </summary>
-        /// <param name="paymentMethod">PaymentMethod property</param>
-        /// <returns>this instance</returns>
-        public Order WithPaymentMethod(PaymentMethodEnum paymentMethod)
+        /// <param name="paymentMethod">PaymentMethod property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithPaymentMethod(string paymentMethod)
         {
-            this.paymentMethodField = paymentMethod;
+            this._paymentMethod = paymentMethod;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if PaymentMethod property is set
+        /// Checks if PaymentMethod property is set.
         /// </summary>
-        /// <returns>true if PaymentMethod property is set</returns>
-        public Boolean IsSetPaymentMethod()
+        /// <returns>true if PaymentMethod property is set.</returns>
+        public bool IsSetPaymentMethod()
         {
-            return this.paymentMethodField.HasValue;
-
+            return this._paymentMethod != null;
         }
-
 
         /// <summary>
         /// Gets and sets the MarketplaceId property.
         /// </summary>
-        [XmlElement(ElementName = "MarketplaceId")]
-        public String MarketplaceId
+        public string MarketplaceId
         {
-            get { return this.marketplaceIdField ; }
-            set { this.marketplaceIdField= value; }
+            get { return this._marketplaceId; }
+            set { this._marketplaceId = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the MarketplaceId property
+        /// Sets the MarketplaceId property.
         /// </summary>
-        /// <param name="marketplaceId">MarketplaceId property</param>
-        /// <returns>this instance</returns>
-        public Order WithMarketplaceId(String marketplaceId)
+        /// <param name="marketplaceId">MarketplaceId property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithMarketplaceId(string marketplaceId)
         {
-            this.marketplaceIdField = marketplaceId;
+            this._marketplaceId = marketplaceId;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if MarketplaceId property is set
+        /// Checks if MarketplaceId property is set.
         /// </summary>
-        /// <returns>true if MarketplaceId property is set</returns>
-        public Boolean IsSetMarketplaceId()
+        /// <returns>true if MarketplaceId property is set.</returns>
+        public bool IsSetMarketplaceId()
         {
-            return  this.marketplaceIdField != null;
-
+            return this._marketplaceId != null;
         }
-
 
         /// <summary>
         /// Gets and sets the BuyerEmail property.
         /// </summary>
-        [XmlElement(ElementName = "BuyerEmail")]
-        public String BuyerEmail
+        public string BuyerEmail
         {
-            get { return this.buyerEmailField ; }
-            set { this.buyerEmailField= value; }
+            get { return this._buyerEmail; }
+            set { this._buyerEmail = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the BuyerEmail property
+        /// Sets the BuyerEmail property.
         /// </summary>
-        /// <param name="buyerEmail">BuyerEmail property</param>
-        /// <returns>this instance</returns>
-        public Order WithBuyerEmail(String buyerEmail)
+        /// <param name="buyerEmail">BuyerEmail property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithBuyerEmail(string buyerEmail)
         {
-            this.buyerEmailField = buyerEmail;
+            this._buyerEmail = buyerEmail;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if BuyerEmail property is set
+        /// Checks if BuyerEmail property is set.
         /// </summary>
-        /// <returns>true if BuyerEmail property is set</returns>
-        public Boolean IsSetBuyerEmail()
+        /// <returns>true if BuyerEmail property is set.</returns>
+        public bool IsSetBuyerEmail()
         {
-            return  this.buyerEmailField != null;
-
+            return this._buyerEmail != null;
         }
-
 
         /// <summary>
         /// Gets and sets the BuyerName property.
         /// </summary>
-        [XmlElement(ElementName = "BuyerName")]
-        public String BuyerName
+        public string BuyerName
         {
-            get { return this.buyerNameField ; }
-            set { this.buyerNameField= value; }
+            get { return this._buyerName; }
+            set { this._buyerName = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the BuyerName property
+        /// Sets the BuyerName property.
         /// </summary>
-        /// <param name="buyerName">BuyerName property</param>
-        /// <returns>this instance</returns>
-        public Order WithBuyerName(String buyerName)
+        /// <param name="buyerName">BuyerName property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithBuyerName(string buyerName)
         {
-            this.buyerNameField = buyerName;
+            this._buyerName = buyerName;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if BuyerName property is set
+        /// Checks if BuyerName property is set.
         /// </summary>
-        /// <returns>true if BuyerName property is set</returns>
-        public Boolean IsSetBuyerName()
+        /// <returns>true if BuyerName property is set.</returns>
+        public bool IsSetBuyerName()
         {
-            return  this.buyerNameField != null;
-
+            return this._buyerName != null;
         }
-
 
         /// <summary>
         /// Gets and sets the ShipmentServiceLevelCategory property.
         /// </summary>
-        [XmlElement(ElementName = "ShipmentServiceLevelCategory")]
-        public String ShipmentServiceLevelCategory
+        public string ShipmentServiceLevelCategory
         {
-            get { return this.shipmentServiceLevelCategoryField ; }
-            set { this.shipmentServiceLevelCategoryField= value; }
+            get { return this._shipmentServiceLevelCategory; }
+            set { this._shipmentServiceLevelCategory = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the ShipmentServiceLevelCategory property
+        /// Sets the ShipmentServiceLevelCategory property.
         /// </summary>
-        /// <param name="shipmentServiceLevelCategory">ShipmentServiceLevelCategory property</param>
-        /// <returns>this instance</returns>
-        public Order WithShipmentServiceLevelCategory(String shipmentServiceLevelCategory)
+        /// <param name="shipmentServiceLevelCategory">ShipmentServiceLevelCategory property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithShipmentServiceLevelCategory(string shipmentServiceLevelCategory)
         {
-            this.shipmentServiceLevelCategoryField = shipmentServiceLevelCategory;
+            this._shipmentServiceLevelCategory = shipmentServiceLevelCategory;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if ShipmentServiceLevelCategory property is set
+        /// Checks if ShipmentServiceLevelCategory property is set.
         /// </summary>
-        /// <returns>true if ShipmentServiceLevelCategory property is set</returns>
-        public Boolean IsSetShipmentServiceLevelCategory()
+        /// <returns>true if ShipmentServiceLevelCategory property is set.</returns>
+        public bool IsSetShipmentServiceLevelCategory()
         {
-            return  this.shipmentServiceLevelCategoryField != null;
-
+            return this._shipmentServiceLevelCategory != null;
         }
-
 
         /// <summary>
         /// Gets and sets the ShippedByAmazonTFM property.
         /// </summary>
-        [XmlElement(ElementName = "ShippedByAmazonTFM")]
-        public Boolean ShippedByAmazonTFM
+        public bool ShippedByAmazonTFM
         {
-            get { return this.shippedByAmazonTFMField.GetValueOrDefault() ; }
-            set { this.shippedByAmazonTFMField= value; }
+            get { return this._shippedByAmazonTFM.GetValueOrDefault(); }
+            set { this._shippedByAmazonTFM = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the ShippedByAmazonTFM property
+        /// Sets the ShippedByAmazonTFM property.
         /// </summary>
-        /// <param name="shippedByAmazonTFM">ShippedByAmazonTFM property</param>
-        /// <returns>this instance</returns>
-        public Order WithShippedByAmazonTFM(Boolean shippedByAmazonTFM)
+        /// <param name="shippedByAmazonTFM">ShippedByAmazonTFM property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithShippedByAmazonTFM(bool shippedByAmazonTFM)
         {
-            this.shippedByAmazonTFMField = shippedByAmazonTFM;
+            this._shippedByAmazonTFM = shippedByAmazonTFM;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if ShippedByAmazonTFM property is set
+        /// Checks if ShippedByAmazonTFM property is set.
         /// </summary>
-        /// <returns>true if ShippedByAmazonTFM property is set</returns>
-        public Boolean IsSetShippedByAmazonTFM()
+        /// <returns>true if ShippedByAmazonTFM property is set.</returns>
+        public bool IsSetShippedByAmazonTFM()
         {
-            return  this.shippedByAmazonTFMField.HasValue;
-
+            return this._shippedByAmazonTFM != null;
         }
-
 
         /// <summary>
         /// Gets and sets the TFMShipmentStatus property.
         /// </summary>
-        [XmlElement(ElementName = "TFMShipmentStatus")]
-        public String TFMShipmentStatus
+        public string TFMShipmentStatus
         {
-            get { return this.TFMShipmentStatusField ; }
-            set { this.TFMShipmentStatusField= value; }
+            get { return this._tfmShipmentStatus; }
+            set { this._tfmShipmentStatus = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the TFMShipmentStatus property
+        /// Sets the TFMShipmentStatus property.
         /// </summary>
-        /// <param name="TFMShipmentStatus">TFMShipmentStatus property</param>
-        /// <returns>this instance</returns>
-        public Order WithTFMShipmentStatus(String TFMShipmentStatus)
+        /// <param name="tfmShipmentStatus">TFMShipmentStatus property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithTFMShipmentStatus(string tfmShipmentStatus)
         {
-            this.TFMShipmentStatusField = TFMShipmentStatus;
+            this._tfmShipmentStatus = tfmShipmentStatus;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if TFMShipmentStatus property is set
+        /// Checks if TFMShipmentStatus property is set.
         /// </summary>
-        /// <returns>true if TFMShipmentStatus property is set</returns>
-        public Boolean IsSetTFMShipmentStatus()
+        /// <returns>true if TFMShipmentStatus property is set.</returns>
+        public bool IsSetTFMShipmentStatus()
         {
-            return  this.TFMShipmentStatusField != null;
-
+            return this._tfmShipmentStatus != null;
         }
-
-
 
         /// <summary>
         /// Gets and sets the CbaDisplayableShippingLabel property.
         /// </summary>
-        [XmlElement(ElementName = "CbaDisplayableShippingLabel")]
-        public String CbaDisplayableShippingLabel
+        public string CbaDisplayableShippingLabel
         {
-            get { return this.cbaDisplayableShippingLabelField; }
-            set { this.cbaDisplayableShippingLabelField = value; }
+            get { return this._cbaDisplayableShippingLabel; }
+            set { this._cbaDisplayableShippingLabel = value; }
         }
 
         /// <summary>
-        /// Sets the CbaDisplayableShippingLabel property
+        /// Sets the CbaDisplayableShippingLabel property.
         /// </summary>
-        /// <param name="CbaDisplayableShippingLabel">CbaDisplayableShippingLabel property</param>
-        /// <returns>this instance</returns>
-        public Order WithCbaDisplayableShippingLabel(String CbaDisplayableShippingLabel)
+        /// <param name="cbaDisplayableShippingLabel">CbaDisplayableShippingLabel property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithCbaDisplayableShippingLabel(string cbaDisplayableShippingLabel)
         {
-            this.cbaDisplayableShippingLabelField = CbaDisplayableShippingLabel;
+            this._cbaDisplayableShippingLabel = cbaDisplayableShippingLabel;
             return this;
         }
 
         /// <summary>
-        /// Checks if CbaDisplayableShippingLabel property is set
+        /// Checks if CbaDisplayableShippingLabel property is set.
         /// </summary>
-        /// <returns>true if CbaDisplayableShippingLabel property is set</returns>
-        public Boolean IsSetCbaDisplayableShippingLabel()
+        /// <returns>true if CbaDisplayableShippingLabel property is set.</returns>
+        public bool IsSetCbaDisplayableShippingLabel()
         {
-            return  this.cbaDisplayableShippingLabelField != null;
+            return this._cbaDisplayableShippingLabel != null;
         }
-
-
 
         /// <summary>
         /// Gets and sets the OrderType property.
         /// </summary>
-        [XmlElement(ElementName = "OrderType")]
-        public String OrderType
+        public string OrderType
         {
-            get { return this.orderTypeField ; }
-            set { this.orderTypeField = value; }
+            get { return this._orderType; }
+            set { this._orderType = value; }
         }
 
         /// <summary>
-        /// Sets the OrderType property
+        /// Sets the OrderType property.
         /// </summary>
-        /// <param name="OrderType">OrderType property</param>
-        /// <returns>this instance</returns>
-        public Order WithOrderType(String OrderType)
+        /// <param name="orderType">OrderType property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithOrderType(string orderType)
         {
-            this.orderTypeField = OrderType;
+            this._orderType = orderType;
             return this;
         }
 
         /// <summary>
-        /// Checks if OrderType property is set
+        /// Checks if OrderType property is set.
         /// </summary>
-        /// <returns>true if OrderType property is set</returns>
-        public Boolean IsSetOrderType()
+        /// <returns>true if OrderType property is set.</returns>
+        public bool IsSetOrderType()
         {
-            return  this.orderTypeField != null;
+            return this._orderType != null;
         }
-
 
         /// <summary>
         /// Gets and sets the EarliestShipDate property.
         /// </summary>
-        [XmlElement(ElementName = "EarliestShipDate")]
-        public DateTime? EarliestShipDate
+        public DateTime EarliestShipDate
         {
-            get { return this.earliestShipDateField ; }
-            set { this.earliestShipDateField = value; }
+            get { return this._earliestShipDate.GetValueOrDefault(); }
+            set { this._earliestShipDate = value; }
         }
 
         /// <summary>
-        /// Sets the EarliestShipDate property
+        /// Sets the EarliestShipDate property.
         /// </summary>
-        /// <param name="earliestShipDate">EarliestShipDate property</param>
-        /// <returns>this instance</returns>
+        /// <param name="earliestShipDate">EarliestShipDate property.</param>
+        /// <returns>this instance.</returns>
         public Order WithEarliestShipDate(DateTime earliestShipDate)
         {
-            this.earliestShipDateField = earliestShipDate;
+            this._earliestShipDate = earliestShipDate;
             return this;
         }
 
         /// <summary>
-        /// Checks if EarliestShipDate property is set
+        /// Checks if EarliestShipDate property is set.
         /// </summary>
-        /// <returns>true if EarliestShipDate property is set</returns>
-        public Boolean IsSetEarliestShipDate()
+        /// <returns>true if EarliestShipDate property is set.</returns>
+        public bool IsSetEarliestShipDate()
         {
-            return  this.earliestShipDateField != null;
+            return this._earliestShipDate != null;
         }
-
 
         /// <summary>
         /// Gets and sets the LatestShipDate property.
         /// </summary>
-        [XmlElement(ElementName = "LatestShipDate")]
-        public DateTime? LatestShipDate
+        public DateTime LatestShipDate
         {
-            get { return this.latestShipDateField ; }
-            set { this.latestShipDateField = value; }
+            get { return this._latestShipDate.GetValueOrDefault(); }
+            set { this._latestShipDate = value; }
         }
 
         /// <summary>
-        /// Sets the LatestShipDate property
+        /// Sets the LatestShipDate property.
         /// </summary>
-        /// <param name="latestShipDate">LatestShipDate property</param>
-        /// <returns>this instance</returns>
+        /// <param name="latestShipDate">LatestShipDate property.</param>
+        /// <returns>this instance.</returns>
         public Order WithLatestShipDate(DateTime latestShipDate)
         {
-            this.latestShipDateField = latestShipDate;
+            this._latestShipDate = latestShipDate;
             return this;
         }
 
         /// <summary>
-        /// Checks if LatestShipDate property is set
+        /// Checks if LatestShipDate property is set.
         /// </summary>
-        /// <returns>true if LatestShipDate property is set</returns>
-        public Boolean IsSetLatestShipDate()
+        /// <returns>true if LatestShipDate property is set.</returns>
+        public bool IsSetLatestShipDate()
         {
-            return  this.latestShipDateField != null;
+            return this._latestShipDate != null;
         }
-
 
         /// <summary>
-        /// XML fragment representation of this object
+        /// Gets and sets the EarliestDeliveryDate property.
         /// </summary>
-        /// <returns>XML fragment for this object.</returns>
-        /// <remarks>
-        /// Name for outer tag expected to be set by calling method. 
-        /// This fragment returns inner properties representation only
-        /// </remarks>
-
-
-        protected internal String ToXMLFragment() {
-            StringBuilder xml = new StringBuilder();
-            if (this.IsSetAmazonOrderId()) {
-                xml.Append("<AmazonOrderId>");
-                xml.Append(this.EscapeXML(this.AmazonOrderId));
-                xml.Append("</AmazonOrderId>");
-            }
-            if (this.IsSetSellerOrderId()) {
-                xml.Append("<SellerOrderId>");
-                xml.Append(this.EscapeXML(this.SellerOrderId));
-                xml.Append("</SellerOrderId>");
-            }
-            if (this.IsSetPurchaseDate()) {
-                xml.Append("<PurchaseDate>");
-                xml.Append(this.PurchaseDate);
-                xml.Append("</PurchaseDate>");
-            }
-            if (this.IsSetLastUpdateDate()) {
-                xml.Append("<LastUpdateDate>");
-                xml.Append(this.LastUpdateDate);
-                xml.Append("</LastUpdateDate>");
-            }
-            if (this.IsSetOrderStatus()) {
-                xml.Append("<OrderStatus>");
-                xml.Append(this.OrderStatus);
-                xml.Append("</OrderStatus>");
-            }
-            if (this.IsSetFulfillmentChannel()) {
-                xml.Append("<FulfillmentChannel>");
-                xml.Append(this.FulfillmentChannel);
-                xml.Append("</FulfillmentChannel>");
-            }
-            if (this.IsSetSalesChannel()) {
-                xml.Append("<SalesChannel>");
-                xml.Append(this.EscapeXML(this.SalesChannel));
-                xml.Append("</SalesChannel>");
-            }
-            if (this.IsSetOrderChannel()) {
-                xml.Append("<OrderChannel>");
-                xml.Append(this.EscapeXML(this.OrderChannel));
-                xml.Append("</OrderChannel>");
-            }
-            if (this.IsSetShipServiceLevel()) {
-                xml.Append("<ShipServiceLevel>");
-                xml.Append(this.EscapeXML(this.ShipServiceLevel));
-                xml.Append("</ShipServiceLevel>");
-            }
-            if (this.IsSetShippingAddress()) {
-                Address  shippingAddressObj = this.ShippingAddress;
-                xml.Append("<ShippingAddress>");
-                xml.Append(shippingAddressObj.ToXMLFragment());
-                xml.Append("</ShippingAddress>");
-            } 
-            if (this.IsSetOrderTotal()) {
-                Money  orderTotalObj = this.OrderTotal;
-                xml.Append("<OrderTotal>");
-                xml.Append(orderTotalObj.ToXMLFragment());
-                xml.Append("</OrderTotal>");
-            } 
-            if (this.IsSetNumberOfItemsShipped()) {
-                xml.Append("<NumberOfItemsShipped>");
-                xml.Append(this.NumberOfItemsShipped);
-                xml.Append("</NumberOfItemsShipped>");
-            }
-            if (this.IsSetNumberOfItemsUnshipped()) {
-                xml.Append("<NumberOfItemsUnshipped>");
-                xml.Append(this.NumberOfItemsUnshipped);
-                xml.Append("</NumberOfItemsUnshipped>");
-            }
-            if (this.IsSetPaymentExecutionDetail()) {
-                PaymentExecutionDetailItemList  paymentExecutionDetailObj = this.PaymentExecutionDetail;
-                xml.Append("<PaymentExecutionDetail>");
-                xml.Append(paymentExecutionDetailObj.ToXMLFragment());
-                xml.Append("</PaymentExecutionDetail>");
-            } 
-            if (this.IsSetPaymentMethod()) {
-                xml.Append("<PaymentMethod>");
-                xml.Append(this.PaymentMethod);
-                xml.Append("</PaymentMethod>");
-            }
-            if (this.IsSetMarketplaceId()) {
-                xml.Append("<MarketplaceId>");
-                xml.Append(this.EscapeXML(this.MarketplaceId));
-                xml.Append("</MarketplaceId>");
-            }
-            if (this.IsSetBuyerEmail()) {
-                xml.Append("<BuyerEmail>");
-                xml.Append(this.EscapeXML(this.BuyerEmail));
-                xml.Append("</BuyerEmail>");
-            }
-            if (this.IsSetBuyerName()) {
-                xml.Append("<BuyerName>");
-                xml.Append(this.EscapeXML(this.BuyerName));
-                xml.Append("</BuyerName>");
-            }
-            if (this.IsSetShipmentServiceLevelCategory()) {
-                xml.Append("<ShipmentServiceLevelCategory>");
-                xml.Append(this.EscapeXML(this.ShipmentServiceLevelCategory));
-                xml.Append("</ShipmentServiceLevelCategory>");
-            }
-            if (this.IsSetShippedByAmazonTFM()) {
-                xml.Append("<ShippedByAmazonTFM>");
-                xml.Append(this.ShippedByAmazonTFM);
-                xml.Append("</ShippedByAmazonTFM>");
-            }
-            if (this.IsSetTFMShipmentStatus()) {
-                xml.Append("<TFMShipmentStatus>");
-                xml.Append(this.EscapeXML(this.TFMShipmentStatus));
-                xml.Append("</TFMShipmentStatus>");
-            }
-            if (this.IsSetCbaDisplayableShippingLabel()) {
-                xml.Append("<CbaDisplayableShippingLabel>");
-                xml.Append(this.EscapeXML(this.CbaDisplayableShippingLabel));
-                xml.Append("</CbaDisplayableShippingLabel>");
-            }
-            if (this.IsSetOrderType()) {
-                xml.Append("<OrderType>");
-                xml.Append(this.EscapeXML(this.OrderType));
-                xml.Append("</OrderType>");
-            }
-            if (this.IsSetEarliestShipDate()) {
-                xml.Append("<EarliestShipDate>");
-                xml.Append(this.EarliestShipDate);
-                xml.Append("</EarliestShipDate>");
-            }
-            if (this.IsSetLatestShipDate()) {
-                xml.Append("<LatestShipDate>");
-                xml.Append(this.LatestShipDate);
-                xml.Append("</LatestShipDate>");
-            }
-            return xml.ToString();
-        }
-
-        /**
-         * 
-         * Escape XML special characters
-         */
-        private String EscapeXML(String str) {
-            if (str == null)
-                return "null";
-            StringBuilder sb = new StringBuilder();
-            foreach (Char c in str)
-            {
-                switch (c) {
-                case '&':
-                    sb.Append("&amp;");
-                    break;
-                case '<':
-                    sb.Append("&lt;");
-                    break;
-                case '>':
-                    sb.Append("&gt;");
-                    break;
-                case '\'':
-                    sb.Append("&#039;");
-                    break;
-                case '"':
-                    sb.Append("&quot;");
-                    break;
-                default:
-                    sb.Append(c);
-                    break;
-                }
-            }
-            return sb.ToString();
-        }
-
-        public override string ToString()
+        public DateTime EarliestDeliveryDate
         {
-            StringBuilder result = new StringBuilder();
-            if (this.IsSetAmazonOrderId())
-            {
-                result.Append("Order ID: ");
-                result.AppendLine(this.AmazonOrderId);
-            }
-            if (this.IsSetFulfillmentChannel())
-            {
-                result.Append("FulfillmentChannel:");
-                result.AppendLine(this.FulfillmentChannel.ToString());
-            }
-            if (this.IsSetNumberOfItemsShipped())
-            {
-                result.Append("Number of Items Shipped: ");
-                result.AppendLine(this.NumberOfItemsShipped.ToString());
-            }
-            if (this.IsSetNumberOfItemsUnshipped())
-            {
-                result.Append("Number of Items Not Shipped: ");
-                result.AppendLine(this.NumberOfItemsShipped.ToString());
-            }
-            if (this.IsSetLastUpdateDate())
-            {
-                result.Append("Last Update Date: ");
-                result.AppendLine(this.LastUpdateDate.ToString());
-            }
-            if (this.IsSetOrderChannel())
-            {
-                result.Append("Order Channel: ");
-                result.AppendLine(this.OrderChannel);
-            }
-            if (this.IsSetOrderStatus())
-            {
-                result.Append("Order Status: ");
-                result.AppendLine(this.OrderStatus.ToString());
-            }
-            if (this.IsSetOrderTotal())
-            {
-                result.Append("Order Total: ");
-                result.AppendLine(this.OrderTotal.ToString());
-            }
-            if (this.IsSetPurchaseDate())
-            {
-                result.Append("Purchase Date: ");
-                result.AppendLine(this.PurchaseDate.ToString());
-            }
-            if (this.IsSetSalesChannel())
-            {
-                result.Append("Sales Channel: ");
-                result.AppendLine(this.SalesChannel);
-            }
-            if (this.IsSetSellerOrderId())
-            {
-                result.Append("Seller Order Id: ");
-                result.AppendLine(this.SellerOrderId);
-            }
-            if (this.IsSetShipServiceLevel())
-            {
-                result.Append("Ship Service Level: ");
-                result.AppendLine(this.ShipServiceLevel);
-            }
-            if (this.IsSetPaymentExecutionDetail()) {
-                result.Append("Payment Execution Detail: ");
-                result.Append(this.PaymentExecutionDetail);
-            }
-            if (this.IsSetPaymentMethod()) {
-                result.Append("Payment Method: ");
-                result.Append(this.PaymentMethod);
-            }
-            if (this.IsSetMarketplaceId())
-            {
-                result.Append("Marketplace Id: ");
-                result.AppendLine(this.MarketplaceId);
-            }
-            if (this.IsSetBuyerEmail())
-            {
-                result.Append("Buyer Email: ");
-                result.AppendLine(this.BuyerEmail);
-            }
-            if (this.IsSetShipServiceLevel())
-            {
-                result.Append("Buyer Name: ");
-                result.AppendLine(this.BuyerName);
-            }
-            if (this.IsSetShipmentServiceLevelCategory())
-            {
-                result.Append("Shipment Service Level Category: ");
-                result.AppendLine(this.ShipmentServiceLevelCategory);
-            }
-            if (this.IsSetCbaDisplayableShippingLabel()) {
-                result.Append("CbaDisplayableShippingLabel: ");
-                result.AppendLine(this.CbaDisplayableShippingLabel);
-            }
-            if (this.IsSetOrderType()) {
-                result.Append("OrderType: ");
-                result.AppendLine(this.OrderType);
-            }
-            if (this.IsSetEarliestShipDate()) {
-                result.Append("EarliestShipDate: ");
-                result.AppendLine(this.EarliestShipDate.ToString());
-            }
-            if (this.IsSetLatestShipDate()) {
-                result.Append("LatestShipDate: ");
-                result.AppendLine(this.LatestShipDate.ToString());
-            }
-            return result.ToString();
+            get { return this._earliestDeliveryDate.GetValueOrDefault(); }
+            set { this._earliestDeliveryDate = value; }
         }
 
-    }
+        /// <summary>
+        /// Sets the EarliestDeliveryDate property.
+        /// </summary>
+        /// <param name="earliestDeliveryDate">EarliestDeliveryDate property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithEarliestDeliveryDate(DateTime earliestDeliveryDate)
+        {
+            this._earliestDeliveryDate = earliestDeliveryDate;
+            return this;
+        }
 
+        /// <summary>
+        /// Checks if EarliestDeliveryDate property is set.
+        /// </summary>
+        /// <returns>true if EarliestDeliveryDate property is set.</returns>
+        public bool IsSetEarliestDeliveryDate()
+        {
+            return this._earliestDeliveryDate != null;
+        }
+
+        /// <summary>
+        /// Gets and sets the LatestDeliveryDate property.
+        /// </summary>
+        public DateTime LatestDeliveryDate
+        {
+            get { return this._latestDeliveryDate.GetValueOrDefault(); }
+            set { this._latestDeliveryDate = value; }
+        }
+
+        /// <summary>
+        /// Sets the LatestDeliveryDate property.
+        /// </summary>
+        /// <param name="latestDeliveryDate">LatestDeliveryDate property.</param>
+        /// <returns>this instance.</returns>
+        public Order WithLatestDeliveryDate(DateTime latestDeliveryDate)
+        {
+            this._latestDeliveryDate = latestDeliveryDate;
+            return this;
+        }
+
+        /// <summary>
+        /// Checks if LatestDeliveryDate property is set.
+        /// </summary>
+        /// <returns>true if LatestDeliveryDate property is set.</returns>
+        public bool IsSetLatestDeliveryDate()
+        {
+            return this._latestDeliveryDate != null;
+        }
+
+
+        public override void ReadFragmentFrom(IMwsReader reader)
+        {
+            _amazonOrderId = reader.Read<string>("AmazonOrderId");
+            _sellerOrderId = reader.Read<string>("SellerOrderId");
+            _purchaseDate = reader.Read<DateTime?>("PurchaseDate");
+            _lastUpdateDate = reader.Read<DateTime?>("LastUpdateDate");
+            _orderStatus = reader.Read<string>("OrderStatus");
+            _fulfillmentChannel = reader.Read<string>("FulfillmentChannel");
+            _salesChannel = reader.Read<string>("SalesChannel");
+            _orderChannel = reader.Read<string>("OrderChannel");
+            _shipServiceLevel = reader.Read<string>("ShipServiceLevel");
+            _shippingAddress = reader.Read<Address>("ShippingAddress");
+            _orderTotal = reader.Read<Money>("OrderTotal");
+            _numberOfItemsShipped = reader.Read<decimal?>("NumberOfItemsShipped");
+            _numberOfItemsUnshipped = reader.Read<decimal?>("NumberOfItemsUnshipped");
+            _paymentExecutionDetail = reader.ReadList<PaymentExecutionDetailItem>("PaymentExecutionDetail", "PaymentExecutionDetailItem");
+            _paymentMethod = reader.Read<string>("PaymentMethod");
+            _marketplaceId = reader.Read<string>("MarketplaceId");
+            _buyerEmail = reader.Read<string>("BuyerEmail");
+            _buyerName = reader.Read<string>("BuyerName");
+            _shipmentServiceLevelCategory = reader.Read<string>("ShipmentServiceLevelCategory");
+            _shippedByAmazonTFM = reader.Read<bool?>("ShippedByAmazonTFM");
+            _tfmShipmentStatus = reader.Read<string>("TFMShipmentStatus");
+            _cbaDisplayableShippingLabel = reader.Read<string>("CbaDisplayableShippingLabel");
+            _orderType = reader.Read<string>("OrderType");
+            _earliestShipDate = reader.Read<DateTime?>("EarliestShipDate");
+            _latestShipDate = reader.Read<DateTime?>("LatestShipDate");
+            _earliestDeliveryDate = reader.Read<DateTime?>("EarliestDeliveryDate");
+            _latestDeliveryDate = reader.Read<DateTime?>("LatestDeliveryDate");
+        }
+
+        public override void WriteFragmentTo(IMwsWriter writer)
+        {
+            writer.Write("AmazonOrderId", _amazonOrderId);
+            writer.Write("SellerOrderId", _sellerOrderId);
+            writer.Write("PurchaseDate", _purchaseDate);
+            writer.Write("LastUpdateDate", _lastUpdateDate);
+            writer.Write("OrderStatus", _orderStatus);
+            writer.Write("FulfillmentChannel", _fulfillmentChannel);
+            writer.Write("SalesChannel", _salesChannel);
+            writer.Write("OrderChannel", _orderChannel);
+            writer.Write("ShipServiceLevel", _shipServiceLevel);
+            writer.Write("ShippingAddress", _shippingAddress);
+            writer.Write("OrderTotal", _orderTotal);
+            writer.Write("NumberOfItemsShipped", _numberOfItemsShipped);
+            writer.Write("NumberOfItemsUnshipped", _numberOfItemsUnshipped);
+            writer.WriteList("PaymentExecutionDetail", "PaymentExecutionDetailItem", _paymentExecutionDetail);
+            writer.Write("PaymentMethod", _paymentMethod);
+            writer.Write("MarketplaceId", _marketplaceId);
+            writer.Write("BuyerEmail", _buyerEmail);
+            writer.Write("BuyerName", _buyerName);
+            writer.Write("ShipmentServiceLevelCategory", _shipmentServiceLevelCategory);
+            writer.Write("ShippedByAmazonTFM", _shippedByAmazonTFM);
+            writer.Write("TFMShipmentStatus", _tfmShipmentStatus);
+            writer.Write("CbaDisplayableShippingLabel", _cbaDisplayableShippingLabel);
+            writer.Write("OrderType", _orderType);
+            writer.Write("EarliestShipDate", _earliestShipDate);
+            writer.Write("LatestShipDate", _latestShipDate);
+            writer.Write("EarliestDeliveryDate", _earliestDeliveryDate);
+            writer.Write("LatestDeliveryDate", _latestDeliveryDate);
+        }
+
+        public override void WriteTo(IMwsWriter writer)
+        {
+            writer.Write("https://mws.amazonservices.com/Orders/2013-09-01", "Order", this);
+        }
+
+        public Order() : base()
+        {
+        }
+    }
 }

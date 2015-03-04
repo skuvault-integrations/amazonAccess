@@ -11,6 +11,7 @@ using AmazonAccess.Services.MarketplaceWebServiceOrders;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using CuttingEdge.Conditions;
 using MarketplaceWebService.Model;
+using MarketplaceWebServiceOrders.Model;
 
 namespace AmazonAccess
 {
@@ -37,7 +38,8 @@ namespace AmazonAccess
 				SellerId = this._credentials.SellerId,
 				LastUpdatedAfter = dateFrom,
 				//LastUpdatedBefore = dateTo,
-				MarketplaceId = new MarketplaceIdList { Id = this._credentials.AmazonMarketplace.GetMarketplaceIdAsList() }
+				MarketplaceId = this._credentials.AmazonMarketplace.GetMarketplaceIdAsList(),
+				MWSAuthToken = this._credentials.MwsAuthToken
 			};
 
 			AmazonLogger.Log.Trace( "[amazon] Loading orders for seller {0}", this._credentials.SellerId );
@@ -89,7 +91,8 @@ namespace AmazonAccess
 				Merchant = this._credentials.SellerId,
 				FeedType = FeedType.InventoryQuantityUpdate.Description,
 				FeedContent = contentStream,
-				ContentMD5 = MarketplaceWebServiceFeedsClient.CalculateContentMD5( contentStream )
+				ContentMD5 = MarketplaceWebServiceFeedsClient.CalculateContentMD5( contentStream ),
+				MWSAuthToken = this._credentials.MwsAuthToken
 			};
 
 			return request;
@@ -121,7 +124,8 @@ namespace AmazonAccess
 				{
 					SellerId = this._credentials.SellerId,
 					QueryStartDateTime = DateTime.MinValue,
-					ResponseGroup = "Detailed"
+					ResponseGroup = "Detailed",
+					MWSAuthToken = this._credentials.MwsAuthToken
 				};
 				var service = new InventorySupplyService( client, request );
 

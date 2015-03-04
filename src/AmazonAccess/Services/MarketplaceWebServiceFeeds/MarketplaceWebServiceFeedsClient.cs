@@ -38,7 +38,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
     *
     */
 
-	public class MarketplaceWebServiceFeedsClient : IMarketplaceWebServiceFeeds
+	public class MarketplaceWebServiceFeedsClient: IMarketplaceWebServiceFeeds
 	{
 
 		private String awsAccessKeyId = null;
@@ -1225,6 +1225,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			{
 				parameters.Add( "Merchant", request.Merchant );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetReportId() )
 			{
 				parameters.Add( "ReportId", request.ReportId );
@@ -1250,6 +1254,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			if( request.IsSetMerchant() )
 			{
 				parameters.Add( "Merchant", request.Merchant );
+			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
 			}
 			if( request.IsSetReportTypeList() )
 			{
@@ -1282,6 +1290,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			{
 				parameters.Add( "Merchant", request.Merchant );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetNextToken() )
 			{
 				parameters.Add( "NextToken", request.NextToken );
@@ -1307,6 +1319,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			if( request.IsSetMerchant() )
 			{
 				parameters.Add( "Merchant", request.Merchant );
+			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
 			}
 			if( request.IsSetReportIdList() )
 			{
@@ -1338,6 +1354,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			if( request.IsSetMarketplace() )
 			{
 				parameters.Add( "Marketplace", request.Marketplace );
+			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
 			}
 			if( request.IsSetMarketplaceIdList() )
 			{
@@ -1384,6 +1404,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			{
 				parameters.Add( "Merchant", request.Merchant );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetReportTypeList() )
 			{
 				TypeList reportTypeList = request.ReportTypeList;
@@ -1427,6 +1451,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			{
 				parameters.Add( "Merchant", request.Merchant );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetNextToken() )
 			{
 				parameters.Add( "NextToken", request.NextToken );
@@ -1452,6 +1480,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			if( request.IsSetMerchant() )
 			{
 				parameters.Add( "Merchant", request.Merchant );
+			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
 			}
 			if( request.IsSetFeedSubmissionIdList() )
 			{
@@ -1512,6 +1544,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			{
 				parameters.Add( "Merchant", request.Merchant );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetReportType() )
 			{
 				parameters.Add( "ReportType", request.ReportType );
@@ -1549,6 +1585,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			if( request.IsSetMerchant() )
 			{
 				parameters.Add( "Merchant", request.Merchant );
+			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
 			}
 			if( request.IsSetFeedTypeList() )
 			{
@@ -1597,6 +1637,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			if( request.IsSetMerchant() )
 			{
 				parameters.Add( "Merchant", request.Merchant );
+			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
 			}
 			if( request.IsSetReportRequestIdList() )
 			{
@@ -1655,6 +1699,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			{
 				parameters.Add( "Merchant", request.Merchant );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetMaxCount() )
 			{
 				parameters.Add( "MaxCount", request.MaxCount + "" );
@@ -1711,6 +1759,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			{
 				parameters.Add( "Merchant", request.Merchant );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetFeedSubmissionId() )
 			{
 				parameters.Add( "FeedSubmissionId", request.FeedSubmissionId );
@@ -1736,6 +1788,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			if( request.IsSetMerchant() )
 			{
 				parameters.Add( "Merchant", request.Merchant );
+			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
 			}
 			if( request.IsSetFeedSubmissionIdList() )
 			{
@@ -1798,6 +1854,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			{
 				parameters.Add( "Merchant", request.Merchant );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetReportRequestIdList() )
 			{
 				IdList reportRequestIdList = request.ReportRequestIdList;
@@ -1859,6 +1919,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			{
 				parameters.Add( "Merchant", request.Merchant );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetNextToken() )
 			{
 				parameters.Add( "NextToken", request.NextToken );
@@ -1885,6 +1949,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			{
 				parameters.Add( "Merchant", request.Merchant );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetNextToken() )
 			{
 				parameters.Add( "NextToken", request.NextToken );
@@ -1910,6 +1978,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			if( request.IsSetMerchant() )
 			{
 				parameters.Add( "Merchant", request.Merchant );
+			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
 			}
 			if( request.IsSetReportType() )
 			{
@@ -1944,6 +2016,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			if( request.IsSetMerchant() )
 			{
 				parameters.Add( "Merchant", request.Merchant );
+			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
 			}
 			if( request.IsSetReportTypeList() )
 			{
@@ -1993,6 +2069,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 			{
 				parameters.Add( "Merchant", request.Merchant );
 			}
+			if( request.IsSetMWSAuthToken() )
+			{
+				parameters.Add( "MWSAuthToken", request.MWSAuthToken );
+			}
 			if( request.IsSetReportTypeList() )
 			{
 				TypeList reportTypeList = request.ReportTypeList;
@@ -2005,7 +2085,5 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeeds
 
 			return parameters;
 		}
-
-
 	}
 }

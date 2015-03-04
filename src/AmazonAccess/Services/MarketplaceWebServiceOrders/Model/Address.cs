@@ -1,557 +1,398 @@
-/******************************************************************************* 
- *  Copyright 2008-2012 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *  Licensed under the Apache License, Version 2.0 (the "License"); 
- *  
- *  You may not use this file except in compliance with the License. 
- *  You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
- *  This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
- *  CONDITIONS OF ANY KIND, either express or implied. See the License for the 
- *  specific language governing permissions and limitations under the License.
- * ***************************************************************************** 
- * 
- *  Marketplace Web Service Orders CSharp Library
- *  API Version: 2011-01-01
- * 
+/*******************************************************************************
+ * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ *
+ * You may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
+ * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+ * specific language governing permissions and limitations under the License.
+ *******************************************************************************
+ * Address
+ * API Version: 2013-09-01
+ * Library Version: 2015-02-13
+ * Generated: Tue Feb 10 22:00:52 UTC 2015
  */
 
+
 using System;
-using System.Xml.Serialization;
-using System.Text;
+using System.Xml;
+using AmazonAccess.Services.Utils;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
+namespace MarketplaceWebServiceOrders.Model
 {
-    [XmlType(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01")]
-    [XmlRoot(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01", IsNullable = false)]
-    public class Address
+    public class Address : AbstractMwsObject
     {
-    
-        private String nameField;
 
-        private String addressLine1Field;
-
-        private String addressLine2Field;
-
-        private String addressLine3Field;
-
-        private String cityField;
-
-        private String countyField;
-
-        private String districtField;
-
-        private String stateOrRegionField;
-
-        private String postalCodeField;
-
-        private String countryCodeField;
-
-        private String phoneField;
-
+        private string _name;
+        private string _addressLine1;
+        private string _addressLine2;
+        private string _addressLine3;
+        private string _city;
+        private string _county;
+        private string _district;
+        private string _stateOrRegion;
+        private string _postalCode;
+        private string _countryCode;
+        private string _phone;
 
         /// <summary>
         /// Gets and sets the Name property.
         /// </summary>
-        [XmlElement(ElementName = "Name")]
-        public String Name
+        public string Name
         {
-            get { return this.nameField ; }
-            set { this.nameField= value; }
+            get { return this._name; }
+            set { this._name = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the Name property
+        /// Sets the Name property.
         /// </summary>
-        /// <param name="name">Name property</param>
-        /// <returns>this instance</returns>
-        public Address WithName(String name)
+        /// <param name="name">Name property.</param>
+        /// <returns>this instance.</returns>
+        public Address WithName(string name)
         {
-            this.nameField = name;
+            this._name = name;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if Name property is set
+        /// Checks if Name property is set.
         /// </summary>
-        /// <returns>true if Name property is set</returns>
-        public Boolean IsSetName()
+        /// <returns>true if Name property is set.</returns>
+        public bool IsSetName()
         {
-            return  this.nameField != null;
-
+            return this._name != null;
         }
-
 
         /// <summary>
         /// Gets and sets the AddressLine1 property.
         /// </summary>
-        [XmlElement(ElementName = "AddressLine1")]
-        public String AddressLine1
+        public string AddressLine1
         {
-            get { return this.addressLine1Field ; }
-            set { this.addressLine1Field= value; }
+            get { return this._addressLine1; }
+            set { this._addressLine1 = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the AddressLine1 property
+        /// Sets the AddressLine1 property.
         /// </summary>
-        /// <param name="addressLine1">AddressLine1 property</param>
-        /// <returns>this instance</returns>
-        public Address WithAddressLine1(String addressLine1)
+        /// <param name="addressLine1">AddressLine1 property.</param>
+        /// <returns>this instance.</returns>
+        public Address WithAddressLine1(string addressLine1)
         {
-            this.addressLine1Field = addressLine1;
+            this._addressLine1 = addressLine1;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if AddressLine1 property is set
+        /// Checks if AddressLine1 property is set.
         /// </summary>
-        /// <returns>true if AddressLine1 property is set</returns>
-        public Boolean IsSetAddressLine1()
+        /// <returns>true if AddressLine1 property is set.</returns>
+        public bool IsSetAddressLine1()
         {
-            return  this.addressLine1Field != null;
-
+            return this._addressLine1 != null;
         }
-
 
         /// <summary>
         /// Gets and sets the AddressLine2 property.
         /// </summary>
-        [XmlElement(ElementName = "AddressLine2")]
-        public String AddressLine2
+        public string AddressLine2
         {
-            get { return this.addressLine2Field ; }
-            set { this.addressLine2Field= value; }
+            get { return this._addressLine2; }
+            set { this._addressLine2 = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the AddressLine2 property
+        /// Sets the AddressLine2 property.
         /// </summary>
-        /// <param name="addressLine2">AddressLine2 property</param>
-        /// <returns>this instance</returns>
-        public Address WithAddressLine2(String addressLine2)
+        /// <param name="addressLine2">AddressLine2 property.</param>
+        /// <returns>this instance.</returns>
+        public Address WithAddressLine2(string addressLine2)
         {
-            this.addressLine2Field = addressLine2;
+            this._addressLine2 = addressLine2;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if AddressLine2 property is set
+        /// Checks if AddressLine2 property is set.
         /// </summary>
-        /// <returns>true if AddressLine2 property is set</returns>
-        public Boolean IsSetAddressLine2()
+        /// <returns>true if AddressLine2 property is set.</returns>
+        public bool IsSetAddressLine2()
         {
-            return  this.addressLine2Field != null;
-
+            return this._addressLine2 != null;
         }
-
 
         /// <summary>
         /// Gets and sets the AddressLine3 property.
         /// </summary>
-        [XmlElement(ElementName = "AddressLine3")]
-        public String AddressLine3
+        public string AddressLine3
         {
-            get { return this.addressLine3Field ; }
-            set { this.addressLine3Field= value; }
+            get { return this._addressLine3; }
+            set { this._addressLine3 = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the AddressLine3 property
+        /// Sets the AddressLine3 property.
         /// </summary>
-        /// <param name="addressLine3">AddressLine3 property</param>
-        /// <returns>this instance</returns>
-        public Address WithAddressLine3(String addressLine3)
+        /// <param name="addressLine3">AddressLine3 property.</param>
+        /// <returns>this instance.</returns>
+        public Address WithAddressLine3(string addressLine3)
         {
-            this.addressLine3Field = addressLine3;
+            this._addressLine3 = addressLine3;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if AddressLine3 property is set
+        /// Checks if AddressLine3 property is set.
         /// </summary>
-        /// <returns>true if AddressLine3 property is set</returns>
-        public Boolean IsSetAddressLine3()
+        /// <returns>true if AddressLine3 property is set.</returns>
+        public bool IsSetAddressLine3()
         {
-            return  this.addressLine3Field != null;
-
+            return this._addressLine3 != null;
         }
-
 
         /// <summary>
         /// Gets and sets the City property.
         /// </summary>
-        [XmlElement(ElementName = "City")]
-        public String City
+        public string City
         {
-            get { return this.cityField ; }
-            set { this.cityField= value; }
+            get { return this._city; }
+            set { this._city = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the City property
+        /// Sets the City property.
         /// </summary>
-        /// <param name="city">City property</param>
-        /// <returns>this instance</returns>
-        public Address WithCity(String city)
+        /// <param name="city">City property.</param>
+        /// <returns>this instance.</returns>
+        public Address WithCity(string city)
         {
-            this.cityField = city;
+            this._city = city;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if City property is set
+        /// Checks if City property is set.
         /// </summary>
-        /// <returns>true if City property is set</returns>
-        public Boolean IsSetCity()
+        /// <returns>true if City property is set.</returns>
+        public bool IsSetCity()
         {
-            return  this.cityField != null;
-
+            return this._city != null;
         }
-
 
         /// <summary>
         /// Gets and sets the County property.
         /// </summary>
-        [XmlElement(ElementName = "County")]
-        public String County
+        public string County
         {
-            get { return this.countyField ; }
-            set { this.countyField= value; }
+            get { return this._county; }
+            set { this._county = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the County property
+        /// Sets the County property.
         /// </summary>
-        /// <param name="county">County property</param>
-        /// <returns>this instance</returns>
-        public Address WithCounty(String county)
+        /// <param name="county">County property.</param>
+        /// <returns>this instance.</returns>
+        public Address WithCounty(string county)
         {
-            this.countyField = county;
+            this._county = county;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if County property is set
+        /// Checks if County property is set.
         /// </summary>
-        /// <returns>true if County property is set</returns>
-        public Boolean IsSetCounty()
+        /// <returns>true if County property is set.</returns>
+        public bool IsSetCounty()
         {
-            return  this.countyField != null;
-
+            return this._county != null;
         }
-
 
         /// <summary>
         /// Gets and sets the District property.
         /// </summary>
-        [XmlElement(ElementName = "District")]
-        public String District
+        public string District
         {
-            get { return this.districtField ; }
-            set { this.districtField= value; }
+            get { return this._district; }
+            set { this._district = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the District property
+        /// Sets the District property.
         /// </summary>
-        /// <param name="district">District property</param>
-        /// <returns>this instance</returns>
-        public Address WithDistrict(String district)
+        /// <param name="district">District property.</param>
+        /// <returns>this instance.</returns>
+        public Address WithDistrict(string district)
         {
-            this.districtField = district;
+            this._district = district;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if District property is set
+        /// Checks if District property is set.
         /// </summary>
-        /// <returns>true if District property is set</returns>
-        public Boolean IsSetDistrict()
+        /// <returns>true if District property is set.</returns>
+        public bool IsSetDistrict()
         {
-            return  this.districtField != null;
-
+            return this._district != null;
         }
-
 
         /// <summary>
         /// Gets and sets the StateOrRegion property.
         /// </summary>
-        [XmlElement(ElementName = "StateOrRegion")]
-        public String StateOrRegion
+        public string StateOrRegion
         {
-            get { return this.stateOrRegionField ; }
-            set { this.stateOrRegionField= value; }
+            get { return this._stateOrRegion; }
+            set { this._stateOrRegion = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the StateOrRegion property
+        /// Sets the StateOrRegion property.
         /// </summary>
-        /// <param name="stateOrRegion">StateOrRegion property</param>
-        /// <returns>this instance</returns>
-        public Address WithStateOrRegion(String stateOrRegion)
+        /// <param name="stateOrRegion">StateOrRegion property.</param>
+        /// <returns>this instance.</returns>
+        public Address WithStateOrRegion(string stateOrRegion)
         {
-            this.stateOrRegionField = stateOrRegion;
+            this._stateOrRegion = stateOrRegion;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if StateOrRegion property is set
+        /// Checks if StateOrRegion property is set.
         /// </summary>
-        /// <returns>true if StateOrRegion property is set</returns>
-        public Boolean IsSetStateOrRegion()
+        /// <returns>true if StateOrRegion property is set.</returns>
+        public bool IsSetStateOrRegion()
         {
-            return  this.stateOrRegionField != null;
-
+            return this._stateOrRegion != null;
         }
-
 
         /// <summary>
         /// Gets and sets the PostalCode property.
         /// </summary>
-        [XmlElement(ElementName = "PostalCode")]
-        public String PostalCode
+        public string PostalCode
         {
-            get { return this.postalCodeField ; }
-            set { this.postalCodeField= value; }
+            get { return this._postalCode; }
+            set { this._postalCode = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the PostalCode property
+        /// Sets the PostalCode property.
         /// </summary>
-        /// <param name="postalCode">PostalCode property</param>
-        /// <returns>this instance</returns>
-        public Address WithPostalCode(String postalCode)
+        /// <param name="postalCode">PostalCode property.</param>
+        /// <returns>this instance.</returns>
+        public Address WithPostalCode(string postalCode)
         {
-            this.postalCodeField = postalCode;
+            this._postalCode = postalCode;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if PostalCode property is set
+        /// Checks if PostalCode property is set.
         /// </summary>
-        /// <returns>true if PostalCode property is set</returns>
-        public Boolean IsSetPostalCode()
+        /// <returns>true if PostalCode property is set.</returns>
+        public bool IsSetPostalCode()
         {
-            return  this.postalCodeField != null;
-
+            return this._postalCode != null;
         }
-
 
         /// <summary>
         /// Gets and sets the CountryCode property.
         /// </summary>
-        [XmlElement(ElementName = "CountryCode")]
-        public String CountryCode
+        public string CountryCode
         {
-            get { return this.countryCodeField ; }
-            set { this.countryCodeField= value; }
+            get { return this._countryCode; }
+            set { this._countryCode = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the CountryCode property
+        /// Sets the CountryCode property.
         /// </summary>
-        /// <param name="countryCode">CountryCode property</param>
-        /// <returns>this instance</returns>
-        public Address WithCountryCode(String countryCode)
+        /// <param name="countryCode">CountryCode property.</param>
+        /// <returns>this instance.</returns>
+        public Address WithCountryCode(string countryCode)
         {
-            this.countryCodeField = countryCode;
+            this._countryCode = countryCode;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if CountryCode property is set
+        /// Checks if CountryCode property is set.
         /// </summary>
-        /// <returns>true if CountryCode property is set</returns>
-        public Boolean IsSetCountryCode()
+        /// <returns>true if CountryCode property is set.</returns>
+        public bool IsSetCountryCode()
         {
-            return  this.countryCodeField != null;
-
+            return this._countryCode != null;
         }
-
 
         /// <summary>
         /// Gets and sets the Phone property.
         /// </summary>
-        [XmlElement(ElementName = "Phone")]
-        public String Phone
+        public string Phone
         {
-            get { return this.phoneField ; }
-            set { this.phoneField= value; }
+            get { return this._phone; }
+            set { this._phone = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the Phone property
+        /// Sets the Phone property.
         /// </summary>
-        /// <param name="phone">Phone property</param>
-        /// <returns>this instance</returns>
-        public Address WithPhone(String phone)
+        /// <param name="phone">Phone property.</param>
+        /// <returns>this instance.</returns>
+        public Address WithPhone(string phone)
         {
-            this.phoneField = phone;
+            this._phone = phone;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if Phone property is set
+        /// Checks if Phone property is set.
         /// </summary>
-        /// <returns>true if Phone property is set</returns>
-        public Boolean IsSetPhone()
+        /// <returns>true if Phone property is set.</returns>
+        public bool IsSetPhone()
         {
-            return  this.phoneField != null;
-
+            return this._phone != null;
         }
 
 
-
-
-        /// <summary>
-        /// XML fragment representation of this object
-        /// </summary>
-        /// <returns>XML fragment for this object.</returns>
-        /// <remarks>
-        /// Name for outer tag expected to be set by calling method. 
-        /// This fragment returns inner properties representation only
-        /// </remarks>
-
-
-        protected internal String ToXMLFragment() {
-            StringBuilder xml = new StringBuilder();
-            if (this.IsSetName()) {
-                xml.Append("<Name>");
-                xml.Append(this.EscapeXML(this.Name));
-                xml.Append("</Name>");
-            }
-            if (this.IsSetAddressLine1()) {
-                xml.Append("<AddressLine1>");
-                xml.Append(this.EscapeXML(this.AddressLine1));
-                xml.Append("</AddressLine1>");
-            }
-            if (this.IsSetAddressLine2()) {
-                xml.Append("<AddressLine2>");
-                xml.Append(this.EscapeXML(this.AddressLine2));
-                xml.Append("</AddressLine2>");
-            }
-            if (this.IsSetAddressLine3()) {
-                xml.Append("<AddressLine3>");
-                xml.Append(this.EscapeXML(this.AddressLine3));
-                xml.Append("</AddressLine3>");
-            }
-            if (this.IsSetCity()) {
-                xml.Append("<City>");
-                xml.Append(this.EscapeXML(this.City));
-                xml.Append("</City>");
-            }
-            if (this.IsSetCounty()) {
-                xml.Append("<County>");
-                xml.Append(this.EscapeXML(this.County));
-                xml.Append("</County>");
-            }
-            if (this.IsSetDistrict()) {
-                xml.Append("<District>");
-                xml.Append(this.EscapeXML(this.District));
-                xml.Append("</District>");
-            }
-            if (this.IsSetStateOrRegion()) {
-                xml.Append("<StateOrRegion>");
-                xml.Append(this.EscapeXML(this.StateOrRegion));
-                xml.Append("</StateOrRegion>");
-            }
-            if (this.IsSetPostalCode()) {
-                xml.Append("<PostalCode>");
-                xml.Append(this.EscapeXML(this.PostalCode));
-                xml.Append("</PostalCode>");
-            }
-            if (this.IsSetCountryCode()) {
-                xml.Append("<CountryCode>");
-                xml.Append(this.EscapeXML(this.CountryCode));
-                xml.Append("</CountryCode>");
-            }
-            if (this.IsSetPhone()) {
-                xml.Append("<Phone>");
-                xml.Append(this.EscapeXML(this.Phone));
-                xml.Append("</Phone>");
-            }
-            return xml.ToString();
+        public override void ReadFragmentFrom(IMwsReader reader)
+        {
+            _name = reader.Read<string>("Name");
+            _addressLine1 = reader.Read<string>("AddressLine1");
+            _addressLine2 = reader.Read<string>("AddressLine2");
+            _addressLine3 = reader.Read<string>("AddressLine3");
+            _city = reader.Read<string>("City");
+            _county = reader.Read<string>("County");
+            _district = reader.Read<string>("District");
+            _stateOrRegion = reader.Read<string>("StateOrRegion");
+            _postalCode = reader.Read<string>("PostalCode");
+            _countryCode = reader.Read<string>("CountryCode");
+            _phone = reader.Read<string>("Phone");
         }
 
-        /**
-         * 
-         * Escape XML special characters
-         */
-        private String EscapeXML(String str) {
-            if (str == null)
-                return "null";
-            StringBuilder sb = new StringBuilder();
-            foreach (Char c in str)
-            {
-                switch (c) {
-                case '&':
-                    sb.Append("&amp;");
-                    break;
-                case '<':
-                    sb.Append("&lt;");
-                    break;
-                case '>':
-                    sb.Append("&gt;");
-                    break;
-                case '\'':
-                    sb.Append("&#039;");
-                    break;
-                case '"':
-                    sb.Append("&quot;");
-                    break;
-                default:
-                    sb.Append(c);
-                    break;
-                }
-            }
-            return sb.ToString();
+        public override void WriteFragmentTo(IMwsWriter writer)
+        {
+            writer.Write("Name", _name);
+            writer.Write("AddressLine1", _addressLine1);
+            writer.Write("AddressLine2", _addressLine2);
+            writer.Write("AddressLine3", _addressLine3);
+            writer.Write("City", _city);
+            writer.Write("County", _county);
+            writer.Write("District", _district);
+            writer.Write("StateOrRegion", _stateOrRegion);
+            writer.Write("PostalCode", _postalCode);
+            writer.Write("CountryCode", _countryCode);
+            writer.Write("Phone", _phone);
         }
 
+        public override void WriteTo(IMwsWriter writer)
+        {
+            writer.Write("https://mws.amazonservices.com/Orders/2013-09-01", "Address", this);
+        }
 
-
+        public Address() : base()
+        {
+        }
     }
-
 }

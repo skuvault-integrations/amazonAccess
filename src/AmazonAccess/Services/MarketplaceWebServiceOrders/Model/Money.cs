@@ -1,179 +1,110 @@
-/******************************************************************************* 
- *  Copyright 2008-2012 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *  Licensed under the Apache License, Version 2.0 (the "License"); 
- *  
- *  You may not use this file except in compliance with the License. 
- *  You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
- *  This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
- *  CONDITIONS OF ANY KIND, either express or implied. See the License for the 
- *  specific language governing permissions and limitations under the License.
- * ***************************************************************************** 
- * 
- *  Marketplace Web Service Orders CSharp Library
- *  API Version: 2011-01-01
- * 
+/*******************************************************************************
+ * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ *
+ * You may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
+ * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+ * specific language governing permissions and limitations under the License.
+ *******************************************************************************
+ * Money
+ * API Version: 2013-09-01
+ * Library Version: 2015-02-13
+ * Generated: Tue Feb 10 22:00:52 UTC 2015
  */
 
+
 using System;
-using System.Xml.Serialization;
-using System.Text;
+using System.Xml;
+using AmazonAccess.Services.Utils;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
+namespace MarketplaceWebServiceOrders.Model
 {
-    [XmlType(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01")]
-    [XmlRoot(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01", IsNullable = false)]
-    public class Money
+    public class Money : AbstractMwsObject
     {
-    
-        private String currencyCodeField;
 
-        private String amountField;
-
+        private string _currencyCode;
+        private string _amount;
 
         /// <summary>
         /// Gets and sets the CurrencyCode property.
         /// </summary>
-        [XmlElement(ElementName = "CurrencyCode")]
-        public String CurrencyCode
+        public string CurrencyCode
         {
-            get { return this.currencyCodeField ; }
-            set { this.currencyCodeField= value; }
+            get { return this._currencyCode; }
+            set { this._currencyCode = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the CurrencyCode property
+        /// Sets the CurrencyCode property.
         /// </summary>
-        /// <param name="currencyCode">CurrencyCode property</param>
-        /// <returns>this instance</returns>
-        public Money WithCurrencyCode(String currencyCode)
+        /// <param name="currencyCode">CurrencyCode property.</param>
+        /// <returns>this instance.</returns>
+        public Money WithCurrencyCode(string currencyCode)
         {
-            this.currencyCodeField = currencyCode;
+            this._currencyCode = currencyCode;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if CurrencyCode property is set
+        /// Checks if CurrencyCode property is set.
         /// </summary>
-        /// <returns>true if CurrencyCode property is set</returns>
-        public Boolean IsSetCurrencyCode()
+        /// <returns>true if CurrencyCode property is set.</returns>
+        public bool IsSetCurrencyCode()
         {
-            return  this.currencyCodeField != null;
-
+            return this._currencyCode != null;
         }
-
 
         /// <summary>
         /// Gets and sets the Amount property.
         /// </summary>
-        [XmlElement(ElementName = "Amount")]
-        public String Amount
+        public string Amount
         {
-            get { return this.amountField ; }
-            set { this.amountField= value; }
+            get { return this._amount; }
+            set { this._amount = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the Amount property
+        /// Sets the Amount property.
         /// </summary>
-        /// <param name="amount">Amount property</param>
-        /// <returns>this instance</returns>
-        public Money WithAmount(String amount)
+        /// <param name="amount">Amount property.</param>
+        /// <returns>this instance.</returns>
+        public Money WithAmount(string amount)
         {
-            this.amountField = amount;
+            this._amount = amount;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if Amount property is set
+        /// Checks if Amount property is set.
         /// </summary>
-        /// <returns>true if Amount property is set</returns>
-        public Boolean IsSetAmount()
+        /// <returns>true if Amount property is set.</returns>
+        public bool IsSetAmount()
         {
-            return  this.amountField != null;
-
+            return this._amount != null;
         }
 
 
-
-
-        /// <summary>
-        /// XML fragment representation of this object
-        /// </summary>
-        /// <returns>XML fragment for this object.</returns>
-        /// <remarks>
-        /// Name for outer tag expected to be set by calling method. 
-        /// This fragment returns inner properties representation only
-        /// </remarks>
-
-
-        protected internal String ToXMLFragment() {
-            StringBuilder xml = new StringBuilder();
-            if (this.IsSetCurrencyCode()) {
-                xml.Append("<CurrencyCode>");
-                xml.Append(this.EscapeXML(this.CurrencyCode));
-                xml.Append("</CurrencyCode>");
-            }
-            if (this.IsSetAmount()) {
-                xml.Append("<Amount>");
-                xml.Append(this.EscapeXML(this.Amount));
-                xml.Append("</Amount>");
-            }
-            return xml.ToString();
-        }
-
-        /**
-         * 
-         * Escape XML special characters
-         */
-        private String EscapeXML(String str) {
-            if (str == null)
-                return "null";
-            StringBuilder sb = new StringBuilder();
-            foreach (Char c in str)
-            {
-                switch (c) {
-                case '&':
-                    sb.Append("&amp;");
-                    break;
-                case '<':
-                    sb.Append("&lt;");
-                    break;
-                case '>':
-                    sb.Append("&gt;");
-                    break;
-                case '\'':
-                    sb.Append("&#039;");
-                    break;
-                case '"':
-                    sb.Append("&quot;");
-                    break;
-                default:
-                    sb.Append(c);
-                    break;
-                }
-            }
-            return sb.ToString();
-        }
-
-
-        public override string ToString()
+        public override void ReadFragmentFrom(IMwsReader reader)
         {
-            if (this.IsSetCurrencyCode())
-            {
-                return this.Amount + " " + this.CurrencyCode;
-            }
-            return this.Amount.ToString();
+            _currencyCode = reader.Read<string>("CurrencyCode");
+            _amount = reader.Read<string>("Amount");
         }
 
+        public override void WriteFragmentTo(IMwsWriter writer)
+        {
+            writer.Write("CurrencyCode", _currencyCode);
+            writer.Write("Amount", _amount);
+        }
 
+        public override void WriteTo(IMwsWriter writer)
+        {
+            writer.Write("https://mws.amazonservices.com/Orders/2013-09-01", "Money", this);
+        }
+
+        public Money() : base()
+        {
+        }
     }
-
 }

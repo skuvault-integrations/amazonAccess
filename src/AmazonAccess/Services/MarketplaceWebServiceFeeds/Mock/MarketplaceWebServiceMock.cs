@@ -19,10 +19,9 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
-using AmazonAccess.Services.MarketplaceWebServiceFeeds;
 using MarketplaceWebService.Model;
 
-namespace MarketplaceWebService.Mock
+namespace AmazonAccess.Services.MarketplaceWebServiceFeeds.Mock
 {
 
     /// <summary>
@@ -55,7 +54,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetReportResponse GetReport(GetReportRequest request)
         {
-            return Invoke<GetReportResponse>("GetReportResponse.xml");
+            return this.Invoke<GetReportResponse>("GetReportResponse.xml");
         }
         
         /// <summary>
@@ -69,7 +68,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetReportScheduleCountResponse GetReportScheduleCount(GetReportScheduleCountRequest request)
         {
-            return Invoke<GetReportScheduleCountResponse>("GetReportScheduleCountResponse.xml");
+            return this.Invoke<GetReportScheduleCountResponse>("GetReportScheduleCountResponse.xml");
         }
         
         /// <summary>
@@ -83,7 +82,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetReportRequestListByNextTokenResponse GetReportRequestListByNextToken(GetReportRequestListByNextTokenRequest request)
         {
-            return Invoke<GetReportRequestListByNextTokenResponse>("GetReportRequestListByNextTokenResponse.xml");
+            return this.Invoke<GetReportRequestListByNextTokenResponse>("GetReportRequestListByNextTokenResponse.xml");
         }
         
         /// <summary>
@@ -97,7 +96,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public UpdateReportAcknowledgementsResponse UpdateReportAcknowledgements(UpdateReportAcknowledgementsRequest request)
         {
-            return Invoke<UpdateReportAcknowledgementsResponse>("UpdateReportAcknowledgementsResponse.xml");
+            return this.Invoke<UpdateReportAcknowledgementsResponse>("UpdateReportAcknowledgementsResponse.xml");
         }
         
         /// <summary>
@@ -115,7 +114,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public SubmitFeedResponse SubmitFeed(SubmitFeedRequest request)
         {
-            return Invoke<SubmitFeedResponse>("SubmitFeedResponse.xml");
+            return this.Invoke<SubmitFeedResponse>("SubmitFeedResponse.xml");
         }
         
         /// <summary>
@@ -131,7 +130,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetReportCountResponse GetReportCount(GetReportCountRequest request)
         {
-            return Invoke<GetReportCountResponse>("GetReportCountResponse.xml");
+            return this.Invoke<GetReportCountResponse>("GetReportCountResponse.xml");
         }
         
         /// <summary>
@@ -145,7 +144,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetFeedSubmissionListByNextTokenResponse GetFeedSubmissionListByNextToken(GetFeedSubmissionListByNextTokenRequest request)
         {
-            return Invoke<GetFeedSubmissionListByNextTokenResponse>("GetFeedSubmissionListByNextTokenResponse.xml");
+            return this.Invoke<GetFeedSubmissionListByNextTokenResponse>("GetFeedSubmissionListByNextTokenResponse.xml");
         }
         
         /// <summary>
@@ -160,7 +159,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public CancelFeedSubmissionsResponse CancelFeedSubmissions(CancelFeedSubmissionsRequest request)
         {
-            return Invoke<CancelFeedSubmissionsResponse>("CancelFeedSubmissionsResponse.xml");
+            return this.Invoke<CancelFeedSubmissionsResponse>("CancelFeedSubmissionsResponse.xml");
         }
         
         /// <summary>
@@ -174,7 +173,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public RequestReportResponse RequestReport(RequestReportRequest request)
         {
-            return Invoke<RequestReportResponse>("RequestReportResponse.xml");
+            return this.Invoke<RequestReportResponse>("RequestReportResponse.xml");
         }
         
         /// <summary>
@@ -188,7 +187,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetFeedSubmissionCountResponse GetFeedSubmissionCount(GetFeedSubmissionCountRequest request)
         {
-            return Invoke<GetFeedSubmissionCountResponse>("GetFeedSubmissionCountResponse.xml");
+            return this.Invoke<GetFeedSubmissionCountResponse>("GetFeedSubmissionCountResponse.xml");
         }
         
         /// <summary>
@@ -203,7 +202,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public CancelReportRequestsResponse CancelReportRequests(CancelReportRequestsRequest request)
         {
-            return Invoke<CancelReportRequestsResponse>("CancelReportRequestsResponse.xml");
+            return this.Invoke<CancelReportRequestsResponse>("CancelReportRequestsResponse.xml");
         }
         
         /// <summary>
@@ -218,7 +217,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetReportListResponse GetReportList(GetReportListRequest request)
         {
-            return Invoke<GetReportListResponse>("GetReportListResponse.xml");
+            return this.Invoke<GetReportListResponse>("GetReportListResponse.xml");
         }
         
         /// <summary>
@@ -232,7 +231,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetFeedSubmissionResultResponse GetFeedSubmissionResult(GetFeedSubmissionResultRequest request)
         {
-            return Invoke<GetFeedSubmissionResultResponse>("GetFeedSubmissionResultResponse.xml");
+            return this.Invoke<GetFeedSubmissionResultResponse>("GetFeedSubmissionResultResponse.xml");
         }
         
         /// <summary>
@@ -246,7 +245,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetFeedSubmissionListResponse GetFeedSubmissionList(GetFeedSubmissionListRequest request)
         {
-            return Invoke<GetFeedSubmissionListResponse>("GetFeedSubmissionListResponse.xml");
+            return this.Invoke<GetFeedSubmissionListResponse>("GetFeedSubmissionListResponse.xml");
         }
         
         /// <summary>
@@ -260,7 +259,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetReportRequestListResponse GetReportRequestList(GetReportRequestListRequest request)
         {
-            return Invoke<GetReportRequestListResponse>("GetReportRequestListResponse.xml");
+            return this.Invoke<GetReportRequestListResponse>("GetReportRequestListResponse.xml");
         }
         
         /// <summary>
@@ -274,7 +273,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetReportScheduleListByNextTokenResponse GetReportScheduleListByNextToken(GetReportScheduleListByNextTokenRequest request)
         {
-            return Invoke<GetReportScheduleListByNextTokenResponse>("GetReportScheduleListByNextTokenResponse.xml");
+            return this.Invoke<GetReportScheduleListByNextTokenResponse>("GetReportScheduleListByNextTokenResponse.xml");
         }
         
         /// <summary>
@@ -288,7 +287,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetReportListByNextTokenResponse GetReportListByNextToken(GetReportListByNextTokenRequest request)
         {
-            return Invoke<GetReportListByNextTokenResponse>("GetReportListByNextTokenResponse.xml");
+            return this.Invoke<GetReportListByNextTokenResponse>("GetReportListByNextTokenResponse.xml");
         }
         
         /// <summary>
@@ -303,7 +302,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public ManageReportScheduleResponse ManageReportSchedule(ManageReportScheduleRequest request)
         {
-            return Invoke<ManageReportScheduleResponse>("ManageReportScheduleResponse.xml");
+            return this.Invoke<ManageReportScheduleResponse>("ManageReportScheduleResponse.xml");
         }
         
         /// <summary>
@@ -318,7 +317,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetReportRequestCountResponse GetReportRequestCount(GetReportRequestCountRequest request)
         {
-            return Invoke<GetReportRequestCountResponse>("GetReportRequestCountResponse.xml");
+            return this.Invoke<GetReportRequestCountResponse>("GetReportRequestCountResponse.xml");
         }
         
         /// <summary>
@@ -332,7 +331,7 @@ namespace MarketplaceWebService.Mock
         /// </remarks>
         public GetReportScheduleListResponse GetReportScheduleList(GetReportScheduleListRequest request)
         {
-            return Invoke<GetReportScheduleListResponse>("GetReportScheduleListResponse.xml");
+            return this.Invoke<GetReportScheduleListResponse>("GetReportScheduleListResponse.xml");
         }
 
         // Private API ------------------------------------------------------------//
@@ -343,7 +342,7 @@ namespace MarketplaceWebService.Mock
             XmlSerializer serializer = new XmlSerializer(typeObj);
             Stream xmlStream = Assembly.GetAssembly(this.GetType()).GetManifestResourceStream(xmlResource);
             T response = (T)serializer.Deserialize(xmlStream);
-            AddResponseHeaderMetadata(typeObj, response);
+            this.AddResponseHeaderMetadata(typeObj, response);
             
             return response;
         }

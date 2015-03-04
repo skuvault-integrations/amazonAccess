@@ -1,257 +1,182 @@
-/******************************************************************************* 
- *  Copyright 2008-2012 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *  Licensed under the Apache License, Version 2.0 (the "License"); 
- *  
- *  You may not use this file except in compliance with the License. 
- *  You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
- *  This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
- *  CONDITIONS OF ANY KIND, either express or implied. See the License for the 
- *  specific language governing permissions and limitations under the License.
- * ***************************************************************************** 
- * 
- *  Marketplace Web Service Orders CSharp Library
- *  API Version: 2011-01-01
- * 
+/*******************************************************************************
+ * Copyright 2009-2015 Amazon Services. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ *
+ * You may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
+ * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+ * specific language governing permissions and limitations under the License.
+ *******************************************************************************
+ * Get Service Status Result
+ * API Version: 2013-09-01
+ * Library Version: 2015-02-13
+ * Generated: Tue Feb 10 22:00:52 UTC 2015
  */
 
+
 using System;
-using System.Xml.Serialization;
-using System.Text;
+using System.Xml;
+using System.Collections.Generic;
+using AmazonAccess.Services.Utils;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
+namespace MarketplaceWebServiceOrders.Model
 {
-    [XmlType(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01")]
-    [XmlRoot(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01", IsNullable = false)]
-    public class GetServiceStatusResult
+    public class GetServiceStatusResult : AbstractMwsObject
     {
-    
-        private ServiceStatusEnum? statusField;
 
-        private DateTime? timestampField;
-
-        private String messageIdField;
-
-        private  MessageList messagesField;
+        private string _status;
+        private DateTime? _timestamp;
+        private string _messageId;
+        private List<Message> _messages;
 
         /// <summary>
         /// Gets and sets the Status property.
         /// </summary>
-        [XmlElement(ElementName = "Status")]
-        public ServiceStatusEnum Status
+        public string Status
         {
-            get { return this.statusField.GetValueOrDefault() ; }
-            set { this.statusField= value; }
+            get { return this._status; }
+            set { this._status = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the Status property
+        /// Sets the Status property.
         /// </summary>
-        /// <param name="status">Status property</param>
-        /// <returns>this instance</returns>
-        public GetServiceStatusResult WithStatus(ServiceStatusEnum status)
+        /// <param name="status">Status property.</param>
+        /// <returns>this instance.</returns>
+        public GetServiceStatusResult WithStatus(string status)
         {
-            this.statusField = status;
+            this._status = status;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if Status property is set
+        /// Checks if Status property is set.
         /// </summary>
-        /// <returns>true if Status property is set</returns>
-        public Boolean IsSetStatus()
+        /// <returns>true if Status property is set.</returns>
+        public bool IsSetStatus()
         {
-            return this.statusField.HasValue;
-
+            return this._status != null;
         }
-
 
         /// <summary>
         /// Gets and sets the Timestamp property.
         /// </summary>
-        [XmlElement(ElementName = "Timestamp")]
         public DateTime Timestamp
         {
-            get { return this.timestampField.GetValueOrDefault() ; }
-            set { this.timestampField= value; }
+            get { return this._timestamp.GetValueOrDefault(); }
+            set { this._timestamp = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the Timestamp property
+        /// Sets the Timestamp property.
         /// </summary>
-        /// <param name="timestamp">Timestamp property</param>
-        /// <returns>this instance</returns>
+        /// <param name="timestamp">Timestamp property.</param>
+        /// <returns>this instance.</returns>
         public GetServiceStatusResult WithTimestamp(DateTime timestamp)
         {
-            this.timestampField = timestamp;
+            this._timestamp = timestamp;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if Timestamp property is set
+        /// Checks if Timestamp property is set.
         /// </summary>
-        /// <returns>true if Timestamp property is set</returns>
-        public Boolean IsSetTimestamp()
+        /// <returns>true if Timestamp property is set.</returns>
+        public bool IsSetTimestamp()
         {
-            return  this.timestampField.HasValue;
-
+            return this._timestamp != null;
         }
-
 
         /// <summary>
         /// Gets and sets the MessageId property.
         /// </summary>
-        [XmlElement(ElementName = "MessageId")]
-        public String MessageId
+        public string MessageId
         {
-            get { return this.messageIdField ; }
-            set { this.messageIdField= value; }
+            get { return this._messageId; }
+            set { this._messageId = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the MessageId property
+        /// Sets the MessageId property.
         /// </summary>
-        /// <param name="messageId">MessageId property</param>
-        /// <returns>this instance</returns>
-        public GetServiceStatusResult WithMessageId(String messageId)
+        /// <param name="messageId">MessageId property.</param>
+        /// <returns>this instance.</returns>
+        public GetServiceStatusResult WithMessageId(string messageId)
         {
-            this.messageIdField = messageId;
+            this._messageId = messageId;
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if MessageId property is set
+        /// Checks if MessageId property is set.
         /// </summary>
-        /// <returns>true if MessageId property is set</returns>
-        public Boolean IsSetMessageId()
+        /// <returns>true if MessageId property is set.</returns>
+        public bool IsSetMessageId()
         {
-            return  this.messageIdField != null;
-
+            return this._messageId != null;
         }
-
 
         /// <summary>
         /// Gets and sets the Messages property.
         /// </summary>
-        [XmlElement(ElementName = "Messages")]
-        public MessageList Messages
+        public List<Message> Messages
         {
-            get { return this.messagesField ; }
-            set { this.messagesField = value; }
+            get
+            {
+                if(this._messages == null)
+                {
+                    this._messages = new List<Message>();
+                }
+                return this._messages;
+            }
+            set { this._messages = value; }
         }
 
-
-
         /// <summary>
-        /// Sets the Messages property
+        /// Sets the Messages property.
         /// </summary>
-        /// <param name="messages">Messages property</param>
-        /// <returns>this instance</returns>
-        public GetServiceStatusResult WithMessages(MessageList messages)
+        /// <param name="messages">Messages property.</param>
+        /// <returns>this instance.</returns>
+        public GetServiceStatusResult WithMessages(Message[] messages)
         {
-            this.messagesField = messages;
+            this._messages.AddRange(messages);
             return this;
         }
 
-
-
         /// <summary>
-        /// Checks if Messages property is set
+        /// Checks if Messages property is set.
         /// </summary>
-        /// <returns>true if Messages property is set</returns>
-        public Boolean IsSetMessages()
+        /// <returns>true if Messages property is set.</returns>
+        public bool IsSetMessages()
         {
-            return this.messagesField != null;
+            return this.Messages.Count > 0;
         }
 
 
-
-
-
-
-        /// <summary>
-        /// XML fragment representation of this object
-        /// </summary>
-        /// <returns>XML fragment for this object.</returns>
-        /// <remarks>
-        /// Name for outer tag expected to be set by calling method. 
-        /// This fragment returns inner properties representation only
-        /// </remarks>
-
-
-        protected internal String ToXMLFragment() {
-            StringBuilder xml = new StringBuilder();
-            if (this.IsSetStatus()) {
-                xml.Append("<Status>");
-                xml.Append(this.Status);
-                xml.Append("</Status>");
-            }
-            if (this.IsSetTimestamp()) {
-                xml.Append("<Timestamp>");
-                xml.Append(this.Timestamp);
-                xml.Append("</Timestamp>");
-            }
-            if (this.IsSetMessageId()) {
-                xml.Append("<MessageId>");
-                xml.Append(this.EscapeXML(this.MessageId));
-                xml.Append("</MessageId>");
-            }
-            if (this.IsSetMessages()) {
-                MessageList  messagesObj = this.Messages;
-                xml.Append("<Messages>");
-                xml.Append(messagesObj.ToXMLFragment());
-                xml.Append("</Messages>");
-            } 
-            return xml.ToString();
+        public override void ReadFragmentFrom(IMwsReader reader)
+        {
+            _status = reader.Read<string>("Status");
+            _timestamp = reader.Read<DateTime?>("Timestamp");
+            _messageId = reader.Read<string>("MessageId");
+            _messages = reader.ReadList<Message>("Messages", "Message");
         }
 
-        /**
-         * 
-         * Escape XML special characters
-         */
-        private String EscapeXML(String str) {
-            if (str == null)
-                return "null";
-            StringBuilder sb = new StringBuilder();
-            foreach (Char c in str)
-            {
-                switch (c) {
-                case '&':
-                    sb.Append("&amp;");
-                    break;
-                case '<':
-                    sb.Append("&lt;");
-                    break;
-                case '>':
-                    sb.Append("&gt;");
-                    break;
-                case '\'':
-                    sb.Append("&#039;");
-                    break;
-                case '"':
-                    sb.Append("&quot;");
-                    break;
-                default:
-                    sb.Append(c);
-                    break;
-                }
-            }
-            return sb.ToString();
+        public override void WriteFragmentTo(IMwsWriter writer)
+        {
+            writer.Write("Status", _status);
+            writer.Write("Timestamp", _timestamp);
+            writer.Write("MessageId", _messageId);
+            writer.WriteList("Messages", "Message", _messages);
         }
 
+        public override void WriteTo(IMwsWriter writer)
+        {
+            writer.Write("https://mws.amazonservices.com/Orders/2013-09-01", "GetServiceStatusResult", this);
+        }
 
-
+        public GetServiceStatusResult() : base()
+        {
+        }
     }
-
 }

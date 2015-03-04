@@ -31,7 +31,7 @@ namespace AmazonAccessTests.Inventory
 		public void LoadInventory()
 		{
 			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, marketplace );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			var inventory = service.GetInventory();
 			inventory.Count().Should().BeGreaterThan( 0 );
@@ -41,7 +41,7 @@ namespace AmazonAccessTests.Inventory
 		public void LoadFbaInventory()
 		{
 			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, marketplace );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			var inventory = service.GetFbaInventory();
 			inventory.Count().Should().BeGreaterThan( 0 );
@@ -52,7 +52,7 @@ namespace AmazonAccessTests.Inventory
 		{
 			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
 			//var service = this.AmazonFactory.CreateService( "" );
-			var service = this.AmazonFactory.CreateService( "", marketplace );
+			var service = this.AmazonFactory.CreateService( "", this.Config.MwsAuthToken, marketplace );
 			//var inventory = service.GetFbaInventory();
 
 			//var item = inventory.FirstOrDefault();
