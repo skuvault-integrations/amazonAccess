@@ -245,6 +245,35 @@
     <Compile Include="Services\MarketplaceWebServiceFeeds\Model\UpdateReportAcknowledgementsResult.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\OrderItemsService.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\OrdersService.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellers.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellersClient.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellersConfig.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellersException.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Mock\MarketplaceWebServiceSellersMock.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\GetAuthTokenRequest.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\GetAuthTokenResponse.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\GetAuthTokenResult.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\GetServiceStatusRequest.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\GetServiceStatusResponse.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\GetServiceStatusResult.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\HasSellerSuspendedListingsEnum.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\IMWSResponse.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\ListMarketplaceParticipationsByNextTokenRequest.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\ListMarketplaceParticipationsByNextTokenResponse.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\ListMarketplaceParticipationsByNextTokenResult.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\ListMarketplaceParticipationsRequest.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\ListMarketplaceParticipationsResponse.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\ListMarketplaceParticipationsResult.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\ListMarketplaces.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\ListParticipations.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\Marketplace.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\Message.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\MessageList.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\Participation.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\ResponseHeaderMetadata.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\ResponseMetadata.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\ServiceStatusEnum.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\SellersService.cs" />
     <Compile Include="Services\Utils\AbstractMwsObject.cs" />
     <Compile Include="Services\Utils\IMwsCall.cs" />
     <Compile Include="Services\Utils\IMwsObject.cs" />
@@ -300,6 +329,9 @@
     <Content Include="Services\MarketplaceWebServiceFeeds\Mock\RequestReportResponse.xml" />
     <Content Include="Services\MarketplaceWebServiceFeeds\Mock\SubmitFeedResponse.xml" />
     <Content Include="Services\MarketplaceWebServiceFeeds\Mock\UpdateReportAcknowledgementsResponse.xml" />
+    <Content Include="Services\MarketplaceWebServiceSellers\Mock\MarketplaceWebServiceSellers.Model.GetServiceStatusResponse.xml" />
+    <Content Include="Services\MarketplaceWebServiceSellers\Mock\MarketplaceWebServiceSellers.Model.ListMarketplaceParticipationsByNextTokenResponse.xml" />
+    <Content Include="Services\MarketplaceWebServiceSellers\Mock\MarketplaceWebServiceSellers.Model.ListMarketplaceParticipationsResponse.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

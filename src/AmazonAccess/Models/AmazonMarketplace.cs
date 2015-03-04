@@ -9,6 +9,7 @@ namespace AmazonAccess.Models
 		public string FbaInventoryServiceUrl{ get; private set; }
 		public string FeedsServiceUrl{ get; private set; }
 		public string OrdersServiceUrl{ get; private set; }
+		public string SellersServiceUrl{ get; private set; }
 		private readonly AmazonCountryCodesEnum _countryCode;
 
 		public AmazonMarketplace( AmazonCountryCodesEnum countryCode )
@@ -28,24 +29,28 @@ namespace AmazonAccess.Models
 					this.OrdersServiceUrl = "https://mws.amazonservices.com/Orders/2011-01-01/";
 					this.FbaInventoryServiceUrl = "https://mws.amazonservices.com/FulfillmentInventory/2010-10-01/";
 					this.FeedsServiceUrl = "https://mws.amazonservices.com";
+					this.SellersServiceUrl = "https://mws.amazonservices.com/Sellers/2011-07-01/";
 					break;
 				case AmazonCountryCodesEnum.Uk:
 					this.MarketplaceId = "A1F83G8C2ARO7P";
 					this.OrdersServiceUrl = "https://mws-eu.amazonservices.com/Orders/2011-01-01/";
 					this.FbaInventoryServiceUrl = "https://mws-eu.amazonservices.com/FulfillmentInventory/2010-10-01/";
 					this.FeedsServiceUrl = "https://mws-eu.amazonservices.com";
+					this.SellersServiceUrl = "https://mws-eu.amazonservices.com/Sellers/2011-07-01/";
 					break;
 				case AmazonCountryCodesEnum.Fr:
 					this.MarketplaceId = "A13V1IB3VIYZZH";
 					this.OrdersServiceUrl = "https://mws-eu.amazonservices.com/Orders/2011-01-01/";
 					this.FbaInventoryServiceUrl = "https://mws-eu.amazonservices.com/FulfillmentInventory/2010-10-01/";
 					this.FeedsServiceUrl = "https://mws-eu.amazonservices.com";
+					this.SellersServiceUrl = "https://mws-eu.amazonservices.com/Sellers/2011-07-01/";
 					break;
 				case AmazonCountryCodesEnum.Ca:
 					this.MarketplaceId = "A2EUQ1WTGCTBG2";
 					this.OrdersServiceUrl = "https://mws.amazonservices.ca/Orders/2011-01-01/";
 					this.FbaInventoryServiceUrl = "https://mws.amazonservices.ca/FulfillmentInventory/2010-10-01/";
 					this.FeedsServiceUrl = "https://mws.amazonservices.ca";
+					this.SellersServiceUrl = "https://mws.amazonservices.ca/Sellers/2011-07-01/";
 					break;
 			}
 		}

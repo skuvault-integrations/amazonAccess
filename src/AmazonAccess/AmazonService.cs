@@ -9,6 +9,8 @@ using AmazonAccess.Services.FbaInventoryServiceMws.Model;
 using AmazonAccess.Services.MarketplaceWebServiceFeeds;
 using AmazonAccess.Services.MarketplaceWebServiceOrders;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
+using AmazonAccess.Services.MarketplaceWebServiceSellers;
+using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
 using CuttingEdge.Conditions;
 using MarketplaceWebService.Model;
 using MarketplaceWebServiceOrders.Model;
@@ -147,6 +149,24 @@ namespace AmazonAccess
 			//service.GetInventoryReport( client );
 
 			return null;
+		}
+		#endregion
+
+		#region Sellers
+		public string GetMwsAuthToken()
+		{
+			var token = string.Empty;
+			ActionPolicies.AmazonGetPolicy.Do( () =>
+			{
+				var client = this._factory.CreateSellersClient();
+				var request = new GetAuthTokenRequest
+				{
+					SellerId = this._credentials.SellerId,
+				};
+				var service = new SellersService( client, request );
+				token = service.GetToken();
+			} );
+			return token;
 		}
 		#endregion
 	}

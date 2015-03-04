@@ -17,5 +17,7 @@ namespace AmazonAccess
 		//Task<IEnumerable<InventorySupply>> GetInventoryAsync();
 
 		IEnumerable< InventorySupply > GetFbaInventory();
+
+		string GetMwsAuthToken();
 	}
 }
