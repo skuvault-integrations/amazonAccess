@@ -13,7 +13,6 @@ using AmazonAccess.Services.MarketplaceWebServiceSellers;
 using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
 using CuttingEdge.Conditions;
 using MarketplaceWebService.Model;
-using MarketplaceWebServiceOrders.Model;
 
 namespace AmazonAccess
 {

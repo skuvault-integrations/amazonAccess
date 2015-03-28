@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AmazonAccess.Misc;
-using MarketplaceWebServiceOrders.Model;
+using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 {

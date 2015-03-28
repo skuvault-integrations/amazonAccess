@@ -10,16 +10,13 @@
  *******************************************************************************
  * Response Metadata
  * API Version: 2013-09-01
- * Library Version: 2015-02-13
- * Generated: Tue Feb 10 22:00:52 UTC 2015
+ * Library Version: 2015-03-05
+ * Generated: Tue Mar 03 22:11:26 GMT 2015
  */
 
-
-using System;
-using System.Xml;
 using AmazonAccess.Services.Utils;
 
-namespace MarketplaceWebServiceOrders.Model
+namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {
     public class ResponseMetadata : AbstractMwsObject
     {
@@ -58,12 +55,12 @@ namespace MarketplaceWebServiceOrders.Model
 
         public override void ReadFragmentFrom(IMwsReader reader)
         {
-            _requestId = reader.Read<string>("RequestId");
+            this._requestId = reader.Read<string>("RequestId");
         }
 
         public override void WriteFragmentTo(IMwsWriter writer)
         {
-            writer.Write("RequestId", _requestId);
+            writer.Write("RequestId", this._requestId);
         }
 
         public override void WriteTo(IMwsWriter writer)

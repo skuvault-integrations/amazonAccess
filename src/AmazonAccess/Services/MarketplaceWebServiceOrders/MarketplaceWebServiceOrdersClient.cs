@@ -24,7 +24,6 @@ using System.Xml.Serialization;
 using System.Collections.Generic;
 using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
-using MarketplaceWebServiceOrders.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 {
@@ -257,9 +256,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					}
 
 					/* Attempt to deserialize response into <Action> Response type */
-					var serializer = new XmlSerializer( typeof( T ) );
 					using( var responseReader = new StringReader( responseBody ) )
 					{
+						var serializer = new XmlSerializer( typeof( T ) );
 						response = ( T )serializer.Deserialize( responseReader );
 
 						var pi = typeof( T ).GetProperty( "ResponseHeaderMetadata" );

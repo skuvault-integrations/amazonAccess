@@ -10,17 +10,15 @@
  *******************************************************************************
  * List Orders Request
  * API Version: 2013-09-01
- * Library Version: 2015-02-13
- * Generated: Tue Feb 10 22:00:52 UTC 2015
+ * Library Version: 2015-03-05
+ * Generated: Tue Mar 03 22:11:26 GMT 2015
  */
 
-
 using System;
-using System.Xml;
 using System.Collections.Generic;
 using AmazonAccess.Services.Utils;
 
-namespace MarketplaceWebServiceOrders.Model
+namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {
     public class ListOrdersRequest : AbstractMwsObject
     {
@@ -484,38 +482,38 @@ namespace MarketplaceWebServiceOrders.Model
 
         public override void ReadFragmentFrom(IMwsReader reader)
         {
-            _sellerId = reader.Read<string>("SellerId");
-            _mwsAuthToken = reader.Read<string>("MWSAuthToken");
-            _createdAfter = reader.Read<DateTime?>("CreatedAfter");
-            _createdBefore = reader.Read<DateTime?>("CreatedBefore");
-            _lastUpdatedAfter = reader.Read<DateTime?>("LastUpdatedAfter");
-            _lastUpdatedBefore = reader.Read<DateTime?>("LastUpdatedBefore");
-            _orderStatus = reader.ReadList<string>("OrderStatus", "Status");
-            _marketplaceId = reader.ReadList<string>("MarketplaceId", "Id");
-            _fulfillmentChannel = reader.ReadList<string>("FulfillmentChannel", "Channel");
-            _paymentMethod = reader.ReadList<string>("PaymentMethod", "Method");
-            _buyerEmail = reader.Read<string>("BuyerEmail");
-            _sellerOrderId = reader.Read<string>("SellerOrderId");
-            _maxResultsPerPage = reader.Read<decimal?>("MaxResultsPerPage");
-            _tfmShipmentStatus = reader.ReadList<string>("TFMShipmentStatus", "Status");
+            this._sellerId = reader.Read<string>("SellerId");
+            this._mwsAuthToken = reader.Read<string>("MWSAuthToken");
+            this._createdAfter = reader.Read<DateTime?>("CreatedAfter");
+            this._createdBefore = reader.Read<DateTime?>("CreatedBefore");
+            this._lastUpdatedAfter = reader.Read<DateTime?>("LastUpdatedAfter");
+            this._lastUpdatedBefore = reader.Read<DateTime?>("LastUpdatedBefore");
+            this._orderStatus = reader.ReadList<string>("OrderStatus", "Status");
+            this._marketplaceId = reader.ReadList<string>("MarketplaceId", "Id");
+            this._fulfillmentChannel = reader.ReadList<string>("FulfillmentChannel", "Channel");
+            this._paymentMethod = reader.ReadList<string>("PaymentMethod", "Method");
+            this._buyerEmail = reader.Read<string>("BuyerEmail");
+            this._sellerOrderId = reader.Read<string>("SellerOrderId");
+            this._maxResultsPerPage = reader.Read<decimal?>("MaxResultsPerPage");
+            this._tfmShipmentStatus = reader.ReadList<string>("TFMShipmentStatus", "Status");
         }
 
         public override void WriteFragmentTo(IMwsWriter writer)
         {
-            writer.Write("SellerId", _sellerId);
-            writer.Write("MWSAuthToken", _mwsAuthToken);
-            writer.Write("CreatedAfter", _createdAfter);
-            writer.Write("CreatedBefore", _createdBefore);
-            writer.Write("LastUpdatedAfter", _lastUpdatedAfter);
-            writer.Write("LastUpdatedBefore", _lastUpdatedBefore);
-            writer.WriteList("OrderStatus", "Status", _orderStatus);
-            writer.WriteList("MarketplaceId", "Id", _marketplaceId);
-            writer.WriteList("FulfillmentChannel", "Channel", _fulfillmentChannel);
-            writer.WriteList("PaymentMethod", "Method", _paymentMethod);
-            writer.Write("BuyerEmail", _buyerEmail);
-            writer.Write("SellerOrderId", _sellerOrderId);
-            writer.Write("MaxResultsPerPage", _maxResultsPerPage);
-            writer.WriteList("TFMShipmentStatus", "Status", _tfmShipmentStatus);
+            writer.Write("SellerId", this._sellerId);
+            writer.Write("MWSAuthToken", this._mwsAuthToken);
+            writer.Write("CreatedAfter", this._createdAfter);
+            writer.Write("CreatedBefore", this._createdBefore);
+            writer.Write("LastUpdatedAfter", this._lastUpdatedAfter);
+            writer.Write("LastUpdatedBefore", this._lastUpdatedBefore);
+            writer.WriteList("OrderStatus", "Status", this._orderStatus);
+            writer.WriteList("MarketplaceId", "Id", this._marketplaceId);
+            writer.WriteList("FulfillmentChannel", "Channel", this._fulfillmentChannel);
+            writer.WriteList("PaymentMethod", "Method", this._paymentMethod);
+            writer.Write("BuyerEmail", this._buyerEmail);
+            writer.Write("SellerOrderId", this._sellerOrderId);
+            writer.Write("MaxResultsPerPage", this._maxResultsPerPage);
+            writer.WriteList("TFMShipmentStatus", "Status", this._tfmShipmentStatus);
         }
 
         public override void WriteTo(IMwsWriter writer)

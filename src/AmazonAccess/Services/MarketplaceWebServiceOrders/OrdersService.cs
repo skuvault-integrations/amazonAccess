@@ -3,7 +3,6 @@ using System.Linq;
 using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using CuttingEdge.Conditions;
-using MarketplaceWebServiceOrders.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 {

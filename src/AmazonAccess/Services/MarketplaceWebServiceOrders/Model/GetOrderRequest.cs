@@ -10,17 +10,14 @@
  *******************************************************************************
  * Get Order Request
  * API Version: 2013-09-01
- * Library Version: 2015-02-13
- * Generated: Tue Feb 10 22:00:52 UTC 2015
+ * Library Version: 2015-03-05
+ * Generated: Tue Mar 03 22:11:26 GMT 2015
  */
 
-
-using System;
-using System.Xml;
 using System.Collections.Generic;
 using AmazonAccess.Services.Utils;
 
-namespace MarketplaceWebServiceOrders.Model
+namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {
     public class GetOrderRequest : AbstractMwsObject
     {
@@ -126,16 +123,16 @@ namespace MarketplaceWebServiceOrders.Model
 
         public override void ReadFragmentFrom(IMwsReader reader)
         {
-            _sellerId = reader.Read<string>("SellerId");
-            _mwsAuthToken = reader.Read<string>("MWSAuthToken");
-            _amazonOrderId = reader.ReadList<string>("AmazonOrderId", "Id");
+            this._sellerId = reader.Read<string>("SellerId");
+            this._mwsAuthToken = reader.Read<string>("MWSAuthToken");
+            this._amazonOrderId = reader.ReadList<string>("AmazonOrderId", "Id");
         }
 
         public override void WriteFragmentTo(IMwsWriter writer)
         {
-            writer.Write("SellerId", _sellerId);
-            writer.Write("MWSAuthToken", _mwsAuthToken);
-            writer.WriteList("AmazonOrderId", "Id", _amazonOrderId);
+            writer.Write("SellerId", this._sellerId);
+            writer.Write("MWSAuthToken", this._mwsAuthToken);
+            writer.WriteList("AmazonOrderId", "Id", this._amazonOrderId);
         }
 
         public override void WriteTo(IMwsWriter writer)

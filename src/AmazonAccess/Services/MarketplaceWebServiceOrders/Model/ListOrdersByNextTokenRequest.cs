@@ -10,16 +10,13 @@
  *******************************************************************************
  * List Orders By Next Token Request
  * API Version: com.amazon.maws.coral
- * Library Version: 2015-02-13
- * Generated: Tue Feb 10 22:00:52 UTC 2015
+ * Library Version: 2015-03-05
+ * Generated: Tue Mar 03 22:11:26 GMT 2015
  */
 
-
-using System;
-using System.Xml;
 using AmazonAccess.Services.Utils;
 
-namespace MarketplaceWebServiceOrders.Model
+namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {
     public class ListOrdersByNextTokenRequest : AbstractMwsObject
     {
@@ -118,16 +115,16 @@ namespace MarketplaceWebServiceOrders.Model
 
         public override void ReadFragmentFrom(IMwsReader reader)
         {
-            _sellerId = reader.Read<string>("SellerId");
-            _mwsAuthToken = reader.Read<string>("MWSAuthToken");
-            _nextToken = reader.Read<string>("NextToken");
+            this._sellerId = reader.Read<string>("SellerId");
+            this._mwsAuthToken = reader.Read<string>("MWSAuthToken");
+            this._nextToken = reader.Read<string>("NextToken");
         }
 
         public override void WriteFragmentTo(IMwsWriter writer)
         {
-            writer.Write("SellerId", _sellerId);
-            writer.Write("MWSAuthToken", _mwsAuthToken);
-            writer.Write("NextToken", _nextToken);
+            writer.Write("SellerId", this._sellerId);
+            writer.Write("MWSAuthToken", this._mwsAuthToken);
+            writer.Write("NextToken", this._nextToken);
         }
 
         public override void WriteTo(IMwsWriter writer)

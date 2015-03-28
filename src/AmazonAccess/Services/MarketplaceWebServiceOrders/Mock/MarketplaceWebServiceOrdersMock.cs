@@ -19,7 +19,6 @@ using System.IO;
 using System.Reflection;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using AmazonAccess.Services.Utils;
-using MarketplaceWebServiceOrders.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Mock
 {
@@ -67,7 +66,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Mock
             return this.newResponse<ListOrdersByNextTokenResponse>();
         }
 
-        private T newResponse<T>() where T : IMWSResponse {
+        private T newResponse<T>() where T : IMwsResponse {
             Stream xmlIn = null;
             try {
                 xmlIn = Assembly.GetAssembly(this.GetType()).GetManifestResourceStream(typeof(T).FullName + ".xml");

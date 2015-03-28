@@ -8,14 +8,14 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
  * specific language governing permissions and limitations under the License.
  *******************************************************************************
- * Library Version: 2015-02-13
- * Generated: Tue Feb 10 22:00:52 UTC 2015
+ * Library Version: 2015-03-05
+ * Generated: Tue Mar 03 22:11:26 GMT 2015
  */
+
 using System;
-using System.Collections.Generic;
 using AmazonAccess.Services.Utils;
 
-namespace MarketplaceWebServiceOrders.Model
+namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {
     public class ResponseHeaderMetadata : MwsResponseHeaderMetadata
     {

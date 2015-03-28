@@ -10,132 +10,126 @@
  *******************************************************************************
  * List Order Items By Next Token Response
  * API Version: 2013-09-01
- * Library Version: 2015-02-13
- * Generated: Tue Feb 10 22:00:52 UTC 2015
+ * Library Version: 2015-03-05
+ * Generated: Tue Mar 03 22:11:26 GMT 2015
  */
 
-
-using System;
-using System.Xml;
-using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
+using System.Xml.Serialization;
 using AmazonAccess.Services.Utils;
 
-namespace MarketplaceWebServiceOrders.Model
+namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {
-    public class ListOrderItemsByNextTokenResponse : AbstractMwsObject, IMWSResponse
-    {
+	[ XmlRoot( Namespace = "https://mws.amazonservices.com/Orders/2013-09-01", IsNullable = false ) ]
+	public class ListOrderItemsByNextTokenResponse: AbstractMwsObject, IMwsResponse
+	{
 
-        private ListOrderItemsByNextTokenResult _listOrderItemsByNextTokenResult;
-        private ResponseMetadata _responseMetadata;
-        private ResponseHeaderMetadata _responseHeaderMetadata;
+		private ListOrderItemsByNextTokenResult _listOrderItemsByNextTokenResult;
+		private ResponseMetadata _responseMetadata;
+		private ResponseHeaderMetadata _responseHeaderMetadata;
 
-        /// <summary>
-        /// Gets and sets the ListOrderItemsByNextTokenResult property.
-        /// </summary>
-        public ListOrderItemsByNextTokenResult ListOrderItemsByNextTokenResult
-        {
-            get { return this._listOrderItemsByNextTokenResult; }
-            set { this._listOrderItemsByNextTokenResult = value; }
-        }
+		/// <summary>
+		/// Gets and sets the ListOrderItemsByNextTokenResult property.
+		/// </summary>
+		public ListOrderItemsByNextTokenResult ListOrderItemsByNextTokenResult
+		{
+			get { return this._listOrderItemsByNextTokenResult; }
+			set { this._listOrderItemsByNextTokenResult = value; }
+		}
 
-        /// <summary>
-        /// Sets the ListOrderItemsByNextTokenResult property.
-        /// </summary>
-        /// <param name="listOrderItemsByNextTokenResult">ListOrderItemsByNextTokenResult property.</param>
-        /// <returns>this instance.</returns>
-        public ListOrderItemsByNextTokenResponse WithListOrderItemsByNextTokenResult(ListOrderItemsByNextTokenResult listOrderItemsByNextTokenResult)
-        {
-            this._listOrderItemsByNextTokenResult = listOrderItemsByNextTokenResult;
-            return this;
-        }
+		/// <summary>
+		/// Sets the ListOrderItemsByNextTokenResult property.
+		/// </summary>
+		/// <param name="listOrderItemsByNextTokenResult">ListOrderItemsByNextTokenResult property.</param>
+		/// <returns>this instance.</returns>
+		public ListOrderItemsByNextTokenResponse WithListOrderItemsByNextTokenResult( ListOrderItemsByNextTokenResult listOrderItemsByNextTokenResult )
+		{
+			this._listOrderItemsByNextTokenResult = listOrderItemsByNextTokenResult;
+			return this;
+		}
 
-        /// <summary>
-        /// Checks if ListOrderItemsByNextTokenResult property is set.
-        /// </summary>
-        /// <returns>true if ListOrderItemsByNextTokenResult property is set.</returns>
-        public bool IsSetListOrderItemsByNextTokenResult()
-        {
-            return this._listOrderItemsByNextTokenResult != null;
-        }
+		/// <summary>
+		/// Checks if ListOrderItemsByNextTokenResult property is set.
+		/// </summary>
+		/// <returns>true if ListOrderItemsByNextTokenResult property is set.</returns>
+		public bool IsSetListOrderItemsByNextTokenResult()
+		{
+			return this._listOrderItemsByNextTokenResult != null;
+		}
 
-        /// <summary>
-        /// Gets and sets the ResponseMetadata property.
-        /// </summary>
-        public ResponseMetadata ResponseMetadata
-        {
-            get { return this._responseMetadata; }
-            set { this._responseMetadata = value; }
-        }
+		/// <summary>
+		/// Gets and sets the ResponseMetadata property.
+		/// </summary>
+		public ResponseMetadata ResponseMetadata
+		{
+			get { return this._responseMetadata; }
+			set { this._responseMetadata = value; }
+		}
 
-        /// <summary>
-        /// Sets the ResponseMetadata property.
-        /// </summary>
-        /// <param name="responseMetadata">ResponseMetadata property.</param>
-        /// <returns>this instance.</returns>
-        public ListOrderItemsByNextTokenResponse WithResponseMetadata(ResponseMetadata responseMetadata)
-        {
-            this._responseMetadata = responseMetadata;
-            return this;
-        }
+		/// <summary>
+		/// Sets the ResponseMetadata property.
+		/// </summary>
+		/// <param name="responseMetadata">ResponseMetadata property.</param>
+		/// <returns>this instance.</returns>
+		public ListOrderItemsByNextTokenResponse WithResponseMetadata( ResponseMetadata responseMetadata )
+		{
+			this._responseMetadata = responseMetadata;
+			return this;
+		}
 
-        /// <summary>
-        /// Checks if ResponseMetadata property is set.
-        /// </summary>
-        /// <returns>true if ResponseMetadata property is set.</returns>
-        public bool IsSetResponseMetadata()
-        {
-            return this._responseMetadata != null;
-        }
+		/// <summary>
+		/// Checks if ResponseMetadata property is set.
+		/// </summary>
+		/// <returns>true if ResponseMetadata property is set.</returns>
+		public bool IsSetResponseMetadata()
+		{
+			return this._responseMetadata != null;
+		}
 
-        /// <summary>
-        /// Gets and sets the ResponseHeaderMetadata property.
-        /// </summary>
-        public ResponseHeaderMetadata ResponseHeaderMetadata
-        {
-            get { return this._responseHeaderMetadata; }
-            set { this._responseHeaderMetadata = value; }
-        }
+		/// <summary>
+		/// Gets and sets the ResponseHeaderMetadata property.
+		/// </summary>
+		public ResponseHeaderMetadata ResponseHeaderMetadata
+		{
+			get { return this._responseHeaderMetadata; }
+			set { this._responseHeaderMetadata = value; }
+		}
 
-        /// <summary>
-        /// Sets the ResponseHeaderMetadata property.
-        /// </summary>
-        /// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
-        /// <returns>this instance.</returns>
-        public ListOrderItemsByNextTokenResponse WithResponseHeaderMetadata(ResponseHeaderMetadata responseHeaderMetadata)
-        {
-            this._responseHeaderMetadata = responseHeaderMetadata;
-            return this;
-        }
+		/// <summary>
+		/// Sets the ResponseHeaderMetadata property.
+		/// </summary>
+		/// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
+		/// <returns>this instance.</returns>
+		public ListOrderItemsByNextTokenResponse WithResponseHeaderMetadata( ResponseHeaderMetadata responseHeaderMetadata )
+		{
+			this._responseHeaderMetadata = responseHeaderMetadata;
+			return this;
+		}
 
-        /// <summary>
-        /// Checks if ResponseHeaderMetadata property is set.
-        /// </summary>
-        /// <returns>true if ResponseHeaderMetadata property is set.</returns>
-        public bool IsSetResponseHeaderMetadata()
-        {
-            return this._responseHeaderMetadata != null;
-        }
+		/// <summary>
+		/// Checks if ResponseHeaderMetadata property is set.
+		/// </summary>
+		/// <returns>true if ResponseHeaderMetadata property is set.</returns>
+		public bool IsSetResponseHeaderMetadata()
+		{
+			return this._responseHeaderMetadata != null;
+		}
 
 
-        public override void ReadFragmentFrom(IMwsReader reader)
-        {
-            _listOrderItemsByNextTokenResult = reader.Read<ListOrderItemsByNextTokenResult>("ListOrderItemsByNextTokenResult");
-            _responseMetadata = reader.Read<ResponseMetadata>("ResponseMetadata");
-        }
+		public override void ReadFragmentFrom( IMwsReader reader )
+		{
+			this._listOrderItemsByNextTokenResult = reader.Read< ListOrderItemsByNextTokenResult >( "ListOrderItemsByNextTokenResult" );
+			this._responseMetadata = reader.Read< ResponseMetadata >( "ResponseMetadata" );
+		}
 
-        public override void WriteFragmentTo(IMwsWriter writer)
-        {
-            writer.Write("ListOrderItemsByNextTokenResult", _listOrderItemsByNextTokenResult);
-            writer.Write("ResponseMetadata", _responseMetadata);
-        }
+		public override void WriteFragmentTo( IMwsWriter writer )
+		{
+			writer.Write( "ListOrderItemsByNextTokenResult", this._listOrderItemsByNextTokenResult );
+			writer.Write( "ResponseMetadata", this._responseMetadata );
+		}
 
-        public override void WriteTo(IMwsWriter writer)
-        {
-            writer.Write("https://mws.amazonservices.com/Orders/2013-09-01", "ListOrderItemsByNextTokenResponse", this);
-        }
-
-        public ListOrderItemsByNextTokenResponse() : base()
-        {
-        }
-    }
+		public override void WriteTo( IMwsWriter writer )
+		{
+			writer.Write( "https://mws.amazonservices.com/Orders/2013-09-01", "ListOrderItemsByNextTokenResponse", this );
+		}
+	}
 }

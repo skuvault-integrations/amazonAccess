@@ -31,7 +31,7 @@ namespace AmazonAccessTests.Orders
 			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
-			var orders = service.GetOrders( DateTime.UtcNow - TimeSpan.FromDays( 2 ), DateTime.UtcNow );
+			var orders = service.GetOrders( DateTime.UtcNow - TimeSpan.FromDays( 14 ), DateTime.UtcNow );
 			orders.Count().Should().BeGreaterThan( 0 );
 		}
 	}

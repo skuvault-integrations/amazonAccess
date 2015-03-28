@@ -10,132 +10,127 @@
  *******************************************************************************
  * List Orders Response
  * API Version: 2013-09-01
- * Library Version: 2015-02-13
- * Generated: Tue Feb 10 22:00:52 UTC 2015
+ * Library Version: 2015-03-05
+ * Generated: Tue Mar 03 22:11:26 GMT 2015
  */
 
-
-using System;
-using System.Xml;
-using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
+using System.Xml.Serialization;
 using AmazonAccess.Services.Utils;
 
-namespace MarketplaceWebServiceOrders.Model
+namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {
-    public class ListOrdersResponse : AbstractMwsObject, IMWSResponse
-    {
+	[ XmlRoot( Namespace = "https://mws.amazonservices.com/Orders/2013-09-01", IsNullable = false ) ]
+	public class ListOrdersResponse: AbstractMwsObject, IMwsResponse
+	{
+		private ListOrdersResult _listOrdersResult;
+		private ResponseMetadata _responseMetadata;
+		private ResponseHeaderMetadata _responseHeaderMetadata;
 
-        private ListOrdersResult _listOrdersResult;
-        private ResponseMetadata _responseMetadata;
-        private ResponseHeaderMetadata _responseHeaderMetadata;
+		/// <summary>
+		/// Gets and sets the ListOrdersResult property.
+		/// </summary>
+		public ListOrdersResult ListOrdersResult
+		{
+			get { return this._listOrdersResult; }
+			set { this._listOrdersResult = value; }
+		}
 
-        /// <summary>
-        /// Gets and sets the ListOrdersResult property.
-        /// </summary>
-        public ListOrdersResult ListOrdersResult
-        {
-            get { return this._listOrdersResult; }
-            set { this._listOrdersResult = value; }
-        }
+		/// <summary>
+		/// Sets the ListOrdersResult property.
+		/// </summary>
+		/// <param name="listOrdersResult">ListOrdersResult property.</param>
+		/// <returns>this instance.</returns>
+		public ListOrdersResponse WithListOrdersResult( ListOrdersResult listOrdersResult )
+		{
+			this._listOrdersResult = listOrdersResult;
+			return this;
+		}
 
-        /// <summary>
-        /// Sets the ListOrdersResult property.
-        /// </summary>
-        /// <param name="listOrdersResult">ListOrdersResult property.</param>
-        /// <returns>this instance.</returns>
-        public ListOrdersResponse WithListOrdersResult(ListOrdersResult listOrdersResult)
-        {
-            this._listOrdersResult = listOrdersResult;
-            return this;
-        }
+		/// <summary>
+		/// Checks if ListOrdersResult property is set.
+		/// </summary>
+		/// <returns>true if ListOrdersResult property is set.</returns>
+		public bool IsSetListOrdersResult()
+		{
+			return this._listOrdersResult != null;
+		}
 
-        /// <summary>
-        /// Checks if ListOrdersResult property is set.
-        /// </summary>
-        /// <returns>true if ListOrdersResult property is set.</returns>
-        public bool IsSetListOrdersResult()
-        {
-            return this._listOrdersResult != null;
-        }
+		/// <summary>
+		/// Gets and sets the ResponseMetadata property.
+		/// </summary>
+		public ResponseMetadata ResponseMetadata
+		{
+			get { return this._responseMetadata; }
+			set { this._responseMetadata = value; }
+		}
 
-        /// <summary>
-        /// Gets and sets the ResponseMetadata property.
-        /// </summary>
-        public ResponseMetadata ResponseMetadata
-        {
-            get { return this._responseMetadata; }
-            set { this._responseMetadata = value; }
-        }
+		/// <summary>
+		/// Sets the ResponseMetadata property.
+		/// </summary>
+		/// <param name="responseMetadata">ResponseMetadata property.</param>
+		/// <returns>this instance.</returns>
+		public ListOrdersResponse WithResponseMetadata( ResponseMetadata responseMetadata )
+		{
+			this._responseMetadata = responseMetadata;
+			return this;
+		}
 
-        /// <summary>
-        /// Sets the ResponseMetadata property.
-        /// </summary>
-        /// <param name="responseMetadata">ResponseMetadata property.</param>
-        /// <returns>this instance.</returns>
-        public ListOrdersResponse WithResponseMetadata(ResponseMetadata responseMetadata)
-        {
-            this._responseMetadata = responseMetadata;
-            return this;
-        }
+		/// <summary>
+		/// Checks if ResponseMetadata property is set.
+		/// </summary>
+		/// <returns>true if ResponseMetadata property is set.</returns>
+		public bool IsSetResponseMetadata()
+		{
+			return this._responseMetadata != null;
+		}
 
-        /// <summary>
-        /// Checks if ResponseMetadata property is set.
-        /// </summary>
-        /// <returns>true if ResponseMetadata property is set.</returns>
-        public bool IsSetResponseMetadata()
-        {
-            return this._responseMetadata != null;
-        }
+		/// <summary>
+		/// Gets and sets the ResponseHeaderMetadata property.
+		/// </summary>
+		public ResponseHeaderMetadata ResponseHeaderMetadata
+		{
+			get { return this._responseHeaderMetadata; }
+			set { this._responseHeaderMetadata = value; }
+		}
 
-        /// <summary>
-        /// Gets and sets the ResponseHeaderMetadata property.
-        /// </summary>
-        public ResponseHeaderMetadata ResponseHeaderMetadata
-        {
-            get { return this._responseHeaderMetadata; }
-            set { this._responseHeaderMetadata = value; }
-        }
+		/// <summary>
+		/// Sets the ResponseHeaderMetadata property.
+		/// </summary>
+		/// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
+		/// <returns>this instance.</returns>
+		public ListOrdersResponse WithResponseHeaderMetadata( ResponseHeaderMetadata responseHeaderMetadata )
+		{
+			this._responseHeaderMetadata = responseHeaderMetadata;
+			return this;
+		}
 
-        /// <summary>
-        /// Sets the ResponseHeaderMetadata property.
-        /// </summary>
-        /// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
-        /// <returns>this instance.</returns>
-        public ListOrdersResponse WithResponseHeaderMetadata(ResponseHeaderMetadata responseHeaderMetadata)
-        {
-            this._responseHeaderMetadata = responseHeaderMetadata;
-            return this;
-        }
-
-        /// <summary>
-        /// Checks if ResponseHeaderMetadata property is set.
-        /// </summary>
-        /// <returns>true if ResponseHeaderMetadata property is set.</returns>
-        public bool IsSetResponseHeaderMetadata()
-        {
-            return this._responseHeaderMetadata != null;
-        }
+		/// <summary>
+		/// Checks if ResponseHeaderMetadata property is set.
+		/// </summary>
+		/// <returns>true if ResponseHeaderMetadata property is set.</returns>
+		public bool IsSetResponseHeaderMetadata()
+		{
+			return this._responseHeaderMetadata != null;
+		}
 
 
-        public override void ReadFragmentFrom(IMwsReader reader)
-        {
-            _listOrdersResult = reader.Read<ListOrdersResult>("ListOrdersResult");
-            _responseMetadata = reader.Read<ResponseMetadata>("ResponseMetadata");
-        }
+		public override void ReadFragmentFrom( IMwsReader reader )
+		{
+			this._listOrdersResult = reader.Read< ListOrdersResult >( "ListOrdersResult" );
+			this._responseMetadata = reader.Read< ResponseMetadata >( "ResponseMetadata" );
+			this._responseHeaderMetadata = reader.Read< ResponseHeaderMetadata >( "ResponseHeaderMetadata" );
+		}
 
-        public override void WriteFragmentTo(IMwsWriter writer)
-        {
-            writer.Write("ListOrdersResult", _listOrdersResult);
-            writer.Write("ResponseMetadata", _responseMetadata);
-        }
+		public override void WriteFragmentTo( IMwsWriter writer )
+		{
+			writer.Write( "ListOrdersResult", this._listOrdersResult );
+			writer.Write( "ResponseMetadata", this._responseMetadata );
+			writer.Write( "ResponseHeaderMetadata", this._responseHeaderMetadata );
+		}
 
-        public override void WriteTo(IMwsWriter writer)
-        {
-            writer.Write("https://mws.amazonservices.com/Orders/2013-09-01", "ListOrdersResponse", this);
-        }
-
-        public ListOrdersResponse() : base()
-        {
-        }
-    }
+		public override void WriteTo( IMwsWriter writer )
+		{
+			writer.Write( "https://mws.amazonservices.com/Orders/2013-09-01", "ListOrdersResponse", this );
+		}
+	}
 }

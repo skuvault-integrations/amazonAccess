@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using MarketplaceWebServiceOrders.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {

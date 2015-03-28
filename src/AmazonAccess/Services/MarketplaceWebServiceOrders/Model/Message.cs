@@ -10,16 +10,13 @@
  *******************************************************************************
  * Message
  * API Version: 2013-09-01
- * Library Version: 2015-02-13
- * Generated: Tue Feb 10 22:00:52 UTC 2015
+ * Library Version: 2015-03-05
+ * Generated: Tue Mar 03 22:11:26 GMT 2015
  */
 
-
-using System;
-using System.Xml;
 using AmazonAccess.Services.Utils;
 
-namespace MarketplaceWebServiceOrders.Model
+namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {
     public class Message : AbstractMwsObject
     {
@@ -88,14 +85,14 @@ namespace MarketplaceWebServiceOrders.Model
 
         public override void ReadFragmentFrom(IMwsReader reader)
         {
-            _locale = reader.Read<string>("Locale");
-            _text = reader.Read<string>("Text");
+            this._locale = reader.Read<string>("Locale");
+            this._text = reader.Read<string>("Text");
         }
 
         public override void WriteFragmentTo(IMwsWriter writer)
         {
-            writer.Write("Locale", _locale);
-            writer.Write("Text", _text);
+            writer.Write("Locale", this._locale);
+            writer.Write("Text", this._text);
         }
 
         public override void WriteTo(IMwsWriter writer)

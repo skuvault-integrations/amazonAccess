@@ -16,8 +16,8 @@
 
 using System;
 using System.Net;
+using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using AmazonAccess.Services.Utils;
-using MarketplaceWebServiceOrders.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 {
