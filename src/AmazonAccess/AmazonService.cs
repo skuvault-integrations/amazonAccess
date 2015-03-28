@@ -163,7 +163,15 @@ namespace AmazonAccess
 					SellerId = this._credentials.SellerId,
 				};
 				var service = new SellersService( client, request );
-				token = service.GetToken();
+				try
+				{
+					token = service.GetToken();
+				}
+				catch( MarketplaceWebServiceSellersException x )
+				{
+					if( !x.Message.Contains( "Invalid seller id" ) ) // ignore error with invalid seller id, rethrow on other issues
+						throw;
+				}
 			} );
 			return token;
 		}
