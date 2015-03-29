@@ -169,7 +169,7 @@ namespace AmazonAccess
 				}
 				catch( MarketplaceWebServiceSellersException x )
 				{
-					if( !( x.Message.Contains( "Invalid seller id" ) || x.Message.Contains( "Access denied" ) ) ) // ignore error with invalid seller id, rethrow on other issues
+					if( !( x.Message.Contains( "Invalid seller id" ) || x.Message.Contains( "denied" ) ) ) // ignore error with invalid seller id, rethrow on other issues
 						throw;
 				}
 			} );
