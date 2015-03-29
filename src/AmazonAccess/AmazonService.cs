@@ -155,23 +155,24 @@ namespace AmazonAccess
 		public string GetMwsAuthToken()
 		{
 			var token = string.Empty;
-			var client = this._factory.CreateSellersClient();
-			var request = new GetAuthTokenRequest
-					  {
-						  SellerId = this._credentials.SellerId,
-					  };
-			var service = new SellersService( client, request );
-
-			try
+			ActionPolicies.AmazonGetPolicy.Do( () =>
 			{
-				token = service.GetToken();
-			}
-			catch( MarketplaceWebServiceSellersException x )
-			{
-				if( !x.Message.Contains( "Invalid seller id" ) ) // ignore error with invalid seller id, rethrow on other issues
-					throw;
-			}
-
+				var client = this._factory.CreateSellersClient();
+				var request = new GetAuthTokenRequest
+				{
+					SellerId = this._credentials.SellerId,
+				};
+				var service = new SellersService( client, request );
+				try
+				{
+					token = service.GetToken();
+				}
+				catch( MarketplaceWebServiceSellersException x )
+				{
+					if( !( x.Message.Contains( "Invalid seller id" ) || x.Message.Contains( "Acces denied" ) ) ) // ignore error with invalid seller id, rethrow on other issues
+						throw;
+				}
+			} );
 			return token;
 		}
 		#endregion
