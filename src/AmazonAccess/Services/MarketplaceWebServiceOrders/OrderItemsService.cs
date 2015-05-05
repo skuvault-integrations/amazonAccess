@@ -8,18 +8,19 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 	{
 		private readonly IMarketplaceWebServiceOrders _client;
 		private readonly ListOrderItemsRequest _request;
+		private readonly Throttler _throttler;
 
-		public OrderItemsService( IMarketplaceWebServiceOrders client, ListOrderItemsRequest request )
+		public OrderItemsService( IMarketplaceWebServiceOrders client, ListOrderItemsRequest request, Throttler throttler )
 		{
 			this._client = client;
 			this._request = request;
+			this._throttler = throttler;
 		}
 
 		public IEnumerable< OrderItem > LoadOrderItems()
 		{
 			var orderItems = new List< OrderItem >();
-			var response = this._client.ListOrderItems( this._request );
-			ActionPolicies.CreateApiDelay( 2 ).Wait();
+			var response = _throttler.ExecuteWithTrottling( () => this._client.ListOrderItems( this._request ));
 
 			AmazonLogger.Log.Trace( "[amazon]Loading order items for seller {0}", this._request.SellerId );
 
@@ -30,15 +31,14 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					orderItems.AddRange( listInventorySupplyResult.OrderItems );
 				if( listInventorySupplyResult.IsSetNextToken() )
 				{
-					var nextResponse = this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
+					var nextResponse = _throttler.ExecuteWithTrottling( () => this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
 					{
 						SellerId = this._request.SellerId,
 						NextToken = listInventorySupplyResult.NextToken,
 						MWSAuthToken = this._request.MWSAuthToken
-					} );
+					} ) );
 
 					this.LoadNextOrderItemsInfoPage( nextResponse.ListOrderItemsByNextTokenResult, orderItems );
-					ActionPolicies.CreateApiDelay( 2 ).Wait();
 				}
 			}
 
@@ -54,15 +54,14 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 			if( listOrderItemsSupplyResult.IsSetNextToken() )
 			{
-				var response = this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
+				var response = _throttler.ExecuteWithTrottling( () => this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
 				{
 					SellerId = this._request.SellerId,
 					NextToken = listOrderItemsSupplyResult.NextToken,
 					MWSAuthToken = this._request.MWSAuthToken
-				} );
+				} ) );
 
 				this.LoadNextOrderItemsInfoPage( response.ListOrderItemsByNextTokenResult, orderItems );
-				ActionPolicies.CreateApiDelay( 2 ).Wait();
 			}
 		}
 	}

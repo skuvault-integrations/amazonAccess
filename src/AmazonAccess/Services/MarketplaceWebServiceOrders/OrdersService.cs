@@ -10,6 +10,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 	{
 		private readonly IMarketplaceWebServiceOrders _client;
 		private readonly ListOrdersRequest _request;
+		private readonly Throttler _getOrdersThrottler = new Throttler( 6, 61 );
+		private readonly Throttler _orderItemsThrottler = new Throttler( 30, 2 );
 
 		public OrdersService( IMarketplaceWebServiceOrders client, ListOrdersRequest request )
 		{
@@ -22,9 +24,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		public IEnumerable< ComposedOrder > LoadOrders()
 		{
-			var requestQuota = 6;
-			var response = this._client.ListOrders( this._request );
-			requestQuota--;
+			var response = _getOrdersThrottler.ExecuteWithTrottling( () => this._client.ListOrders( this._request ));
 
 			if( response.IsSetListOrdersResult() )
 			{
@@ -34,7 +34,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					yield return order;
 				}
 	
-				foreach( var order in this.LoadRestOfOrders( listInventorySupplyResult.NextToken, requestQuota ) )
+				foreach( var order in this.LoadRestOfOrders( listInventorySupplyResult.NextToken ) )
 				{
 					yield return order;
 				}
@@ -54,20 +54,16 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			}
 		}
 
-		private IEnumerable< ComposedOrder > LoadRestOfOrders( string nextToken, int requestQuota )
+		private IEnumerable< ComposedOrder > LoadRestOfOrders( string nextToken )
 		{
 			while( !string.IsNullOrEmpty( nextToken ) )
 			{
-				if( requestQuota == 0 )
-					ActionPolicies.CreateApiDelay( 60 ).Wait();
-
-				var nextResponse = this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
+				var nextResponse = _getOrdersThrottler.ExecuteWithTrottling( () => this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
 				{
 					SellerId = this._request.SellerId,
 					NextToken = nextToken,
 					MWSAuthToken = this._request.MWSAuthToken
-				} );
-				requestQuota = requestQuota == 0 ? 0 : requestQuota - 1;
+				} ) );
 
 				var listInventorySupplyResult = nextResponse.ListOrdersByNextTokenResult;
 				nextToken = listInventorySupplyResult.NextToken;
@@ -99,7 +95,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				AmazonOrderId = orderId,
 				SellerId = this._request.SellerId,
 				MWSAuthToken = this._request.MWSAuthToken
-			} );
+			}, _orderItemsThrottler );
 
 			return itemsService.LoadOrderItems();
 		}

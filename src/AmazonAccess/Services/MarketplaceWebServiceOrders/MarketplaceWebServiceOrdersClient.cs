@@ -22,6 +22,7 @@ using System.Security.Cryptography;
 using System.Globalization;
 using System.Xml.Serialization;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 
@@ -286,8 +287,6 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 							responseBody = reader.ReadToEnd();
 							AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
 						}
-
-						ActionPolicies.CreateApiDelay( 60 ).Wait();
 					}
 
 					/* Attempt to deserialize response into ErrorResponse type */
@@ -321,10 +320,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 								errorResponse.ToXML(),
 								rhm );
 						}
-						catch( MarketplaceWebServiceOrdersException e )
+						catch( Exception e )
 						{
-							AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nDeserialization exception message: {1}", this._sellerId, e.Message );
-							throw;
+							throw new AmazonOrdersException( string.Format( "Amazon WMS error for seller {0} and response {1}", this._sellerId, responseBody ), e );
 						}
 					}
 				}
@@ -816,5 +814,34 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 			return parameters;
 		}
+	}
+}
+
+[ Serializable ]
+public class AmazonOrdersException: Exception
+{
+	//
+	// For guidelines regarding the creation of new exception types, see
+	//    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
+	// and
+	//    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
+	//
+
+	public AmazonOrdersException()
+	{
+	}
+
+	public AmazonOrdersException( string message ): base( message )
+	{
+	}
+
+	public AmazonOrdersException( string message, Exception inner ): base( message, inner )
+	{
+	}
+
+	protected AmazonOrdersException(
+		SerializationInfo info,
+		StreamingContext context ): base( info, context )
+	{
 	}
 }

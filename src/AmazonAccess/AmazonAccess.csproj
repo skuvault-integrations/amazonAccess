@@ -59,6 +59,7 @@
     <Compile Include="Misc\AmazonLogger.cs" />
     <Compile Include="Misc\LinqExtensions.cs" />
     <Compile Include="Misc\InventoryFeedXmlService.cs" />
+    <Compile Include="Misc\Throttler.cs" />
     <Compile Include="Models\AmazonCredentials.cs" />
     <Compile Include="Models\AmazonMarketplace.cs" />
     <Compile Include="Models\FeedType.cs" />
