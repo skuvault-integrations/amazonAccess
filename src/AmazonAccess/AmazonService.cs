@@ -6,13 +6,13 @@ using AmazonAccess.Models;
 using AmazonAccess.Services;
 using AmazonAccess.Services.FbaInventoryServiceMws;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
-using AmazonAccess.Services.MarketplaceWebServiceFeedsReports;
-using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
+using AmazonAccess.Services.MarketplaceWebServiceFeeds;
 using AmazonAccess.Services.MarketplaceWebServiceOrders;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using AmazonAccess.Services.MarketplaceWebServiceSellers;
 using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
 using CuttingEdge.Conditions;
+using MarketplaceWebService.Model;
 
 namespace AmazonAccess
 {
@@ -92,14 +92,14 @@ namespace AmazonAccess
 				Merchant = this._credentials.SellerId,
 				FeedType = FeedType.InventoryQuantityUpdate.Description,
 				FeedContent = contentStream,
-				ContentMD5 = MarketplaceWebServiceFeedsReportsClient.CalculateContentMD5( contentStream ),
+				ContentMD5 = MarketplaceWebServiceFeedsClient.CalculateContentMD5( contentStream ),
 				MWSAuthToken = this._credentials.MwsAuthToken
 			};
 
 			return request;
 		}
 
-		private void SubmitInventoryUpdateRequest( IMarketplaceWebServiceFeedsReports client, IEnumerable< AmazonInventoryItem > inventoryItems )
+		private void SubmitInventoryUpdateRequest( IMarketplaceWebServiceFeeds client, IEnumerable< AmazonInventoryItem > inventoryItems )
 		{
 			var request = this.InitInventoryFeedRequest( inventoryItems );
 			var service = new FeedsService();
