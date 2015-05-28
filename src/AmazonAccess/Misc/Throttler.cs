@@ -64,7 +64,7 @@ namespace AmazonAccess.Misc
 
 			while( x != null )
 			{
-				if( x.Message.IndexOf( "throttle", StringComparison.OrdinalIgnoreCase ) >= 0 )
+				if( !string.IsNullOrWhiteSpace( x.Message ) && x.Message.IndexOf( "throttle", StringComparison.OrdinalIgnoreCase ) >= 0 )
 					return true;
 
 				x = x.InnerException;
