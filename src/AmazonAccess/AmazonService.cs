@@ -8,6 +8,7 @@ using AmazonAccess.Services.FbaInventoryServiceMws;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
+using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel;
 using AmazonAccess.Services.MarketplaceWebServiceOrders;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using AmazonAccess.Services.MarketplaceWebServiceSellers;
@@ -140,9 +141,9 @@ namespace AmazonAccess
 			return inventory;
 		}
 
-		public IEnumerable< InventorySupply > GetDetailedFbaInventory()
+		public IEnumerable< FbaManageInventory > GetDetailedFbaInventory()
 		{
-			var inventory = new List< InventorySupply >();
+			var inventory = new List< FbaManageInventory >();
 
 			ActionPolicies.AmazonGetPolicy.Do( () =>
 			{
@@ -155,11 +156,11 @@ namespace AmazonAccess
 				};
 				var service = new ReportsService( client, _credentials );
 
-				AmazonLogger.Log.Trace( "[amazon] Loading FBA inventory for seller {0}", this._credentials.SellerId );
+				AmazonLogger.Log.Trace( "[amazon] Loading Detailed FBA inventory for seller {0}", this._credentials.SellerId );
 
-				service.GetInventoryReport( request );
+				inventory.AddRange( service.GetInventoryReport< FbaManageInventory >( request ) );
 
-				AmazonLogger.Log.Trace( "[amazon] FBA inventiry for seller {0} loaded", this._credentials.SellerId );
+				AmazonLogger.Log.Trace( "[amazon] Detailed FBA inventiry for seller {0} loaded", this._credentials.SellerId );
 			} );
 
 			return inventory;

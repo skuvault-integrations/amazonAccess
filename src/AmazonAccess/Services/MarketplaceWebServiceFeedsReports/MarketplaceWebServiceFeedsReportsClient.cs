@@ -631,7 +631,6 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 
 						if( isStreamingResponse && statusCode == HttpStatusCode.OK )
 						{
-							AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}\nStreaming Response received", this._sellerId );
 							response = this.HandleStreamingResponse< T >( httpResponse, clazz );
 						}
 						else
@@ -907,10 +906,14 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 			this.CopyStream( webResponse.GetResponseStream(), receiverStream );
 			receiverStream.Position = 0;
 
+			var reader = new StreamReader( receiverStream );
+			var receivedString = reader.ReadToEnd();
+			AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}\nStreaming Response received: {1}", this._sellerId, receivedString );
+			receiverStream.Position = 0;
+
 			WebHeaderCollection headers = webResponse.Headers;
 			string receivedContentMD5 = headers.Get( "Content-MD5" );
 			string expectedContentMD5 = CalculateContentMD5( receiverStream );
-
 			receiverStream.Position = 0;
 
 			if( receivedContentMD5 != expectedContentMD5 )

@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 using AmazonAccess;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
+using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel;
 using FluentAssertions;
 using LINQtoCSV;
 using NUnit.Framework;
@@ -51,6 +52,11 @@ namespace AmazonAccessTests.Inventory
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			var inventory = service.GetDetailedFbaInventory();
+			var serializer = new XmlSerializer( typeof( List< FbaManageInventory > ) );
+			var writer = new StringWriter();
+			serializer.Serialize( writer, inventory.ToList() );
+			var xml = writer.GetStringBuilder().ToString();
+
 			inventory.Count().Should().BeGreaterThan( 0 );
 		}
 

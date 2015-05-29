@@ -36,6 +36,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CuttingEdge.Conditions.1.2.0.0\lib\NET35\CuttingEdge.Conditions.dll</HintPath>
     </Reference>
+    <Reference Include="LINQtoCSV">
+      <HintPath>..\packages\LINQtoCSV.1.5.0.0\lib\net35\LINQtoCSV.dll</HintPath>
+    </Reference>
     <Reference Include="Netco, Version=1.3.1.0, Culture=neutral, PublicKeyToken=9d732c15ac2ec2c9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Netco.1.3.1\lib\net45\Netco.dll</HintPath>
@@ -97,6 +100,7 @@
     <Compile Include="Services\IAmazonClientsFactory.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\FeedsService.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\Model\InventoryFeed.cs" />
+    <Compile Include="Services\MarketplaceWebServiceFeedsReports\ReportModel\FbaManageInventory.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\ReportsService.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\ComposedOrder.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\IMarketplaceWebServiceOrders.cs" />

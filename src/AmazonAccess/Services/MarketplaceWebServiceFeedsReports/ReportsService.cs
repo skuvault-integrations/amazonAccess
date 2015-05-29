@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using AmazonAccess.Models;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
+using LINQtoCSV;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 {
@@ -18,7 +20,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 			this._credentials = credentials;
 		}
 
-		public void GetInventoryReport( RequestReportRequest request )
+		public IEnumerable< T > GetInventoryReport< T >( RequestReportRequest request ) where T : class, new()
 		{
 			var reportId = this.GetReportId( request );
 			var getReportRequest = new GetReportRequest
@@ -30,12 +32,17 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 			};
 			var response = this._client.GetReport( getReportRequest );
 
-			if( response.IsSetGetReportResult() )
-			{
-				var report = response.GetReportResult.ToXMLFragment();
-				var reader = new StreamReader(getReportRequest.Report);
-				var str = reader.ReadToEnd();
-			}
+			if( response.IsSetGetReportResult() && getReportRequest.Report != null )
+				return this.ConvertReport< T >( getReportRequest.Report );
+			return new List< T >();
+		}
+
+		private IEnumerable< T > ConvertReport< T >( Stream stream ) where T : class, new()
+		{
+			var reader = new StreamReader( stream, Encoding.UTF8 );
+			var cc = new CsvContext();
+			var report = cc.Read< T >( reader, new CsvFileDescription { FirstLineHasColumnNames = true, SeparatorChar = '\t' } );
+			return report;
 		}
 
 		private string GetReportId( RequestReportRequest request )
@@ -52,7 +59,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 			var reportId = this.GetGeneratedReportId( reportRequestId );
 			if( !string.IsNullOrEmpty( reportId ) )
 				return reportId;
-			
+
 			var reportListResponse = this._client.GetReportList( new GetReportListRequest
 			{
 				Merchant = this._credentials.SellerId,
