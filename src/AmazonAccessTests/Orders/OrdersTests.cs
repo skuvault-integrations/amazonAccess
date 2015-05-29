@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using AmazonAccess;
 using AmazonAccess.Models;
+using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using FluentAssertions;
 using LINQtoCSV;
 using NUnit.Framework;
@@ -49,9 +50,17 @@ namespace AmazonAccessTests.Orders
 			var count = 0;
 			var stopwatch = new Stopwatch();
 			var orders = service.GetOrders( DateTime.UtcNow - TimeSpan.FromDays( 14 ), DateTime.UtcNow );
+			//var orders = service.GetOrders( new DateTime( 2015, 5, 19, 0, 0, 0, 0, DateTimeKind.Utc ), new DateTime( 2015, 5, 22, 0, 0, 0, 0, DateTimeKind.Utc ) );
 			stopwatch.Start();
+
+			var foundOrders = new List< ComposedOrder >();
+			var ids = new List< string > { "" };
+
 			foreach( var order in orders )
 			{
+				//if( ids.Any( o => o.Equals( order.AmazonOrder.AmazonOrderId, StringComparison.InvariantCultureIgnoreCase ) ) )
+				//	foundOrders.Add( order );
+
 				count++;
 				if( count == 100 )
 				{
