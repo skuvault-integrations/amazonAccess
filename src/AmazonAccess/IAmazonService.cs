@@ -13,10 +13,8 @@ namespace AmazonAccess
 		void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems );
 		//Task<IList<ProductUpdateQtyResult>> UpdateInventoryAsync(IEnumerable<ProductQuantityParams> products);
 
-		IEnumerable< InventorySupply > GetInventory();
-		//Task<IEnumerable<InventorySupply>> GetInventoryAsync();
-
 		IEnumerable< InventorySupply > GetFbaInventory();
+		IEnumerable< InventorySupply > GetDetailedFbaInventory();
 
 		string GetMwsAuthToken();
 	}

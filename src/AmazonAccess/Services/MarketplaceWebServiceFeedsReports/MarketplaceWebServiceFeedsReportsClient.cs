@@ -629,16 +629,17 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 							httpResponse.GetResponseHeader( "x-mws-response-context" ),
 							httpResponse.GetResponseHeader( "x-mws-timestamp" ) );
 
-						var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
-						responseBody = reader.ReadToEnd();
-						AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}\nResponse received: {1}", this._sellerId, responseBody );
-
 						if( isStreamingResponse && statusCode == HttpStatusCode.OK )
 						{
+							AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}\nStreaming Response received", this._sellerId );
 							response = this.HandleStreamingResponse< T >( httpResponse, clazz );
 						}
 						else
 						{
+							var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
+							responseBody = reader.ReadToEnd();
+
+							AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}\nResponse received: {1}", this._sellerId, responseBody );
 							var serlizer = new XmlSerializer( typeof( T ) );
 							response = ( T )serlizer.Deserialize( new StringReader( responseBody ) );
 						}
@@ -899,7 +900,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 
 		private T HandleStreamingResponse< T >( HttpWebResponse webResponse, object clazz )
 		{
-			Stream receiverStream = this.GetTransferStream( clazz, StreamType.RECEIVE_STREAM );
+			var receiverStream = this.GetTransferStream( clazz, StreamType.RECEIVE_STREAM );
+			if( receiverStream == null )
+				throw new MarketplaceWebServiceFeedsReportsException( "Receiver Stream not found" );
 
 			this.CopyStream( webResponse.GetResponseStream(), receiverStream );
 			receiverStream.Position = 0;

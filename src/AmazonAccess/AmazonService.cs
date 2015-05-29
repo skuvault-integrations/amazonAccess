@@ -140,14 +140,29 @@ namespace AmazonAccess
 			return inventory;
 		}
 
-		public IEnumerable< InventorySupply > GetInventory()
+		public IEnumerable< InventorySupply > GetDetailedFbaInventory()
 		{
-			//var client = this._factory.CreateFeedsReportsClient();
-			//var service = new ReportsService();
+			var inventory = new List< InventorySupply >();
 
-			//service.GetInventoryReport( client );
+			ActionPolicies.AmazonGetPolicy.Do( () =>
+			{
+				var client = this._factory.CreateFeedsReportsClient();
+				var request = new RequestReportRequest
+				{
+					ReportType = ReportType.FbaManageInventoryArchived.Description,
+					StartDate = DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(),
+					EndDate = DateTime.UtcNow.ToUniversalTime()
+				};
+				var service = new ReportsService( client, _credentials );
 
-			return null;
+				AmazonLogger.Log.Trace( "[amazon] Loading FBA inventory for seller {0}", this._credentials.SellerId );
+
+				service.GetInventoryReport( request );
+
+				AmazonLogger.Log.Trace( "[amazon] FBA inventiry for seller {0} loaded", this._credentials.SellerId );
+			} );
+
+			return inventory;
 		}
 		#endregion
 

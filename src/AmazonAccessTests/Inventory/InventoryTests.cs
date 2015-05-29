@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 using AmazonAccess;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
@@ -28,22 +30,27 @@ namespace AmazonAccessTests.Inventory
 		}
 
 		[ Test ]
-		public void LoadInventory()
-		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
-
-			var inventory = service.GetInventory();
-			inventory.Count().Should().BeGreaterThan( 0 );
-		}
-
-		[ Test ]
 		public void LoadFbaInventory()
 		{
 			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			var inventory = service.GetFbaInventory();
+			var serializer = new XmlSerializer( typeof( List< InventorySupply > ) );
+			var writer = new StringWriter();
+			serializer.Serialize( writer, inventory.ToList() );
+			var xml = writer.GetStringBuilder().ToString();
+
+			inventory.Count().Should().BeGreaterThan( 0 );
+		}
+
+		[ Test ]
+		public void LoadDetailedFbaInventory()
+		{
+			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+
+			var inventory = service.GetDetailedFbaInventory();
 			inventory.Count().Should().BeGreaterThan( 0 );
 		}
 

@@ -158,10 +158,10 @@
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\Attributes\ResponseType.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\Attributes\StreamType.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\IMarketplaceWebServiceFeedsReports.cs" />
-    <Compile Include="Services\MarketplaceWebServiceFeedsReports\MarketplaceWebServiceFeedsClient.cs" />
-    <Compile Include="Services\MarketplaceWebServiceFeedsReports\MarketplaceWebServiceFeedsConfig.cs" />
-    <Compile Include="Services\MarketplaceWebServiceFeedsReports\MarketplaceWebServiceFeedsException.cs" />
-    <Compile Include="Services\MarketplaceWebServiceFeedsReports\Mock\MarketplaceWebServiceMock.cs" />
+    <Compile Include="Services\MarketplaceWebServiceFeedsReports\MarketplaceWebServiceFeedsReportsClient.cs" />
+    <Compile Include="Services\MarketplaceWebServiceFeedsReports\MarketplaceWebServiceFeedsReportsConfig.cs" />
+    <Compile Include="Services\MarketplaceWebServiceFeedsReports\MarketplaceWebServiceFeedsReportsException.cs" />
+    <Compile Include="Services\MarketplaceWebServiceFeedsReports\Mock\MarketplaceWebServiceFeedsReportsMock.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\Model\CancelFeedSubmissionsRequest.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\Model\CancelFeedSubmissionsResponse.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\Model\CancelFeedSubmissionsResult.cs" />
