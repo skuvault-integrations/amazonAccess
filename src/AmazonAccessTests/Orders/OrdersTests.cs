@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using AmazonAccess;
 using AmazonAccess.Models;
 using FluentAssertions;
 using LINQtoCSV;
-using Netco.Logging;
 using NUnit.Framework;
 
 namespace AmazonAccessTests.Orders
@@ -18,7 +18,7 @@ namespace AmazonAccessTests.Orders
 		[ SetUp ]
 		public void Init()
 		{
-//			NetcoLogger.LoggerFactory = new ConsoleLoggerFactory();
+			//			NetcoLogger.LoggerFactory = new ConsoleLoggerFactory();
 			const string credentialsFilePath = @"..\..\Files\AmazonCredentials.csv";
 
 			var cc = new CsvContext();
@@ -26,6 +26,18 @@ namespace AmazonAccessTests.Orders
 
 			if( this.Config != null )
 				this.AmazonFactory = new AmazonFactory( this.Config.AccessKeyId, this.Config.SecretAccessKeyId );
+		}
+
+		[ Test ]
+		public void LoadOrdersById()
+		{
+			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+
+			var ids = new List< string > { "" };
+			var orders = service.GetOrdersById( ids ).ToList();
+
+			orders.Count().Should().BeGreaterThan( 0 );
 		}
 
 		[ Test ]
