@@ -202,7 +202,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		private T Invoke< T >( IDictionary< String, String > parameters )
 		{
-			AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}. Begin invoke...", this._sellerId );
+			string methodName;
+			if( !parameters.TryGetValue( "Action", out methodName ) )
+				methodName = "Unknown";
+
+			AmazonLogger.Log.Trace( "[amazon] Orders-{0}. Seller: {1}. Begin invoke...", methodName, this._sellerId );
 
 			var response = default( T );
 			ResponseHeaderMetadata rhm = null;
@@ -222,7 +226,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			bool shouldRetry;
 			var retries = 0;
 
-			AmazonLogger.Log.Trace( "[amazon] Amazon query string: {0}", queryString );
+			AmazonLogger.Log.Trace( "[amazon] Orders query string: {0}", queryString );
 			do
 			{
 				var request = this.ConfigureWebRequest( requestData.Length );
@@ -235,7 +239,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						requestStream.Write( requestData, 0, requestData.Length );
 					}
 
-					AmazonLogger.Log.Trace( "[amazon] Orders. Seller {0}. Getting response.", this._sellerId );
+					AmazonLogger.Log.Trace( "[amazon] Orders-{0}. Seller {1}. Getting response.", methodName, this._sellerId );
 
 					using( var httpResponse = request.GetResponse() as HttpWebResponse )
 					{
@@ -253,7 +257,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 							responseBody = reader.ReadToEnd();
 						}
 
-						AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nResponse received: {1}", this._sellerId, responseBody );
+						AmazonLogger.Log.Trace( "[amazon] Orders-{0}. Seller: {1}\nResponse received: {2}", methodName, this._sellerId, responseBody );
 					}
 
 					/* Attempt to deserialize response into <Action> Response type */
@@ -269,7 +273,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				}
 				catch( WebException we ) // Web exception is thrown on unsucessful responses
 				{
-					AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}. Exception occurred. Getting web exception message.", this._sellerId );
+					AmazonLogger.Log.Trace( "[amazon] Orders-{0}. Seller: {1}. Exception occurred. Getting web exception message.", methodName, this._sellerId );
 
 					HttpStatusCode statusCode;
 					using( var httpErrorResponse = ( HttpWebResponse )we.Response )
@@ -277,7 +281,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						if( httpErrorResponse == null )
 						{
 							responseBody = we.Message;
-							AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
+							AmazonLogger.Log.Trace( "[amazon] Orders-{0}. Seller: {1}\nWeb exception message: {2}", methodName, this._sellerId, responseBody );
 
 							throw new MarketplaceWebServiceOrdersException( we );
 						}
@@ -285,7 +289,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						using( var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 ) )
 						{
 							responseBody = reader.ReadToEnd();
-							AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
+							AmazonLogger.Log.Trace( "[amazon] Orders-{0}. Seller: {1}. Status code: {2}\nWeb exception message: {3}", methodName, this._sellerId, statusCode, responseBody );
 						}
 					}
 
@@ -329,11 +333,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					/* Catch other exceptions, attempt to convert to formatted exception, else rethrow wrapped exception */
 				catch( Exception e )
 				{
-					AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}\nUndefined exception message: {1}", this._sellerId, e.Message );
+					AmazonLogger.Log.Trace( "[amazon] Orders-{0}. Seller: {1}\nUndefined exception message: {2}", methodName, this._sellerId, e.Message );
 					throw;
 				}
 			} while( shouldRetry );
-			AmazonLogger.Log.Trace( "[amazon] Orders. Seller: {0}. End invoke...", this._sellerId );
+			AmazonLogger.Log.Trace( "[amazon] Orders-{0}. Seller: {1}. End invoke...", methodName, this._sellerId );
 
 			return response;
 		}
