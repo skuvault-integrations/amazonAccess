@@ -1,0 +1,72 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using AmazonAccess.Misc;
+using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
+using CuttingEdge.Conditions;
+
+namespace AmazonAccess.Services.MarketplaceWebServiceOrders
+{
+	public sealed class OrdersByIdService
+	{
+		private readonly IMarketplaceWebServiceOrders _client;
+		private readonly GetOrderRequest _request;
+		private readonly Throttler _getOrdersByIdThrottler = new Throttler( 6, 61 );
+		private readonly Throttler _orderItemsThrottler = new Throttler( 30, 2 );
+
+		public OrdersByIdService( IMarketplaceWebServiceOrders client, GetOrderRequest request )
+		{
+			Condition.Requires( client, "client" ).IsNotNull();
+			Condition.Requires( request, "request" ).IsNotNull();
+
+			this._client = client;
+			this._request = request;
+		}
+
+		public IEnumerable< ComposedOrder > LoadOrders()
+		{
+			var response = _getOrdersByIdThrottler.ExecuteWithTrottling( () => this._client.GetOrder( this._request ) );
+
+			if( response.IsSetGetOrderResult() )
+			{
+				var ordersResult = response.GetOrderResult;
+				foreach( var order in this.FillOrdersWithItems( ordersResult ) )
+				{
+					yield return order;
+				}
+			}
+		}
+
+		private IEnumerable< ComposedOrder > FillOrdersWithItems( GetOrderResult ordersResult )
+		{
+			if( ordersResult.IsSetOrders() )
+			{
+				var orders = ordersResult.Orders.Select( o => new ComposedOrder( o ) ).ToList();
+				this.FillOrders( orders );
+				foreach( var order in orders )
+				{
+					yield return order;
+				}
+			}
+		}
+
+		private void FillOrders( IEnumerable< ComposedOrder > orders )
+		{
+			foreach( var order in orders )
+			{
+				order.OrderItems = this.GetOrderItems( order.AmazonOrder.AmazonOrderId );
+			}
+		}
+
+		private IEnumerable< OrderItem > GetOrderItems( string orderId )
+		{
+			var itemsService = new OrderItemsService( this._client, new ListOrderItemsRequest
+			{
+				AmazonOrderId = orderId,
+				SellerId = this._request.SellerId,
+				MWSAuthToken = this._request.MWSAuthToken
+			}, _orderItemsThrottler );
+
+			return itemsService.LoadOrderItems();
+		}
+	}
+}

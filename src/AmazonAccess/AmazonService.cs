@@ -31,6 +31,32 @@ namespace AmazonAccess
 		}
 
 		#region Orders
+		/// <summary>
+		/// This operation takes up to 50 order ids and returns the corresponding orders.
+		/// </summary>
+		/// <param name="ids"></param>
+		/// <returns></returns>
+		public IEnumerable< ComposedOrder > GetOrdersById( List< string > ids )
+		{
+			var client = this._factory.CreateOrdersClient( "SkuVault", "1.0" );
+			var request = new GetOrderRequest
+			{
+				SellerId = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				AmazonOrderId = ids
+			};
+
+			AmazonLogger.Log.Trace( "[amazon] Loading orders by id for seller {0}", this._credentials.SellerId );
+
+			var service = new OrdersByIdService( client, request );
+			foreach( var order in service.LoadOrders() )
+			{
+				yield return order;
+			}
+
+			AmazonLogger.Log.Trace( "[amazon] Orders by id for seller {0} loaded", this._credentials.SellerId );
+		}
+
 		public IEnumerable< ComposedOrder > GetOrders( DateTime dateFrom, DateTime dateTo )
 		{
 			var client = this._factory.CreateOrdersClient( "SkuVault", "1.0" );
