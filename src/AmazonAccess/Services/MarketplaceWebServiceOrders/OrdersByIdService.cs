@@ -24,7 +24,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		public IEnumerable< ComposedOrder > LoadOrders()
 		{
-			var response = _getOrdersByIdThrottler.ExecuteWithTrottling( () => this._client.GetOrder( this._request ) );
+			var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => _getOrdersByIdThrottler.ExecuteWithTrottling( () =>
+				this._client.GetOrder( this._request ) ) );
 
 			if( response.IsSetGetOrderResult() )
 			{

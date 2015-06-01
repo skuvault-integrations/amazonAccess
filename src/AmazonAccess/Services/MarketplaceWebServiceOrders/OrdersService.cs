@@ -24,7 +24,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		public IEnumerable< ComposedOrder > LoadOrders()
 		{
-			var response = _getOrdersThrottler.ExecuteWithTrottling( () => this._client.ListOrders( this._request ));
+			var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => _getOrdersThrottler.ExecuteWithTrottling( () =>
+				this._client.ListOrders( this._request ) ) );
 
 			if( response.IsSetListOrdersResult() )
 			{
@@ -58,12 +59,13 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		{
 			while( !string.IsNullOrEmpty( nextToken ) )
 			{
-				var nextResponse = _getOrdersThrottler.ExecuteWithTrottling( () => this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
-				{
-					SellerId = this._request.SellerId,
-					NextToken = nextToken,
-					MWSAuthToken = this._request.MWSAuthToken
-				} ) );
+				var nextResponse = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => _getOrdersThrottler.ExecuteWithTrottling( () =>
+					this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
+					{
+						SellerId = this._request.SellerId,
+						NextToken = nextToken,
+						MWSAuthToken = this._request.MWSAuthToken
+					} ) ) );
 
 				var listInventorySupplyResult = nextResponse.ListOrdersByNextTokenResult;
 				nextToken = listInventorySupplyResult.NextToken;
