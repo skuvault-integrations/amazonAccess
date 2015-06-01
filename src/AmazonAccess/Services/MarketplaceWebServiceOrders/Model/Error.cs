@@ -20,8 +20,8 @@ using System.Text;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {
-    [XmlType(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01")]
-    [XmlRoot(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01", IsNullable = false)]
+    [XmlType(Namespace = "https://mws.amazonservices.com/Orders/2013-09-01")]
+    [XmlRoot(Namespace = "https://mws.amazonservices.com/Orders/2013-09-01", IsNullable = false)]
     public class Error
     {
     

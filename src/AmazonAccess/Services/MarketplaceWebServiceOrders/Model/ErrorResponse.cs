@@ -21,8 +21,8 @@ using System.Text;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {
-    [XmlType(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01")]
-    [XmlRoot(Namespace = "https://mws.amazonservices.com/Orders/2011-01-01", IsNullable = false)]
+    [XmlType(Namespace = "https://mws.amazonservices.com/Orders/2013-09-01")]
+    [XmlRoot(Namespace = "https://mws.amazonservices.com/Orders/2013-09-01", IsNullable = false)]
     public class ErrorResponse
     {
     
@@ -79,7 +79,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
         /// <summary>
         /// Gets and sets the RequestId property.
         /// </summary>
-        [XmlElement(ElementName = "RequestId")]
+        [XmlElement(ElementName = "RequestID")]
         public String RequestId
         {
             get { return this.requestIdField ; }
@@ -121,7 +121,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 
         public String ToXML() {
             StringBuilder xml = new StringBuilder();
-            xml.Append("<ErrorResponse xmlns=\"https://mws.amazonservices.com/Orders/2011-01-01\">");
+            xml.Append("<ErrorResponse xmlns=\"https://mws.amazonservices.com/Orders/2013-09-01\">");
             List<Error> errorList = this.Error;
             foreach (Error error in errorList) {
                 xml.Append("<Error>");
