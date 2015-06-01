@@ -189,7 +189,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			}
 			request.UserAgent = this.config.UserAgent;
 			request.Method = "POST";
-			request.Timeout = 50000;
+			request.Timeout = 100000;
 			request.ContentType = "application/x-www-form-urlencoded; charset=utf-8";
 			request.ContentLength = contentLength;
 
