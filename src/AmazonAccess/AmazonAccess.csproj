@@ -249,6 +249,7 @@
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\Model\UpdateReportAcknowledgementsResponse.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\Model\UpdateReportAcknowledgementsResult.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\OrderItemsService.cs" />
+    <Compile Include="Services\MarketplaceWebServiceOrders\OrdersByIdService.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\OrdersService.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellers.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellersClient.cs" />

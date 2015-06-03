@@ -20,9 +20,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		public IEnumerable< OrderItem > LoadOrderItems()
 		{
 			var orderItems = new List< OrderItem >();
-			var response = _throttler.ExecuteWithTrottling( () => this._client.ListOrderItems( this._request ));
+			var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => _throttler.ExecuteWithTrottling( () =>
+				this._client.ListOrderItems( this._request ) ) );
 
-			AmazonLogger.Log.Trace( "[amazon]Loading order items for seller {0}", this._request.SellerId );
+			AmazonLogger.Log.Trace( "[amazon] Loading order items for seller {0}", this._request.SellerId );
 
 			if( response.IsSetListOrderItemsResult() )
 			{
@@ -31,12 +32,13 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					orderItems.AddRange( listInventorySupplyResult.OrderItems );
 				if( listInventorySupplyResult.IsSetNextToken() )
 				{
-					var nextResponse = _throttler.ExecuteWithTrottling( () => this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
-					{
-						SellerId = this._request.SellerId,
-						NextToken = listInventorySupplyResult.NextToken,
-						MWSAuthToken = this._request.MWSAuthToken
-					} ) );
+					var nextResponse = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => _throttler.ExecuteWithTrottling( () =>
+						this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
+						{
+							SellerId = this._request.SellerId,
+							NextToken = listInventorySupplyResult.NextToken,
+							MWSAuthToken = this._request.MWSAuthToken
+						} ) ) );
 
 					this.LoadNextOrderItemsInfoPage( nextResponse.ListOrderItemsByNextTokenResult, orderItems );
 				}
@@ -54,12 +56,13 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 			if( listOrderItemsSupplyResult.IsSetNextToken() )
 			{
-				var response = _throttler.ExecuteWithTrottling( () => this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
-				{
-					SellerId = this._request.SellerId,
-					NextToken = listOrderItemsSupplyResult.NextToken,
-					MWSAuthToken = this._request.MWSAuthToken
-				} ) );
+				var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => _throttler.ExecuteWithTrottling( () =>
+					this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
+					{
+						SellerId = this._request.SellerId,
+						NextToken = listOrderItemsSupplyResult.NextToken,
+						MWSAuthToken = this._request.MWSAuthToken
+					} ) ) );
 
 				this.LoadNextOrderItemsInfoPage( response.ListOrderItemsByNextTokenResult, orderItems );
 			}

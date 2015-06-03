@@ -8,6 +8,17 @@ namespace AmazonAccess.Misc
 {
 	public static class ActionPolicies
 	{
+		public static ActionPolicy AmazonThrottlerGetPolicy
+		{
+			get { return _amazonThrottlerGetPolicy; }
+		}
+
+		private static readonly ActionPolicy _amazonThrottlerGetPolicy = ActionPolicy.Handle< NotThrottlerException >().Retry( 10, ( ex, i ) =>
+			{
+				typeof( ActionPolicies ).Log().Trace( ex, "Retrying Amazon API get call for the {0} time", i );
+				SystemUtil.Sleep( TimeSpan.FromSeconds( 5 + 20 * i ) );
+			} );
+
 		public static ActionPolicy AmazonGetPolicy
 		{
 			get { return _amazonGetPolicy; }

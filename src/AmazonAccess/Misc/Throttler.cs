@@ -34,18 +34,23 @@ namespace AmazonAccess.Misc
 				{
 					return this.TryExecuteWithTrottling( funcToThrottle );
 				}
-				catch( Exception x )
+				catch( Exception ex )
 				{
-					if( IsExceptionFromThrottling( x ) && retryCount < _maxRetryCount )
+					if( IsExceptionFromThrottling( ex ) )
 					{
-						_remainingQuota = 0;
-						this._requestTimer.Restart();
-						_delay();
-						retryCount++;
-						// try again through loop
+						if( retryCount < _maxRetryCount )
+						{
+							_remainingQuota = 0;
+							this._requestTimer.Restart();
+							_delay();
+							retryCount++;
+							// try again through loop
+						}
+						else
+							throw new ThrottlerException( "Throttle max retry count reached", ex );
 					}
 					else
-						throw;
+						throw new NotThrottlerException( "Unknown exception", ex );
 				}
 			}
 		}
@@ -109,5 +114,35 @@ namespace AmazonAccess.Misc
 		}
 
 		private readonly Stopwatch _requestTimer = new Stopwatch();
+	}
+
+	public class ThrottlerException: Exception
+	{
+		public ThrottlerException()
+		{
+		}
+
+		public ThrottlerException( string message ): base( message )
+		{
+		}
+
+		public ThrottlerException( string message, Exception innerException ): base( message, innerException )
+		{
+		}
+	}
+
+	public class NotThrottlerException: Exception
+	{
+		public NotThrottlerException()
+		{
+		}
+
+		public NotThrottlerException( string message ): base( message )
+		{
+		}
+
+		public NotThrottlerException( string message, Exception innerException ): base( message, innerException )
+		{
+		}
 	}
 }
