@@ -239,7 +239,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 						requestStream.Write( requestData, 0, requestData.Length );
 					}
 
-					AmazonLogger.Log.Trace( "[amazon] Orders-{0}. Seller {1}. Getting response.", methodName, this._sellerId );
+					AmazonLogger.Log.Trace( "[amazon] Orders-{0}. Seller: {1}. Getting response.", methodName, this._sellerId );
 
 					using( var httpResponse = request.GetResponse() as HttpWebResponse )
 					{

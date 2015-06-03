@@ -23,7 +23,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => _throttler.ExecuteWithTrottling( () =>
 				this._client.ListOrderItems( this._request ) ) );
 
-			AmazonLogger.Log.Trace( "[amazon]Loading order items for seller {0}", this._request.SellerId );
+			AmazonLogger.Log.Trace( "[amazon] Loading order items for seller {0}", this._request.SellerId );
 
 			if( response.IsSetListOrderItemsResult() )
 			{
