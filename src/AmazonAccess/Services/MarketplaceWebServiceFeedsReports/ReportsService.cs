@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using AmazonAccess.Models;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
 using LINQtoCSV;
@@ -47,15 +49,16 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 
 		private string GetReportId( RequestReportRequest request )
 		{
-			var reportRequestId = this.GetReportRequestId( new RequestReportRequest
-			{
-				Merchant = this._credentials.SellerId,
-				MWSAuthToken = this._credentials.MwsAuthToken,
-				MarketplaceIdList = new IdList { Id = new List< string > { this._credentials.AmazonMarketplace.MarketplaceId } },
-				ReportType = request.ReportType,
-				StartDate = request.StartDate,
-				EndDate = request.EndDate
-			} );
+			var reportRequestId = "278910016589";
+			//this.GetReportRequestId( new RequestReportRequest
+			//{
+			//	Merchant = this._credentials.SellerId,
+			//	MWSAuthToken = this._credentials.MwsAuthToken,
+			//	MarketplaceIdList = new IdList { Id = new List< string > { this._credentials.AmazonMarketplace.MarketplaceId } },
+			//	ReportType = request.ReportType,
+			//	StartDate = request.StartDate,
+			//	EndDate = request.EndDate
+			//} );
 			var reportId = this.GetGeneratedReportId( reportRequestId );
 			if( !string.IsNullOrEmpty( reportId ) )
 				return reportId;
@@ -119,27 +122,40 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 		private string GetGeneratedReportId( string reportRequestId )
 		{
 			var reportId = string.Empty;
-			var response = this._client.GetReportRequestList( new GetReportRequestListRequest
+			while( true )
 			{
-				Merchant = this._credentials.SellerId,
-				MWSAuthToken = this._credentials.MwsAuthToken,
-				ReportRequestIdList = new IdList { Id = new List< string > { reportRequestId } },
-				RequestedFromDate = DateTime.MinValue.ToUniversalTime(),
-				RequestedToDate = DateTime.UtcNow.ToUniversalTime()
-			} );
-			var info = response.GetReportRequestListResult.ReportRequestInfo.FirstOrDefault( i => i.ReportRequestId.Equals( reportRequestId ) );
-			if( info != null )
-				reportId = info.GeneratedReportId;
-			else if( response.GetReportRequestListResult.IsSetNextToken() )
-			{
-				var nextResponse = this._client.GetReportRequestListByNextToken( new GetReportRequestListByNextTokenRequest
+				var response = this._client.GetReportRequestList( new GetReportRequestListRequest
 				{
 					Merchant = this._credentials.SellerId,
 					MWSAuthToken = this._credentials.MwsAuthToken,
-					NextToken = response.GetReportRequestListResult.NextToken
+					ReportRequestIdList = new IdList { Id = new List< string > { reportRequestId } },
+					RequestedFromDate = DateTime.MinValue.ToUniversalTime(),
+					RequestedToDate = DateTime.UtcNow.ToUniversalTime()
 				} );
-				reportId = this.GetGeneratedReportIdFromNextPages( nextResponse.GetReportRequestListByNextTokenResult, reportRequestId, reportId );
+				var info = response.GetReportRequestListResult.ReportRequestInfo.FirstOrDefault( i => i.ReportRequestId.Equals( reportRequestId ) );
+				if( info == null || !info.IsSetReportProcessingStatus() )
+					break;
+
+				if( info.ReportProcessingStatus.Equals( "_IN_PROGRESS_", StringComparison.InvariantCultureIgnoreCase ) )
+				{
+					Thread.Sleep( TimeSpan.FromSeconds( 30 ) );
+					continue;
+				}
+
+				if( !string.IsNullOrEmpty( info.GeneratedReportId ) )
+					return info.GeneratedReportId;
 			}
+			
+			//else if( response.GetReportRequestListResult.IsSetNextToken() )
+			//{
+			//	var nextResponse = this._client.GetReportRequestListByNextToken( new GetReportRequestListByNextTokenRequest
+			//	{
+			//		Merchant = this._credentials.SellerId,
+			//		MWSAuthToken = this._credentials.MwsAuthToken,
+			//		NextToken = response.GetReportRequestListResult.NextToken
+			//	} );
+			//	reportId = this.GetGeneratedReportIdFromNextPages( nextResponse.GetReportRequestListByNextTokenResult, reportRequestId, reportId );
+			//}
 
 			return reportId;
 		}
