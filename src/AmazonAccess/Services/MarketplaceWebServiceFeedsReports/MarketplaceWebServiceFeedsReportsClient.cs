@@ -537,7 +537,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 
 		private T Invoke< T, K >( IDictionary< String, String > parameters, K clazz )
 		{
-			AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}. Begin invoke...", this._sellerId );
+			string methodName;
+			if( !parameters.TryGetValue( "Action", out methodName ) )
+				methodName = "Unknown";
+
+			AmazonLogger.Log.Trace( "[amazon] FeedsReports-{0}. Seller: {1}. Begin invoke...", methodName, this._sellerId );
 
 			var response = default( T );
 			ResponseHeaderMetadata rhm = null;
@@ -620,7 +624,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 						}
 						requestStream.Close();
 					}
-					AmazonLogger.Log.Trace( "[amazon] Feeds. Seller {0}. Getting response.", this._sellerId );
+					AmazonLogger.Log.Trace( "[amazon] FeedsReports-{0}. Seller {1}. Getting response.", methodName, this._sellerId );
 					using( var httpResponse = request.GetResponse() as HttpWebResponse )
 					{
 						statusCode = httpResponse.StatusCode;
@@ -638,7 +642,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 							var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
 							responseBody = reader.ReadToEnd();
 
-							AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}\nResponse received: {1}", this._sellerId, responseBody );
+							AmazonLogger.Log.Trace( "[amazon] FeedsReports-{0}. Seller: {1}\nResponse received: {2}", methodName, this._sellerId, responseBody );
 							var serlizer = new XmlSerializer( typeof( T ) );
 							response = ( T )serlizer.Deserialize( new StringReader( responseBody ) );
 						}
@@ -665,7 +669,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 						statusCode = httpErrorResponse.StatusCode;
 						var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 );
 						responseBody = reader.ReadToEnd();
-						AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
+						AmazonLogger.Log.Trace( "[amazon] FeedsReports-{0}. Seller: {1}\nWeb exception message: {2}", methodName, this._sellerId, responseBody );
 					}
 
 					/* Attempt to deserialize response into ErrorResponse type */
@@ -704,7 +708,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 							throw;
 						}
 						MarketplaceWebServiceFeedsReportsException se = this.ReportAnyErrors( responseBody, statusCode, e, rhm );
-						AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}\nDeserialization exception message: {1}", this._sellerId, e.Message );
+						AmazonLogger.Log.Trace( "[amazon] FeedsReports-{0}. Seller: {1}\nDeserialization exception message: {2}", methodName, this._sellerId, e.Message );
 						throw se;
 					}
 				}
@@ -713,11 +717,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
                  * else rethrow wrapped exception */
 				catch( Exception e )
 				{
-					AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}\nUndefined exception message: {1}", this._sellerId, e.Message );
+					AmazonLogger.Log.Trace( "[amazon] FeedsReports-{0}. Seller: {1}\nUndefined exception message: {2}", methodName, this._sellerId, e.Message );
 					throw new MarketplaceWebServiceFeedsReportsException( e );
 				}
 			} while( shouldRetry );
-			AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}. End invoke...", this._sellerId );
+			AmazonLogger.Log.Trace( "[amazon] FeedsReports-{0}. Seller: {1}. End invoke...", methodName, this._sellerId );
 
 			return response;
 		}

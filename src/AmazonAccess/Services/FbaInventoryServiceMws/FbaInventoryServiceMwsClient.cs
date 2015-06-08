@@ -246,7 +246,11 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 
 		private T Invoke< T >( IDictionary< String, String > parameters )
 		{
-			AmazonLogger.Log.Trace( "[amazon] FBA Inventory. Seller: {0}. Begin invoke...", this._sellerId );
+			string methodName;
+			if( !parameters.TryGetValue( "Action", out methodName ) )
+				methodName = "Unknown";
+
+			AmazonLogger.Log.Trace( "[amazon] FbaInventory-{0}. Seller: {1}. Begin invoke...", methodName, this._sellerId );
 
 			var response = default( T );
 
@@ -276,12 +280,12 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 					{
 						requestStream.Write( requestData, 0, requestData.Length );
 					}
-					AmazonLogger.Log.Trace( "[amazon] FBA Inventory. Seller {0}. Getting response.", this._sellerId );
+					AmazonLogger.Log.Trace( "[amazon] FbaInventory-{0}. Seller {1}. Getting response.", methodName, this._sellerId );
 					using( var httpResponse = request.GetResponse() as HttpWebResponse )
 					{
 						var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
 						responseBody = reader.ReadToEnd();
-						AmazonLogger.Log.Trace( "[amazon] FBA Inventory. Seller: {0}\nResponse received: {1}", this._sellerId, responseBody );
+						AmazonLogger.Log.Trace( "[amazon] FbaInventory-{0}. Seller: {1}\nResponse received: {2}", methodName, this._sellerId, responseBody );
 					}
 
 					ActionPolicies.CreateApiDelay( 2 ).Wait();
@@ -294,7 +298,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 					/* Web exception is thrown on unsucessful responses */
 				catch( WebException we )
 				{
-					AmazonLogger.Log.Trace( "[amazon] FBA Inventory. Seller: {0}. Exception occurred. Getting web exception message.", this._sellerId );
+					AmazonLogger.Log.Trace( "[amazon] FbaInventory-{0}. Seller: {1}. Exception occurred. Getting web exception message.", methodName, this._sellerId );
 					HttpStatusCode statusCode;
 					using( var httpErrorResponse = ( HttpWebResponse )we.Response )
 					{
@@ -305,7 +309,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 						statusCode = httpErrorResponse.StatusCode;
 						var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 );
 						responseBody = reader.ReadToEnd();
-						AmazonLogger.Log.Trace( "[amazon] FBA Inventory. Seller: {0}\nWeb exception message: {1}", this._sellerId, responseBody );
+						AmazonLogger.Log.Trace( "[amazon] FbaInventory-{0}. Seller: {1}\nWeb exception message: {2}", methodName, this._sellerId, responseBody );
 					}
 
 					ActionPolicies.CreateApiDelay( 2 ).Wait();
@@ -339,7 +343,7 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 						/* Rethrow on deserializer error */
 					catch( Exception e )
 					{
-						AmazonLogger.Log.Trace( "[amazon] FBA Inventory. Seller: {0}\ndeserialize exception message: {1}", this._sellerId, e.Message );
+						AmazonLogger.Log.Trace( "[amazon] FbaInventory-{0}. Seller: {1}\ndeserialize exception message: {2}", methodName, this._sellerId, e.Message );
 						if( e is FbaInventoryServiceMwsException )
 						{
 							throw;
@@ -352,12 +356,12 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 			     * else rethrow wrapped exception */
 				catch( Exception e )
 				{
-					AmazonLogger.Log.Trace( "[amazon] FBA Inventory. Seller: {0}\nUndefined exception message: {1}", this._sellerId, e.Message );
+					AmazonLogger.Log.Trace( "[amazon] FbaInventory-{0}. Seller: {1}\nUndefined exception message: {2}", methodName, this._sellerId, e.Message );
 
 					throw new FbaInventoryServiceMwsException( e );
 				}
 			} while( shouldRetry );
-			AmazonLogger.Log.Trace( "[amazon] FBA Inventory. Seller: {0}. End invoke...", this._sellerId );
+			AmazonLogger.Log.Trace( "[amazon] FbaInventory-{0}. Seller: {1}. End invoke...", methodName, this._sellerId );
 			return response;
 		}
 
