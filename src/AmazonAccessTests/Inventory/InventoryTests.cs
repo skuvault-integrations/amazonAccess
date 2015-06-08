@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 using AmazonAccess;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
+using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel;
 using FluentAssertions;
 using LINQtoCSV;
 using NUnit.Framework;
@@ -28,40 +31,48 @@ namespace AmazonAccessTests.Inventory
 		}
 
 		[ Test ]
-		public void LoadInventory()
-		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
-
-			var inventory = service.GetInventory();
-			inventory.Count().Should().BeGreaterThan( 0 );
-		}
-
-		[ Test ]
 		public void LoadFbaInventory()
 		{
 			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			var inventory = service.GetFbaInventory();
+			var serializer = new XmlSerializer( typeof( List< InventorySupply > ) );
+			var writer = new StringWriter();
+			serializer.Serialize( writer, inventory.ToList() );
+			var xml = writer.GetStringBuilder().ToString();
+
+			inventory.Count().Should().BeGreaterThan( 0 );
+		}
+
+		[ Test ]
+		public void LoadDetailedFbaInventory()
+		{
+			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+
+			var inventory = service.GetDetailedFbaInventory();
+			var serializer = new XmlSerializer( typeof( List< FbaManageInventory > ) );
+			var writer = new StringWriter();
+			serializer.Serialize( writer, inventory.ToList() );
+			var xml = writer.GetStringBuilder().ToString();
+
 			inventory.Count().Should().BeGreaterThan( 0 );
 		}
 
 		[ Test ]
 		public void UpdateInventory()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
-			//var service = this.AmazonFactory.CreateService( "" );
-			var service = this.AmazonFactory.CreateService( "", this.Config.MwsAuthToken, marketplace );
-			//var inventory = service.GetFbaInventory();
+			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Ca );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
-			//var item = inventory.FirstOrDefault();
 			service.UpdateInventory( new List< AmazonInventoryItem >
 			{
 				new AmazonInventoryItem
 				{
-					Quantity = 33,
-					Sku = "HF-FI6M-WWVD"
+					Quantity = 25,
+					Sku = "TC-N7DR-TVNA",
+					FulfillmentLatency = 1
 				}
 			} );
 		}

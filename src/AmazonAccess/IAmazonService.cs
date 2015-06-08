@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
+using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 
 namespace AmazonAccess
@@ -20,10 +21,8 @@ namespace AmazonAccess
 		void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems );
 		//Task<IList<ProductUpdateQtyResult>> UpdateInventoryAsync(IEnumerable<ProductQuantityParams> products);
 
-		IEnumerable< InventorySupply > GetInventory();
-		//Task<IEnumerable<InventorySupply>> GetInventoryAsync();
-
 		IEnumerable< InventorySupply > GetFbaInventory();
+		IEnumerable< FbaManageInventory > GetDetailedFbaInventory();
 
 		string GetMwsAuthToken();
 	}
