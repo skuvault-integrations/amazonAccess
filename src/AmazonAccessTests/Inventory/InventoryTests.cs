@@ -63,18 +63,16 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void UpdateInventory()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
-			//var service = this.AmazonFactory.CreateService( "" );
-			var service = this.AmazonFactory.CreateService( "", this.Config.MwsAuthToken, marketplace );
-			//var inventory = service.GetFbaInventory();
+			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Ca );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
-			//var item = inventory.FirstOrDefault();
 			service.UpdateInventory( new List< AmazonInventoryItem >
 			{
 				new AmazonInventoryItem
 				{
-					Quantity = 33,
-					Sku = "HF-FI6M-WWVD"
+					Quantity = 25,
+					Sku = "TC-N7DR-TVNA",
+					FulfillmentLatency = 1
 				}
 			} );
 		}

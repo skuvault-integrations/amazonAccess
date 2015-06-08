@@ -129,11 +129,11 @@ namespace AmazonAccess
 		private void SubmitInventoryUpdateRequest( IMarketplaceWebServiceFeeds client, IEnumerable< AmazonInventoryItem > inventoryItems )
 		{
 			var request = this.InitInventoryFeedRequest( inventoryItems );
-			var service = new FeedsService();
+			var service = new FeedsService( client );
 
 			ActionPolicies.AmazonSubmitPolicy.Do( () =>
 			{
-				service.SubmitFeed( client, request );
+				service.SubmitFeed( request );
 				request.FeedContent.Close();
 				ActionPolicies.CreateApiDelay( 2 ).Wait();
 			} );

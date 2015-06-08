@@ -8,10 +8,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model
 	public class AmazonEnvelope
 	{
 		[ XmlElement( Order = 1 ) ]
-		public Header Header { get; set; }
+		public Header Header{ get; set; }
 
 		[ XmlElement( Order = 2 ) ]
-		public MessageType MessageType { get; set; }
+		public MessageType MessageType{ get; set; }
 
 		[ XmlElement( Order = 3 ) ]
 		public Message[] Message;
@@ -23,10 +23,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model
 		//<DocumentVersion>1.01</DocumentVersion>
 		//<MerchantIdentifier>A7I0VA9RRJTE8</MerchantIdentifier>
 		[ XmlElement ]
-		public string DocumentVersion { get; set; }
+		public string DocumentVersion{ get; set; }
 
 		[ XmlElement ]
-		public string MerchantIdentifier { get; set; }
+		public string MerchantIdentifier{ get; set; }
 	}
 
 	[ Serializable ]
@@ -36,13 +36,13 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model
 		//<OperationType>Update</OperationType>
 		//<Inventory>
 		[ XmlElement( ElementName = "MessageID" ) ]
-		public int MessageId { get; set; }
+		public int MessageId{ get; set; }
 
 		[ XmlElement ]
-		public OperationType OperationType { get; set; }
+		public OperationType OperationType{ get; set; }
 
 		[ XmlElement ]
-		public Inventory Inventory { get; set; }
+		public Inventory Inventory{ get; set; }
 	}
 
 	[ Serializable ]
@@ -52,13 +52,13 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model
 		//<Quantity>8</Quantity>
 		//<FulfillmentLatency>1</FulfillmentLatency>
 		[ XmlElement( ElementName = "SKU" ) ]
-		public string Sku { get; set; }
+		public string Sku{ get; set; }
 
 		[ XmlElement ]
-		public int Quantity { get; set; }
+		public int Quantity{ get; set; }
 
 		[ XmlElement ]
-		public int FulfillmentLatency { get; set; }
+		public int FulfillmentLatency{ get; set; }
 	}
 
 	public enum OperationType
