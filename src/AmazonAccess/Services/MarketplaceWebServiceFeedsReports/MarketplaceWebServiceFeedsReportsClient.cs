@@ -38,7 +38,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
     *
     */
 
-	public class MarketplaceWebServiceFeedsReportsClient: IMarketplaceWebServiceFeeds
+	public class MarketplaceWebServiceFeedsReportsClient: IMarketplaceWebServiceFeedsReports
 	{
 
 		private String awsAccessKeyId = null;

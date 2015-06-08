@@ -126,7 +126,7 @@ namespace AmazonAccess
 			return request;
 		}
 
-		private void SubmitInventoryUpdateRequest( IMarketplaceWebServiceFeeds client, IEnumerable< AmazonInventoryItem > inventoryItems )
+		private void SubmitInventoryUpdateRequest( IMarketplaceWebServiceFeedsReports client, IEnumerable< AmazonInventoryItem > inventoryItems )
 		{
 			var request = this.InitInventoryFeedRequest( inventoryItems );
 			var service = new FeedsService( client );

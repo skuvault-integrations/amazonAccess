@@ -26,7 +26,7 @@ namespace AmazonAccess.Services
 			return new FbaInventoryServiceMwsClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
 		}
 
-		public IMarketplaceWebServiceFeeds CreateFeedsReportsClient()
+		public IMarketplaceWebServiceFeedsReports CreateFeedsReportsClient()
 		{
 			var config = new MarketplaceWebServiceFeedsReportsConfig { ServiceURL = this._credentials.AmazonMarketplace.FeedsServiceUrl, MaxErrorRetry = 4 };
 			config.SetUserAgentHeader( "C#", "-1", "3" );

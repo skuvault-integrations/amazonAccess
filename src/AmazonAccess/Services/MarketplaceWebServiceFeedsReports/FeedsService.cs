@@ -13,9 +13,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 {
 	public class FeedsService
 	{
-		private readonly IMarketplaceWebServiceFeeds _client;
+		private readonly IMarketplaceWebServiceFeedsReports _client;
 
-		public FeedsService( IMarketplaceWebServiceFeeds client )
+		public FeedsService( IMarketplaceWebServiceFeedsReports client )
 		{
 			this._client = client;
 		}
@@ -33,7 +33,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 			this.CheckSubmissionResult( feedSubmissionId, request.Merchant, request.MWSAuthToken );
 		}
 
-		private bool IsFeedSubmitted( IMarketplaceWebServiceFeeds client, string feedSubmissionId, string merchant, string mwsAuthToken )
+		private bool IsFeedSubmitted( IMarketplaceWebServiceFeedsReports client, string feedSubmissionId, string merchant, string mwsAuthToken )
 		{
 			var response = client.GetFeedSubmissionList( new GetFeedSubmissionListRequest
 			{

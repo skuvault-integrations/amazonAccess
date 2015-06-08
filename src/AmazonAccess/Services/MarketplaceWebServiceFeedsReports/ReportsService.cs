@@ -13,10 +13,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 {
 	public class ReportsService
 	{
-		private readonly IMarketplaceWebServiceFeeds _client;
+		private readonly IMarketplaceWebServiceFeedsReports _client;
 		private readonly AmazonCredentials _credentials;
 
-		public ReportsService( IMarketplaceWebServiceFeeds client, AmazonCredentials credentials )
+		public ReportsService( IMarketplaceWebServiceFeedsReports client, AmazonCredentials credentials )
 		{
 			this._client = client;
 			this._credentials = credentials;
