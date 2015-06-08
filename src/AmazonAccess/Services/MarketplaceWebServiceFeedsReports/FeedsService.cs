@@ -44,13 +44,13 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 			ActionPolicies.CreateApiDelay( 2 ).Wait();
 
 			if( !response.IsSetGetFeedSubmissionListResult() )
-				throw new Exception( string.Format( "[amazon] GetFeedSubmissionList. Seller: {0}\nResult was not received", merchant ) );
+				throw new Exception( string.Format( "[amazon] IsFeedSubmitted. Seller: {0}\nResult was not received", merchant ) );
 
 			var info = response.GetFeedSubmissionListResult.FeedSubmissionInfo.FirstOrDefault( i => i.FeedSubmissionId.Equals( feedSubmissionId ) );
 			if( info == null )
-				throw new Exception( string.Format( "[amazon] GetFeedSubmissionList. Seller: {0}\nSubmissionId was not found", merchant ) );
+				throw new Exception( string.Format( "[amazon] IsFeedSubmitted. Seller: {0}\nSubmissionId was not found", merchant ) );
 			if( info.FeedProcessingStatus.Equals( "_CANCELLED_" ) )
-				throw new Exception( string.Format( "[amazon] GetFeedSubmissionList. Seller: {0}\nThe request has been aborted due to a fatal error", merchant ) );
+				throw new Exception( string.Format( "[amazon] IsFeedSubmitted. Seller: {0}\nThe request has been aborted due to a fatal error", merchant ) );
 
 			return info.FeedProcessingStatus.Equals( "_DONE_" );
 		}
@@ -68,7 +68,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 			ActionPolicies.CreateApiDelay( 2 ).Wait();
 
 			if( !response.IsSetGetFeedSubmissionResultResult() || request.FeedSubmissionResult == null )
-				throw new Exception( string.Format( "[amazon] GetFeedSubmissionResult. Seller: {0}\nResult was not received", merchant ) );
+				throw new Exception( string.Format( "[amazon] CheckSubmissionResult. Seller: {0}\nResult was not received", merchant ) );
 
 			var reader = new StreamReader( request.FeedSubmissionResult, Encoding.UTF8 );
 			bool isErrorExist;
@@ -80,12 +80,12 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 			}
 			catch( Exception ex )
 			{
-				AmazonLogger.Log.Error( ex, "[amazon] GetFeedSubmissionResult. Seller: {0}. Can not parse result", merchant );
+				AmazonLogger.Log.Error( ex, "[amazon] CheckSubmissionResult. Seller: {0}. Can not parse result", merchant );
 				return;
 			}
 
 			if( isErrorExist )
-				throw new Exception( string.Format( "[amazon] GetFeedSubmissionResult. Seller: {0}\nFeed was not submitted: {1}", merchant, reader.ReadToEnd() ) );
+				throw new Exception( string.Format( "[amazon] CheckSubmissionResult. Seller: {0}\nFeed was not submitted: {1}", merchant, reader.ReadToEnd() ) );
 		}
 	}
 }
