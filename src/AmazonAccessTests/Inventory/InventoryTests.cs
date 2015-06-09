@@ -8,6 +8,7 @@ using AmazonAccess.Services.FbaInventoryServiceMws.Model;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel;
 using FluentAssertions;
 using LINQtoCSV;
+using Netco.Logging;
 using NUnit.Framework;
 
 namespace AmazonAccessTests.Inventory
@@ -21,10 +22,11 @@ namespace AmazonAccessTests.Inventory
 		[ SetUp ]
 		public void Init()
 		{
+			NetcoLogger.LoggerFactory = new ConsoleLoggerFactory();
 			const string credentialsFilePath = @"..\..\Files\AmazonCredentials.csv";
 
 			var cc = new CsvContext();
-			this.Config = cc.Read< TestConfig >( credentialsFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ).FirstOrDefault();
+			this.Config = cc.Read< TestConfig >( credentialsFilePath, new CsvFileDescription { FirstLineHasColumnNames = true, IgnoreUnknownColumns = true } ).FirstOrDefault();
 
 			if( this.Config != null )
 				this.AmazonFactory = new AmazonFactory( this.Config.AccessKeyId, this.Config.SecretAccessKeyId );

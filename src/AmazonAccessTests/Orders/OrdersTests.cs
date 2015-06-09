@@ -7,6 +7,7 @@ using AmazonAccess.Models;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using FluentAssertions;
 using LINQtoCSV;
+using Netco.Logging;
 using NUnit.Framework;
 
 namespace AmazonAccessTests.Orders
@@ -19,11 +20,11 @@ namespace AmazonAccessTests.Orders
 		[ SetUp ]
 		public void Init()
 		{
-			//			NetcoLogger.LoggerFactory = new ConsoleLoggerFactory();
+			NetcoLogger.LoggerFactory = new ConsoleLoggerFactory();
 			const string credentialsFilePath = @"..\..\Files\AmazonCredentials.csv";
 
 			var cc = new CsvContext();
-			this.Config = cc.Read< TestConfig >( credentialsFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ).FirstOrDefault();
+			this.Config = cc.Read< TestConfig >( credentialsFilePath, new CsvFileDescription { FirstLineHasColumnNames = true, IgnoreUnknownColumns = true } ).FirstOrDefault();
 
 			if( this.Config != null )
 				this.AmazonFactory = new AmazonFactory( this.Config.AccessKeyId, this.Config.SecretAccessKeyId );
@@ -53,11 +54,13 @@ namespace AmazonAccessTests.Orders
 			//var orders = service.GetOrders( new DateTime( 2015, 5, 19, 0, 0, 0, 0, DateTimeKind.Utc ), new DateTime( 2015, 5, 22, 0, 0, 0, 0, DateTimeKind.Utc ) );
 			stopwatch.Start();
 
+			var allOrders = new List< ComposedOrder >();
 			var foundOrders = new List< ComposedOrder >();
 			var ids = new List< string > { "" };
 
 			foreach( var order in orders )
 			{
+				allOrders.Add( order );
 				//if( ids.Any( o => o.Equals( order.AmazonOrder.AmazonOrderId, StringComparison.InvariantCultureIgnoreCase ) ) )
 				//	foundOrders.Add( order );
 
