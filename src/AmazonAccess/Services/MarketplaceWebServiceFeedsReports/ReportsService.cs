@@ -49,16 +49,15 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 
 		private string GetReportId( RequestReportRequest request )
 		{
-			var reportRequestId = "278910016589";
-			//this.GetReportRequestId( new RequestReportRequest
-			//{
-			//	Merchant = this._credentials.SellerId,
-			//	MWSAuthToken = this._credentials.MwsAuthToken,
-			//	MarketplaceIdList = new IdList { Id = new List< string > { this._credentials.AmazonMarketplace.MarketplaceId } },
-			//	ReportType = request.ReportType,
-			//	StartDate = request.StartDate,
-			//	EndDate = request.EndDate
-			//} );
+			var reportRequestId = this.GetReportRequestId( new RequestReportRequest
+			{
+				Merchant = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				MarketplaceIdList = new IdList { Id = new List< string > { this._credentials.AmazonMarketplace.MarketplaceId } },
+				ReportType = request.ReportType,
+				StartDate = request.StartDate,
+				EndDate = request.EndDate
+			} );
 			var reportId = this.GetGeneratedReportId( reportRequestId );
 			if( !string.IsNullOrEmpty( reportId ) )
 				return reportId;
