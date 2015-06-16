@@ -624,7 +624,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 						}
 						requestStream.Close();
 					}
-					AmazonLogger.Log.Trace( "[amazon] FeedsReports-{0}. Seller {1}. Getting response.", methodName, this._sellerId );
+					AmazonLogger.Log.Trace( "[amazon] FeedsReports-{0}. Seller: {1}. Getting response.", methodName, this._sellerId );
 					using( var httpResponse = request.GetResponse() as HttpWebResponse )
 					{
 						statusCode = httpResponse.StatusCode;
@@ -635,7 +635,16 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 
 						if( isStreamingResponse && statusCode == HttpStatusCode.OK )
 						{
-							response = this.HandleStreamingResponse< T >( httpResponse, clazz );
+							var receiverStream = this.GetTransferStream( clazz, StreamType.RECEIVE_STREAM );
+							this.CopyStream( httpResponse.GetResponseStream(), receiverStream );
+							receiverStream.Position = 0;
+
+							var reader = new StreamReader( receiverStream, Encoding.UTF8 );
+							var receivedString = reader.ReadToEnd();
+							receiverStream.Position = 0;
+							AmazonLogger.Log.Trace( "[amazon] FeedsReports-{0}. Seller: {1}\nStreaming Response received: {2}", methodName, this._sellerId, receivedString );
+
+							response = this.HandleStreamingResponse< T >( httpResponse, receiverStream );
 						}
 						else
 						{
@@ -849,6 +858,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 				}
 			}
 
+			if( s == null )
+				throw new MarketplaceWebServiceFeedsReportsException( "Receiver Stream not found" );
 			return s;
 		}
 
@@ -901,20 +912,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
          * thrown.
          */
 
-		private T HandleStreamingResponse< T >( HttpWebResponse webResponse, object clazz )
+		private T HandleStreamingResponse< T >( HttpWebResponse webResponse, Stream receiverStream )
 		{
-			var receiverStream = this.GetTransferStream( clazz, StreamType.RECEIVE_STREAM );
-			if( receiverStream == null )
-				throw new MarketplaceWebServiceFeedsReportsException( "Receiver Stream not found" );
-
-			this.CopyStream( webResponse.GetResponseStream(), receiverStream );
-			receiverStream.Position = 0;
-
-			var reader = new StreamReader( receiverStream );
-			var receivedString = reader.ReadToEnd();
-			AmazonLogger.Log.Trace( "[amazon] Feeds. Seller: {0}\nStreaming Response received: {1}", this._sellerId, receivedString );
-			receiverStream.Position = 0;
-
 			WebHeaderCollection headers = webResponse.Headers;
 			string receivedContentMD5 = headers.Get( "Content-MD5" );
 			string expectedContentMD5 = CalculateContentMD5( receiverStream );

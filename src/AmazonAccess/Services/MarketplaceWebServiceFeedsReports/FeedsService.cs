@@ -71,12 +71,19 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 				throw new Exception( string.Format( "[amazon] CheckSubmissionResult. Seller: {0}\nResult was not received", merchant ) );
 
 			var reader = new StreamReader( request.FeedSubmissionResult, Encoding.UTF8 );
-			bool isErrorExist;
+			int errorsCount;
 			try
 			{
 				var serlizer = new XmlSerializer( typeof( AmazonEnvelope ) );
 				var envelope = ( AmazonEnvelope )serlizer.Deserialize( reader );
-				isErrorExist = envelope.Message.Any( x => x.ProcessingReport.ProcessingSummary.MessagesWithError > 0 );
+				errorsCount = envelope.Message.Sum( x => x.ProcessingReport.ProcessingSummary.MessagesWithError );
+				var notFoundSkuCount = envelope.Message.Where( x => x.ProcessingReport.Result != null )
+					.SelectMany( x => x.ProcessingReport.Result ).Count( x => x.ResultMessageCode == 13013 );
+				if( notFoundSkuCount > 0 )
+				{
+					AmazonLogger.Log.Warn( "[amazon] CheckSubmissionResult. Seller: {0}. {1} SKUs do not exist in Amazon", merchant, notFoundSkuCount );
+					errorsCount -= notFoundSkuCount;
+				}
 			}
 			catch( Exception ex )
 			{
@@ -84,7 +91,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 				return;
 			}
 
-			if( isErrorExist )
+			if( errorsCount > 0 )
 				throw new Exception( string.Format( "[amazon] CheckSubmissionResult. Seller: {0}\nFeed was not submitted: {1}", merchant, reader.ReadToEnd() ) );
 		}
 	}
