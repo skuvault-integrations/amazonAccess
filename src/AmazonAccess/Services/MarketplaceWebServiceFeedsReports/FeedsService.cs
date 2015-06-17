@@ -70,29 +70,35 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 			if( !response.IsSetGetFeedSubmissionResultResult() || request.FeedSubmissionResult == null )
 				throw new Exception( string.Format( "[amazon] CheckSubmissionResult. Seller: {0}\nResult was not received", merchant ) );
 
-			var reader = new StreamReader( request.FeedSubmissionResult, Encoding.UTF8 );
-			int errorsCount;
 			try
 			{
+				var reader = new StreamReader( request.FeedSubmissionResult, Encoding.UTF8 );
 				var serlizer = new XmlSerializer( typeof( AmazonEnvelope ) );
 				var envelope = ( AmazonEnvelope )serlizer.Deserialize( reader );
-				errorsCount = envelope.Message.Sum( x => x.ProcessingReport.ProcessingSummary.MessagesWithError );
-				var notFoundSkuCount = envelope.Message.Where( x => x.ProcessingReport.Result != null )
-					.SelectMany( x => x.ProcessingReport.Result ).Count( x => x.ResultMessageCode == 13013 );
-				if( notFoundSkuCount > 0 )
+
+				var processedCount = envelope.Message.Sum( x => x.ProcessingReport.ProcessingSummary.MessagesProcessed );
+				var successfulCount = envelope.Message.Sum( x => x.ProcessingReport.ProcessingSummary.MessagesSuccessful );
+				var errorsCount = envelope.Message.Sum( x => x.ProcessingReport.ProcessingSummary.MessagesWithError );
+				var warningsCount = envelope.Message.Sum( x => x.ProcessingReport.ProcessingSummary.MessagesWithWarning );
+				AmazonLogger.Log.Info( "[amazon] CheckSubmissionResult. Seller: {0}. Processed:{1} Successful:{2} Errors:{3} Warnings:{4}",
+					merchant, processedCount, successfulCount, errorsCount, warningsCount );
+
+				var groupedResults = envelope.Message.Where( x => x.ProcessingReport.Result != null )
+					.SelectMany( x => x.ProcessingReport.Result ).GroupBy( x => x.ResultMessageCode );
+				foreach( var groupedResult in groupedResults )
 				{
-					AmazonLogger.Log.Warn( "[amazon] CheckSubmissionResult. Seller: {0}. {1} SKUs do not exist in Amazon", merchant, notFoundSkuCount );
-					errorsCount -= notFoundSkuCount;
+					// 13013 - SKU do not exist in Amazon
+					// 5000 - SKU length is too big (max:40)
+					var count = groupedResult.Count();
+					var type = groupedResult.First().ResultCode;
+					AmazonLogger.Log.Warn( "[amazon] CheckSubmissionResult. Seller: {0}. Message type: {1}. Message code: {2}. Massages count: {3}",
+						merchant, type, groupedResult.Key, count );
 				}
 			}
 			catch( Exception ex )
 			{
 				AmazonLogger.Log.Error( ex, "[amazon] CheckSubmissionResult. Seller: {0}. Can not parse result", merchant );
-				return;
 			}
-
-			if( errorsCount > 0 )
-				throw new Exception( string.Format( "[amazon] CheckSubmissionResult. Seller: {0}\nFeed was not submitted: {1}", merchant, reader.ReadToEnd() ) );
 		}
 	}
 }
