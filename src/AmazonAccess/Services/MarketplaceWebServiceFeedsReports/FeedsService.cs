@@ -77,7 +77,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 				var envelope = ( FeedSubmissionResult )serlizer.Deserialize( reader );
 
 				var firstMessage = envelope.Message.First();
-				var processingSummary = firstMessage.ProcessingReport.ProcessingSummary ?? firstMessage.ProcessingReport.Summary.ProcessingSummary;
+				var processingSummary = firstMessage.ProcessingReport.ProcessingSummary ?? ( firstMessage.ProcessingReport.Summary != null ? firstMessage.ProcessingReport.Summary.ProcessingSummary : null );
 				if( processingSummary == null )
 					AmazonLogger.Log.Warn( "[amazon] CheckSubmissionResult. Seller: {0}. ProcessingSummary is null", merchant );
 				else
@@ -86,7 +86,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 						processingSummary.MessagesProcessed, processingSummary.MessagesSuccessful, processingSummary.MessagesWithError, processingSummary.MessagesWithWarning );
 				}
 
-				var result = firstMessage.ProcessingReport.Result ?? firstMessage.ProcessingReport.Summary.Result;
+				var result = firstMessage.ProcessingReport.Result ?? ( firstMessage.ProcessingReport.Summary != null ? firstMessage.ProcessingReport.Summary.Result : null );
 				if( result == null )
 				{
 					AmazonLogger.Log.Info( "[amazon] CheckSubmissionResult. Seller: {0}. Result is null", merchant );
