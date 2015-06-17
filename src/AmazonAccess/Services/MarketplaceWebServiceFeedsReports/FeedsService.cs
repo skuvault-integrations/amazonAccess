@@ -7,7 +7,7 @@ using System.Threading;
 using System.Xml.Serialization;
 using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
-using AmazonEnvelope = AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel.AmazonEnvelope;
+using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model.AmazonEnvelope.FeedSubmissionResult;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 {
@@ -73,18 +73,26 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 			try
 			{
 				var reader = new StreamReader( request.FeedSubmissionResult, Encoding.UTF8 );
-				var serlizer = new XmlSerializer( typeof( AmazonEnvelope ) );
-				var envelope = ( AmazonEnvelope )serlizer.Deserialize( reader );
+				var serlizer = new XmlSerializer( typeof( FeedSubmissionResult ) );
+				var envelope = ( FeedSubmissionResult )serlizer.Deserialize( reader );
 
-				var processedCount = envelope.Message.Sum( x => x.ProcessingReport.ProcessingSummary.MessagesProcessed );
-				var successfulCount = envelope.Message.Sum( x => x.ProcessingReport.ProcessingSummary.MessagesSuccessful );
-				var errorsCount = envelope.Message.Sum( x => x.ProcessingReport.ProcessingSummary.MessagesWithError );
-				var warningsCount = envelope.Message.Sum( x => x.ProcessingReport.ProcessingSummary.MessagesWithWarning );
-				AmazonLogger.Log.Info( "[amazon] CheckSubmissionResult. Seller: {0}. Processed:{1} Successful:{2} Errors:{3} Warnings:{4}",
-					merchant, processedCount, successfulCount, errorsCount, warningsCount );
+				var firstMessage = envelope.Message.First();
+				var processingSummary = firstMessage.ProcessingReport.ProcessingSummary ?? firstMessage.ProcessingReport.Summary.ProcessingSummary;
+				if( processingSummary == null )
+					AmazonLogger.Log.Warn( "[amazon] CheckSubmissionResult. Seller: {0}. ProcessingSummary is null", merchant );
+				else
+				{
+					AmazonLogger.Log.Info( "[amazon] CheckSubmissionResult. Seller: {0}. Processed:{1} Successful:{2} Errors:{3} Warnings:{4}", merchant,
+						processingSummary.MessagesProcessed, processingSummary.MessagesSuccessful, processingSummary.MessagesWithError, processingSummary.MessagesWithWarning );
+				}
 
-				var groupedResults = envelope.Message.Where( x => x.ProcessingReport.Result != null )
-					.SelectMany( x => x.ProcessingReport.Result ).GroupBy( x => x.ResultMessageCode );
+				var result = firstMessage.ProcessingReport.Result ?? firstMessage.ProcessingReport.Summary.Result;
+				if( result == null )
+				{
+					AmazonLogger.Log.Info( "[amazon] CheckSubmissionResult. Seller: {0}. Result is null", merchant );
+					return;
+				}
+				var groupedResults = result.GroupBy( x => x.ResultMessageCode );
 				foreach( var groupedResult in groupedResults )
 				{
 					// 13013 - SKU do not exist in Amazon

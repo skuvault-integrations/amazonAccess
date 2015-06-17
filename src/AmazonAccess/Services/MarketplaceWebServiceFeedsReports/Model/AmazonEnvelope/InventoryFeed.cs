@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model
+namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model.AmazonEnvelope.InventoryFeed
 {
 	[ Serializable ]
-	[ XmlRoot ]
-	public class AmazonEnvelope
+	[ XmlRoot( ElementName = "AmazonEnvelope" ) ]
+	public class InventoryFeed
 	{
 		[ XmlElement( Order = 1 ) ]
 		public Header Header{ get; set; }

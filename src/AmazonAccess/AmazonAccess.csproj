@@ -99,8 +99,8 @@
     <Compile Include="Services\FbaInventoryServiceMws\Model\Timepoint.cs" />
     <Compile Include="Services\IAmazonClientsFactory.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\FeedsService.cs" />
-    <Compile Include="Services\MarketplaceWebServiceFeedsReports\ReportModel\AmazonEnvelope.cs" />
-    <Compile Include="Services\MarketplaceWebServiceFeedsReports\Model\InventoryFeed.cs" />
+    <Compile Include="Services\MarketplaceWebServiceFeedsReports\Model\AmazonEnvelope\FeedSubmissionResult.cs" />
+    <Compile Include="Services\MarketplaceWebServiceFeedsReports\Model\AmazonEnvelope\InventoryFeed.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\ReportModel\FbaManageInventory.cs" />
     <Compile Include="Services\MarketplaceWebServiceFeedsReports\ReportsService.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\Model\ComposedOrder.cs" />

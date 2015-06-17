@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel
+namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model.AmazonEnvelope.FeedSubmissionResult
 {
 	[ Serializable ]
-	[ XmlRoot ]
-	public class AmazonEnvelope
+	[ XmlRoot( ElementName = "AmazonEnvelope" ) ]
+	public class FeedSubmissionResult
 	{
 		[ XmlElement( Order = 1 ) ]
 		public Header Header{ get; set; }
@@ -34,34 +34,34 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel
 		public int MessageId{ get; set; }
 
 		[ XmlElement ]
-		public OperationType OperationType{ get; set; }
-
-		[ XmlElement ]
-		public Inventory Inventory{ get; set; }
-
-		[ XmlElement ]
 		public ProcessingReport ProcessingReport{ get; set; }
-	}
-
-	[ Serializable ]
-	public class Inventory
-	{
-		[ XmlElement( ElementName = "SKU" ) ]
-		public string Sku{ get; set; }
-
-		[ XmlElement ]
-		public int Quantity{ get; set; }
-
-		[ XmlElement ]
-		public int FulfillmentLatency{ get; set; }
 	}
 
 	[ Serializable ]
 	public class ProcessingReport
 	{
+		[ XmlElement ]
+		public ProcessingReportType ProcessingReportType{ get; set; }
+
 		[ XmlElement( ElementName = "DocumentTransactionID" ) ]
 		public string DocumentTransactionId{ get; set; }
 
+		[ XmlElement ]
+		public StatusCode StatusCode{ get; set; }
+
+		[ XmlElement ]
+		public ProcessingSummary ProcessingSummary{ get; set; }
+
+		[ XmlElement ]
+		public Result[] Result;
+
+		[ XmlElement ]
+		public Summary Summary{ get; set; }
+	}
+
+	[ Serializable ]
+	public class Summary
+	{
 		[ XmlElement ]
 		public StatusCode StatusCode{ get; set; }
 
@@ -114,17 +114,17 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel
 		public string Sku{ get; set; }
 	}
 
-	public enum OperationType
-	{
-		Unknown,
-		Update
-	}
-
 	public enum MessageType
 	{
 		Unknown,
 		Inventory,
 		ProcessingReport
+	}
+
+	public enum ProcessingReportType
+	{
+		Unknown,
+		Inventory
 	}
 
 	public enum StatusCode

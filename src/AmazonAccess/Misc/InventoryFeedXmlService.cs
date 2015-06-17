@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
-using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
+using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model.AmazonEnvelope.InventoryFeed;
 using CuttingEdge.Conditions;
 
 namespace AmazonAccess.Misc
@@ -11,7 +11,7 @@ namespace AmazonAccess.Misc
 	public class InventoryFeedXmlService
 	{
 		private readonly List< AmazonInventoryItem > _inventoryItems;
-		public readonly AmazonEnvelope _document;
+		public readonly InventoryFeed _document;
 
 		public InventoryFeedXmlService( IEnumerable< AmazonInventoryItem > inventoryItems, string sellerId )
 		{
@@ -25,7 +25,7 @@ namespace AmazonAccess.Misc
 		public Stream GetDocumentStream()
 		{
 			var stream = new MemoryStream();
-			var ser = new XmlSerializer( typeof( AmazonEnvelope ) );
+			var ser = new XmlSerializer( typeof( InventoryFeed ) );
 
 			ser.Serialize( stream, this._document );
 			stream.Position = 0;
@@ -33,9 +33,9 @@ namespace AmazonAccess.Misc
 			return stream;
 		}
 
-		private AmazonEnvelope CreateDocument( string sellerId )
+		private InventoryFeed CreateDocument( string sellerId )
 		{
-			var document = new AmazonEnvelope
+			var document = new InventoryFeed
 			{
 				Header = new Header { MerchantIdentifier = sellerId, DocumentVersion = "1.01" },
 				MessageType = MessageType.Inventory,
@@ -53,7 +53,7 @@ namespace AmazonAccess.Misc
 			return reader.ReadToEnd();
 		}
 
-		private void CreateMessageNodes( AmazonEnvelope document )
+		private void CreateMessageNodes( InventoryFeed document )
 		{
 			for( var i = 0; i < this._inventoryItems.Count(); i++ )
 			{
