@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using AmazonAccess.Models;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
 using LINQtoCSV;
@@ -22,117 +21,56 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 			this._credentials = credentials;
 		}
 
-		public IEnumerable< T > GetInventoryReport< T >( RequestReportRequest request ) where T : class, new()
+		public IEnumerable< T > GetReport< T >( ReportType reportType, DateTime startDate, DateTime endDate ) where T : class, new()
 		{
-			var reportId = this.GetReportId( request );
-			var getReportRequest = new GetReportRequest
-			{
-				Merchant = this._credentials.SellerId,
-				MWSAuthToken = this._credentials.MwsAuthToken,
-				ReportId = reportId,
-				Report = new MemoryStream()
-			};
-			var response = this._client.GetReport( getReportRequest );
+			var reportRequestId = this.GetReportRequestId( reportType, startDate, endDate );
+			var reportId = this.GetNewReportId( reportRequestId );
+			if( string.IsNullOrEmpty( reportId ) )
+				reportId = this.GetExistingReportId( reportType );
+			if( string.IsNullOrEmpty( reportId ) )
+				throw new Exception( "Can't request new report or find existing" );
 
-			if( response.IsSetGetReportResult() && getReportRequest.Report != null )
-				return this.ConvertReport< T >( getReportRequest.Report );
-			return new List< T >();
-		}
+			var reportStream = this.GetReportById( reportId );
+			if( reportStream == null )
+				throw new Exception( "Can't get report" );
 
-		private IEnumerable< T > ConvertReport< T >( Stream stream ) where T : class, new()
-		{
-			var reader = new StreamReader( stream, Encoding.UTF8 );
-			var cc = new CsvContext();
-			var report = cc.Read< T >( reader, new CsvFileDescription { FirstLineHasColumnNames = true, SeparatorChar = '\t' } );
+			var report = this.ConvertReport< T >( reportStream );
 			return report;
 		}
 
-		private string GetReportId( RequestReportRequest request )
+		private string GetReportRequestId( ReportType reportType, DateTime startDate, DateTime endDate )
 		{
-			var reportRequestId = this.GetReportRequestId( new RequestReportRequest
+			var request = new RequestReportRequest
 			{
 				Merchant = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
 				MarketplaceIdList = new IdList { Id = new List< string > { this._credentials.AmazonMarketplace.MarketplaceId } },
-				ReportType = request.ReportType,
-				StartDate = request.StartDate,
-				EndDate = request.EndDate
-			} );
-			var reportId = this.GetGeneratedReportId( reportRequestId );
-			if( !string.IsNullOrEmpty( reportId ) )
-				return reportId;
+				ReportType = reportType.Description,
+				StartDate = startDate,
+				EndDate = endDate
+			};
+			var response = this._client.RequestReport( request );
 
-			var reportListResponse = this._client.GetReportList( new GetReportListRequest
+			var reportId = response.IsSetRequestReportResult() ? response.RequestReportResult.ReportRequestInfo.ReportRequestId : string.Empty;
+			return reportId;
+		}
+
+		private string GetNewReportId( string reportRequestId )
+		{
+			var reportId = string.Empty;
+			var request = new GetReportRequestListRequest
 			{
 				Merchant = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
-				AvailableFromDate = request.StartDate,
-				AvailableToDate = request.EndDate
-			} );
-			if( reportListResponse.IsSetGetReportListResult() )
-			{
-				var reportListResult = reportListResponse.GetReportListResult;
-				if( reportListResult.IsSetReportInfo() )
-				{
-					var reportInfo = reportListResult.ReportInfo.FirstOrDefault( r => r.ReportRequestId.Equals( reportRequestId ) );
-					if( reportInfo != null )
-						reportId = reportInfo.ReportId;
-					else if( reportListResult.IsSetNextToken() )
-					{
-						var nextResponse = this._client.GetReportListByNextToken( new GetReportListByNextTokenRequest
-						{
-							Merchant = this._credentials.SellerId,
-							MWSAuthToken = this._credentials.MwsAuthToken,
-							NextToken = reportListResult.NextToken
-						} );
-
-						reportId = this.GetReportIdInNextPages( nextResponse.GetReportListByNextTokenResult, reportRequestId, reportId );
-					}
-				}
-			}
-			return reportId;
-		}
-
-		private string GetReportIdInNextPages( GetReportListByNextTokenResult reportListByNextTokenResult, string reportRequestId, string reportId )
-		{
-			if( !string.IsNullOrEmpty( reportId ) )
-				return reportId;
-
-			if( reportListByNextTokenResult.IsSetReportInfo() )
-			{
-				var reportInfo = reportListByNextTokenResult.ReportInfo.FirstOrDefault( r => r.ReportRequestId.Equals( reportRequestId ) );
-				if( reportInfo != null )
-					reportId = reportInfo.ReportId;
-			}
-			if( reportListByNextTokenResult.IsSetNextToken() && string.IsNullOrEmpty( reportId ) )
-			{
-				var nextResponse = this._client.GetReportListByNextToken( new GetReportListByNextTokenRequest
-				{
-					Merchant = this._credentials.SellerId,
-					MWSAuthToken = this._credentials.MwsAuthToken,
-					NextToken = reportListByNextTokenResult.NextToken
-				} );
-
-				reportId = this.GetReportIdInNextPages( nextResponse.GetReportListByNextTokenResult, reportRequestId, reportId );
-			}
-			return reportId;
-		}
-
-		private string GetGeneratedReportId( string reportRequestId )
-		{
-			var reportId = string.Empty;
+				ReportRequestIdList = new IdList { Id = new List< string > { reportRequestId } },
+				RequestedFromDate = DateTime.MinValue.ToUniversalTime(),
+				RequestedToDate = DateTime.UtcNow.ToUniversalTime()
+			};
 			while( true )
 			{
-				var response = this._client.GetReportRequestList( new GetReportRequestListRequest
-				{
-					Merchant = this._credentials.SellerId,
-					MWSAuthToken = this._credentials.MwsAuthToken,
-					ReportRequestIdList = new IdList { Id = new List< string > { reportRequestId } },
-					RequestedFromDate = DateTime.MinValue.ToUniversalTime(),
-					RequestedToDate = DateTime.UtcNow.ToUniversalTime()
-				} );
+				var response = this._client.GetReportRequestList( request );
 				var info = response.GetReportRequestListResult.ReportRequestInfo.FirstOrDefault( i => i.ReportRequestId.Equals( reportRequestId ) );
-				if( info == null || !info.IsSetReportProcessingStatus() )
+				if( info == null || !info.IsSetReportProcessingStatus() || info.ReportProcessingStatus.Equals( "_CANCELLED_", StringComparison.InvariantCultureIgnoreCase ) )
 					break;
 
 				if( info.ReportProcessingStatus.Equals( "_IN_PROGRESS_", StringComparison.InvariantCultureIgnoreCase ) )
@@ -144,56 +82,78 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 				if( !string.IsNullOrEmpty( info.GeneratedReportId ) )
 					return info.GeneratedReportId;
 			}
-			
-			//else if( response.GetReportRequestListResult.IsSetNextToken() )
-			//{
-			//	var nextResponse = this._client.GetReportRequestListByNextToken( new GetReportRequestListByNextTokenRequest
-			//	{
-			//		Merchant = this._credentials.SellerId,
-			//		MWSAuthToken = this._credentials.MwsAuthToken,
-			//		NextToken = response.GetReportRequestListResult.NextToken
-			//	} );
-			//	reportId = this.GetGeneratedReportIdFromNextPages( nextResponse.GetReportRequestListByNextTokenResult, reportRequestId, reportId );
-			//}
 
 			return reportId;
 		}
 
-		private string GetGeneratedReportIdFromNextPages( GetReportRequestListByNextTokenResult reportRequestListByNextTokenResult, string reportRequestId, string reportId )
+		private string GetExistingReportId( ReportType reportType )
 		{
-			if( !string.IsNullOrEmpty( reportId ) )
-				return reportId;
-
-			if( reportRequestListByNextTokenResult.IsSetReportRequestInfo() )
+			var reportListResponse = this._client.GetReportList( new GetReportListRequest
 			{
-				var info = reportRequestListByNextTokenResult.ReportRequestInfo.FirstOrDefault( i => i.ReportRequestId.Equals( reportRequestId ) );
-				if( info != null )
-					reportId = info.GeneratedReportId;
-			}
-			if( reportRequestListByNextTokenResult.IsSetNextToken() && string.IsNullOrEmpty( reportId ) )
-			{
-				var nextResponse = this._client.GetReportRequestListByNextToken( new GetReportRequestListByNextTokenRequest
-				{
-					Merchant = this._credentials.SellerId,
-					MWSAuthToken = this._credentials.MwsAuthToken,
-					NextToken = reportRequestListByNextTokenResult.NextToken
-				} );
+				Merchant = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				AvailableFromDate = DateTime.MinValue.ToUniversalTime(),
+				AvailableToDate = DateTime.UtcNow.ToUniversalTime()
+			} );
+			if( !reportListResponse.IsSetGetReportListResult() || !reportListResponse.GetReportListResult.IsSetReportInfo() )
+				return string.Empty;
 
-				reportId = this.GetGeneratedReportIdFromNextPages( nextResponse.GetReportRequestListByNextTokenResult, reportRequestId, reportId );
-			}
+			var reportListResult = reportListResponse.GetReportListResult;
+			var reportInfo = reportListResult.ReportInfo.FirstOrDefault( r => r.ReportType.Equals( reportType.Description ) );
+			if( reportInfo != null )
+				return reportInfo.ReportId;
+
+			if( !reportListResult.IsSetNextToken() )
+				return string.Empty;
+
+			var reportId = this.GetExistingReportIdInNextPages( reportListResult.NextToken, reportType.Description );
 			return reportId;
 		}
 
-		private string GetReportRequestId( RequestReportRequest request )
+		private string GetExistingReportIdInNextPages( string nextToken, string reportType )
 		{
-			var reportId = string.Empty;
+			var nextResponse = this._client.GetReportListByNextToken( new GetReportListByNextTokenRequest
+			{
+				Merchant = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				NextToken = nextToken
+			} );
 
-			var response = this._client.RequestReport( request );
+			if( !nextResponse.IsSetGetReportListByNextTokenResult() || !nextResponse.GetReportListByNextTokenResult.IsSetReportInfo() )
+				return string.Empty;
 
-			if( response.IsSetRequestReportResult() )
-				reportId = response.RequestReportResult.ReportRequestInfo.ReportRequestId;
+			var reportListByNextTokenResult = nextResponse.GetReportListByNextTokenResult;
+			var reportInfo = reportListByNextTokenResult.ReportInfo.FirstOrDefault( r => r.ReportType.Equals( reportType ) );
+			if( reportInfo != null )
+				return reportInfo.ReportId;
 
-			return reportId;
+			if( !reportListByNextTokenResult.IsSetNextToken() )
+				return string.Empty;
+
+			return this.GetExistingReportIdInNextPages( reportListByNextTokenResult.NextToken, reportType );
+		}
+
+		private Stream GetReportById( string reportId )
+		{
+			var request = new GetReportRequest
+			{
+				Merchant = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				ReportId = reportId,
+				Report = new MemoryStream()
+			};
+			var response = this._client.GetReport( request );
+			if( !response.IsSetGetReportResult() || request.Report == null )
+				return null;
+			return request.Report;
+		}
+
+		private IEnumerable< T > ConvertReport< T >( Stream stream ) where T : class, new()
+		{
+			var reader = new StreamReader( stream, Encoding.UTF8 );
+			var cc = new CsvContext();
+			var report = cc.Read< T >( reader, new CsvFileDescription { FirstLineHasColumnNames = true, SeparatorChar = '\t' } );
+			return report;
 		}
 	}
 }
