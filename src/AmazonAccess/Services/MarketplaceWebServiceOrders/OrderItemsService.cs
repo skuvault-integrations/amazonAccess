@@ -59,8 +59,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				AmazonLogger.Log.Trace( "[amazon] Checking order items for seller {0} and order id {1} finished", this._request.SellerId, this._request.AmazonOrderId );
 				return response.IsSetListOrderItemsResult();
 			}
-			catch( Exception )
+			catch( Exception ex )
 			{
+				AmazonLogger.Log.Warn( ex, "[amazon] Checking order items for seller {0} and order id {1} failed", this._request.SellerId, this._request.AmazonOrderId );
 				return false;
 			}
 		}

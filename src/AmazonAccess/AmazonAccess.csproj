@@ -73,7 +73,7 @@
     <Compile Include="Services\FbaInventoryServiceMws\FbaInventoryServiceMwsClient.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\FbaInventoryServiceMwsConfig.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\FbaInventoryServiceMwsException.cs" />
-    <Compile Include="Services\FbaInventoryServiceMws\InventorySupplyService.cs" />
+    <Compile Include="Services\FbaInventoryServiceMws\FbaInventorySupplyService.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Mock\FbaInventoryServiceMws.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Mock\FBAInventoryServiceMWSMock.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\Model\AmazonInventoryItem.cs" />

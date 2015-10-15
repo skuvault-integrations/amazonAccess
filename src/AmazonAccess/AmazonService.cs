@@ -174,7 +174,7 @@ namespace AmazonAccess
 		}
 		#endregion
 
-		#region Get inventory
+		#region Get FBA inventory
 		public IEnumerable< InventorySupply > GetFbaInventory()
 		{
 			var inventory = new List< InventorySupply >();
@@ -189,7 +189,7 @@ namespace AmazonAccess
 					ResponseGroup = "Detailed",
 					MWSAuthToken = this._credentials.MwsAuthToken
 				};
-				var service = new InventorySupplyService( client, request );
+				var service = new FbaInventorySupplyService( client, request );
 
 				AmazonLogger.Log.Trace( "[amazon] Loading FBA inventory for seller {0}", this._credentials.SellerId );
 
@@ -201,6 +201,28 @@ namespace AmazonAccess
 			return inventory;
 		}
 
+		public bool IsFbaInventoryReceived()
+		{
+			try
+			{
+				var client = this._factory.CreateFbaInventoryClient();
+				var request = new ListInventorySupplyRequest
+				{
+					SellerId = this._credentials.SellerId,
+					QueryStartDateTime = DateTime.MinValue,
+					ResponseGroup = "Detailed",
+					MWSAuthToken = this._credentials.MwsAuthToken
+				};
+				var service = new FbaInventorySupplyService( client, request );
+				return service.IsInventoryReceived();
+			}
+			catch( Exception ex )
+			{
+				AmazonLogger.Log.Warn( ex, "[amazon] Checking FBA inventory for seller {0} failed", this._credentials.SellerId );
+				return false;
+			}
+		}
+
 		public IEnumerable< FbaManageInventory > GetDetailedFbaInventory()
 		{
 			var inventory = new List< FbaManageInventory >();
@@ -208,7 +230,7 @@ namespace AmazonAccess
 			ActionPolicies.AmazonGetPolicy.Do( () =>
 			{
 				var client = this._factory.CreateFeedsReportsClient();
-				var service = new ReportsService( client, _credentials );
+				var service = new ReportsService( client, this._credentials );
 
 				AmazonLogger.Log.Trace( "[amazon] Loading Detailed FBA inventory for seller {0}", this._credentials.SellerId );
 

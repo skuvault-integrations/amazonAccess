@@ -33,7 +33,7 @@ namespace AmazonAccessTests.Inventory
 		}
 
 		[ Test ]
-		public void LoadFbaInventory()
+		public void GetFbaInventory()
 		{
 			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
@@ -48,7 +48,17 @@ namespace AmazonAccessTests.Inventory
 		}
 
 		[ Test ]
-		public void LoadDetailedFbaInventory()
+		public void IsFbaInventoryReceived()
+		{
+			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+
+			var result = service.IsFbaInventoryReceived();
+			result.Should().BeTrue();
+		}
+
+		[ Test ]
+		public void GetDetailedFbaInventory()
 		{
 			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
