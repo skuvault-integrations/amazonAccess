@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 
@@ -19,11 +20,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		public IEnumerable< OrderItem > LoadOrderItems()
 		{
-			var orderItems = new List< OrderItem >();
-			var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => _throttler.ExecuteWithTrottling( () =>
-				this._client.ListOrderItems( this._request ) ) );
+			AmazonLogger.Log.Trace( "[amazon] Loading order items for seller {0} and order id {1}", this._request.SellerId, this._request.AmazonOrderId );
 
-			AmazonLogger.Log.Trace( "[amazon] Loading order items for seller {0}", this._request.SellerId );
+			var orderItems = new List< OrderItem >();
+			var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => this._throttler.ExecuteWithTrottling( () =>
+				this._client.ListOrderItems( this._request ) ) );
 
 			if( response.IsSetListOrderItemsResult() )
 			{
@@ -32,7 +33,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					orderItems.AddRange( listInventorySupplyResult.OrderItems );
 				if( listInventorySupplyResult.IsSetNextToken() )
 				{
-					var nextResponse = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => _throttler.ExecuteWithTrottling( () =>
+					var nextResponse = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => this._throttler.ExecuteWithTrottling( () =>
 						this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
 						{
 							SellerId = this._request.SellerId,
@@ -44,9 +45,24 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				}
 			}
 
-			AmazonLogger.Log.Trace( "[amazon] Order items for seller {0} loaded", this._request.SellerId );
+			AmazonLogger.Log.Trace( "[amazon] Order items for seller {0} and order id {1} loaded", this._request.SellerId, this._request.AmazonOrderId );
 
 			return orderItems;
+		}
+
+		public bool IsOrderItemsReceived()
+		{
+			try
+			{
+				AmazonLogger.Log.Trace( "[amazon] Checking order items for seller {0} and order id {1}", this._request.SellerId, this._request.AmazonOrderId );
+				var response = this._client.ListOrderItems( this._request );
+				AmazonLogger.Log.Trace( "[amazon] Checking order items for seller {0} and order id {1} finished", this._request.SellerId, this._request.AmazonOrderId );
+				return response.IsSetListOrderItemsResult();
+			}
+			catch( Exception )
+			{
+				return false;
+			}
 		}
 
 		private void LoadNextOrderItemsInfoPage( ListOrderItemsByNextTokenResult listOrderItemsSupplyResult, List< OrderItem > orderItems )
@@ -56,7 +72,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 			if( listOrderItemsSupplyResult.IsSetNextToken() )
 			{
-				var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => _throttler.ExecuteWithTrottling( () =>
+				var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => this._throttler.ExecuteWithTrottling( () =>
 					this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
 					{
 						SellerId = this._request.SellerId,

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AmazonAccess.Misc;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
@@ -24,7 +25,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		public IEnumerable< ComposedOrder > LoadOrders()
 		{
-			var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => _getOrdersThrottler.ExecuteWithTrottling( () =>
+			var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => this._getOrdersThrottler.ExecuteWithTrottling( () =>
 				this._client.ListOrders( this._request ) ) );
 
 			if( response.IsSetListOrdersResult() )
@@ -39,6 +40,37 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				{
 					yield return order;
 				}
+			}
+		}
+
+		public bool IsOrdersReceived()
+		{
+			try
+			{
+				var response = this._client.ListOrders( this._request );
+				if( !response.IsSetListOrdersResult() )
+					return false;
+				if( !response.ListOrdersResult.IsSetOrders() )
+					return true;
+
+				var orders = response.ListOrdersResult.Orders.Select( o => new ComposedOrder( o ) ).ToList();
+				foreach( var order in orders.Take( 5 ) )
+				{
+					var itemsService = new OrderItemsService( this._client, new ListOrderItemsRequest
+					{
+						AmazonOrderId = order.AmazonOrder.AmazonOrderId,
+						SellerId = this._request.SellerId,
+						MWSAuthToken = this._request.MWSAuthToken
+					}, this._orderItemsThrottler );
+
+					if( !itemsService.IsOrderItemsReceived() )
+						return false;
+				}
+				return true;
+			}
+			catch( Exception )
+			{
+				return false;
 			}
 		}
 
@@ -59,7 +91,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		{
 			while( !string.IsNullOrEmpty( nextToken ) )
 			{
-				var nextResponse = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => _getOrdersThrottler.ExecuteWithTrottling( () =>
+				var nextResponse = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => this._getOrdersThrottler.ExecuteWithTrottling( () =>
 					this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
 					{
 						SellerId = this._request.SellerId,
@@ -97,7 +129,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				AmazonOrderId = orderId,
 				SellerId = this._request.SellerId,
 				MWSAuthToken = this._request.MWSAuthToken
-			}, _orderItemsThrottler );
+			}, this._orderItemsThrottler );
 
 			return itemsService.LoadOrderItems();
 		}

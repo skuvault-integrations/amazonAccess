@@ -18,6 +18,8 @@ namespace AmazonAccess
 		IEnumerable< ComposedOrder > GetOrders( DateTime dateFrom, DateTime dateTo );
 		//Task<IEnumerable<ComposedOrder>> GetOrdersAsync(DateTime dateFrom, DateTime dateTo);
 
+		bool IsOrdersReceived( DateTime? dateFrom = null, DateTime? dateTo = null );
+
 		void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems );
 		//Task<IList<ProductUpdateQtyResult>> UpdateInventoryAsync(IEnumerable<ProductQuantityParams> products);
 

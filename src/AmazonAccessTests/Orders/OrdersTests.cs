@@ -74,5 +74,15 @@ namespace AmazonAccessTests.Orders
 			}
 			orders.Count().Should().BeGreaterThan( 0 );
 		}
+
+		[ Test ]
+		public void IsOrdersReceived()
+		{
+			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+
+			var result = service.IsOrdersReceived( DateTime.UtcNow - TimeSpan.FromDays( 14 ), DateTime.UtcNow );
+			result.Should().BeTrue();
+		}
 	}
 }

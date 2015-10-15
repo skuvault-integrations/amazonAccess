@@ -80,6 +80,40 @@ namespace AmazonAccess
 
 			AmazonLogger.Log.Trace( "[amazon] Orders for seller {0} loaded", this._credentials.SellerId );
 		}
+
+		public bool IsOrdersReceived( DateTime? dateFrom = null, DateTime? dateTo = null )
+		{
+			try
+			{
+				dateFrom = dateFrom ?? DateTime.UtcNow.AddHours( -1 );
+				dateTo = dateTo ?? DateTime.UtcNow.AddMinutes( -10 );
+				var client = this._factory.CreateOrdersClient( "SkuVault", "1.0" );
+				var request = new ListOrdersRequest
+				{
+					SellerId = this._credentials.SellerId,
+					LastUpdatedAfter = dateFrom.Value,
+					//LastUpdatedBefore = dateTo,
+					MarketplaceId = this._credentials.AmazonMarketplace.GetMarketplaceIdAsList(),
+					MWSAuthToken = this._credentials.MwsAuthToken
+				};
+
+				AmazonLogger.Log.Trace( "[amazon] Checking orders for seller {0}", this._credentials.SellerId );
+
+				var service = new OrdersService( client, request );
+				if( service.IsOrdersReceived() )
+				{
+					AmazonLogger.Log.Trace( "[amazon] Checking orders for seller {0} finished", this._credentials.SellerId );
+					return true;
+				}
+				AmazonLogger.Log.Warn( "[amazon] Checking orders for seller {0} failed", this._credentials.SellerId );
+				return false;
+			}
+			catch( Exception ex )
+			{
+				AmazonLogger.Log.Warn( ex, "[amazon] Checking orders for seller {0} failed", this._credentials.SellerId );
+				return false;
+			}
+		}
 		#endregion
 
 		#region update inventory
