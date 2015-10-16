@@ -84,8 +84,20 @@ namespace AmazonAccessTests.Inventory
 			{
 				new AmazonInventoryItem
 				{
-					Quantity = 25,
-					Sku = "TC-N7DR-TVNA",
+					Quantity = 30,
+					Sku = "VK16AZN_KIT",
+					FulfillmentLatency = 1
+				},
+				new AmazonInventoryItem
+				{
+					Quantity = 30,
+					Sku = "testsku1",
+					FulfillmentLatency = 1
+				},
+				new AmazonInventoryItem
+				{
+					Quantity = 30,
+					Sku = "VK16AZN",
 					FulfillmentLatency = 1
 				}
 			} );

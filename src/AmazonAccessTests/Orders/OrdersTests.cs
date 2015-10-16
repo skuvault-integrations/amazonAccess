@@ -54,7 +54,7 @@ namespace AmazonAccessTests.Orders
 
 			var count = 0;
 			var stopwatch = new Stopwatch();
-			var orders = service.GetOrders( DateTime.UtcNow - TimeSpan.FromDays( 14 ), DateTime.UtcNow );
+			var orders = service.GetOrders( DateTime.UtcNow - TimeSpan.FromDays( 3 ), DateTime.UtcNow );
 			//var orders = service.GetOrders( new DateTime( 2015, 5, 19, 0, 0, 0, 0, DateTimeKind.Utc ), new DateTime( 2015, 5, 22, 0, 0, 0, 0, DateTimeKind.Utc ) );
 			stopwatch.Start();
 
@@ -76,6 +76,8 @@ namespace AmazonAccessTests.Orders
 					stopwatch.Restart();
 				}
 			}
+
+			var marketplaces = allOrders.GroupBy( x => x.AmazonOrder.MarketplaceId ).ToList();
 			orders.Count().Should().BeGreaterThan( 0 );
 		}
 

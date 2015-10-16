@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using CuttingEdge.Conditions;
 using Netco.Extensions;
 
@@ -17,7 +16,7 @@ namespace AmazonAccess.Models
 		public AmazonCountryCodeEnum CountryCode{ get; private set; }
 
 		public AmazonMarketplace( string countryCode )
-			: this( countryCode.ToEnum< AmazonCountryCodeEnum >() )
+			: this( countryCode.ToEnum( AmazonCountryCodeEnum.Unknown ) )
 		{
 		}
 
@@ -94,7 +93,7 @@ namespace AmazonAccess.Models
 					throw new Exception( "Incorrect country code" );
 			}
 
-			this.OrdersServiceUrl = this.Endpoint + "/Orders/2011-01-01";
+			this.OrdersServiceUrl = this.Endpoint + "/Orders/2013-09-01";
 			this.FbaInventoryServiceUrl = this.Endpoint + "/FulfillmentInventory/2010-10-01";
 			this.FeedsServiceUrl = this.Endpoint;
 			this.SellersServiceUrl = this.Endpoint + "/Sellers/2011-07-01";
