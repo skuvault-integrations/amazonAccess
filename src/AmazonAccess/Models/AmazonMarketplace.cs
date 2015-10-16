@@ -99,11 +99,6 @@ namespace AmazonAccess.Models
 			this.FeedsServiceUrl = this.Endpoint;
 			this.SellersServiceUrl = this.Endpoint + "/Sellers/2011-07-01";
 		}
-
-		public List< string > GetMarketplaceIdAsList()
-		{
-			return new List< string > { this.MarketplaceId };
-		}
 	}
 
 	public enum AmazonRegionEnum

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using AmazonAccess;
-using AmazonAccess.Models;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using FluentAssertions;
 using LINQtoCSV;
@@ -33,8 +32,7 @@ namespace AmazonAccessTests.Orders
 		[ Test ]
 		public void LoadOrdersById()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, this.Config.ParseMarketplaces() );
 
 			var ids = new List< string > { "" };
 			var orders = service.GetOrdersById( ids ).ToList();
@@ -45,8 +43,7 @@ namespace AmazonAccessTests.Orders
 		[ Test ]
 		public void LoadOrders()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, this.Config.ParseMarketplaces() );
 
 			var count = 0;
 			var stopwatch = new Stopwatch();
@@ -78,8 +75,7 @@ namespace AmazonAccessTests.Orders
 		[ Test ]
 		public void IsOrdersReceived()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, this.Config.ParseMarketplaces() );
 
 			var result = service.IsOrdersReceived( DateTime.UtcNow - TimeSpan.FromDays( 14 ), DateTime.UtcNow );
 			result.Should().BeTrue();

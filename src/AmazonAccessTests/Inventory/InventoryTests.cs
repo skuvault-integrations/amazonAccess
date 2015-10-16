@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using AmazonAccess;
-using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel;
 using FluentAssertions;
@@ -35,8 +34,7 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void GetFbaInventory()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, this.Config.ParseMarketplaces() );
 
 			var inventory = service.GetFbaInventory();
 			var serializer = new XmlSerializer( typeof( List< InventorySupply > ) );
@@ -50,8 +48,7 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void IsFbaInventoryReceived()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, this.Config.ParseMarketplaces() );
 
 			var result = service.IsFbaInventoryReceived();
 			result.Should().BeTrue();
@@ -60,8 +57,7 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void GetDetailedFbaInventory()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, this.Config.ParseMarketplaces() );
 
 			var inventory = service.GetDetailedFbaInventory();
 			var serializer = new XmlSerializer( typeof( List< FbaManageInventory > ) );
@@ -75,8 +71,7 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void UpdateInventory()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Ca );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, this.Config.ParseMarketplaces() );
 
 			service.UpdateInventory( new List< AmazonInventoryItem >
 			{

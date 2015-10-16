@@ -44,7 +44,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceFeedsReports
 			{
 				Merchant = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
-				MarketplaceIdList = new IdList { Id = new List< string > { this._credentials.AmazonMarketplace.MarketplaceId } },
+				MarketplaceIdList = new IdList { Id = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList() },
 				ReportType = reportType.Description,
 				StartDate = startDate,
 				EndDate = endDate

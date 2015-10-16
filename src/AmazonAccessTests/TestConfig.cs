@@ -1,4 +1,6 @@
-﻿using LINQtoCSV;
+﻿using System.Linq;
+using AmazonAccess.Models;
+using LINQtoCSV;
 
 namespace AmazonAccessTests
 {
@@ -15,5 +17,14 @@ namespace AmazonAccessTests
 
 		[ CsvColumn( Name = "MWSAuthToken", FieldIndex = 4 ) ]
 		public string MwsAuthToken{ get; set; }
+
+		[ CsvColumn( Name = "Marketplaces", FieldIndex = 5 ) ]
+		public string Marketplaces{ get; set; }
+
+		public AmazonMarketplaces ParseMarketplaces()
+		{
+			var list = this.Marketplaces.Split( ';' ).ToList();
+			return new AmazonMarketplaces( list );
+		}
 	}
 }

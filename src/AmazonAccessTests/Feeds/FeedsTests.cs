@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AmazonAccess;
-using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
 using LINQtoCSV;
 using Netco.Logging;
@@ -31,8 +30,7 @@ namespace AmazonAccessTests.Feeds
 		[ Test ]
 		public void SubmitFeed()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, this.Config.ParseMarketplaces() );
 
 			var itemsList = new List< AmazonInventoryItem >();
 			for( var i = 0; i < 100; i++ )

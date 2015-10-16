@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using AmazonAccess;
-using AmazonAccess.Models;
 using FluentAssertions;
 using LINQtoCSV;
 using Netco.Logging;
@@ -29,8 +28,7 @@ namespace AmazonAccessTests.Sellers
 		[ Test ]
 		public void LoadMWSAuthToken()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
-			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
+			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, this.Config.ParseMarketplaces() );
 
 			var token = service.GetMwsAuthToken();
 			token.Should().NotBeEmpty();

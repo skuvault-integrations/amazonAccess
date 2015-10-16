@@ -66,7 +66,7 @@ namespace AmazonAccess
 				SellerId = this._credentials.SellerId,
 				LastUpdatedAfter = dateFrom,
 				//LastUpdatedBefore = dateTo,
-				MarketplaceId = this._credentials.AmazonMarketplace.GetMarketplaceIdAsList(),
+				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
 				MWSAuthToken = this._credentials.MwsAuthToken
 			};
 
@@ -93,7 +93,7 @@ namespace AmazonAccess
 					SellerId = this._credentials.SellerId,
 					LastUpdatedAfter = dateFrom.Value,
 					//LastUpdatedBefore = dateTo,
-					MarketplaceId = this._credentials.AmazonMarketplace.GetMarketplaceIdAsList(),
+					MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
 					MWSAuthToken = this._credentials.MwsAuthToken
 				};
 
@@ -149,7 +149,7 @@ namespace AmazonAccess
 
 			var request = new SubmitFeedRequest
 			{
-				MarketplaceIdList = new IdList { Id = this._credentials.AmazonMarketplace.GetMarketplaceIdAsList() },
+				MarketplaceIdList = new IdList { Id = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList() },
 				Merchant = this._credentials.SellerId,
 				FeedType = FeedType.InventoryQuantityUpdate.Description,
 				FeedContent = contentStream,

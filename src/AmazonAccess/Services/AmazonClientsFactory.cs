@@ -20,7 +20,7 @@ namespace AmazonAccess.Services
 
 		public IFbaInventoryServiceMws CreateFbaInventoryClient()
 		{
-			var config = new FbaInventoryServiceMwsConfig { ServiceURL = this._credentials.AmazonMarketplace.FbaInventoryServiceUrl, MaxErrorRetry = 4 };
+			var config = new FbaInventoryServiceMwsConfig { ServiceURL = this._credentials.AmazonMarketplaces.FbaInventoryServiceUrl, MaxErrorRetry = 4 };
 			config.SetUserAgentHeader( "C#", "-1", "3" );
 
 			return new FbaInventoryServiceMwsClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
@@ -28,7 +28,7 @@ namespace AmazonAccess.Services
 
 		public IMarketplaceWebServiceFeedsReports CreateFeedsReportsClient()
 		{
-			var config = new MarketplaceWebServiceFeedsReportsConfig { ServiceURL = this._credentials.AmazonMarketplace.FeedsServiceUrl, MaxErrorRetry = 4 };
+			var config = new MarketplaceWebServiceFeedsReportsConfig { ServiceURL = this._credentials.AmazonMarketplaces.FeedsServiceUrl, MaxErrorRetry = 4 };
 			config.SetUserAgentHeader( "C#", "-1", "3" );
 
 			return new MarketplaceWebServiceFeedsReportsClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
@@ -36,14 +36,14 @@ namespace AmazonAccess.Services
 
 		public IMarketplaceWebServiceOrders CreateOrdersClient( string applicationName, string applicationVersion )
 		{
-			var config = new MarketplaceWebServiceOrdersConfig { ServiceURL = this._credentials.AmazonMarketplace.OrdersServiceUrl, MaxErrorRetry = 4 };
+			var config = new MarketplaceWebServiceOrdersConfig { ServiceURL = this._credentials.AmazonMarketplaces.OrdersServiceUrl, MaxErrorRetry = 4 };
 
 			return new MarketplaceWebServiceOrdersClient( applicationName, applicationVersion, this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
 		}
 
 		public IMarketplaceWebServiceSellers CreateSellersClient()
 		{
-			var config = new MarketplaceWebServiceSellersConfig { ServiceURL = this._credentials.AmazonMarketplace.SellersServiceUrl, MaxErrorRetry = 4 };
+			var config = new MarketplaceWebServiceSellersConfig { ServiceURL = this._credentials.AmazonMarketplaces.SellersServiceUrl, MaxErrorRetry = 4 };
 			config.SetUserAgentHeader( "C#", "-1", "3" );
 
 			return new MarketplaceWebServiceSellersClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
