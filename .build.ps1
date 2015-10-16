@@ -87,7 +87,8 @@ task NuGet Package, Version, {
 		<tags>$project_short_name</tags>
 		<dependencies> 
 			<group targetFramework="net45">
-				<dependency id="Netco" version="1.3.1" />
+				<dependency id="Netco" version="1.5.1" />
+                <dependency id="LINQtoCSV" version="1.5.0.0" />
 				<dependency id="CuttingEdge.Conditions" version="1.2.0.0" />
 			</group>
 		</dependencies>
