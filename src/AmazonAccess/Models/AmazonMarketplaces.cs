@@ -6,6 +6,7 @@ namespace AmazonAccess.Models
 {
 	public sealed class AmazonMarketplaces
 	{
+		public AmazonRegionEnum Region{ get; private set; }
 		public string OrdersServiceUrl{ get; private set; }
 		public string FbaInventoryServiceUrl{ get; private set; }
 		public string FeedsServiceUrl{ get; private set; }
@@ -21,6 +22,7 @@ namespace AmazonAccess.Models
 		{
 			Condition.Requires( marketplace, "marketplace" ).IsNotNull();
 
+			this.Region = marketplace.Region;
 			this.OrdersServiceUrl = marketplace.OrdersServiceUrl;
 			this.FbaInventoryServiceUrl = marketplace.FbaInventoryServiceUrl;
 			this.FeedsServiceUrl = marketplace.FeedsServiceUrl;
@@ -37,9 +39,10 @@ namespace AmazonAccess.Models
 		{
 			Condition.Requires( marketplaces, "marketplaces" ).IsNotNull().IsNotEmpty();
 			var regionsCount = marketplaces.GroupBy( x => x.Region ).Count();
-			Condition.Requires( regionsCount, "marketplaces" ).IsEqualTo( 1, "All marketplaces should be in one region" );
+			Condition.Requires( regionsCount, "marketplaces" ).IsEqualTo( 1, "Found marketplaces from different regions" );
 
 			var marketplace = marketplaces.First();
+			this.Region = marketplace.Region;
 			this.OrdersServiceUrl = marketplace.OrdersServiceUrl;
 			this.FbaInventoryServiceUrl = marketplace.FbaInventoryServiceUrl;
 			this.FeedsServiceUrl = marketplace.FeedsServiceUrl;

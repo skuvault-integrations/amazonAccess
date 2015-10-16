@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using AmazonAccess;
+using AmazonAccess.Models;
 using FluentAssertions;
 using LINQtoCSV;
 using Netco.Logging;
@@ -22,7 +23,13 @@ namespace AmazonAccessTests.Sellers
 			this.Config = cc.Read< TestConfig >( credentialsFilePath, new CsvFileDescription { FirstLineHasColumnNames = true, IgnoreUnknownColumns = true } ).FirstOrDefault();
 
 			if( this.Config != null )
-				this.AmazonFactory = new AmazonFactory( this.Config.AccessKeyId, this.Config.SecretAccessKeyId );
+			{
+				this.AmazonFactory = new AmazonFactory(
+					naRegionCredentials : AmazonAppCredentials.TryCreate( this.Config.NaAccessKeyId, this.Config.NaSecretAccessKeyId ),
+					euRegionCredentials : AmazonAppCredentials.TryCreate( this.Config.EuAccessKeyId, this.Config.EuSecretAccessKeyId ),
+					feRegionCredentials : AmazonAppCredentials.TryCreate( this.Config.FeAccessKeyId, this.Config.FeSecretAccessKeyId ),
+					cnRegionCredentials : AmazonAppCredentials.TryCreate( this.Config.CnAccessKeyId, this.Config.CnSecretAccessKeyId ) );
+			}
 		}
 
 		[ Test ]
