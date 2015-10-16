@@ -1,58 +1,103 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CuttingEdge.Conditions;
+using Netco.Extensions;
 
 namespace AmazonAccess.Models
 {
 	public sealed class AmazonMarketplace
 	{
 		public string MarketplaceId{ get; private set; }
+		public string Endpoint{ get; private set; }
+		public string OrdersServiceUrl{ get; private set; }
 		public string FbaInventoryServiceUrl{ get; private set; }
 		public string FeedsServiceUrl{ get; private set; }
-		public string OrdersServiceUrl{ get; private set; }
 		public string SellersServiceUrl{ get; private set; }
-		private readonly AmazonCountryCodesEnum _countryCode;
+		public AmazonRegionEnum Region{ get; private set; }
+		public AmazonCountryCodeEnum CountryCode{ get; private set; }
 
-		public AmazonMarketplace( AmazonCountryCodesEnum countryCode )
+		public AmazonMarketplace( string countryCode )
+			: this( countryCode.ToEnum< AmazonCountryCodeEnum >() )
 		{
-			Condition.Requires( countryCode, "countryCode" ).IsGreaterThan( AmazonCountryCodesEnum.Unknown );
-
-			this._countryCode = countryCode;
-			this.InitMarketplace();
 		}
 
-		private void InitMarketplace()
+		public AmazonMarketplace( AmazonCountryCodeEnum countryCode )
 		{
-			switch( this._countryCode )
+			Condition.Requires( countryCode, "countryCode" ).IsGreaterThan( AmazonCountryCodeEnum.Unknown );
+			this.InitMarketplace( countryCode );
+		}
+
+		private void InitMarketplace( AmazonCountryCodeEnum countryCode )
+		{
+			this.CountryCode = countryCode;
+			switch( countryCode )
 			{
-				case AmazonCountryCodesEnum.Us:
-					this.MarketplaceId = "ATVPDKIKX0DER";
-					this.OrdersServiceUrl = "https://mws.amazonservices.com/Orders/2011-01-01/";
-					this.FbaInventoryServiceUrl = "https://mws.amazonservices.com/FulfillmentInventory/2010-10-01/";
-					this.FeedsServiceUrl = "https://mws.amazonservices.com";
-					this.SellersServiceUrl = "https://mws.amazonservices.com/Sellers/2011-07-01/";
-					break;
-				case AmazonCountryCodesEnum.Uk:
-					this.MarketplaceId = "A1F83G8C2ARO7P";
-					this.OrdersServiceUrl = "https://mws-eu.amazonservices.com/Orders/2011-01-01/";
-					this.FbaInventoryServiceUrl = "https://mws-eu.amazonservices.com/FulfillmentInventory/2010-10-01/";
-					this.FeedsServiceUrl = "https://mws-eu.amazonservices.com";
-					this.SellersServiceUrl = "https://mws-eu.amazonservices.com/Sellers/2011-07-01/";
-					break;
-				case AmazonCountryCodesEnum.Fr:
-					this.MarketplaceId = "A13V1IB3VIYZZH";
-					this.OrdersServiceUrl = "https://mws-eu.amazonservices.com/Orders/2011-01-01/";
-					this.FbaInventoryServiceUrl = "https://mws-eu.amazonservices.com/FulfillmentInventory/2010-10-01/";
-					this.FeedsServiceUrl = "https://mws-eu.amazonservices.com";
-					this.SellersServiceUrl = "https://mws-eu.amazonservices.com/Sellers/2011-07-01/";
-					break;
-				case AmazonCountryCodesEnum.Ca:
+				case AmazonCountryCodeEnum.Ca:
+					this.Region = AmazonRegionEnum.Na;
 					this.MarketplaceId = "A2EUQ1WTGCTBG2";
-					this.OrdersServiceUrl = "https://mws.amazonservices.ca/Orders/2011-01-01/";
-					this.FbaInventoryServiceUrl = "https://mws.amazonservices.ca/FulfillmentInventory/2010-10-01/";
-					this.FeedsServiceUrl = "https://mws.amazonservices.ca";
-					this.SellersServiceUrl = "https://mws.amazonservices.ca/Sellers/2011-07-01/";
+					this.Endpoint = "https://mws.amazonservices.ca";
 					break;
+				case AmazonCountryCodeEnum.Us:
+					this.Region = AmazonRegionEnum.Na;
+					this.MarketplaceId = "ATVPDKIKX0DER";
+					this.Endpoint = "https://mws.amazonservices.com";
+					break;
+				case AmazonCountryCodeEnum.Mx:
+					this.Region = AmazonRegionEnum.Na;
+					this.MarketplaceId = "A1AM78C64UM0Y8";
+					this.Endpoint = "https://mws.amazonservices.com.mx";
+					break;
+
+				case AmazonCountryCodeEnum.De:
+					this.Region = AmazonRegionEnum.Eu;
+					this.MarketplaceId = "A1PA6795UKMFR9";
+					this.Endpoint = "https://mws-eu.amazonservices.com";
+					break;
+				case AmazonCountryCodeEnum.Es:
+					this.Region = AmazonRegionEnum.Eu;
+					this.MarketplaceId = "A1RKKUPIHCS9HS";
+					this.Endpoint = "https://mws-eu.amazonservices.com";
+					break;
+				case AmazonCountryCodeEnum.Fr:
+					this.Region = AmazonRegionEnum.Eu;
+					this.MarketplaceId = "A13V1IB3VIYZZH";
+					this.Endpoint = "https://mws-eu.amazonservices.com";
+					break;
+				case AmazonCountryCodeEnum.In:
+					this.Region = AmazonRegionEnum.Eu;
+					this.MarketplaceId = "A21TJRUUN4KGV";
+					this.Endpoint = "https://mws.amazonservices.in";
+					break;
+				case AmazonCountryCodeEnum.It:
+					this.Region = AmazonRegionEnum.Eu;
+					this.MarketplaceId = "APJ6JRA9NG5V4";
+					this.Endpoint = "https://mws-eu.amazonservices.com";
+					break;
+				case AmazonCountryCodeEnum.Uk:
+					this.Region = AmazonRegionEnum.Eu;
+					this.MarketplaceId = "A1F83G8C2ARO7P";
+					this.Endpoint = "https://mws-eu.amazonservices.com";
+					break;
+
+				case AmazonCountryCodeEnum.Jp:
+					this.Region = AmazonRegionEnum.Fe;
+					this.MarketplaceId = "A1VC38T7YXB528";
+					this.Endpoint = "https://mws.amazonservices.jp";
+					break;
+
+				case AmazonCountryCodeEnum.Cn:
+					this.Region = AmazonRegionEnum.Cn;
+					this.MarketplaceId = "AAHKV2X7AFYLW";
+					this.Endpoint = "https://mws.amazonservices.com.cn";
+					break;
+				default:
+					throw new Exception( "Incorrect country code" );
 			}
+
+			this.OrdersServiceUrl = this.Endpoint + "/Orders/2011-01-01";
+			this.FbaInventoryServiceUrl = this.Endpoint + "/FulfillmentInventory/2010-10-01";
+			this.FeedsServiceUrl = this.Endpoint;
+			this.SellersServiceUrl = this.Endpoint + "/Sellers/2011-07-01";
 		}
 
 		public List< string > GetMarketplaceIdAsList()
@@ -61,12 +106,28 @@ namespace AmazonAccess.Models
 		}
 	}
 
-	public enum AmazonCountryCodesEnum
+	public enum AmazonRegionEnum
 	{
 		Unknown,
-		Us,
-		Uk,
+		Na,
+		Eu,
+		Fe,
+		Cn
+	}
+
+	public enum AmazonCountryCodeEnum
+	{
+		Unknown,
 		Ca,
-		Fr
+		Us,
+		Mx,
+		De,
+		Es,
+		Fr,
+		In,
+		It,
+		Uk,
+		Jp,
+		Cn
 	}
 }

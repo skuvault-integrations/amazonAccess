@@ -35,7 +35,7 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void GetFbaInventory()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
+			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			var inventory = service.GetFbaInventory();
@@ -50,7 +50,7 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void IsFbaInventoryReceived()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
+			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			var result = service.IsFbaInventoryReceived();
@@ -60,7 +60,7 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void GetDetailedFbaInventory()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
+			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			var inventory = service.GetDetailedFbaInventory();
@@ -75,7 +75,7 @@ namespace AmazonAccessTests.Inventory
 		[ Test ]
 		public void UpdateInventory()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Ca );
+			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Ca );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			service.UpdateInventory( new List< AmazonInventoryItem >

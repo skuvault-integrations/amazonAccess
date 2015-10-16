@@ -29,7 +29,7 @@ namespace AmazonAccessTests.Sellers
 		[ Test ]
 		public void LoadMWSAuthToken()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
+			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			var token = service.GetMwsAuthToken();

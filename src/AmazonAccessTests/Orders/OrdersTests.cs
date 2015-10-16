@@ -33,7 +33,7 @@ namespace AmazonAccessTests.Orders
 		[ Test ]
 		public void LoadOrdersById()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
+			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			var ids = new List< string > { "" };
@@ -45,7 +45,7 @@ namespace AmazonAccessTests.Orders
 		[ Test ]
 		public void LoadOrders()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
+			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			var count = 0;
@@ -78,7 +78,7 @@ namespace AmazonAccessTests.Orders
 		[ Test ]
 		public void IsOrdersReceived()
 		{
-			var marketplace = new AmazonMarketplace( AmazonCountryCodesEnum.Us );
+			var marketplace = new AmazonMarketplace( AmazonCountryCodeEnum.Us );
 			var service = this.AmazonFactory.CreateService( this.Config.SellerId, this.Config.MwsAuthToken, marketplace );
 
 			var result = service.IsOrdersReceived( DateTime.UtcNow - TimeSpan.FromDays( 14 ), DateTime.UtcNow );
