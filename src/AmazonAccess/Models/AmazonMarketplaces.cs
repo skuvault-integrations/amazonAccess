@@ -13,8 +13,13 @@ namespace AmazonAccess.Models
 		public string SellersServiceUrl{ get; private set; }
 		public readonly List< AmazonMarketplace > Marketplaces = new List< AmazonMarketplace >();
 
-		public AmazonMarketplaces( string marketplace )
-			: this( new AmazonMarketplace( marketplace ) )
+		public AmazonMarketplaces( string countryCode )
+			: this( new AmazonMarketplace( countryCode ) )
+		{
+		}
+
+		public AmazonMarketplaces( List< string > countryCodes )
+			: this( countryCodes.Select( x => new AmazonMarketplace( x ) ).ToList() )
 		{
 		}
 
@@ -28,11 +33,6 @@ namespace AmazonAccess.Models
 			this.FeedsServiceUrl = marketplace.FeedsServiceUrl;
 			this.SellersServiceUrl = marketplace.SellersServiceUrl;
 			this.Marketplaces.Add( marketplace );
-		}
-
-		public AmazonMarketplaces( List< string > marketplaces )
-			: this( marketplaces.Select( x => new AmazonMarketplace( x ) ).ToList() )
-		{
 		}
 
 		public AmazonMarketplaces( List< AmazonMarketplace > marketplaces )
