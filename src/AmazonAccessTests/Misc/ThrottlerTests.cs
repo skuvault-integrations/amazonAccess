@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace AmazonAccessTests.Misc
 {
-	public class ThrottlerTests
+	internal class ThrottlerTests
 	{
 		private Throttler _throttler;
 		private int _callCounter;
