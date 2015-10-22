@@ -52,7 +52,8 @@ namespace AmazonAccess.Models
 
 		public List< string > GetMarketplaceIdAsList()
 		{
-			return this.Marketplaces.Select( x => x.MarketplaceId ).ToList();
+			var marketplaceIds = this.Marketplaces.Select( x => x.MarketplaceId ).ToList();
+			return marketplaceIds;
 		}
 	}
 }

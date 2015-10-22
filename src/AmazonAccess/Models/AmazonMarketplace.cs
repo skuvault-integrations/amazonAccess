@@ -15,18 +15,18 @@ namespace AmazonAccess.Models
 		public AmazonRegionEnum Region{ get; private set; }
 		public AmazonCountryCodeEnum CountryCode{ get; private set; }
 
-		public AmazonMarketplace( string countryCode )
-			: this( countryCode.ToEnum( AmazonCountryCodeEnum.Unknown ) )
+		public AmazonMarketplace( string countryCode, string marketplaceId = null )
+			: this( countryCode.ToEnum( AmazonCountryCodeEnum.Unknown ), marketplaceId )
 		{
 		}
 
-		public AmazonMarketplace( AmazonCountryCodeEnum countryCode )
+		public AmazonMarketplace( AmazonCountryCodeEnum countryCode, string marketplaceId = null )
 		{
 			Condition.Requires( countryCode, "countryCode" ).IsGreaterThan( AmazonCountryCodeEnum.Unknown );
-			this.InitMarketplace( countryCode );
+			this.InitMarketplace( countryCode, marketplaceId );
 		}
 
-		private void InitMarketplace( AmazonCountryCodeEnum countryCode )
+		private void InitMarketplace( AmazonCountryCodeEnum countryCode, string marketplaceId )
 		{
 			this.CountryCode = countryCode;
 			switch( countryCode )
@@ -73,6 +73,7 @@ namespace AmazonAccess.Models
 					this.Endpoint = "https://mws-eu.amazonservices.com";
 					break;
 				case AmazonCountryCodeEnum.Uk:
+				case AmazonCountryCodeEnum.Gb:
 					this.Region = AmazonRegionEnum.Eu;
 					this.MarketplaceId = "A1F83G8C2ARO7P";
 					this.Endpoint = "https://mws-eu.amazonservices.com";
@@ -93,6 +94,8 @@ namespace AmazonAccess.Models
 					throw new Exception( "Incorrect country code" );
 			}
 
+			if( !string.IsNullOrWhiteSpace( marketplaceId ) )
+				this.MarketplaceId = marketplaceId;
 			this.OrdersServiceUrl = this.Endpoint + "/Orders/2013-09-01";
 			this.FbaInventoryServiceUrl = this.Endpoint + "/FulfillmentInventory/2010-10-01";
 			this.FeedsServiceUrl = this.Endpoint;
@@ -121,6 +124,7 @@ namespace AmazonAccess.Models
 		In,
 		It,
 		Uk,
+		Gb,
 		Jp,
 		Cn
 	}
