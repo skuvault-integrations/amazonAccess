@@ -25,9 +25,9 @@ namespace AmazonAccess
 		//Task<IList<ProductUpdateQtyResult>> UpdateInventoryAsync(IEnumerable<ProductQuantityParams> products);
 
 		IEnumerable< InventorySupply > GetFbaInventory();
-		bool IsFbaInventoryReceived();
-
 		IEnumerable< FbaManageInventory > GetDetailedFbaInventory();
+
+		bool IsFbaInventoryReceived();
 
 		string GetMwsAuthToken();
 		MarketplaceParticipations GetMarketplaceParticipations();
