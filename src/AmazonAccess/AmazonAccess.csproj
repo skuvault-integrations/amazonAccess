@@ -259,6 +259,7 @@
     <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellersConfig.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellersException.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\Mock\MarketplaceWebServiceSellersMock.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\MarketplaceParticipations.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\Model\GetAuthTokenRequest.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\Model\GetAuthTokenResponse.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\Model\GetAuthTokenResult.cs" />
@@ -282,7 +283,8 @@
     <Compile Include="Services\MarketplaceWebServiceSellers\Model\ResponseHeaderMetadata.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\Model\ResponseMetadata.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\Model\ServiceStatusEnum.cs" />
-    <Compile Include="Services\MarketplaceWebServiceSellers\SellersService.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\SellerMarketplaceService.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\SellerAuthTokenService.cs" />
     <Compile Include="Services\Utils\AbstractMwsObject.cs" />
     <Compile Include="Services\Utils\IMwsCall.cs" />
     <Compile Include="Services\Utils\IMwsObject.cs" />

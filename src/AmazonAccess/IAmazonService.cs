@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
+using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
 
 namespace AmazonAccess
 {
@@ -25,9 +26,10 @@ namespace AmazonAccess
 
 		IEnumerable< InventorySupply > GetFbaInventory();
 		bool IsFbaInventoryReceived();
-		
+
 		IEnumerable< FbaManageInventory > GetDetailedFbaInventory();
 
 		string GetMwsAuthToken();
+		MarketplaceParticipations GetMarketplaceParticipations();
 	}
 }

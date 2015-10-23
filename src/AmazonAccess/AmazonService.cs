@@ -257,7 +257,7 @@ namespace AmazonAccess
 				{
 					SellerId = this._credentials.SellerId,
 				};
-				var service = new SellersService( client, request );
+				var service = new SellerAuthTokenService( client, request );
 				try
 				{
 					token = service.GetToken();
@@ -269,6 +269,22 @@ namespace AmazonAccess
 				}
 			} );
 			return token;
+		}
+
+		public MarketplaceParticipations GetMarketplaceParticipations()
+		{
+			var result = ActionPolicies.AmazonGetPolicy.Get( () =>
+			{
+				var client = this._factory.CreateSellersClient();
+				var request = new ListMarketplaceParticipationsRequest
+				{
+					SellerId = this._credentials.SellerId,
+					MWSAuthToken = this._credentials.MwsAuthToken
+				};
+				var service = new SellerMarketplaceService( client, request );
+				return service.GetMarketplaceParticipations();
+			} );
+			return result;
 		}
 		#endregion
 	}
