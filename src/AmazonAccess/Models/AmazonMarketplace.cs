@@ -26,6 +26,42 @@ namespace AmazonAccess.Models
 			this.InitMarketplace( countryCode, marketplaceId );
 		}
 
+		public static AmazonMarketplace CreateForRegion( string region )
+		{
+			return CreateForRegion( region.ToEnum( AmazonRegionEnum.Unknown ) );
+		}
+
+		public static AmazonMarketplace CreateForRegion( AmazonRegionEnum region )
+		{
+			Condition.Requires( region, "region" ).IsGreaterThan( AmazonRegionEnum.Unknown );
+
+			var countryCode = GetDefaultCountryCodeForRegion( region );
+			return new AmazonMarketplace( countryCode );
+		}
+
+		private static AmazonCountryCodeEnum GetDefaultCountryCodeForRegion( AmazonRegionEnum region )
+		{
+			AmazonCountryCodeEnum countryCode;
+			switch( region )
+			{
+				case AmazonRegionEnum.Na:
+					countryCode = AmazonCountryCodeEnum.Us;
+					break;
+				case AmazonRegionEnum.Eu:
+					countryCode = AmazonCountryCodeEnum.Uk;
+					break;
+				case AmazonRegionEnum.Fe:
+					countryCode = AmazonCountryCodeEnum.Jp;
+					break;
+				case AmazonRegionEnum.Cn:
+					countryCode = AmazonCountryCodeEnum.Cn;
+					break;
+				default:
+					throw new Exception( "Incorrect region" );
+			}
+			return countryCode;
+		}
+
 		private void InitMarketplace( AmazonCountryCodeEnum countryCode, string marketplaceId )
 		{
 			this.CountryCode = countryCode;

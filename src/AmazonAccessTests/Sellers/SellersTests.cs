@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AmazonAccess.Models;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace AmazonAccessTests.Sellers
@@ -23,6 +24,16 @@ namespace AmazonAccessTests.Sellers
 		public void GetMarketplaceParticipations()
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
+
+			var result = service.GetMarketplaceParticipations();
+			result.Should().NotBeNull();
+		}
+
+		[ Test ]
+		public void GetMarketplaceParticipationsForRegion()
+		{
+			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, 
+				new AmazonMarketplaces( AmazonMarketplace.CreateForRegion( AmazonRegionEnum.Na ) ) );
 
 			var result = service.GetMarketplaceParticipations();
 			result.Should().NotBeNull();
