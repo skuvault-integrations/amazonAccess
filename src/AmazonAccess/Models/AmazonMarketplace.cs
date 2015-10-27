@@ -12,7 +12,7 @@ namespace AmazonAccess.Models
 		public string FbaInventoryServiceUrl{ get; private set; }
 		public string FeedsServiceUrl{ get; private set; }
 		public string SellersServiceUrl{ get; private set; }
-		public AmazonRegionEnum Region{ get; private set; }
+		public AmazonRegionCodeEnum RegionCode{ get; private set; }
 		public AmazonCountryCodeEnum CountryCode{ get; private set; }
 
 		public AmazonMarketplace( string countryCode, string marketplaceId = null )
@@ -28,32 +28,32 @@ namespace AmazonAccess.Models
 
 		public static AmazonMarketplace CreateForRegion( string region )
 		{
-			return CreateForRegion( region.ToEnum( AmazonRegionEnum.Unknown ) );
+			return CreateForRegion( region.ToEnum( AmazonRegionCodeEnum.Unknown ) );
 		}
 
-		public static AmazonMarketplace CreateForRegion( AmazonRegionEnum region )
+		public static AmazonMarketplace CreateForRegion( AmazonRegionCodeEnum regionCode )
 		{
-			Condition.Requires( region, "region" ).IsGreaterThan( AmazonRegionEnum.Unknown );
+			Condition.Requires( regionCode, "regionCode" ).IsGreaterThan( AmazonRegionCodeEnum.Unknown );
 
-			var countryCode = GetDefaultCountryCodeForRegion( region );
+			var countryCode = GetDefaultCountryCodeForRegion( regionCode );
 			return new AmazonMarketplace( countryCode );
 		}
 
-		private static AmazonCountryCodeEnum GetDefaultCountryCodeForRegion( AmazonRegionEnum region )
+		private static AmazonCountryCodeEnum GetDefaultCountryCodeForRegion( AmazonRegionCodeEnum regionCode )
 		{
 			AmazonCountryCodeEnum countryCode;
-			switch( region )
+			switch( regionCode )
 			{
-				case AmazonRegionEnum.Na:
+				case AmazonRegionCodeEnum.Na:
 					countryCode = AmazonCountryCodeEnum.Us;
 					break;
-				case AmazonRegionEnum.Eu:
+				case AmazonRegionCodeEnum.Eu:
 					countryCode = AmazonCountryCodeEnum.Uk;
 					break;
-				case AmazonRegionEnum.Fe:
+				case AmazonRegionCodeEnum.Fe:
 					countryCode = AmazonCountryCodeEnum.Jp;
 					break;
-				case AmazonRegionEnum.Cn:
+				case AmazonRegionCodeEnum.Cn:
 					countryCode = AmazonCountryCodeEnum.Cn;
 					break;
 				default:
@@ -68,61 +68,61 @@ namespace AmazonAccess.Models
 			switch( countryCode )
 			{
 				case AmazonCountryCodeEnum.Ca:
-					this.Region = AmazonRegionEnum.Na;
+					this.RegionCode = AmazonRegionCodeEnum.Na;
 					this.MarketplaceId = "A2EUQ1WTGCTBG2";
 					this.Endpoint = "https://mws.amazonservices.ca";
 					break;
 				case AmazonCountryCodeEnum.Us:
-					this.Region = AmazonRegionEnum.Na;
+					this.RegionCode = AmazonRegionCodeEnum.Na;
 					this.MarketplaceId = "ATVPDKIKX0DER";
 					this.Endpoint = "https://mws.amazonservices.com";
 					break;
 				case AmazonCountryCodeEnum.Mx:
-					this.Region = AmazonRegionEnum.Na;
+					this.RegionCode = AmazonRegionCodeEnum.Na;
 					this.MarketplaceId = "A1AM78C64UM0Y8";
 					this.Endpoint = "https://mws.amazonservices.com.mx";
 					break;
 
 				case AmazonCountryCodeEnum.De:
-					this.Region = AmazonRegionEnum.Eu;
+					this.RegionCode = AmazonRegionCodeEnum.Eu;
 					this.MarketplaceId = "A1PA6795UKMFR9";
 					this.Endpoint = "https://mws-eu.amazonservices.com";
 					break;
 				case AmazonCountryCodeEnum.Es:
-					this.Region = AmazonRegionEnum.Eu;
+					this.RegionCode = AmazonRegionCodeEnum.Eu;
 					this.MarketplaceId = "A1RKKUPIHCS9HS";
 					this.Endpoint = "https://mws-eu.amazonservices.com";
 					break;
 				case AmazonCountryCodeEnum.Fr:
-					this.Region = AmazonRegionEnum.Eu;
+					this.RegionCode = AmazonRegionCodeEnum.Eu;
 					this.MarketplaceId = "A13V1IB3VIYZZH";
 					this.Endpoint = "https://mws-eu.amazonservices.com";
 					break;
 				case AmazonCountryCodeEnum.In:
-					this.Region = AmazonRegionEnum.Eu;
+					this.RegionCode = AmazonRegionCodeEnum.Eu;
 					this.MarketplaceId = "A21TJRUUN4KGV";
 					this.Endpoint = "https://mws.amazonservices.in";
 					break;
 				case AmazonCountryCodeEnum.It:
-					this.Region = AmazonRegionEnum.Eu;
+					this.RegionCode = AmazonRegionCodeEnum.Eu;
 					this.MarketplaceId = "APJ6JRA9NG5V4";
 					this.Endpoint = "https://mws-eu.amazonservices.com";
 					break;
 				case AmazonCountryCodeEnum.Uk:
 				case AmazonCountryCodeEnum.Gb:
-					this.Region = AmazonRegionEnum.Eu;
+					this.RegionCode = AmazonRegionCodeEnum.Eu;
 					this.MarketplaceId = "A1F83G8C2ARO7P";
 					this.Endpoint = "https://mws-eu.amazonservices.com";
 					break;
 
 				case AmazonCountryCodeEnum.Jp:
-					this.Region = AmazonRegionEnum.Fe;
+					this.RegionCode = AmazonRegionCodeEnum.Fe;
 					this.MarketplaceId = "A1VC38T7YXB528";
 					this.Endpoint = "https://mws.amazonservices.jp";
 					break;
 
 				case AmazonCountryCodeEnum.Cn:
-					this.Region = AmazonRegionEnum.Cn;
+					this.RegionCode = AmazonRegionCodeEnum.Cn;
 					this.MarketplaceId = "AAHKV2X7AFYLW";
 					this.Endpoint = "https://mws.amazonservices.com.cn";
 					break;
@@ -139,7 +139,7 @@ namespace AmazonAccess.Models
 		}
 	}
 
-	public enum AmazonRegionEnum
+	public enum AmazonRegionCodeEnum
 	{
 		Unknown,
 		Na,

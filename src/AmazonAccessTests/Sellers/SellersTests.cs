@@ -33,7 +33,7 @@ namespace AmazonAccessTests.Sellers
 		public void GetMarketplaceParticipationsForRegion()
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, 
-				new AmazonMarketplaces( AmazonMarketplace.CreateForRegion( AmazonRegionEnum.Na ) ) );
+				new AmazonMarketplaces( AmazonMarketplace.CreateForRegion( AmazonRegionCodeEnum.Na ) ) );
 
 			var result = service.GetMarketplaceParticipations();
 			result.Should().NotBeNull();
