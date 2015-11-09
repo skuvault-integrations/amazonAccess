@@ -15,12 +15,11 @@
  */
 
 using System;
-using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
 using AmazonAccess.Services.Common;
+using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 {
-
 	/// <summary>
 	/// MarketplaceWebServiceSellersClient is an implementation of MarketplaceWebServiceSellers
 	/// </summary>
@@ -44,7 +43,6 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 			string accessKey,
 			string secretKey,
 			MarketplaceWebServiceSellersConfig config )
-
 
 		{
 			this.connection = config.CopyConnection();

@@ -16,66 +16,75 @@
 
 using System;
 using System.Net;
-using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
 using AmazonAccess.Services.Common;
+using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 {
+	/// <summary>
+	/// Exception thrown by MarketplaceWebServiceSellers operations
+	/// </summary>
+	public class MarketplaceWebServiceSellersException: MwsException
+	{
+		public MarketplaceWebServiceSellersException( string message, HttpStatusCode statusCode )
+			: base( ( int )statusCode, message, null, null, null, null )
+		{
+		}
 
-    /// <summary>
-    /// Exception thrown by MarketplaceWebServiceSellers operations
-    /// </summary>
-    public class MarketplaceWebServiceSellersException : MwsException
-    {
+		public MarketplaceWebServiceSellersException( string message )
+			: base( 0, message, null )
+		{
+		}
 
-        public MarketplaceWebServiceSellersException(string message, HttpStatusCode statusCode)
-            : base((int)statusCode, message, null, null, null, null) { }
+		public MarketplaceWebServiceSellersException( string message, HttpStatusCode statusCode, ResponseHeaderMetadata rhmd )
+			: base( ( int )statusCode, message, null, null, null, rhmd )
+		{
+		}
 
-        public MarketplaceWebServiceSellersException(string message)
-            : base(0, message, null) { }
+		public MarketplaceWebServiceSellersException( Exception ex )
+			: base( ex )
+		{
+		}
 
-        public MarketplaceWebServiceSellersException(string message, HttpStatusCode statusCode, ResponseHeaderMetadata rhmd)
-            : base((int)statusCode, message, null, null, null, rhmd) { }
+		public MarketplaceWebServiceSellersException( string message, Exception ex )
+			: base( 0, message, ex )
+		{
+		}
 
-        public MarketplaceWebServiceSellersException(Exception ex)
-            : base(ex) { }
+		public MarketplaceWebServiceSellersException( string message, HttpStatusCode statusCode, string errorCode,
+			string errorType, string requestId, string xml, ResponseHeaderMetadata rhmd )
+			: base( ( int )statusCode, message, errorCode, errorType, xml, rhmd )
+		{
+		}
 
-        public MarketplaceWebServiceSellersException(string message, Exception ex)
-            : base(0, message, ex) { }
+		public MarketplaceWebServiceSellersException( string message, HttpStatusCode statusCode, string errorCode,
+			string errorType, string requestId, string xml )
+			: base( ( int )statusCode, message, errorCode, errorType, xml, null )
+		{
+		}
 
-        public MarketplaceWebServiceSellersException(string message, HttpStatusCode statusCode, string errorCode,
-            string errorType, string requestId, string xml, ResponseHeaderMetadata rhmd)
-            : base((int)statusCode, message, errorCode, errorType, xml, rhmd) { }
+		public MarketplaceWebServiceSellersException( string message, HttpStatusCode statusCode, Exception cause,
+			string xml )
+			: this( message, statusCode, null, null, null, xml, cause )
+		{
+		}
 
-        public MarketplaceWebServiceSellersException(string message, HttpStatusCode statusCode, string errorCode,
-            string errorType, string requestId, string xml)
-            : base((int)statusCode, message, errorCode, errorType, xml, null) { }
+		public MarketplaceWebServiceSellersException( string message, HttpStatusCode statusCode, string errorCode,
+			string errorType, string requestId, string xml, Exception cause )
+			: base( ( int )statusCode, message, errorCode, errorType, xml, null, cause )
+		{
+		}
 
-        public MarketplaceWebServiceSellersException(string message, HttpStatusCode statusCode, Exception cause, 
-            string xml)
-            : this(message, statusCode, null, null, null, xml, cause) { }
-
-        public MarketplaceWebServiceSellersException(string message, HttpStatusCode statusCode, string errorCode,
-            string errorType, string requestId, string xml, Exception cause)
-            : base((int)statusCode, message, errorCode, errorType, xml, null, cause) { }
-
-    public new ResponseHeaderMetadata ResponseHeaderMetadata
-        {
-            get 
-            { 
-                MwsResponseHeaderMetadata baseRHMD = base.ResponseHeaderMetadata;
-                if(baseRHMD != null)
-                {
-                    return new ResponseHeaderMetadata(baseRHMD); 
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-    }
-
+		public new ResponseHeaderMetadata ResponseHeaderMetadata
+		{
+			get
+			{
+				MwsResponseHeaderMetadata baseRHMD = base.ResponseHeaderMetadata;
+				if( baseRHMD != null )
+					return new ResponseHeaderMetadata( baseRHMD );
+				else
+					return null;
+			}
+		}
+	}
 }
-

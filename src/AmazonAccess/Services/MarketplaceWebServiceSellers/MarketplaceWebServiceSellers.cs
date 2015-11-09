@@ -18,13 +18,11 @@ using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 {
-
 	/// <summary>
 	/// This is the Sellers API section of the Marketplace Web Service.
 	/// </summary>
 	public interface IMarketplaceWebServiceSellers
 	{
-
 		/// <summary>
 		/// Get Service Status
 		/// </summary>
