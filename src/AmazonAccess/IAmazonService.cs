@@ -25,7 +25,6 @@ namespace AmazonAccess
 		IEnumerable< InventorySupply > GetFbaInventory();
 		bool IsFbaInventoryReceived();
 
-		string GetMwsAuthToken();
 		MarketplaceParticipations GetMarketplaceParticipations();
 	}
 }

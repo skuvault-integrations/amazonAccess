@@ -247,30 +247,6 @@ namespace AmazonAccess
 		#endregion
 
 		#region Sellers
-		public string GetMwsAuthToken()
-		{
-			var token = string.Empty;
-			ActionPolicies.AmazonGetPolicy.Do( () =>
-			{
-				var client = this._factory.CreateSellersClient();
-				var request = new GetAuthTokenRequest
-				{
-					SellerId = this._credentials.SellerId,
-				};
-				var service = new SellerAuthTokenService( client, request );
-				try
-				{
-					token = service.GetToken();
-				}
-				catch( MarketplaceWebServiceSellersException x )
-				{
-					if( !( x.Message.Contains( "Invalid seller id" ) || x.Message.Contains( "denied" ) ) ) // ignore error with invalid seller id, rethrow on other issues
-						throw;
-				}
-			} );
-			return token;
-		}
-
 		public MarketplaceParticipations GetMarketplaceParticipations()
 		{
 			var result = ActionPolicies.AmazonGetPolicy.Get( () =>

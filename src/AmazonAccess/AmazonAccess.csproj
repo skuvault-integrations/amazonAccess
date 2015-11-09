@@ -254,7 +254,7 @@
     <Compile Include="Services\MarketplaceWebServiceOrders\OrderItemsService.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\OrdersByIdService.cs" />
     <Compile Include="Services\MarketplaceWebServiceOrders\OrdersService.cs" />
-    <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellers.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\IMarketplaceWebServiceSellers.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellersClient.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellersConfig.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellersException.cs" />
@@ -284,7 +284,6 @@
     <Compile Include="Services\MarketplaceWebServiceSellers\Model\ResponseMetadata.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\Model\ServiceStatusEnum.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\SellerMarketplaceService.cs" />
-    <Compile Include="Services\MarketplaceWebServiceSellers\SellerAuthTokenService.cs" />
     <Compile Include="Services\Common\AbstractMwsObject.cs" />
     <Compile Include="Services\Common\IMwsCall.cs" />
     <Compile Include="Services\Common\IMwsObject.cs" />

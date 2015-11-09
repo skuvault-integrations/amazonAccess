@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2009-2014 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2015 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -10,8 +10,8 @@
  *******************************************************************************
  * Marketplace Web Service Sellers
  * API Version: 2011-07-01
- * Library Version: 2014-09-30
- * Generated: Mon Sep 15 19:38:40 GMT 2014
+ * Library Version: 2015-06-18
+ * Generated: Thu Jun 18 20:37:46 GMT 2015
  */
 
 using System;

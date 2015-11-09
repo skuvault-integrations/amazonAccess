@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2009-2014 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2015 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -10,8 +10,8 @@
  *******************************************************************************
  * Marketplace Web Service Sellers
  * API Version: 2011-07-01
- * Library Version: 2014-09-30
- * Generated: Mon Sep 15 19:38:40 GMT 2014
+ * Library Version: 2015-06-18
+ * Generated: Thu Jun 18 20:37:46 GMT 2015
  */
 
 using System;
@@ -25,8 +25,10 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 	/// </summary>
 	public class MarketplaceWebServiceSellersClient: IMarketplaceWebServiceSellers
 	{
-		private const string LibraryVersion = "2014-09-30";
+		private const string libraryVersion = "2015-06-18";
+
 		private readonly string servicePath;
+
 		private readonly MwsConnection connection;
 
 		/// <summary>
@@ -50,7 +52,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 			this.connection.AwsSecretKeyId = secretKey;
 			this.connection.ApplicationName = applicationName;
 			this.connection.ApplicationVersion = applicationVersion;
-			this.connection.LibraryVersion = LibraryVersion;
+			this.connection.LibraryVersion = libraryVersion;
 			this.servicePath = config.ServicePath;
 		}
 
@@ -65,7 +67,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 			this.connection = config.CopyConnection();
 			this.connection.AwsAccessKeyId = accessKey;
 			this.connection.AwsSecretKeyId = secretKey;
-			this.connection.LibraryVersion = LibraryVersion;
+			this.connection.LibraryVersion = libraryVersion;
 			this.servicePath = config.ServicePath;
 		}
 
@@ -117,40 +119,20 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 				request );
 		}
 
-		public GetAuthTokenResponse GetAuthToken( GetAuthTokenRequest request )
-		{
-			return this.connection.Call(
-				new Request< GetAuthTokenResponse >( "GetAuthToken", typeof( GetAuthTokenResponse ), this.servicePath ),
-				request );
-		}
-
 		private class Request< R >: IMwsRequestType< R > where R : IMwsObject
 		{
-			private readonly string operationName;
-			private readonly Type responseClass;
-			private readonly string servicePath;
-
 			public Request( string operationName, Type responseClass, string servicePath )
 			{
-				this.operationName = operationName;
-				this.responseClass = responseClass;
-				this.servicePath = servicePath;
+				this.OperationName = operationName;
+				this.ResponseClass = responseClass;
+				this.ServicePath = servicePath;
 			}
 
-			public string ServicePath
-			{
-				get { return this.servicePath; }
-			}
+			public string ServicePath{ get; private set; }
 
-			public string OperationName
-			{
-				get { return this.operationName; }
-			}
+			public string OperationName{ get; private set; }
 
-			public Type ResponseClass
-			{
-				get { return this.responseClass; }
-			}
+			public Type ResponseClass{ get; private set; }
 
 			public MwsException WrapException( Exception cause )
 			{
