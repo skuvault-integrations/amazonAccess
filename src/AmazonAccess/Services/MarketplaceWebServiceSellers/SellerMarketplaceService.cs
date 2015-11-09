@@ -1,4 +1,5 @@
-﻿using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
+﻿using AmazonAccess.Misc;
+using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
 using CuttingEdge.Conditions;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceSellers
@@ -7,6 +8,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 	{
 		private readonly IMarketplaceWebServiceSellers _client;
 		private readonly ListMarketplaceParticipationsRequest _request;
+		private readonly Throttler _throttler = new Throttler( 15, 61 );
 
 		public SellerMarketplaceService( IMarketplaceWebServiceSellers client, ListMarketplaceParticipationsRequest request )
 		{
@@ -20,7 +22,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		public MarketplaceParticipations GetMarketplaceParticipations()
 		{
 			var result = new MarketplaceParticipations();
-			var response = this._client.ListMarketplaceParticipations( this._request );
+			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListMarketplaceParticipations( this._request ) ) );
 			if( !response.IsSetListMarketplaceParticipationsResult() )
 				return result;
 
@@ -39,7 +41,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 					MWSAuthToken = this._request.MWSAuthToken,
 					NextToken = nextToken
 				};
-				var response = this._client.ListMarketplaceParticipationsByNextToken( request );
+				var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListMarketplaceParticipationsByNextToken( request ) ) );
 				if( !response.IsSetListMarketplaceParticipationsByNextTokenResult() )
 					return;
 

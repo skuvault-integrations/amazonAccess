@@ -165,7 +165,7 @@ namespace AmazonAccess
 			var request = this.InitInventoryFeedRequest( inventoryItems );
 			var service = new FeedsService( client );
 
-			ActionPolicies.AmazonSubmitPolicy.Do( () =>
+			ActionPolicies.Submit.Do( () =>
 			{
 				service.SubmitFeed( request );
 				request.FeedContent.Close();
@@ -179,7 +179,7 @@ namespace AmazonAccess
 		{
 			var inventory = new List< InventorySupply >();
 
-			ActionPolicies.AmazonGetPolicy.Do( () =>
+			ActionPolicies.Get.Do( () =>
 			{
 				var client = this._factory.CreateFbaInventoryClient();
 				var request = new ListInventorySupplyRequest
@@ -227,7 +227,7 @@ namespace AmazonAccess
 		{
 			var inventory = new List< FbaManageInventory >();
 
-			ActionPolicies.AmazonGetPolicy.Do( () =>
+			ActionPolicies.Get.Do( () =>
 			{
 				var client = this._factory.CreateFeedsReportsClient();
 				var service = new ReportsService( client, this._credentials );
@@ -249,17 +249,14 @@ namespace AmazonAccess
 		#region Sellers
 		public MarketplaceParticipations GetMarketplaceParticipations()
 		{
-			var result = ActionPolicies.AmazonGetPolicy.Get( () =>
+			var client = this._factory.CreateSellersClient();
+			var request = new ListMarketplaceParticipationsRequest
 			{
-				var client = this._factory.CreateSellersClient();
-				var request = new ListMarketplaceParticipationsRequest
-				{
-					SellerId = this._credentials.SellerId,
-					MWSAuthToken = this._credentials.MwsAuthToken
-				};
-				var service = new SellerMarketplaceService( client, request );
-				return service.GetMarketplaceParticipations();
-			} );
+				SellerId = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken
+			};
+			var service = new SellerMarketplaceService( client, request );
+			var result = service.GetMarketplaceParticipations();
 			return result;
 		}
 		#endregion

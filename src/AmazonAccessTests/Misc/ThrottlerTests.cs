@@ -8,16 +8,16 @@ namespace AmazonAccessTests.Misc
 {
 	internal class ThrottlerTests
 	{
-		private Throttler _throttler;
 		private int _callCounter;
 		private Func< int > _callCounterFunc;
+		private Throttler _throttler;
 
 		[ SetUp ]
 		public void Init()
 		{
-			_throttler = new Throttler( 5, 2 );
-			_callCounter = 0;
-			_callCounterFunc = () => _callCounter++;
+			this._throttler = new Throttler( 5, 2 );
+			this._callCounter = 0;
+			this._callCounterFunc = () => this._callCounter++;
 		}
 
 		[ Test ]
@@ -30,7 +30,7 @@ namespace AmazonAccessTests.Misc
 			//------------ Act
 			for( var i = 0; i < 5; i++ )
 			{
-				Assert.AreEqual( _callCounter, _throttler.ExecuteWithTrottling( _callCounterFunc ) );
+				Assert.AreEqual( this._callCounter, this._throttler.Execute( this._callCounterFunc ) );
 			}
 
 			//------------ Assert
@@ -48,7 +48,7 @@ namespace AmazonAccessTests.Misc
 			//------------ Act
 			for( var i = 0; i < 6; i++ )
 			{
-				Assert.AreEqual( _callCounter, _throttler.ExecuteWithTrottling( _callCounterFunc ) );
+				Assert.AreEqual( this._callCounter, this._throttler.Execute( this._callCounterFunc ) );
 			}
 
 			//------------ Assert
@@ -64,11 +64,11 @@ namespace AmazonAccessTests.Misc
 			stopwatch.Start();
 			for( var i = 0; i < 6; i++ )
 			{
-				Assert.AreEqual( _callCounter, _throttler.ExecuteWithTrottling( _callCounterFunc ) );
+				Assert.AreEqual( this._callCounter, this._throttler.Execute( this._callCounterFunc ) );
 			}
 
 			//------------ Act
-			Assert.AreEqual( _callCounter, _throttler.ExecuteWithTrottling( _callCounterFunc ) );
+			Assert.AreEqual( this._callCounter, this._throttler.Execute( this._callCounterFunc ) );
 
 			//------------ Assert
 			stopwatch.Stop();
@@ -83,12 +83,12 @@ namespace AmazonAccessTests.Misc
 			stopwatch.Start();
 			for( var i = 0; i < 5; i++ )
 			{
-				Assert.AreEqual( _callCounter, _throttler.ExecuteWithTrottling( _callCounterFunc ) );
+				Assert.AreEqual( this._callCounter, this._throttler.Execute( this._callCounterFunc ) );
 			}
 			Thread.Sleep( 2000 );
 
 			//------------ Act
-			Assert.AreEqual( _callCounter, _throttler.ExecuteWithTrottling( _callCounterFunc ) );
+			Assert.AreEqual( this._callCounter, this._throttler.Execute( this._callCounterFunc ) );
 
 			//------------ Assert
 			stopwatch.Stop();

@@ -23,8 +23,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 			AmazonLogger.Log.Trace( "[amazon] Loading order items for seller {0} and order id {1}", this._request.SellerId, this._request.AmazonOrderId );
 
 			var orderItems = new List< OrderItem >();
-			var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => this._throttler.ExecuteWithTrottling( () =>
-				this._client.ListOrderItems( this._request ) ) );
+			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListOrderItems( this._request ) ) );
 
 			if( response.IsSetListOrderItemsResult() )
 			{
@@ -33,7 +32,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 					orderItems.AddRange( listInventorySupplyResult.OrderItems );
 				if( listInventorySupplyResult.IsSetNextToken() )
 				{
-					var nextResponse = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => this._throttler.ExecuteWithTrottling( () =>
+					var nextResponse = ActionPolicies.Get.Get( () => this._throttler.Execute( () =>
 						this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
 						{
 							SellerId = this._request.SellerId,
@@ -73,7 +72,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 			if( listOrderItemsSupplyResult.IsSetNextToken() )
 			{
-				var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => this._throttler.ExecuteWithTrottling( () =>
+				var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () =>
 					this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
 					{
 						SellerId = this._request.SellerId,

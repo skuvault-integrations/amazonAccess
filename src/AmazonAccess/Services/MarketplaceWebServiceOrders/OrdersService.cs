@@ -25,8 +25,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		public IEnumerable< ComposedOrder > LoadOrders()
 		{
-			var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => this._getOrdersThrottler.ExecuteWithTrottling( () =>
-				this._client.ListOrders( this._request ) ) );
+			var response = ActionPolicies.Get.Get( () => this._getOrdersThrottler.Execute( () => this._client.ListOrders( this._request ) ) );
 
 			if( response.IsSetListOrdersResult() )
 			{
@@ -35,7 +34,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				{
 					yield return order;
 				}
-	
+
 				foreach( var order in this.LoadRestOfOrders( listInventorySupplyResult.NextToken ) )
 				{
 					yield return order;
@@ -91,7 +90,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		{
 			while( !string.IsNullOrEmpty( nextToken ) )
 			{
-				var nextResponse = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => this._getOrdersThrottler.ExecuteWithTrottling( () =>
+				var nextResponse = ActionPolicies.Get.Get( () => this._getOrdersThrottler.Execute( () =>
 					this._client.ListOrdersByNextToken( new ListOrdersByNextTokenRequest
 					{
 						SellerId = this._request.SellerId,
@@ -104,7 +103,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 				if( !listInventorySupplyResult.IsSetOrders() )
 					continue;
-				
+
 				var orders = listInventorySupplyResult.Orders.Select( o => new ComposedOrder( o ) ).ToList();
 				this.FillOrders( orders );
 				foreach( var order in orders )

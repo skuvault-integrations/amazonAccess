@@ -24,8 +24,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 
 		public IEnumerable< ComposedOrder > LoadOrders()
 		{
-			var response = ActionPolicies.AmazonThrottlerGetPolicy.Get( () => _getOrdersByIdThrottler.ExecuteWithTrottling( () =>
-				this._client.GetOrder( this._request ) ) );
+			var response = ActionPolicies.Get.Get( () => this._getOrdersByIdThrottler.Execute( () => this._client.GetOrder( this._request ) ) );
 
 			if( response.IsSetGetOrderResult() )
 			{
@@ -65,7 +64,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 				AmazonOrderId = orderId,
 				SellerId = this._request.SellerId,
 				MWSAuthToken = this._request.MWSAuthToken
-			}, _orderItemsThrottler );
+			}, this._orderItemsThrottler );
 
 			return itemsService.LoadOrderItems();
 		}

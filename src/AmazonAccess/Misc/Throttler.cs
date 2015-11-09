@@ -25,37 +25,33 @@ namespace AmazonAccess.Misc
 			this._maxRetryCount = maxRetryCount;
 		}
 
-		public TResult ExecuteWithTrottling< TResult >( Func< TResult > funcToThrottle )
+		public TResult Execute< TResult >( Func< TResult > funcToThrottle )
 		{
 			var retryCount = 0;
 			while( true )
 			{
 				try
 				{
-					return this.TryExecuteWithTrottling( funcToThrottle );
+					return this.TryExecute( funcToThrottle );
 				}
 				catch( Exception ex )
 				{
-					if( IsExceptionFromThrottling( ex ) )
-					{
-						if( retryCount < _maxRetryCount )
-						{
-							_remainingQuota = 0;
-							this._requestTimer.Restart();
-							_delay();
-							retryCount++;
-							// try again through loop
-						}
-						else
-							throw new ThrottlerException( "Throttle max retry count reached", ex );
-					}
-					else
-						throw new NotThrottlerException( "Unknown exception", ex );
+					if( !this.IsExceptionFromThrottling( ex ) )
+						throw;
+
+					if( retryCount >= this._maxRetryCount )
+						throw new ThrottlerException( "Throttle max retry count reached", ex );
+
+					this._remainingQuota = 0;
+					this._requestTimer.Restart();
+					this._delay();
+					retryCount++;
+					// try again through loop
 				}
 			}
 		}
 
-		private TResult TryExecuteWithTrottling< TResult >( Func< TResult > funcToThrottle )
+		private TResult TryExecute< TResult >( Func< TResult > funcToThrottle )
 		{
 			this.WaitIfNeeded();
 			var result = funcToThrottle();
@@ -98,19 +94,19 @@ namespace AmazonAccess.Misc
 
 		private void UpdateRequestQuoteFromTimer()
 		{
-			if( !_requestTimer.IsRunning || this._remainingQuota == this._maxQuota )
+			if( !this._requestTimer.IsRunning || this._remainingQuota == this._maxQuota )
 				return;
 
 			var totalSeconds = this._requestTimer.Elapsed.TotalSeconds;
 			var elapsed = ( int )Math.Floor( totalSeconds );
 
-			var quotaReleased = _releasedQuotaCalculator( elapsed );
+			var quotaReleased = this._releasedQuotaCalculator( elapsed );
 
 			if( quotaReleased == 0 )
 				return;
 
-			this._remainingQuota = Math.Min( this._remainingQuota + quotaReleased, _maxQuota );
-			_requestTimer.Reset();
+			this._remainingQuota = Math.Min( this._remainingQuota + quotaReleased, this._maxQuota );
+			this._requestTimer.Reset();
 		}
 
 		private readonly Stopwatch _requestTimer = new Stopwatch();
@@ -127,21 +123,6 @@ namespace AmazonAccess.Misc
 		}
 
 		public ThrottlerException( string message, Exception innerException ): base( message, innerException )
-		{
-		}
-	}
-
-	public class NotThrottlerException: Exception
-	{
-		public NotThrottlerException()
-		{
-		}
-
-		public NotThrottlerException( string message ): base( message )
-		{
-		}
-
-		public NotThrottlerException( string message, Exception innerException ): base( message, innerException )
 		{
 		}
 	}
