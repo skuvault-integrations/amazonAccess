@@ -35,8 +35,6 @@ namespace AmazonAccess.Services.Common
 		private string signatureMethod;
 
 		private int connectionTimeout;
-		private int maxErrorRetry;
-
 		private Uri endpoint;
 
 		private string proxyHost;
@@ -56,7 +54,6 @@ namespace AmazonAccess.Services.Common
 			this.signatureVersion = "2";
 			this.signatureMethod = "HmacSHA256";
 			this.connectionTimeout = 50000;
-			this.maxErrorRetry = 3;
 			this.libraryVersion = "1.0.0";
 		}
 
@@ -292,20 +289,6 @@ namespace AmazonAccess.Services.Common
 			{
 				this.CheckUpdatable();
 				this.awsSecretKeyId = value;
-			}
-		}
-
-		/// <summary>
-		/// Get or set max number of retries - default is 3
-		/// </summary>
-		/// <returns></returns>
-		public int MaxErrorRetry
-		{
-			get { return this.maxErrorRetry; }
-			set
-			{
-				this.CheckUpdatable();
-				this.maxErrorRetry = value;
 			}
 		}
 

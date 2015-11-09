@@ -307,12 +307,12 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 							retriableError = retriableError &&
 							                 !( REQUEST_THROTTLED_ERROR_CODE.Equals( error.Code ) );
 
-							if( retriableError && retries < this.config.MaxErrorRetry )
-							{
-								shouldRetry = true;
-								this.PauseOnRetry( ++retries, statusCode, rhm );
-								continue;
-							}
+							//if( retriableError && retries < this.config.MaxErrorRetry )
+							//{
+							//	shouldRetry = true;
+							//	this.PauseOnRetry( ++retries, statusCode, rhm );
+							//	continue;
+							//}
 
 							/* Throw formatted exception with information available from the error response */
 							throw new MarketplaceWebServiceOrdersException(
@@ -347,19 +347,19 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
          * Exponential sleep on failed request
          */
 
-		private void PauseOnRetry( int retries, HttpStatusCode status, ResponseHeaderMetadata rhm )
-		{
-			if( retries <= this.config.MaxErrorRetry )
-			{
-				int delay = ( int )Math.Pow( 4, retries ) * 100;
-				AmazonLogger.Log.Trace( "[amazon]Orders. Pause on retry. Seller {0}", this._sellerId );
-				System.Threading.Thread.Sleep( delay );
-			}
-			else
-			{
-				throw new MarketplaceWebServiceOrdersException( "Maximum number of retry attempts reached : " + ( retries - 1 ), status, rhm );
-			}
-		}
+		//private void PauseOnRetry( int retries, HttpStatusCode status, ResponseHeaderMetadata rhm )
+		//{
+		//	if( retries <= this.config.MaxErrorRetry )
+		//	{
+		//		int delay = ( int )Math.Pow( 4, retries ) * 100;
+		//		AmazonLogger.Log.Trace( "[amazon]Orders. Pause on retry. Seller {0}", this._sellerId );
+		//		System.Threading.Thread.Sleep( delay );
+		//	}
+		//	else
+		//	{
+		//		throw new MarketplaceWebServiceOrdersException( "Maximum number of retry attempts reached : " + ( retries - 1 ), status, rhm );
+		//	}
+		//}
 
 		/**
          * Add authentication related and version parameters

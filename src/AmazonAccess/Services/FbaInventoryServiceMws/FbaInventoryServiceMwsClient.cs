@@ -324,12 +324,12 @@ namespace AmazonAccess.Services.FbaInventoryServiceMws
 						bool retriableError = ( statusCode == HttpStatusCode.InternalServerError || statusCode == HttpStatusCode.ServiceUnavailable );
 						retriableError = retriableError && error.Code != "RequestThrottled";
 
-						if( retriableError && retries < this._config.MaxErrorRetry )
-						{
-							this.PauseOnRetry( ++retries );
-							shouldRetry = true;
-							continue;
-						}
+						//if( retriableError && retries < this._config.MaxErrorRetry )
+						//{
+						//	this.PauseOnRetry( ++retries );
+						//	shouldRetry = true;
+						//	continue;
+						//}
 
 						/* Throw formatted exception with information available from the error response */
 						throw new FbaInventoryServiceMwsException(

@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Threading;
 using System.Xml;
 
 namespace AmazonAccess.Services.Common
@@ -49,66 +48,51 @@ namespace AmazonAccess.Services.Common
 		/// <exception cref="MwsException">Exceptions from invoking the request</exception>
 		public IMwsReader invoke()
 		{
-			string responseBody;
-			string message;
-			HttpStatusCode statusCode = default(HttpStatusCode);
-			/* Add required request parameters */
+			// Add required request parameters 
 			this.AddRequiredParameters();
-			string queryString = this.GetParametersAsString( this.parameters );
-			int retries = 0;
-			do
+			var queryString = this.GetParametersAsString( this.parameters );
+
+			string responseBody;
+			HttpStatusCode statusCode;
+			try
 			{
-				/* Submit the request and read response body */
-				try
+				this.request = this.connection.GetHttpClient( this.serviceEndPoint.URI );
+				var requestData = new UTF8Encoding().GetBytes( queryString );
+				this.request.ContentLength = requestData.Length;
+				using( var requestStream = this.request.GetRequestStream() )
+					requestStream.Write( requestData, 0, requestData.Length );
+				string message;
+				using( var httpResponse = ( HttpWebResponse )this.request.GetResponse() )
 				{
-					this.request = this.connection.GetHttpClient( this.serviceEndPoint.URI );
-					byte[] requestData = new UTF8Encoding().GetBytes( queryString );
-					this.request.ContentLength = requestData.Length;
-					using( Stream requestStream = this.request.GetRequestStream() )
-						requestStream.Write( requestData, 0, requestData.Length );
-					using( HttpWebResponse httpResponse = this.request.GetResponse() as HttpWebResponse )
-					{
-						statusCode = httpResponse.StatusCode;
-						message = httpResponse.StatusDescription;
-						this.ResponseHeaderMetadata = GetResponseHeaderMetadata( httpResponse );
-						StreamReader reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
+					statusCode = httpResponse.StatusCode;
+					message = httpResponse.StatusDescription;
+					this.ResponseHeaderMetadata = GetResponseHeaderMetadata( httpResponse );
+					var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
+					responseBody = reader.ReadToEnd();
+				}
+				if( statusCode == HttpStatusCode.OK )
+					return new MwsXmlReader( responseBody );
+
+				throw new MwsException( ( int )statusCode, message, null, null, responseBody, this.ResponseHeaderMetadata );
+			}
+			catch( WebException we )
+			{
+				// Web exception is thrown on unsuccessful responses
+				using( var httpErrorResponse = we.Response as HttpWebResponse )
+				{
+					if( httpErrorResponse == null )
+						throw new MwsException( we );
+					statusCode = httpErrorResponse.StatusCode;
+					using( var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 ) )
 						responseBody = reader.ReadToEnd();
-					}
-					if( statusCode == HttpStatusCode.OK )
-						return new MwsXmlReader( responseBody );
-					MwsException e = new MwsException( ( int )statusCode, message, null, null, responseBody, this.ResponseHeaderMetadata );
-
-					if( statusCode == HttpStatusCode.InternalServerError )
-					{
-						if( this.PauseIfRetryNeeded( retries++ ) )
-							continue;
-					}
-					throw e;
 				}
-					/* Web exception is thrown on unsuccessful responses */
-				catch( WebException we )
-				{
-					using( HttpWebResponse httpErrorResponse = ( HttpWebResponse )we.Response as HttpWebResponse )
-					{
-						if( httpErrorResponse == null )
-							throw new MwsException( we );
-						statusCode = httpErrorResponse.StatusCode;
-						using( StreamReader reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 ) )
-							responseBody = reader.ReadToEnd();
-					}
-					//retry logic
-					if( this.PauseIfRetryNeeded( retries++ ) )
-						continue;
-					throw new MwsException( ( int )statusCode, null, null, null, responseBody, null );
-				}
-
-					/* Catch other exceptions, attempt to convert to formatted exception,
-                 * else rethrow wrapped exception */
-				catch( Exception e )
-				{
-					throw new MwsException( e );
-				}
-			} while( true );
+				throw new MwsException( ( int )statusCode, null, null, null, responseBody, null );
+			}
+			catch( Exception e )
+			{
+				// Catch other exceptions, attempt to convert to formatted exception, else rethrow wrapped exception 
+				throw new MwsException( e );
+			}
 		}
 
 		/// <summary>
@@ -118,10 +102,10 @@ namespace AmazonAccess.Services.Common
 		/// <returns></returns>
 		private static MwsResponseHeaderMetadata GetResponseHeaderMetadata( HttpWebResponse httpResponse )
 		{
-			string requestId = httpResponse.GetResponseHeader( "x-mws-request-id" );
-			string timestamp = httpResponse.GetResponseHeader( "x-mws-timestamp" );
-			string contextStr = httpResponse.GetResponseHeader( "x-mws-response-context" );
-			List< string > context = new List< string >( contextStr.Split( ',' ) );
+			var requestId = httpResponse.GetResponseHeader( "x-mws-request-id" );
+			var timestamp = httpResponse.GetResponseHeader( "x-mws-timestamp" );
+			var contextStr = httpResponse.GetResponseHeader( "x-mws-response-context" );
+			var context = new List< string >( contextStr.Split( ',' ) );
 
 			double? quotaMax;
 			try
@@ -160,38 +144,16 @@ namespace AmazonAccess.Services.Common
 		}
 
 		/// <summary>
-		/// Pauses for a while before retry. 
-		/// <para>The amount of pause depends on the index of retry, the higher number of retry the longer the pause</para>
-		/// </summary>
-		/// <param name="retries"></param>
-		/// <returns></returns>
-		private bool PauseIfRetryNeeded( int retries )
-		{
-			if( retries == this.connection.MaxErrorRetry )
-				return false;
-			int delay = ( int )( Math.Pow( 4, retries ) * 125 );
-			try
-			{
-				Thread.Sleep( delay );
-			}
-			catch( Exception e )
-			{
-				throw new SystemException( "Error checking if retry is needed", e );
-			}
-			return true;
-		}
-
-		/// <summary>
 		/// Constructs the parameters as string 
 		/// </summary>
 		/// <param name="parameters"></param>
 		/// <returns></returns>
 		private string GetParametersAsString( IDictionary< string, string > parameters )
 		{
-			StringBuilder data = new StringBuilder();
-			foreach( string key in ( IEnumerable< string > )parameters.Keys )
+			var data = new StringBuilder();
+			foreach( var key in parameters.Keys )
 			{
-				string value = parameters[ key ];
+				var value = parameters[ key ];
 				if( value != null )
 				{
 					data.Append( key );
@@ -207,7 +169,6 @@ namespace AmazonAccess.Services.Common
 		/// <summary>
 		/// Add authentication related and version parameters
 		/// </summary>
-		/// <param name="parameters"></param>         
 		private void AddRequiredParameters()
 		{
 			this.parameters.Add( "AWSAccessKeyId", this.connection.AwsAccessKeyId );
@@ -228,14 +189,14 @@ namespace AmazonAccess.Services.Common
 				( value as IMwsObject ).WriteFragmentTo( this );
 				return;
 			}
-			string name = this.parameterPrefix.ToString();
+			var name = this.parameterPrefix.ToString();
 			if( value is DateTime )
 			{
 				this.parameters.Add( name, MwsUtil.GetFormattedTimestamp( ( DateTime )value ) );
 				return;
 			}
-			string valueStr = value.ToString();
-			if( valueStr == null || valueStr.Length == 0 )
+			var valueStr = value.ToString();
+			if( string.IsNullOrEmpty( valueStr ) )
 				return;
 			if( value is bool )
 				valueStr = valueStr.ToLower();
@@ -275,7 +236,7 @@ namespace AmazonAccess.Services.Common
 				return;
 			if( name == null && memberName == null )
 				throw new ArgumentNullException( "Both name and memberName cannot be null." );
-			int holdParameterPrefixLen = this.parameterPrefix.Length;
+			var holdParameterPrefixLen = this.parameterPrefix.Length;
 			if( name != null )
 				this.parameterPrefix.Append( name );
 			if( name != null && memberName != null )
@@ -297,7 +258,7 @@ namespace AmazonAccess.Services.Common
 
 		public void WriteList< T >( string name, ICollection< T > list )
 		{
-			this.WriteList< T >( null, name, list );
+			this.WriteList( null, name, list );
 		}
 
 		public void WriteAny( ICollection< XmlElement > elements )

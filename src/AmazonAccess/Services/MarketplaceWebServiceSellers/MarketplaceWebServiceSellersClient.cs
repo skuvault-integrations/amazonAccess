@@ -100,32 +100,26 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 
 		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request )
 		{
-			return this.connection.Call(
-				new Request< GetServiceStatusResponse >( "GetServiceStatus", typeof( GetServiceStatusResponse ), this.servicePath ),
-				request );
+			return this.connection.Call( new Request< GetServiceStatusResponse >( "GetServiceStatus", this.servicePath ), request );
 		}
 
 		public ListMarketplaceParticipationsResponse ListMarketplaceParticipations( ListMarketplaceParticipationsRequest request )
 		{
-			return this.connection.Call(
-				new Request< ListMarketplaceParticipationsResponse >( "ListMarketplaceParticipations", typeof( ListMarketplaceParticipationsResponse ), this.servicePath ),
-				request );
+			return this.connection.Call( new Request< ListMarketplaceParticipationsResponse >( "ListMarketplaceParticipations", this.servicePath ), request );
 		}
 
 		public ListMarketplaceParticipationsByNextTokenResponse ListMarketplaceParticipationsByNextToken( ListMarketplaceParticipationsByNextTokenRequest request )
 		{
-			return this.connection.Call(
-				new Request< ListMarketplaceParticipationsByNextTokenResponse >( "ListMarketplaceParticipationsByNextToken", typeof( ListMarketplaceParticipationsByNextTokenResponse ), this.servicePath ),
-				request );
+			return this.connection.Call( new Request< ListMarketplaceParticipationsByNextTokenResponse >( "ListMarketplaceParticipationsByNextToken", this.servicePath ), request );
 		}
 
-		private class Request< R >: IMwsRequestType< R > where R : IMwsObject
+		private class Request< TResponse >: IMwsRequestType< TResponse > where TResponse : IMwsObject
 		{
-			public Request( string operationName, Type responseClass, string servicePath )
+			public Request( string operationName, string servicePath )
 			{
 				this.OperationName = operationName;
-				this.ResponseClass = responseClass;
 				this.ServicePath = servicePath;
+				this.ResponseClass = typeof( TResponse );
 			}
 
 			public string ServicePath{ get; private set; }

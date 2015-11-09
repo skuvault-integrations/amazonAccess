@@ -342,35 +342,6 @@ namespace AmazonAccess.Services.MarketplaceWebServiceOrders
 		}
 
 		/// <summary>
-		/// Gets and sets the maximum number of times to retry failed requests
-		/// </summary>
-		public int MaxErrorRetry
-		{
-			get { return this.cc.MaxErrorRetry; }
-			set { this.cc.MaxErrorRetry = value; }
-		}
-
-		/// <summary>
-		/// Sets the maximum number of times to retry failed requests
-		/// </summary>
-		/// <param name="maxErrorRetry">times to retry</param>
-		/// <returns>this instance</returns>
-		public MarketplaceWebServiceOrdersConfig WithMaxErrorRetry( int maxErrorRetry )
-		{
-			this.cc.MaxErrorRetry = maxErrorRetry;
-			return this;
-		}
-
-		/// <summary>
-		/// Checks if MaxErrorRetry is set
-		/// </summary>
-		/// <returns>true if MaxErrorRetry is set</returns>
-		public bool IsSetMaxErrorRetry()
-		{
-			return this.cc.MaxErrorRetry != -1;
-		}
-
-		/// <summary>
 		/// Sets the value of a request header to be included on every request
 		/// </summary>
 		/// <param name="name">the name of the header to set</param>
