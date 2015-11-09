@@ -17,7 +17,7 @@
 using System;
 using System.Net;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
-using AmazonAccess.Services.Utils;
+using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.FbaInventoryServiceMws
 {

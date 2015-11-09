@@ -12,7 +12,7 @@
  * Generated: Fri Sep 26 16:01:24 GMT 2014
  */
 
-using AmazonAccess.Services.Utils;
+using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.FbaInventoryServiceMws.Model
 {

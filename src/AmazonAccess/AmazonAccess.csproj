@@ -285,21 +285,21 @@
     <Compile Include="Services\MarketplaceWebServiceSellers\Model\ServiceStatusEnum.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\SellerMarketplaceService.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\SellerAuthTokenService.cs" />
-    <Compile Include="Services\Utils\AbstractMwsObject.cs" />
-    <Compile Include="Services\Utils\IMwsCall.cs" />
-    <Compile Include="Services\Utils\IMwsObject.cs" />
-    <Compile Include="Services\Utils\IMwsReader.cs" />
-    <Compile Include="Services\Utils\IMwsRequestType.cs" />
-    <Compile Include="Services\Utils\IMwsWriter.cs" />
-    <Compile Include="Services\Utils\MwsAQCall.cs" />
-    <Compile Include="Services\Utils\MwsConnection.cs" />
-    <Compile Include="Services\Utils\MwsException.cs" />
-    <Compile Include="Services\Utils\MwsResponseHeaderMetadata.cs" />
-    <Compile Include="Services\Utils\MwsResponseMetadata.cs" />
-    <Compile Include="Services\Utils\MwsUtil.cs" />
-    <Compile Include="Services\Utils\MwsXmlBuilder.cs" />
-    <Compile Include="Services\Utils\MwsXmlReader.cs" />
-    <Compile Include="Services\Utils\MwsXmlWriter.cs" />
+    <Compile Include="Services\Common\AbstractMwsObject.cs" />
+    <Compile Include="Services\Common\IMwsCall.cs" />
+    <Compile Include="Services\Common\IMwsObject.cs" />
+    <Compile Include="Services\Common\IMwsReader.cs" />
+    <Compile Include="Services\Common\IMwsRequestType.cs" />
+    <Compile Include="Services\Common\IMwsWriter.cs" />
+    <Compile Include="Services\Common\MwsAQCall.cs" />
+    <Compile Include="Services\Common\MwsConnection.cs" />
+    <Compile Include="Services\Common\MwsException.cs" />
+    <Compile Include="Services\Common\MwsResponseHeaderMetadata.cs" />
+    <Compile Include="Services\Common\MwsResponseMetadata.cs" />
+    <Compile Include="Services\Common\MwsUtil.cs" />
+    <Compile Include="Services\Common\MwsXmlBuilder.cs" />
+    <Compile Include="Services\Common\MwsXmlReader.cs" />
+    <Compile Include="Services\Common\MwsXmlWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

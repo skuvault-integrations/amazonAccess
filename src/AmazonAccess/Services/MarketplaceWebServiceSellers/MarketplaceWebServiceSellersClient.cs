@@ -16,7 +16,7 @@
 
 using System;
 using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
-using AmazonAccess.Services.Utils;
+using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 {

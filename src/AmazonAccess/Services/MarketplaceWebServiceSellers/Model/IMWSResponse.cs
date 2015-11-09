@@ -12,7 +12,7 @@
  * Generated: Mon Sep 15 19:38:40 GMT 2014
  */
 
-using AmazonAccess.Services.Utils;
+using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceSellers.Model
 {

@@ -18,7 +18,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using AmazonAccess.Services.FbaInventoryServiceMws.Model;
-using AmazonAccess.Services.Utils;
+using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.FbaInventoryServiceMws.Mock
 {

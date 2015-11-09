@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using AmazonAccess.Services.Utils;
+using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {

@@ -15,7 +15,7 @@
  */
 
 using System.Xml.Serialization;
-using AmazonAccess.Services.Utils;
+using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceSellers.Model
 {

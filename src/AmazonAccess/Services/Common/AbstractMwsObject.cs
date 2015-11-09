@@ -11,24 +11,33 @@
  * Marketplace Web Service Runtime Client Library
  */
 
-namespace AmazonAccess.Services.Utils
+using System.Xml;
+
+namespace AmazonAccess.Services.Common
 {
-    public interface IMwsCall : IMwsWriter
-    {
-        /// <summary>
-        /// Invoke the request synchronously.
-        /// <para>Call after writing request body</para>
-        /// </summary>
-        /// <exception cref="MwsException">Exceptions from invoking the request</exception>
-        /// <returns></returns>
-        IMwsReader invoke() ;
+	/// <summary>
+	/// Abstract implementation of MwsObject
+	/// </summary>
+	public abstract class AbstractMwsObject: IMwsObject
+	{
+		public string ToXML()
+		{
+			IMwsWriter writer = new MwsXmlBuilder();
+			this.WriteTo( writer );
+			return writer.ToString();
+		}
 
-        /// <summary>
-        /// Get the response metadata header.
-        /// <para>Available after invoke returns successfully</para>
-        /// </summary>
-        /// <returns>Response metadata header</returns>
-        MwsResponseHeaderMetadata GetResponseMetadataHeader( );
+		public string ToXMLFragment()
+		{
+			IMwsWriter writer = new MwsXmlBuilder( false, ConformanceLevel.Fragment );
+			this.WriteFragmentTo( writer );
+			return writer.ToString();
+		}
 
-    }
+		public abstract void ReadFragmentFrom( IMwsReader r );
+
+		public abstract void WriteFragmentTo( IMwsWriter w );
+
+		public abstract void WriteTo( IMwsWriter w );
+	}
 }

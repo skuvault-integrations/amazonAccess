@@ -14,7 +14,7 @@
  * Generated: Tue Mar 03 22:11:26 GMT 2015
  */
 
-using AmazonAccess.Services.Utils;
+using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.MarketplaceWebServiceOrders.Model
 {
