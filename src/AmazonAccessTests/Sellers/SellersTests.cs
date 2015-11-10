@@ -29,7 +29,7 @@ namespace AmazonAccessTests.Sellers
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 
 			var taskts = new List< Task< MarketplaceParticipations > >();
-			for( int i = 0; i < 15; i++ )
+			for( var i = 0; i < 16; i++ )
 			{
 				var task = new Task< MarketplaceParticipations >( () => service.GetMarketplaceParticipations() );
 				task.Start();

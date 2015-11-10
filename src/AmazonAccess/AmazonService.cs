@@ -250,12 +250,7 @@ namespace AmazonAccess
 		public MarketplaceParticipations GetMarketplaceParticipations()
 		{
 			var client = this._factory.CreateSellersClient();
-			var request = new ListMarketplaceParticipationsRequest
-			{
-				SellerId = this._credentials.SellerId,
-				MWSAuthToken = this._credentials.MwsAuthToken
-			};
-			var service = new SellerMarketplaceService( client, request );
+			var service = new SellerMarketplaceService( client, this._credentials );
 			var result = service.GetMarketplaceParticipations();
 			return result;
 		}

@@ -1,4 +1,5 @@
 ﻿using AmazonAccess.Misc;
+using AmazonAccess.Models;
 using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
 using CuttingEdge.Conditions;
 
@@ -7,22 +8,27 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 	public class SellerMarketplaceService
 	{
 		private readonly IMarketplaceWebServiceSellers _client;
-		private readonly ListMarketplaceParticipationsRequest _request;
+		private readonly AmazonCredentials _credentials;
 		private readonly Throttler _throttler = new Throttler( 15, 61 );
 
-		public SellerMarketplaceService( IMarketplaceWebServiceSellers client, ListMarketplaceParticipationsRequest request )
+		public SellerMarketplaceService( IMarketplaceWebServiceSellers client, AmazonCredentials credentials )
 		{
 			Condition.Requires( client, "client" ).IsNotNull();
-			Condition.Requires( request, "request" ).IsNotNull();
+			Condition.Requires( credentials, "credentials" ).IsNotNull();
 
 			this._client = client;
-			this._request = request;
+			this._credentials = credentials;
 		}
 
 		public MarketplaceParticipations GetMarketplaceParticipations()
 		{
+			var request = new ListMarketplaceParticipationsRequest
+			{
+				SellerId = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken
+			};
 			var result = new MarketplaceParticipations();
-			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListMarketplaceParticipations( this._request ) ) );
+			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListMarketplaceParticipations( request ) ) );
 			if( !response.IsSetListMarketplaceParticipationsResult() )
 				return result;
 
@@ -37,8 +43,8 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 			{
 				var request = new ListMarketplaceParticipationsByNextTokenRequest
 				{
-					SellerId = this._request.SellerId,
-					MWSAuthToken = this._request.MWSAuthToken,
+					SellerId = this._credentials.SellerId,
+					MWSAuthToken = this._credentials.MwsAuthToken,
 					NextToken = nextToken
 				};
 				var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListMarketplaceParticipationsByNextToken( request ) ) );
