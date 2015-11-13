@@ -98,19 +98,19 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		{
 		}
 
-		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request )
+		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker )
 		{
-			return this.connection.Call( new Request< GetServiceStatusResponse >( "GetServiceStatus", this.servicePath ), request );
+			return this.connection.Call( new Request< GetServiceStatusResponse >( "GetServiceStatus", this.servicePath ), request, marker );
 		}
 
-		public ListMarketplaceParticipationsResponse ListMarketplaceParticipations( ListMarketplaceParticipationsRequest request )
+		public ListMarketplaceParticipationsResponse ListMarketplaceParticipations( ListMarketplaceParticipationsRequest request, string marker )
 		{
-			return this.connection.Call( new Request< ListMarketplaceParticipationsResponse >( "ListMarketplaceParticipations", this.servicePath ), request );
+			return this.connection.Call( new Request< ListMarketplaceParticipationsResponse >( "ListMarketplaceParticipations", this.servicePath ), request, marker );
 		}
 
-		public ListMarketplaceParticipationsByNextTokenResponse ListMarketplaceParticipationsByNextToken( ListMarketplaceParticipationsByNextTokenRequest request )
+		public ListMarketplaceParticipationsByNextTokenResponse ListMarketplaceParticipationsByNextToken( ListMarketplaceParticipationsByNextTokenRequest request, string marker )
 		{
-			return this.connection.Call( new Request< ListMarketplaceParticipationsByNextTokenResponse >( "ListMarketplaceParticipationsByNextToken", this.servicePath ), request );
+			return this.connection.Call( new Request< ListMarketplaceParticipationsByNextTokenResponse >( "ListMarketplaceParticipationsByNextToken", this.servicePath ), request, marker );
 		}
 
 		private class Request< TResponse >: IMwsRequestType< TResponse > where TResponse : IMwsObject

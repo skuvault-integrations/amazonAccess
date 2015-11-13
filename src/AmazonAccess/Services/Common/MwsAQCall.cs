@@ -14,9 +14,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Xml;
+using AmazonAccess.Misc;
 
 namespace AmazonAccess.Services.Common
 {
@@ -46,9 +48,14 @@ namespace AmazonAccess.Services.Common
 		/// </summary>
 		/// <returns></returns>
 		/// <exception cref="MwsException">Exceptions from invoking the request</exception>
-		public IMwsReader invoke()
+		public IMwsReader invoke( string marker )
 		{
-			// Add required request parameters 
+			var operationNameForLog = "Invoke-" + this.operationName;
+			var sellerId = this.GetSellerId();
+			marker = marker ?? Guid.NewGuid().ToString();
+			var parametersForLog = this.GetParametersForLog();
+			AmazonLogger.Trace( operationNameForLog, sellerId, marker, "AwsAccessKeyId:'{0}' Other parameters:'{1}' Begin invoke", this.connection.AwsAccessKeyId, parametersForLog );
+
 			this.AddRequiredParameters();
 			var queryString = this.GetParametersAsString( this.parameters );
 
@@ -61,6 +68,9 @@ namespace AmazonAccess.Services.Common
 				this.request.ContentLength = requestData.Length;
 				using( var requestStream = this.request.GetRequestStream() )
 					requestStream.Write( requestData, 0, requestData.Length );
+
+				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "URL:'{0}' Getting response", this.request.RequestUri.AbsoluteUri );
+
 				string message;
 				using( var httpResponse = ( HttpWebResponse )this.request.GetResponse() )
 				{
@@ -70,27 +80,39 @@ namespace AmazonAccess.Services.Common
 					var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
 					responseBody = reader.ReadToEnd();
 				}
+
+				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "StatusCode:'{0}' Response received with: \n--- Response header metadata: ---\n{1} \n--- Response body: ---\n{2}",
+					statusCode, this.ResponseHeaderMetadata, responseBody );
+
 				if( statusCode == HttpStatusCode.OK )
 					return new MwsXmlReader( responseBody );
 
 				throw new MwsException( ( int )statusCode, message, null, null, responseBody, this.ResponseHeaderMetadata );
 			}
-			catch( WebException we )
+			catch( WebException we ) // Web exception is thrown on unsuccessful responses
 			{
-				// Web exception is thrown on unsuccessful responses
+				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Exception occurred. Getting web exception message" );
+
 				using( var httpErrorResponse = we.Response as HttpWebResponse )
 				{
 					if( httpErrorResponse == null )
+					{
+						AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Web exception message:'{0}'", we.Message );
 						throw new MwsException( we );
+					}
+
 					statusCode = httpErrorResponse.StatusCode;
 					using( var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 ) )
+					{
 						responseBody = reader.ReadToEnd();
+						AmazonLogger.Trace( operationNameForLog, sellerId, marker, "StatusCode:'{0}' Web exception message:'{1}'", statusCode, responseBody );
+					}
 				}
 				throw new MwsException( ( int )statusCode, null, null, null, responseBody, null );
 			}
-			catch( Exception e )
+			catch( Exception e ) // Catch other exceptions, attempt to convert to formatted exception, else rethrow wrapped exception 
 			{
-				// Catch other exceptions, attempt to convert to formatted exception, else rethrow wrapped exception 
+				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Undefined exception message:'{0}'", e.Message );
 				throw new MwsException( e );
 			}
 		}
@@ -150,6 +172,8 @@ namespace AmazonAccess.Services.Common
 		/// <returns></returns>
 		private string GetParametersAsString( IDictionary< string, string > parameters )
 		{
+			if( parameters.Count == 0 )
+				return string.Empty;
 			var data = new StringBuilder();
 			foreach( var key in parameters.Keys )
 			{
@@ -177,6 +201,21 @@ namespace AmazonAccess.Services.Common
 			this.parameters.Add( "Version", this.serviceEndPoint.version );
 			string signature = MwsUtil.SignParameters( this.serviceEndPoint.URI, this.connection.SignatureVersion, this.connection.SignatureMethod, this.parameters, this.connection.AwsSecretKeyId );
 			this.parameters.Add( "Signature", signature );
+		}
+
+		private string GetParametersForLog()
+		{
+			var parametersForLog = this.parameters
+				.Where( x => !x.Key.Equals( "SellerId", StringComparison.InvariantCultureIgnoreCase ) &&
+				             !x.Key.Equals( "MWSAuthToken", StringComparison.InvariantCultureIgnoreCase ) )
+				.ToDictionary( x => x.Key, x => x.Value );
+			return this.GetParametersAsString( parametersForLog );
+		}
+
+		private string GetSellerId()
+		{
+			var sellerId = this.parameters.FirstOrDefault( x => x.Key.Equals( "SellerId", StringComparison.InvariantCultureIgnoreCase ) );
+			return sellerId.Value ?? string.Empty;
 		}
 
 		private void putValue( object value )

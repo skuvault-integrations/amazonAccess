@@ -21,7 +21,7 @@ namespace AmazonAccess.Services.Common
 		/// </summary>
 		/// <exception cref="MwsException">Exceptions from invoking the request</exception>
 		/// <returns></returns>
-		IMwsReader invoke();
+		IMwsReader invoke( string marker );
 
 		/// <summary>
 		/// Get the response metadata header.

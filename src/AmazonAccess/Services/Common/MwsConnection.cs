@@ -125,19 +125,17 @@ namespace AmazonAccess.Services.Common
 		/// <param name="type"></param>
 		/// <param name="requestData"></param>
 		/// <returns></returns>
-		public T Call< T >( IMwsRequestType< T > type,
-			IMwsObject requestData ) where T : IMwsObject
+		public T Call< T >( IMwsRequestType< T > type, IMwsObject requestData, string marker = null ) where T : IMwsObject
 		{
-			IMwsReader responseReader = null;
 			try
 			{
-				string servicePath = type.ServicePath;
-				string operationName = type.OperationName;
-				IMwsCall mc = this.NewCall( servicePath, operationName );
+				var servicePath = type.ServicePath;
+				var operationName = type.OperationName;
+				var mc = this.NewCall( servicePath, operationName );
 				requestData.WriteFragmentTo( mc );
-				responseReader = mc.invoke();
-				MwsResponseHeaderMetadata rhmd = mc.GetResponseMetadataHeader();
-				T response = MwsUtil.NewInstance< T >();
+				var responseReader = mc.invoke( marker );
+				var rhmd = mc.GetResponseMetadataHeader();
+				var response = MwsUtil.NewInstance< T >();
 				type.SetResponseHeaderMetadata( response, rhmd );
 				response.ReadFragmentFrom( responseReader );
 				return response;

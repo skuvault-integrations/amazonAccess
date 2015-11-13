@@ -1,4 +1,5 @@
-﻿using AmazonAccess.Misc;
+﻿using System;
+using AmazonAccess.Misc;
 using AmazonAccess.Models;
 using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
 using CuttingEdge.Conditions;
@@ -20,34 +21,38 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 			this._credentials = credentials;
 		}
 
-		public MarketplaceParticipations GetMarketplaceParticipations()
+		public MarketplaceParticipations GetMarketplaceParticipations( string marker )
 		{
+			AmazonLogger.Trace( "GetMarketplaceParticipations", this._credentials.SellerId, marker, "Begin invoke" );
+
 			var request = new ListMarketplaceParticipationsRequest
 			{
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken
 			};
 			var result = new MarketplaceParticipations();
-			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListMarketplaceParticipations( request ) ) );
+			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListMarketplaceParticipations( request, marker ) ) );
 			if( !response.IsSetListMarketplaceParticipationsResult() )
 				return result;
 
 			result.Add( response.ListMarketplaceParticipationsResult.ListMarketplaces, response.ListMarketplaceParticipationsResult.ListParticipations );
-			this.AddMarketplaceParticipationsFromOtherPages( response.ListMarketplaceParticipationsResult.NextToken, result );
+			this.AddMarketplaceParticipationsFromOtherPages( response.ListMarketplaceParticipationsResult.NextToken, result, marker );
 			return result;
 		}
 
-		private void AddMarketplaceParticipationsFromOtherPages( string nextToken, MarketplaceParticipations result )
+		private void AddMarketplaceParticipationsFromOtherPages( string nextToken, MarketplaceParticipations result, string marker )
 		{
 			while( !string.IsNullOrEmpty( nextToken ) )
 			{
+				AmazonLogger.Trace( "AddMarketplaceParticipationsFromOtherPages", this._credentials.SellerId, marker, "NextToken:{0}", nextToken );
+
 				var request = new ListMarketplaceParticipationsByNextTokenRequest
 				{
 					SellerId = this._credentials.SellerId,
 					MWSAuthToken = this._credentials.MwsAuthToken,
 					NextToken = nextToken
 				};
-				var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListMarketplaceParticipationsByNextToken( request ) ) );
+				var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListMarketplaceParticipationsByNextToken( request, marker ) ) );
 				if( !response.IsSetListMarketplaceParticipationsByNextTokenResult() )
 					return;
 

@@ -27,35 +27,38 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		/// Get Service Status
 		/// </summary>
 		/// <param name="request">GetServiceStatusRequest request.</param>
+		/// <param name="marker"></param>
 		/// <returns>GetServiceStatusResponse response</returns>
 		/// <remarks>
 		/// Returns the service status of a particular MWS API section. The operation
 		///         takes no input.
 		///         All API sections within the API are required to implement this operation.
 		/// </remarks>
-		GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request );
+		GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker );
 
 		/// <summary>
 		/// List Marketplace Participations
 		/// </summary>
 		/// <param name="request">ListMarketplaceParticipationsRequest request.</param>
+		/// <param name="marker"></param>
 		/// <returns>ListMarketplaceParticipationsResponse response</returns>
 		/// <remarks>
 		/// Returns a list of marketplaces that the seller submitting the request can sell in, 
 		///         and a list of participations that include seller-specific information in that marketplace.
 		/// </remarks>
-		ListMarketplaceParticipationsResponse ListMarketplaceParticipations( ListMarketplaceParticipationsRequest request );
+		ListMarketplaceParticipationsResponse ListMarketplaceParticipations( ListMarketplaceParticipationsRequest request, string marker );
 
 		/// <summary>
 		/// List Marketplace Participations By Next Token
 		/// </summary>
 		/// <param name="request">ListMarketplaceParticipationsByNextTokenRequest request.</param>
+		/// <param name="marker"></param>
 		/// <returns>ListMarketplaceParticipationsByNextTokenResponse response</returns>
 		/// <remarks>
 		/// Returns the next page of marketplaces and participations using the NextToken value 
 		///         that was returned by your previous request to either ListMarketplaceParticipations or
 		///         ListMarketplaceParticipationsByNextToken.
 		/// </remarks>
-		ListMarketplaceParticipationsByNextTokenResponse ListMarketplaceParticipationsByNextToken( ListMarketplaceParticipationsByNextTokenRequest request );
+		ListMarketplaceParticipationsByNextTokenResponse ListMarketplaceParticipationsByNextToken( ListMarketplaceParticipationsByNextTokenRequest request, string marker );
 	}
 }

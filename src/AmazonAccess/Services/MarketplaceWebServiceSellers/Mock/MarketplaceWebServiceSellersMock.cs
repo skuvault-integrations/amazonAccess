@@ -36,17 +36,17 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers.Mock
 	public class MarketplaceWebServiceSellersMock: IMarketplaceWebServiceSellers
 	{
 
-		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request )
+		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker )
 		{
 			return this.newResponse< GetServiceStatusResponse >();
 		}
 
-		public ListMarketplaceParticipationsResponse ListMarketplaceParticipations( ListMarketplaceParticipationsRequest request )
+		public ListMarketplaceParticipationsResponse ListMarketplaceParticipations( ListMarketplaceParticipationsRequest request, string marker )
 		{
 			return this.newResponse< ListMarketplaceParticipationsResponse >();
 		}
 
-		public ListMarketplaceParticipationsByNextTokenResponse ListMarketplaceParticipationsByNextToken( ListMarketplaceParticipationsByNextTokenRequest request )
+		public ListMarketplaceParticipationsByNextTokenResponse ListMarketplaceParticipationsByNextToken( ListMarketplaceParticipationsByNextTokenRequest request, string marker )
 		{
 			return this.newResponse< ListMarketplaceParticipationsByNextTokenResponse >();
 		}

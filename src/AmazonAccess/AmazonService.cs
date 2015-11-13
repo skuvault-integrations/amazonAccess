@@ -249,9 +249,10 @@ namespace AmazonAccess
 		#region Sellers
 		public MarketplaceParticipations GetMarketplaceParticipations()
 		{
+			var marker = Guid.NewGuid().ToString();
 			var client = this._factory.CreateSellersClient();
 			var service = new SellerMarketplaceService( client, this._credentials );
-			var result = service.GetMarketplaceParticipations();
+			var result = service.GetMarketplaceParticipations( marker );
 			return result;
 		}
 		#endregion
