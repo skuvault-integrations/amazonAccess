@@ -8,22 +8,22 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
  * specific language governing permissions and limitations under the License.
  *******************************************************************************
- * FBA Inventory Service MWS
- * API Version: 2010-10-01
+ * Marketplace Web Service Sellers
+ * API Version: 2011-07-01
  * Library Version: 2015-06-18
- * Generated: Thu Jun 18 19:30:05 GMT 2015
+ * Generated: Thu Jun 18 20:37:46 GMT 2015
  */
 
 using System;
 using AmazonAccess.Services.Common;
-using AmazonAccess.Services.FbaInventory.Model;
+using AmazonAccess.Services.Sellers.Model;
 
-namespace AmazonAccess.Services.FbaInventory
+namespace AmazonAccess.Services.Sellers
 {
 	/// <summary>
-	/// FBAInventoryServiceMWSClient is an implementation of FBAInventoryServiceMWS
+	/// MarketplaceWebServiceSellersClient is an implementation of MarketplaceWebServiceSellers
 	/// </summary>
-	public class FbaInventoryServiceClient: IFbaInventoryService
+	public class SellersServiceClient: ISellersService
 	{
 		private const string libraryVersion = "2015-06-18";
 
@@ -34,17 +34,18 @@ namespace AmazonAccess.Services.FbaInventory
 		/// <summary>
 		/// Create client.
 		/// </summary>
-		/// <param name="accessKey">Access Key</param>
-		/// <param name="secretKey">Secret Key</param>
 		/// <param name="applicationName">Application Name</param>
-		/// <param name="applicationVersion">Application Version</param>
+		/// <param name="applicationVersion">Application Version</param>        
+		/// <param name="accessKey">Access Key</param>  
+		/// <param name="secretKey">Secret Key</param>
 		/// <param name="config">configuration</param>
-		public FbaInventoryServiceClient(
-			string accessKey,
-			string secretKey,
+		public SellersServiceClient(
 			string applicationName,
 			string applicationVersion,
+			string accessKey,
+			string secretKey,
 			MwsConfig config )
+
 		{
 			this.connection = config.CopyConnection();
 			this.connection.AwsAccessKeyId = accessKey;
@@ -61,7 +62,7 @@ namespace AmazonAccess.Services.FbaInventory
 		/// <param name="accessKey">Access Key</param>
 		/// <param name="secretKey">Secret Key</param>
 		/// <param name="config">configuration</param>
-		public FbaInventoryServiceClient( String accessKey, String secretKey, MwsConfig config )
+		public SellersServiceClient( String accessKey, String secretKey, MwsConfig config )
 		{
 			this.connection = config.CopyConnection();
 			this.connection.AwsAccessKeyId = accessKey;
@@ -75,7 +76,7 @@ namespace AmazonAccess.Services.FbaInventory
 		/// </summary>
 		/// <param name="accessKey">Access Key</param>
 		/// <param name="secretKey">Secret Key</param>
-		public FbaInventoryServiceClient( String accessKey, String secretKey )
+		public SellersServiceClient( String accessKey, String secretKey )
 			: this( accessKey, secretKey, new MwsConfig() )
 		{
 		}
@@ -87,7 +88,7 @@ namespace AmazonAccess.Services.FbaInventory
 		/// <param name="secretKey">Secret Key</param>
 		/// <param name="applicationName">Application Name</param>
 		/// <param name="applicationVersion">Application Version</param>
-		public FbaInventoryServiceClient(
+		public SellersServiceClient(
 			String accessKey,
 			String secretKey,
 			String applicationName,
@@ -97,19 +98,19 @@ namespace AmazonAccess.Services.FbaInventory
 		{
 		}
 
-		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request )
+		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker )
 		{
-			return this.connection.Call( new Request< GetServiceStatusResponse >( "GetServiceStatus", this.servicePath ), request );
+			return this.connection.Call( new Request< GetServiceStatusResponse >( "GetServiceStatus", this.servicePath ), request, marker );
 		}
 
-		public ListInventorySupplyResponse ListInventorySupply( ListInventorySupplyRequest request )
+		public ListMarketplaceParticipationsResponse ListMarketplaceParticipations( ListMarketplaceParticipationsRequest request, string marker )
 		{
-			return this.connection.Call( new Request< ListInventorySupplyResponse >( "ListInventorySupply", this.servicePath ), request );
+			return this.connection.Call( new Request< ListMarketplaceParticipationsResponse >( "ListMarketplaceParticipations", this.servicePath ), request, marker );
 		}
 
-		public ListInventorySupplyByNextTokenResponse ListInventorySupplyByNextToken( ListInventorySupplyByNextTokenRequest request )
+		public ListMarketplaceParticipationsByNextTokenResponse ListMarketplaceParticipationsByNextToken( ListMarketplaceParticipationsByNextTokenRequest request, string marker )
 		{
-			return this.connection.Call( new Request< ListInventorySupplyByNextTokenResponse >( "ListInventorySupplyByNextToken", this.servicePath ), request );
+			return this.connection.Call( new Request< ListMarketplaceParticipationsByNextTokenResponse >( "ListMarketplaceParticipationsByNextToken", this.servicePath ), request, marker );
 		}
 
 		private class Request< TResponse >: IMwsRequestType< TResponse > where TResponse : IMwsObject
@@ -129,7 +130,7 @@ namespace AmazonAccess.Services.FbaInventory
 
 			public MwsException WrapException( Exception cause )
 			{
-				return new FBAInventoryServiceMWSException( cause );
+				return new MarketplaceWebServiceSellersException( cause );
 			}
 
 			public void SetResponseHeaderMetadata( IMwsObject response, MwsResponseHeaderMetadata rhmd )

@@ -3,7 +3,7 @@ using AmazonAccess.Services.Common;
 using AmazonAccess.Services.FbaInventory;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports;
 using AmazonAccess.Services.MarketplaceWebServiceOrders;
-using AmazonAccess.Services.MarketplaceWebServiceSellers;
+using AmazonAccess.Services.Sellers;
 using CuttingEdge.Conditions;
 
 namespace AmazonAccess.Services
@@ -42,12 +42,12 @@ namespace AmazonAccess.Services
 			return new MarketplaceWebServiceOrdersClient( applicationName, applicationVersion, this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
 		}
 
-		public IMarketplaceWebServiceSellers CreateSellersClient()
+		public ISellersService CreateSellersClient()
 		{
 			var config = new MwsConfig { ServiceURL = this._credentials.AmazonMarketplaces.SellersServiceUrl };
 			config.SetUserAgentHeader( "C#", "-1", "3" );
 
-			return new MarketplaceWebServiceSellersClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
+			return new SellersServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
 		}
 	}
 }

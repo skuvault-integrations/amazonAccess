@@ -11,8 +11,8 @@ using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel;
 using AmazonAccess.Services.MarketplaceWebServiceOrders;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
-using AmazonAccess.Services.MarketplaceWebServiceSellers;
-using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
+using AmazonAccess.Services.Sellers;
+using AmazonAccess.Services.Sellers.Model;
 using CuttingEdge.Conditions;
 
 namespace AmazonAccess
