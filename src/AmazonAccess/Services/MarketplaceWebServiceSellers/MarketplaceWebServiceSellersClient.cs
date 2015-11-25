@@ -44,7 +44,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 			string applicationVersion,
 			string accessKey,
 			string secretKey,
-			MarketplaceWebServiceSellersConfig config )
+			MwsConfig config )
 
 		{
 			this.connection = config.CopyConnection();
@@ -62,7 +62,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		/// <param name="accessKey">Access Key</param>
 		/// <param name="secretKey">Secret Key</param>
 		/// <param name="config">configuration</param>
-		public MarketplaceWebServiceSellersClient( String accessKey, String secretKey, MarketplaceWebServiceSellersConfig config )
+		public MarketplaceWebServiceSellersClient( String accessKey, String secretKey, MwsConfig config )
 		{
 			this.connection = config.CopyConnection();
 			this.connection.AwsAccessKeyId = accessKey;
@@ -77,7 +77,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		/// <param name="accessKey">Access Key</param>
 		/// <param name="secretKey">Secret Key</param>
 		public MarketplaceWebServiceSellersClient( String accessKey, String secretKey )
-			: this( accessKey, secretKey, new MarketplaceWebServiceSellersConfig() )
+			: this( accessKey, secretKey, new MwsConfig() )
 		{
 		}
 
@@ -94,7 +94,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 			String applicationName,
 			String applicationVersion )
 			: this( accessKey, secretKey, applicationName,
-				applicationVersion, new MarketplaceWebServiceSellersConfig() )
+				applicationVersion, new MwsConfig() )
 		{
 		}
 

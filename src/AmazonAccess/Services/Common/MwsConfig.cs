@@ -15,17 +15,16 @@
  */
 
 using System;
-using AmazonAccess.Services.Common;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceSellers
+namespace AmazonAccess.Services.Common
 {
 	/// <summary>
 	/// Configuration for a connection
 	/// </summary>
-	public class MarketplaceWebServiceSellersConfig
+	public class MwsConfig
 	{
-		private const string DEFAULT_SERVICE_PATH = "Sellers/2011-07-01";
-		private const string SERVICE_VERSION = "2011-07-01";
+		private const string DEFAULT_SERVICE_PATH = "";
+		private const string SERVICE_VERSION = "";
 
 		private readonly MwsConnection cc = new MwsConnection();
 
@@ -60,7 +59,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		/// </summary>
 		/// <param name="signatureMethod">Signature method to use (ex: HmacSHA256)</param>
 		/// <returns>this instance</returns>
-		public MarketplaceWebServiceSellersConfig WithSignatureMethod( string signatureMethod )
+		public MwsConfig WithSignatureMethod( string signatureMethod )
 		{
 			this.SignatureMethod = signatureMethod;
 			return this;
@@ -87,9 +86,9 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		/// <summary>
 		/// Sets the SignatureVersion used to authenticate with MWS
 		/// </summary>
-		/// <param name="signatureMethod">Signature version to use (ex: 2)</param>
+		/// <param name="signatureVersion">Signature version to use (ex: 2)</param>
 		/// <returns>this instance</returns>
-		public MarketplaceWebServiceSellersConfig WithSignatureVersion( string signatureVersion )
+		public MwsConfig WithSignatureVersion( string signatureVersion )
 		{
 			this.SignatureVersion = signatureVersion;
 			return this;
@@ -117,7 +116,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		/// </summary>
 		/// <param name="userAgent">UserAgent property</param>
 		/// <returns>this instance</returns>
-		public MarketplaceWebServiceSellersConfig WithUserAgent( String userAgent )
+		public MwsConfig WithUserAgent( String userAgent )
 		{
 			this.cc.UserAgent = userAgent;
 			return this;
@@ -138,7 +137,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		/// <param name="applicationName">Your application's name, e.g. "MyMWSApp"</param>
 		/// <param name="applicationVersion">Your application's version, e.g. "1.0"</param>
 		/// <returns>this instance</returns>
-		public MarketplaceWebServiceSellersConfig WithUserAgent( string applicationName, string applicationVersion )
+		public MwsConfig WithUserAgent( string applicationName, string applicationVersion )
 		{
 			this.SetUserAgent( applicationName, applicationVersion );
 			return this;
@@ -170,11 +169,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 			{
 				try
 				{
-					Uri fullUri = new Uri( value );
+					var fullUri = new Uri( value );
 					this.cc.Endpoint = new Uri( fullUri.Scheme + "://" + fullUri.Authority );
 
 					// Strip slashes
-					String path = fullUri.PathAndQuery;
+					var path = fullUri.PathAndQuery;
 					if( path != null )
 						path = path.Trim( new[] { '/' } );
 
@@ -193,11 +192,11 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		/// <summary>
 		/// Sets the ServiceURL property
 		/// </summary>
-		/// <param name="serviceURL">ServiceURL property</param>
+		/// <param name="serviceUrl">ServiceURL property</param>
 		/// <returns>this instance</returns>
-		public MarketplaceWebServiceSellersConfig WithServiceURL( string serviceURL )
+		public MwsConfig WithServiceURL( string serviceUrl )
 		{
-			this.ServiceURL = serviceURL;
+			this.ServiceURL = serviceUrl;
 			return this;
 		}
 
@@ -226,7 +225,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		/// </summary>
 		/// <param name="proxyHost">proxy host</param>
 		/// <returns>this instance</returns>
-		public MarketplaceWebServiceSellersConfig WithProxyHost( string proxyHost )
+		public MwsConfig WithProxyHost( string proxyHost )
 		{
 			this.ProxyHost = proxyHost;
 			return this;
@@ -255,7 +254,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		/// </summary>
 		/// <param name="proxyPort">port number</param>
 		/// <returns>this instance</returns>
-		public MarketplaceWebServiceSellersConfig WithProxyPort( int proxyPort )
+		public MwsConfig WithProxyPort( int proxyPort )
 		{
 			this.ProxyPort = proxyPort;
 			return this;
@@ -284,7 +283,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		/// </summary>
 		/// <param name="proxyUsername">proxy username</param>
 		/// <returns>this instance</returns>
-		public MarketplaceWebServiceSellersConfig WithProxyUsername( string proxyUsername )
+		public MwsConfig WithProxyUsername( string proxyUsername )
 		{
 			this.ProxyUsername = proxyUsername;
 			return this;
@@ -313,7 +312,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		/// </summary>
 		/// <param name="proxyPassword">proxy password</param>
 		/// <returns>this instance</returns>
-		public MarketplaceWebServiceSellersConfig WithProxyPassword( string proxyPassword )
+		public MwsConfig WithProxyPassword( string proxyPassword )
 		{
 			this.ProxyPassword = proxyPassword;
 			return this;
@@ -344,7 +343,7 @@ namespace AmazonAccess.Services.MarketplaceWebServiceSellers
 		/// <param name="name">the name of the header to set</param>
 		/// <param name="value">value to send with header</param>
 		/// <returns>the current config object</returns>
-		public MarketplaceWebServiceSellersConfig WithRequestHeader( string name, string value )
+		public MwsConfig WithRequestHeader( string name, string value )
 		{
 			this.cc.IncludeRequestHeader( name, value );
 			return this;

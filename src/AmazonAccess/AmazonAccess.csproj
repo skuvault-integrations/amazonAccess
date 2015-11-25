@@ -71,6 +71,7 @@
     <Compile Include="Models\ReportType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AmazonClientsFactory.cs" />
+    <Compile Include="Services\Common\MwsConfig.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\FbaInventoryServiceMws.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\FbaInventoryServiceMwsClient.cs" />
     <Compile Include="Services\FbaInventoryServiceMws\FbaInventoryServiceMwsConfig.cs" />
@@ -256,8 +257,7 @@
     <Compile Include="Services\MarketplaceWebServiceOrders\OrdersService.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\IMarketplaceWebServiceSellers.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellersClient.cs" />
-    <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellersConfig.cs" />
-    <Compile Include="Services\MarketplaceWebServiceSellers\MarketplaceWebServiceSellersException.cs" />
+    <Compile Include="Services\MarketplaceWebServiceSellers\Model\MarketplaceWebServiceSellersException.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\Mock\MarketplaceWebServiceSellersMock.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\Model\MarketplaceParticipations.cs" />
     <Compile Include="Services\MarketplaceWebServiceSellers\Model\GetAuthTokenRequest.cs" />

@@ -17,9 +17,8 @@
 using System;
 using System.Net;
 using AmazonAccess.Services.Common;
-using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;
 
-namespace AmazonAccess.Services.MarketplaceWebServiceSellers
+namespace AmazonAccess.Services.MarketplaceWebServiceSellers.Model
 {
 	/// <summary>
 	/// Exception thrown by MarketplaceWebServiceSellers operations
