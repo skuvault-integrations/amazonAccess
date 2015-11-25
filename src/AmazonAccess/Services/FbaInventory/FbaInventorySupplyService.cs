@@ -28,6 +28,7 @@ namespace AmazonAccess.Services.FbaInventory
 	{
 		private readonly IFbaInventoryService _client;
 		private readonly AmazonCredentials _credentials;
+		private readonly Throttler _throttler = new Throttler( 30, 1 );
 
 		/// <param name="client">Instance of FBAInventoryServiceMWS client</param>
 		/// <param name="credentials">credentials</param>
@@ -81,7 +82,7 @@ namespace AmazonAccess.Services.FbaInventory
 				ResponseGroup = "Detailed"
 			};
 			var result = new List< InventorySupply >();
-			var response = this._client.ListInventorySupply( request, marker );
+			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListInventorySupply( request, marker ) ) );
 			if( response.IsSetListInventorySupplyResult() )
 			{
 				if( response.ListInventorySupplyResult.IsSetInventorySupplyList() )
@@ -105,7 +106,7 @@ namespace AmazonAccess.Services.FbaInventory
 					MWSAuthToken = this._credentials.MwsAuthToken,
 					NextToken = nextToken
 				};
-				var response = this._client.ListInventorySupplyByNextToken( request, marker );
+				var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListInventorySupplyByNextToken( request, marker ) ) );
 				if( !response.IsSetListInventorySupplyByNextTokenResult() || !response.ListInventorySupplyByNextTokenResult.IsSetInventorySupplyList() )
 					return;
 
