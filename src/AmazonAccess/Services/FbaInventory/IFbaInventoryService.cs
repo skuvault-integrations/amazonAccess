@@ -39,7 +39,7 @@ namespace AmazonAccess.Services.FbaInventory
 		///     GREEN: The service section is operating normally.
 		///     RED: The service section disruption.
 		/// </remarks>
-		GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request );
+		GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker );
 
 		/// <summary>
 		/// List Inventory Supply
@@ -78,7 +78,7 @@ namespace AmazonAccess.Services.FbaInventory
 		///     passing in the NextToken value from the previous result), until the returned NextToken
 		///     is null, indicating no further results are available.
 		/// </remarks>
-		ListInventorySupplyResponse ListInventorySupply( ListInventorySupplyRequest request );
+		ListInventorySupplyResponse ListInventorySupply( ListInventorySupplyRequest request, string marker );
 
 		/// <summary>
 		/// List Inventory Supply By Next Token
@@ -92,6 +92,6 @@ namespace AmazonAccess.Services.FbaInventory
 		///     This operation is used in conjunction with ListUpdatedInventorySupply.
 		///     Please refer to documentation for that operation for further details.
 		/// </remarks>
-		ListInventorySupplyByNextTokenResponse ListInventorySupplyByNextToken( ListInventorySupplyByNextTokenRequest request );
+		ListInventorySupplyByNextTokenResponse ListInventorySupplyByNextToken( ListInventorySupplyByNextTokenRequest request, string marker );
 	}
 }

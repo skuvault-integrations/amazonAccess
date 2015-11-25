@@ -177,50 +177,17 @@ namespace AmazonAccess
 		#region Get FBA inventory
 		public IEnumerable< InventorySupply > GetFbaInventory()
 		{
-			var inventory = new List< InventorySupply >();
-
-			ActionPolicies.Get.Do( () =>
-			{
-				var client = this._factory.CreateFbaInventoryClient();
-				var request = new ListInventorySupplyRequest
-				{
-					SellerId = this._credentials.SellerId,
-					QueryStartDateTime = DateTime.MinValue,
-					ResponseGroup = "Detailed",
-					MWSAuthToken = this._credentials.MwsAuthToken
-				};
-				var service = new FbaInventorySupplyService( client, request );
-
-				AmazonLogger.Log.Trace( "[amazon] Loading FBA inventory for seller {0}", this._credentials.SellerId );
-
-				inventory.AddRange( service.LoadInventory() );
-
-				AmazonLogger.Log.Trace( "[amazon] FBA inventiry for seller {0} loaded", this._credentials.SellerId );
-			} );
-
+			var client = this._factory.CreateFbaInventoryClient();
+			var service = new FbaInventorySupplyService( client, this._credentials );
+			var inventory = service.LoadFbaInventory( this.GetMarker() );
 			return inventory;
 		}
 
 		public bool IsFbaInventoryReceived()
 		{
-			try
-			{
-				var client = this._factory.CreateFbaInventoryClient();
-				var request = new ListInventorySupplyRequest
-				{
-					SellerId = this._credentials.SellerId,
-					QueryStartDateTime = DateTime.MinValue,
-					ResponseGroup = "Detailed",
-					MWSAuthToken = this._credentials.MwsAuthToken
-				};
-				var service = new FbaInventorySupplyService( client, request );
-				return service.IsInventoryReceived();
-			}
-			catch( Exception ex )
-			{
-				AmazonLogger.Log.Warn( ex, "[amazon] Checking FBA inventory for seller {0} failed", this._credentials.SellerId );
-				return false;
-			}
+			var client = this._factory.CreateFbaInventoryClient();
+			var service = new FbaInventorySupplyService( client, this._credentials );
+			return service.IsInventoryReceived( this.GetMarker() );
 		}
 
 		public IEnumerable< FbaManageInventory > GetDetailedFbaInventory()
@@ -249,12 +216,17 @@ namespace AmazonAccess
 		#region Sellers
 		public MarketplaceParticipations GetMarketplaceParticipations()
 		{
-			var marker = Guid.NewGuid().ToString();
 			var client = this._factory.CreateSellersClient();
 			var service = new SellerMarketplaceService( client, this._credentials );
-			var result = service.GetMarketplaceParticipations( marker );
+			var result = service.GetMarketplaceParticipations( this.GetMarker() );
 			return result;
 		}
 		#endregion
+
+		private string GetMarker()
+		{
+			var marker = Guid.NewGuid().ToString();
+			return marker;
+		}
 	}
 }

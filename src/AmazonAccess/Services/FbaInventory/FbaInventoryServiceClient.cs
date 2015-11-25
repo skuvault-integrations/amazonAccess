@@ -97,19 +97,19 @@ namespace AmazonAccess.Services.FbaInventory
 		{
 		}
 
-		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request )
+		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker )
 		{
-			return this.connection.Call( new Request< GetServiceStatusResponse >( "GetServiceStatus", this.servicePath ), request );
+			return this.connection.Call( new Request< GetServiceStatusResponse >( "GetServiceStatus", this.servicePath ), request, marker );
 		}
 
-		public ListInventorySupplyResponse ListInventorySupply( ListInventorySupplyRequest request )
+		public ListInventorySupplyResponse ListInventorySupply( ListInventorySupplyRequest request, string marker )
 		{
-			return this.connection.Call( new Request< ListInventorySupplyResponse >( "ListInventorySupply", this.servicePath ), request );
+			return this.connection.Call( new Request< ListInventorySupplyResponse >( "ListInventorySupply", this.servicePath ), request, marker );
 		}
 
-		public ListInventorySupplyByNextTokenResponse ListInventorySupplyByNextToken( ListInventorySupplyByNextTokenRequest request )
+		public ListInventorySupplyByNextTokenResponse ListInventorySupplyByNextToken( ListInventorySupplyByNextTokenRequest request, string marker )
 		{
-			return this.connection.Call( new Request< ListInventorySupplyByNextTokenResponse >( "ListInventorySupplyByNextToken", this.servicePath ), request );
+			return this.connection.Call( new Request< ListInventorySupplyByNextTokenResponse >( "ListInventorySupplyByNextToken", this.servicePath ), request, marker );
 		}
 
 		private class Request< TResponse >: IMwsRequestType< TResponse > where TResponse : IMwsObject

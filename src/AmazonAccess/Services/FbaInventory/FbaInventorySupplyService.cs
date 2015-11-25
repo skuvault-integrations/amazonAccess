@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using AmazonAccess.Misc;
+using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventory.Model;
 using CuttingEdge.Conditions;
 
@@ -26,17 +27,17 @@ namespace AmazonAccess.Services.FbaInventory
 	public class FbaInventorySupplyService
 	{
 		private readonly IFbaInventoryService _client;
-		private readonly ListInventorySupplyRequest _request;
+		private readonly AmazonCredentials _credentials;
 
 		/// <param name="client">Instance of FBAInventoryServiceMWS client</param>
-		/// <param name="request">ListInventorySupplyRequest request</param>
-		public FbaInventorySupplyService( IFbaInventoryService client, ListInventorySupplyRequest request )
+		/// <param name="credentials">credentials</param>
+		public FbaInventorySupplyService( IFbaInventoryService client, AmazonCredentials credentials )
 		{
 			Condition.Requires( client, "client" ).IsNotNull();
-			Condition.Requires( request, "request" ).IsNotNull();
+			Condition.Requires( credentials, "credentials" ).IsNotNull();
 
 			this._client = client;
-			this._request = request;
+			this._credentials = credentials;
 		}
 
 		/// <summary>
@@ -68,62 +69,73 @@ namespace AmazonAccess.Services.FbaInventory
 		/// is null, indicating no further results are available.
 		/// 
 		/// </summary>
-		public IEnumerable< InventorySupply > LoadInventory()
+		public IEnumerable< InventorySupply > LoadFbaInventory( string marker )
 		{
-			var inventory = new List< InventorySupply >();
-			var response = this._client.ListInventorySupply( this._request );
+			AmazonLogger.Trace( "LoadFbaInventory", this._credentials.SellerId, marker, "Begin invoke" );
 
+			var request = new ListInventorySupplyRequest
+			{
+				SellerId = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				QueryStartDateTime = DateTime.MinValue,
+				ResponseGroup = "Detailed"
+			};
+			var result = new List< InventorySupply >();
+			var response = this._client.ListInventorySupply( request, marker );
 			if( response.IsSetListInventorySupplyResult() )
 			{
-				var listInventorySupplyResult = response.ListInventorySupplyResult;
-				if( listInventorySupplyResult.IsSetInventorySupplyList() )
-					inventory.AddRange( listInventorySupplyResult.InventorySupplyList.member );
-				if( listInventorySupplyResult.IsSetNextToken() )
-				{
-					var nextResponse = this._client.ListInventorySupplyByNextToken( new ListInventorySupplyByNextTokenRequest
-					{
-						SellerId = this._request.SellerId,
-						NextToken = listInventorySupplyResult.NextToken,
-						MWSAuthToken = this._request.MWSAuthToken
-					} );
-
-					this.LoadNextInventoryInfoPage( nextResponse.ListInventorySupplyByNextTokenResult, inventory );
-				}
+				if( response.ListInventorySupplyResult.IsSetInventorySupplyList() )
+					result.AddRange( response.ListInventorySupplyResult.InventorySupplyList.member );
+				this.AddFbaInventoryFromOtherPages( response.ListInventorySupplyResult.NextToken, result, marker );
 			}
 
-			return inventory;
+			AmazonLogger.Trace( "LoadFbaInventory", this._credentials.SellerId, marker, "End invoke" );
+			return result;
 		}
 
-		public bool IsInventoryReceived()
+		private void AddFbaInventoryFromOtherPages( string nextToken, List< InventorySupply > result, string marker )
+		{
+			while( !string.IsNullOrEmpty( nextToken ) )
+			{
+				AmazonLogger.Trace( "AddFbaInventoryFromOtherPages", this._credentials.SellerId, marker, "NextToken:{0}", nextToken );
+
+				var request = new ListInventorySupplyByNextTokenRequest
+				{
+					SellerId = this._credentials.SellerId,
+					MWSAuthToken = this._credentials.MwsAuthToken,
+					NextToken = nextToken
+				};
+				var response = this._client.ListInventorySupplyByNextToken( request, marker );
+				if( !response.IsSetListInventorySupplyByNextTokenResult() || !response.ListInventorySupplyByNextTokenResult.IsSetInventorySupplyList() )
+					return;
+
+				result.AddRange( response.ListInventorySupplyByNextTokenResult.InventorySupplyList.member );
+				nextToken = response.ListInventorySupplyByNextTokenResult.NextToken;
+			}
+		}
+
+		public bool IsInventoryReceived( string marker )
 		{
 			try
 			{
-				AmazonLogger.Log.Trace( "[amazon] Checking FBA inventory for seller {0}", this._request.SellerId );
-				var response = this._client.ListInventorySupply( this._request );
-				AmazonLogger.Log.Trace( "[amazon] Checking FBA inventory for seller {0} finished", this._request.SellerId );
+				AmazonLogger.Trace( "IsInventoryReceived", this._credentials.SellerId, marker, "Begin invoke" );
+
+				var request = new ListInventorySupplyRequest
+				{
+					SellerId = this._credentials.SellerId,
+					MWSAuthToken = this._credentials.MwsAuthToken,
+					QueryStartDateTime = DateTime.MinValue,
+					ResponseGroup = "Detailed"
+				};
+				var response = this._client.ListInventorySupply( request, marker );
+
+				AmazonLogger.Trace( "IsInventoryReceived", this._credentials.SellerId, marker, "End invoke" );
 				return response.IsSetListInventorySupplyResult();
 			}
 			catch( Exception ex )
 			{
-				AmazonLogger.Log.Warn( ex, "[amazon] Checking FBA inventory for seller {0} failed", this._request.SellerId );
+				AmazonLogger.Warn( "IsInventoryReceived", this._credentials.SellerId, marker, ex, "Checking FBA inventory failed" );
 				return false;
-			}
-		}
-
-		private void LoadNextInventoryInfoPage( ListInventorySupplyByNextTokenResult listInventorySupplyResult, List< InventorySupply > inventory )
-		{
-			if( listInventorySupplyResult.IsSetInventorySupplyList() )
-				inventory.AddRange( listInventorySupplyResult.InventorySupplyList.member );
-			if( listInventorySupplyResult.IsSetNextToken() )
-			{
-				var response = this._client.ListInventorySupplyByNextToken( new ListInventorySupplyByNextTokenRequest
-				{
-					SellerId = this._request.SellerId,
-					NextToken = listInventorySupplyResult.NextToken,
-					MWSAuthToken = this._request.MWSAuthToken
-				} );
-
-				this.LoadNextInventoryInfoPage( response.ListInventorySupplyByNextTokenResult, inventory );
 			}
 		}
 	}

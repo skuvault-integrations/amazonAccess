@@ -31,11 +31,13 @@ namespace AmazonAccess.Services.Sellers
 			};
 			var result = new MarketplaceParticipations();
 			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListMarketplaceParticipations( request, marker ) ) );
-			if( !response.IsSetListMarketplaceParticipationsResult() )
-				return result;
+			if( response.IsSetListMarketplaceParticipationsResult() )
+			{
+				result.Add( response.ListMarketplaceParticipationsResult.ListMarketplaces, response.ListMarketplaceParticipationsResult.ListParticipations );
+				this.AddMarketplaceParticipationsFromOtherPages( response.ListMarketplaceParticipationsResult.NextToken, result, marker );
+			}
 
-			result.Add( response.ListMarketplaceParticipationsResult.ListMarketplaces, response.ListMarketplaceParticipationsResult.ListParticipations );
-			this.AddMarketplaceParticipationsFromOtherPages( response.ListMarketplaceParticipationsResult.NextToken, result, marker );
+			AmazonLogger.Trace( "GetMarketplaceParticipations", this._credentials.SellerId, marker, "End invoke" );
 			return result;
 		}
 

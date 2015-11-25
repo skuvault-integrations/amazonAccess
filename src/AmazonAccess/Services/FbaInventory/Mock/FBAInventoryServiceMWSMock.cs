@@ -34,17 +34,17 @@ namespace AmazonAccess.Services.FbaInventory.Mock
 	/// </remarks>
 	public class FBAInventoryServiceMWSMock: IFbaInventoryService
 	{
-		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request )
+		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker )
 		{
 			return this.newResponse< GetServiceStatusResponse >();
 		}
 
-		public ListInventorySupplyResponse ListInventorySupply( ListInventorySupplyRequest request )
+		public ListInventorySupplyResponse ListInventorySupply( ListInventorySupplyRequest request, string marker )
 		{
 			return this.newResponse< ListInventorySupplyResponse >();
 		}
 
-		public ListInventorySupplyByNextTokenResponse ListInventorySupplyByNextToken( ListInventorySupplyByNextTokenRequest request )
+		public ListInventorySupplyByNextTokenResponse ListInventorySupplyByNextToken( ListInventorySupplyByNextTokenRequest request, string marker )
 		{
 			return this.newResponse< ListInventorySupplyByNextTokenResponse >();
 		}
