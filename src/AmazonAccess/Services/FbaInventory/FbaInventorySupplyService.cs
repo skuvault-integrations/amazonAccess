@@ -115,11 +115,11 @@ namespace AmazonAccess.Services.FbaInventory
 			}
 		}
 
-		public bool IsInventoryReceived( string marker )
+		public bool IsFbaInventoryReceived( string marker )
 		{
 			try
 			{
-				AmazonLogger.Trace( "IsInventoryReceived", this._credentials.SellerId, marker, "Begin invoke" );
+				AmazonLogger.Trace( "IsFbaInventoryReceived", this._credentials.SellerId, marker, "Begin invoke" );
 
 				var request = new ListInventorySupplyRequest
 				{
@@ -130,12 +130,12 @@ namespace AmazonAccess.Services.FbaInventory
 				};
 				var response = this._client.ListInventorySupply( request, marker );
 
-				AmazonLogger.Trace( "IsInventoryReceived", this._credentials.SellerId, marker, "End invoke" );
+				AmazonLogger.Trace( "IsFbaInventoryReceived", this._credentials.SellerId, marker, "End invoke" );
 				return response.IsSetListInventorySupplyResult();
 			}
 			catch( Exception ex )
 			{
-				AmazonLogger.Warn( "IsInventoryReceived", this._credentials.SellerId, marker, ex, "Checking FBA inventory failed" );
+				AmazonLogger.Warn( "IsFbaInventoryReceived", this._credentials.SellerId, marker, ex, "Checking FBA inventory failed" );
 				return false;
 			}
 		}

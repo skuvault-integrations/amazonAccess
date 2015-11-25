@@ -187,7 +187,7 @@ namespace AmazonAccess
 		{
 			var client = this._factory.CreateFbaInventoryClient();
 			var service = new FbaInventorySupplyService( client, this._credentials );
-			return service.IsInventoryReceived( this.GetMarker() );
+			return service.IsFbaInventoryReceived( this.GetMarker() );
 		}
 
 		public IEnumerable< FbaManageInventory > GetDetailedFbaInventory()
