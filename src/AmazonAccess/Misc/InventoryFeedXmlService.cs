@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using AmazonAccess.Services.FbaInventoryServiceMws.Model;
+using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model.AmazonEnvelope.InventoryFeed;
 using CuttingEdge.Conditions;
 

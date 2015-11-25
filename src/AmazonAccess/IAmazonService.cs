@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using AmazonAccess.Services.FbaInventoryServiceMws.Model;
+using AmazonAccess.Services.FbaInventory.Model;
+using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel;
 using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
 using AmazonAccess.Services.MarketplaceWebServiceSellers.Model;

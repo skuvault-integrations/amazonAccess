@@ -18,19 +18,19 @@
 using System;
 using System.Collections.Generic;
 using AmazonAccess.Misc;
-using AmazonAccess.Services.FbaInventoryServiceMws.Model;
+using AmazonAccess.Services.FbaInventory.Model;
 using CuttingEdge.Conditions;
 
-namespace AmazonAccess.Services.FbaInventoryServiceMws
+namespace AmazonAccess.Services.FbaInventory
 {
 	public class FbaInventorySupplyService
 	{
-		private readonly IFbaInventoryServiceMws _client;
+		private readonly IFbaInventoryService _client;
 		private readonly ListInventorySupplyRequest _request;
 
 		/// <param name="client">Instance of FBAInventoryServiceMWS client</param>
 		/// <param name="request">ListInventorySupplyRequest request</param>
-		public FbaInventorySupplyService( IFbaInventoryServiceMws client, ListInventorySupplyRequest request )
+		public FbaInventorySupplyService( IFbaInventoryService client, ListInventorySupplyRequest request )
 		{
 			Condition.Requires( client, "client" ).IsNotNull();
 			Condition.Requires( request, "request" ).IsNotNull();

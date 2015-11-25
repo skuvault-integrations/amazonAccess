@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using AmazonAccess.Services.FbaInventoryServiceMws.Model;
+using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
 using NUnit.Framework;
 
 namespace AmazonAccessTests.Feeds

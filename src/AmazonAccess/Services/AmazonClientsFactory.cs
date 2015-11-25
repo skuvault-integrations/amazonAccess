@@ -1,6 +1,6 @@
 ﻿using AmazonAccess.Models;
 using AmazonAccess.Services.Common;
-using AmazonAccess.Services.FbaInventoryServiceMws;
+using AmazonAccess.Services.FbaInventory;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports;
 using AmazonAccess.Services.MarketplaceWebServiceOrders;
 using AmazonAccess.Services.MarketplaceWebServiceSellers;
@@ -19,12 +19,12 @@ namespace AmazonAccess.Services
 			this._credentials = credentials;
 		}
 
-		public IFbaInventoryServiceMws CreateFbaInventoryClient()
+		public IFbaInventoryService CreateFbaInventoryClient()
 		{
-			var config = new FbaInventoryServiceMwsConfig { ServiceURL = this._credentials.AmazonMarketplaces.FbaInventoryServiceUrl };
+			var config = new MwsConfig { ServiceURL = this._credentials.AmazonMarketplaces.FbaInventoryServiceUrl };
 			config.SetUserAgentHeader( "C#", "-1", "3" );
 
-			return new FbaInventoryServiceMwsClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
+			return new FbaInventoryServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
 		}
 
 		public IMarketplaceWebServiceFeedsReports CreateFeedsReportsClient()

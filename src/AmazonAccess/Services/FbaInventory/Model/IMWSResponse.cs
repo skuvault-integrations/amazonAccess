@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2009-2014 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2015 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -8,21 +8,16 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
  * specific language governing permissions and limitations under the License.
  *******************************************************************************
- * Library Version: 2014-09-30
- * Generated: Fri Sep 26 16:01:24 GMT 2014
+ * Library Version: 2015-06-18
+ * Generated: Thu Jun 18 19:30:05 GMT 2015
  */
 
 using AmazonAccess.Services.Common;
 
-namespace AmazonAccess.Services.FbaInventoryServiceMws.Model
+namespace AmazonAccess.Services.FbaInventory.Model
 {
-    public interface IMWSResponse : IMwsObject
-    {
-        ResponseHeaderMetadata ResponseHeaderMetadata
-        {
-            get;
-            set;
-        }
-
-    }
+	public interface IMWSResponse: IMwsObject
+	{
+		ResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
+	}
 }
