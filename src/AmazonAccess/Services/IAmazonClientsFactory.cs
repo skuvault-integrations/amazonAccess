@@ -1,6 +1,6 @@
 ﻿using AmazonAccess.Services.FbaInventory;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports;
-using AmazonAccess.Services.MarketplaceWebServiceOrders;
+using AmazonAccess.Services.Orders;
 using AmazonAccess.Services.Sellers;
 
 namespace AmazonAccess.Services
@@ -9,7 +9,7 @@ namespace AmazonAccess.Services
 	{
 		IFbaInventoryService CreateFbaInventoryClient();
 		IMarketplaceWebServiceFeedsReports CreateFeedsReportsClient();
-		IMarketplaceWebServiceOrders CreateOrdersClient( string applicationName, string applicationVersion );
+		IOrdersServiceClient CreateOrdersClient();
 		ISellersService CreateSellersClient();
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AmazonAccess.Services.FbaInventory.Model;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel;
-using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
+using AmazonAccess.Services.Orders.Model;
 using AmazonAccess.Services.Sellers.Model;
 
 namespace AmazonAccess

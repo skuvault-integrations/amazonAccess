@@ -2,7 +2,7 @@
 using AmazonAccess.Services.Common;
 using AmazonAccess.Services.FbaInventory;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports;
-using AmazonAccess.Services.MarketplaceWebServiceOrders;
+using AmazonAccess.Services.Orders;
 using AmazonAccess.Services.Sellers;
 using CuttingEdge.Conditions;
 
@@ -24,7 +24,7 @@ namespace AmazonAccess.Services
 			var config = new MwsConfig { ServiceURL = this._credentials.AmazonMarketplaces.FbaInventoryServiceUrl };
 			config.SetUserAgentHeader( "C#", "-1", "3" );
 
-			return new FbaInventoryServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
+			return new FbaInventoryServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, "SkuVault", "1.0", config );
 		}
 
 		public IMarketplaceWebServiceFeedsReports CreateFeedsReportsClient()
@@ -35,11 +35,12 @@ namespace AmazonAccess.Services
 			return new MarketplaceWebServiceFeedsReportsClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
 		}
 
-		public IMarketplaceWebServiceOrders CreateOrdersClient( string applicationName, string applicationVersion )
+		public IOrdersServiceClient CreateOrdersClient()
 		{
-			var config = new MarketplaceWebServiceOrdersConfig { ServiceURL = this._credentials.AmazonMarketplaces.OrdersServiceUrl };
+			var config = new MwsConfig { ServiceURL = this._credentials.AmazonMarketplaces.OrdersServiceUrl };
+			config.SetUserAgentHeader( "C#", "-1", "3" );
 
-			return new MarketplaceWebServiceOrdersClient( applicationName, applicationVersion, this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
+			return new OrdersServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, "SkuVault", "1.0", config );
 		}
 
 		public ISellersService CreateSellersClient()
@@ -47,7 +48,7 @@ namespace AmazonAccess.Services
 			var config = new MwsConfig { ServiceURL = this._credentials.AmazonMarketplaces.SellersServiceUrl };
 			config.SetUserAgentHeader( "C#", "-1", "3" );
 
-			return new SellersServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
+			return new SellersServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, "SkuVault", "1.0", config );
 		}
 	}
 }

@@ -9,8 +9,8 @@ using AmazonAccess.Services.FbaInventory.Model;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
 using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel;
-using AmazonAccess.Services.MarketplaceWebServiceOrders;
-using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
+using AmazonAccess.Services.Orders;
+using AmazonAccess.Services.Orders.Model;
 using AmazonAccess.Services.Sellers;
 using AmazonAccess.Services.Sellers.Model;
 using CuttingEdge.Conditions;
@@ -39,7 +39,7 @@ namespace AmazonAccess
 		/// <returns></returns>
 		public IEnumerable< ComposedOrder > GetOrdersById( List< string > ids )
 		{
-			var client = this._factory.CreateOrdersClient( "SkuVault", "1.0" );
+			var client = this._factory.CreateOrdersClient();
 			var request = new GetOrderRequest
 			{
 				SellerId = this._credentials.SellerId,
@@ -60,7 +60,7 @@ namespace AmazonAccess
 
 		public IEnumerable< ComposedOrder > GetOrders( DateTime dateFrom, DateTime dateTo )
 		{
-			var client = this._factory.CreateOrdersClient( "SkuVault", "1.0" );
+			var client = this._factory.CreateOrdersClient();
 			var request = new ListOrdersRequest
 			{
 				SellerId = this._credentials.SellerId,
@@ -87,7 +87,7 @@ namespace AmazonAccess
 			{
 				dateFrom = dateFrom ?? DateTime.UtcNow.AddHours( -1 );
 				dateTo = dateTo ?? DateTime.UtcNow.AddMinutes( -10 );
-				var client = this._factory.CreateOrdersClient( "SkuVault", "1.0" );
+				var client = this._factory.CreateOrdersClient();
 				var request = new ListOrdersRequest
 				{
 					SellerId = this._credentials.SellerId,

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AmazonAccess.Services.MarketplaceWebServiceOrders.Model;
+using AmazonAccess.Services.Orders.Model;
 using FluentAssertions;
 using NUnit.Framework;
 
