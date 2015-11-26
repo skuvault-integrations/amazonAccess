@@ -33,7 +33,7 @@ namespace AmazonAccess.Services.Sellers.Mock
 	///
 	/// Note, current Mock Service implementation does not validate requests
 	/// </remarks>
-	public class MarketplaceWebServiceSellersMock: ISellersService
+	public class MarketplaceWebServiceSellersMock: ISellersServiceClient
 	{
 
 		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker )

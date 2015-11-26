@@ -72,7 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AmazonClientsFactory.cs" />
     <Compile Include="Services\Common\MwsConfig.cs" />
-    <Compile Include="Services\FbaInventory\IFbaInventoryService.cs" />
+    <Compile Include="Services\FbaInventory\IFbaInventoryServiceClient.cs" />
     <Compile Include="Services\FbaInventory\FbaInventoryServiceClient.cs" />
     <Compile Include="Services\FbaInventory\Model\FBAInventoryServiceMWSException.cs" />
     <Compile Include="Services\FbaInventory\FbaInventorySupplyService.cs" />
@@ -233,7 +233,7 @@
     <Compile Include="Services\Orders\OrderItemsService.cs" />
     <Compile Include="Services\Orders\OrdersByIdService.cs" />
     <Compile Include="Services\Orders\OrdersService.cs" />
-    <Compile Include="Services\Sellers\ISellersService.cs" />
+    <Compile Include="Services\Sellers\ISellersServiceClient.cs" />
     <Compile Include="Services\Sellers\SellersServiceClient.cs" />
     <Compile Include="Services\Sellers\Model\MarketplaceWebServiceSellersException.cs" />
     <Compile Include="Services\Sellers\Mock\MarketplaceWebServiceSellersMock.cs" />

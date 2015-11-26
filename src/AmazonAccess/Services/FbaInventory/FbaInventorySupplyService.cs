@@ -26,13 +26,13 @@ namespace AmazonAccess.Services.FbaInventory
 {
 	public class FbaInventorySupplyService
 	{
-		private readonly IFbaInventoryService _client;
+		private readonly IFbaInventoryServiceClient _client;
 		private readonly AmazonCredentials _credentials;
 		private readonly Throttler _throttler = new Throttler( 30, 1 );
 
 		/// <param name="client">Instance of FBAInventoryServiceMWS client</param>
 		/// <param name="credentials">credentials</param>
-		public FbaInventorySupplyService( IFbaInventoryService client, AmazonCredentials credentials )
+		public FbaInventorySupplyService( IFbaInventoryServiceClient client, AmazonCredentials credentials )
 		{
 			Condition.Requires( client, "client" ).IsNotNull();
 			Condition.Requires( credentials, "credentials" ).IsNotNull();

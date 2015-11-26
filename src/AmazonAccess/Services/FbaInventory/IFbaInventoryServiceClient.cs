@@ -26,7 +26,7 @@ namespace AmazonAccess.Services.FbaInventory
 	///     items change status and get the current availability status to
 	///     keep product listing information up to date
 	/// </summary>
-	public interface IFbaInventoryService
+	public interface IFbaInventoryServiceClient
 	{
 		/// <summary>
 		/// Get Service Status

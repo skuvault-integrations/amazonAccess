@@ -7,11 +7,11 @@ namespace AmazonAccess.Services.Sellers
 {
 	public class SellerMarketplaceService
 	{
-		private readonly ISellersService _client;
+		private readonly ISellersServiceClient _client;
 		private readonly AmazonCredentials _credentials;
 		private readonly Throttler _throttler = new Throttler( 15, 61 );
 
-		public SellerMarketplaceService( ISellersService client, AmazonCredentials credentials )
+		public SellerMarketplaceService( ISellersServiceClient client, AmazonCredentials credentials )
 		{
 			Condition.Requires( client, "client" ).IsNotNull();
 			Condition.Requires( credentials, "credentials" ).IsNotNull();

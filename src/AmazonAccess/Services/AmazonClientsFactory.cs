@@ -19,7 +19,7 @@ namespace AmazonAccess.Services
 			this._credentials = credentials;
 		}
 
-		public IFbaInventoryService CreateFbaInventoryClient()
+		public IFbaInventoryServiceClient CreateFbaInventoryClient()
 		{
 			var config = new MwsConfig { ServiceURL = this._credentials.AmazonMarketplaces.FbaInventoryServiceUrl };
 			config.SetUserAgentHeader( "C#", "-1", "3" );
@@ -43,7 +43,7 @@ namespace AmazonAccess.Services
 			return new OrdersServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, "SkuVault", "1.0", config );
 		}
 
-		public ISellersService CreateSellersClient()
+		public ISellersServiceClient CreateSellersClient()
 		{
 			var config = new MwsConfig { ServiceURL = this._credentials.AmazonMarketplaces.SellersServiceUrl };
 			config.SetUserAgentHeader( "C#", "-1", "3" );

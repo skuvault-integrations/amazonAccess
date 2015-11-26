@@ -21,7 +21,7 @@ namespace AmazonAccess.Services.Sellers
 	/// <summary>
 	/// This is the Sellers API section of the Marketplace Web Service.
 	/// </summary>
-	public interface ISellersService
+	public interface ISellersServiceClient
 	{
 		/// <summary>
 		/// Get Service Status

@@ -32,7 +32,7 @@ namespace AmazonAccess.Services.FbaInventory.Mock
 	///
 	/// Note, current Mock Service implementation does not validate requests
 	/// </remarks>
-	public class FBAInventoryServiceMWSMock: IFbaInventoryService
+	public class FBAInventoryServiceMWSMock: IFbaInventoryServiceClient
 	{
 		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker )
 		{

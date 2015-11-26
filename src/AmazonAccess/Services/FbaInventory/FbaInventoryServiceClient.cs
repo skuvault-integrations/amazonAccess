@@ -23,7 +23,7 @@ namespace AmazonAccess.Services.FbaInventory
 	/// <summary>
 	/// FBAInventoryServiceMWSClient is an implementation of FBAInventoryServiceMWS
 	/// </summary>
-	public class FbaInventoryServiceClient: IFbaInventoryService
+	public class FbaInventoryServiceClient: IFbaInventoryServiceClient
 	{
 		private const string libraryVersion = "2015-06-18";
 
