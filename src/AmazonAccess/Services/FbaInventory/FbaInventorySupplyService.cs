@@ -107,11 +107,12 @@ namespace AmazonAccess.Services.FbaInventory
 					NextToken = nextToken
 				};
 				var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListInventorySupplyByNextToken( request, marker ) ) );
-				if( !response.IsSetListInventorySupplyByNextTokenResult() || !response.ListInventorySupplyByNextTokenResult.IsSetInventorySupplyList() )
-					return;
-
-				result.AddRange( response.ListInventorySupplyByNextTokenResult.InventorySupplyList.member );
-				nextToken = response.ListInventorySupplyByNextTokenResult.NextToken;
+				if( response.IsSetListInventorySupplyByNextTokenResult() )
+				{
+					if( response.ListInventorySupplyByNextTokenResult.IsSetInventorySupplyList() )
+						result.AddRange( response.ListInventorySupplyByNextTokenResult.InventorySupplyList.member );
+					nextToken = response.ListInventorySupplyByNextTokenResult.NextToken;
+				}
 			}
 		}
 
@@ -129,14 +130,16 @@ namespace AmazonAccess.Services.FbaInventory
 					ResponseGroup = "Detailed"
 				};
 				var response = this._client.ListInventorySupply( request, marker );
-
-				AmazonLogger.Trace( "IsFbaInventoryReceived", this._credentials.SellerId, marker, "End invoke" );
 				return response.IsSetListInventorySupplyResult();
 			}
 			catch( Exception ex )
 			{
 				AmazonLogger.Warn( "IsFbaInventoryReceived", this._credentials.SellerId, marker, ex, "Checking FBA inventory failed" );
 				return false;
+			}
+			finally
+			{
+				AmazonLogger.Trace( "IsFbaInventoryReceived", this._credentials.SellerId, marker, "End invoke" );
 			}
 		}
 	}

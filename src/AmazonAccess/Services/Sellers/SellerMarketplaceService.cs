@@ -54,11 +54,11 @@ namespace AmazonAccess.Services.Sellers
 					NextToken = nextToken
 				};
 				var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListMarketplaceParticipationsByNextToken( request, marker ) ) );
-				if( !response.IsSetListMarketplaceParticipationsByNextTokenResult() )
-					return;
-
-				result.Add( response.ListMarketplaceParticipationsByNextTokenResult.ListMarketplaces, response.ListMarketplaceParticipationsByNextTokenResult.ListParticipations );
-				nextToken = response.ListMarketplaceParticipationsByNextTokenResult.NextToken;
+				if( response.IsSetListMarketplaceParticipationsByNextTokenResult() )
+				{
+					result.Add( response.ListMarketplaceParticipationsByNextTokenResult.ListMarketplaces, response.ListMarketplaceParticipationsByNextTokenResult.ListParticipations );
+					nextToken = response.ListMarketplaceParticipationsByNextTokenResult.NextToken;
+				}
 			}
 		}
 	}

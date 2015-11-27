@@ -21,8 +21,10 @@ namespace AmazonAccess.Services.Sellers.Model
 
 		public void Add( ListMarketplaces listMarketplaces, ListParticipations listParticipations )
 		{
-			this.Marketplaces.AddRange( listMarketplaces.Marketplace );
-			this.Participations.AddRange( listParticipations.Participation );
+			if( listMarketplaces != null )
+				this.Marketplaces.AddRange( listMarketplaces.Marketplace );
+			if( listParticipations != null )
+				this.Participations.AddRange( listParticipations.Participation );
 		}
 	}
 }
