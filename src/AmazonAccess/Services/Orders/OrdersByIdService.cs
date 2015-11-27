@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using AmazonAccess.Misc;
+using AmazonAccess.Models;
 using AmazonAccess.Services.Orders.Model;
 using CuttingEdge.Conditions;
 
@@ -9,64 +10,53 @@ namespace AmazonAccess.Services.Orders
 	public sealed class OrdersByIdService
 	{
 		private readonly IOrdersServiceClient _client;
-		private readonly GetOrderRequest _request;
+		private readonly AmazonCredentials _credentials;
+		private readonly OrderItemsService _orderItemsService;
 		private readonly Throttler _getOrdersByIdThrottler = new Throttler( 6, 61 );
 		private readonly Throttler _orderItemsThrottler = new Throttler( 30, 2 );
 
-		public OrdersByIdService( IOrdersServiceClient client, GetOrderRequest request )
+		public OrdersByIdService( IOrdersServiceClient client, AmazonCredentials credentials )
 		{
 			Condition.Requires( client, "client" ).IsNotNull();
-			Condition.Requires( request, "request" ).IsNotNull();
+			Condition.Requires( credentials, "credentials" ).IsNotNull();
 
 			this._client = client;
-			this._request = request;
+			this._credentials = credentials;
+			this._orderItemsService = new OrderItemsService( this._client, this._credentials, this._orderItemsThrottler );
 		}
 
-		public IEnumerable< ComposedOrder > LoadOrders()
+		public int LoadOrdersById( List< string > ids, Action< ComposedOrder > processOrderAction, string marker )
 		{
-			var response = ActionPolicies.Get.Get( () => this._getOrdersByIdThrottler.Execute( () => this._client.GetOrder( this._request ) ) );
+			var idsStr = string.Join( ",", ids );
+			AmazonLogger.Trace( "LoadOrdersById", this._credentials.SellerId, marker, "Begin invoke for ids '{0}'", idsStr );
 
+			var request = new GetOrderRequest
+			{
+				SellerId = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				AmazonOrderId = ids
+			};
+			var ordersCount = 0;
+			var response = ActionPolicies.Get.Get( () => this._getOrdersByIdThrottler.Execute( () => this._client.GetOrder( request, marker ) ) );
 			if( response.IsSetGetOrderResult() )
 			{
-				var ordersResult = response.GetOrderResult;
-				foreach( var order in this.FillOrdersWithItems( ordersResult ) )
-				{
-					yield return order;
-				}
+				if( response.GetOrderResult.IsSetOrders() )
+					ordersCount += this.FillAndProcessOrders( response.GetOrderResult.Orders, processOrderAction, marker );
 			}
+
+			AmazonLogger.Trace( "LoadOrdersById", this._credentials.SellerId, marker, "End invoke for ids '{0}'. Received '{1}' orders", idsStr, ordersCount );
+			return ordersCount;
 		}
 
-		private IEnumerable< ComposedOrder > FillOrdersWithItems( GetOrderResult ordersResult )
-		{
-			if( ordersResult.IsSetOrders() )
-			{
-				var orders = ordersResult.Orders.Select( o => new ComposedOrder( o ) ).ToList();
-				this.FillOrders( orders );
-				foreach( var order in orders )
-				{
-					yield return order;
-				}
-			}
-		}
-
-		private void FillOrders( IEnumerable< ComposedOrder > orders )
+		private int FillAndProcessOrders( IReadOnlyCollection< Order > orders, Action< ComposedOrder > processOrderAction, string marker )
 		{
 			foreach( var order in orders )
 			{
-				order.OrderItems = this.GetOrderItems( order.AmazonOrder.AmazonOrderId );
+				var resultOrder = new ComposedOrder( order );
+				resultOrder.OrderItems = this._orderItemsService.LoadOrderItems( resultOrder.AmazonOrder.AmazonOrderId, marker );
+				processOrderAction( resultOrder );
 			}
-		}
-
-		private IEnumerable< OrderItem > GetOrderItems( string orderId )
-		{
-			var itemsService = new OrderItemsService( this._client, new ListOrderItemsRequest
-			{
-				AmazonOrderId = orderId,
-				SellerId = this._request.SellerId,
-				MWSAuthToken = this._request.MWSAuthToken
-			}, this._orderItemsThrottler );
-
-			return itemsService.LoadOrderItems();
+			return orders.Count;
 		}
 	}
 }

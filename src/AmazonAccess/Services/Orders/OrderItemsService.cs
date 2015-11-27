@@ -1,86 +1,97 @@
 ﻿using System;
 using System.Collections.Generic;
 using AmazonAccess.Misc;
+using AmazonAccess.Models;
 using AmazonAccess.Services.Orders.Model;
+using CuttingEdge.Conditions;
 
 namespace AmazonAccess.Services.Orders
 {
 	internal sealed class OrderItemsService
 	{
 		private readonly IOrdersServiceClient _client;
-		private readonly ListOrderItemsRequest _request;
+		private readonly AmazonCredentials _credentials;
 		private readonly Throttler _throttler;
 
-		public OrderItemsService( IOrdersServiceClient client, ListOrderItemsRequest request, Throttler throttler )
+		public OrderItemsService( IOrdersServiceClient client, AmazonCredentials credentials, Throttler throttler )
 		{
+			Condition.Requires( client, "client" ).IsNotNull();
+			Condition.Requires( credentials, "credentials" ).IsNotNull();
+			Condition.Requires( throttler, "throttler" ).IsNotNull();
+
 			this._client = client;
-			this._request = request;
+			this._credentials = credentials;
 			this._throttler = throttler;
 		}
 
-		public IEnumerable< OrderItem > LoadOrderItems()
+		public IEnumerable< OrderItem > LoadOrderItems( string orderId, string marker )
 		{
-			AmazonLogger.Log.Trace( "[amazon] Loading order items for seller {0} and order id {1}", this._request.SellerId, this._request.AmazonOrderId );
+			AmazonLogger.Trace( "LoadOrderItems", this._credentials.SellerId, marker, "Begin invoke for order '{0}'", orderId );
 
-			var orderItems = new List< OrderItem >();
-			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListOrderItems( this._request ) ) );
-
+			var request = new ListOrderItemsRequest
+			{
+				SellerId = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				AmazonOrderId = orderId
+			};
+			var result = new List< OrderItem >();
+			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListOrderItems( request, marker ) ) );
 			if( response.IsSetListOrderItemsResult() )
 			{
-				var listInventorySupplyResult = response.ListOrderItemsResult;
-				if( listInventorySupplyResult.IsSetOrderItems() )
-					orderItems.AddRange( listInventorySupplyResult.OrderItems );
-				if( listInventorySupplyResult.IsSetNextToken() )
-				{
-					var nextResponse = ActionPolicies.Get.Get( () => this._throttler.Execute( () =>
-						this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
-						{
-							SellerId = this._request.SellerId,
-							NextToken = listInventorySupplyResult.NextToken,
-							MWSAuthToken = this._request.MWSAuthToken
-						} ) ) );
-
-					this.LoadNextOrderItemsInfoPage( nextResponse.ListOrderItemsByNextTokenResult, orderItems );
-				}
+				if( response.ListOrderItemsResult.IsSetOrderItems() )
+					result.AddRange( response.ListOrderItemsResult.OrderItems );
+				this.AddOrderItemsFromOtherPages( response.ListOrderItemsResult.NextToken, result, marker );
 			}
 
-			AmazonLogger.Log.Trace( "[amazon] Order items for seller {0} and order id {1} loaded", this._request.SellerId, this._request.AmazonOrderId );
-
-			return orderItems;
+			AmazonLogger.Trace( "LoadOrderItems", this._credentials.SellerId, marker, "End invoke for order '{0}'", orderId );
+			return result;
 		}
 
-		public bool IsOrderItemsReceived()
+		private void AddOrderItemsFromOtherPages( string nextToken, List< OrderItem > result, string marker )
+		{
+			while( !string.IsNullOrEmpty( nextToken ) )
+			{
+				AmazonLogger.Trace( "AddOrderItemsFromOtherPages", this._credentials.SellerId, marker, "NextToken '{0}'", nextToken );
+
+				var request = new ListOrderItemsByNextTokenRequest
+				{
+					SellerId = this._credentials.SellerId,
+					MWSAuthToken = this._credentials.MwsAuthToken,
+					NextToken = nextToken
+				};
+				var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListOrderItemsByNextToken( request, marker ) ) );
+				if( response.IsSetListOrderItemsByNextTokenResult() )
+				{
+					if( response.ListOrderItemsByNextTokenResult.IsSetOrderItems() )
+						result.AddRange( response.ListOrderItemsByNextTokenResult.OrderItems );
+					nextToken = response.ListOrderItemsByNextTokenResult.NextToken;
+				}
+			}
+		}
+
+		public bool IsOrderItemsReceived( string orderId, string marker )
 		{
 			try
 			{
-				AmazonLogger.Log.Trace( "[amazon] Checking order items for seller {0} and order id {1}", this._request.SellerId, this._request.AmazonOrderId );
-				var response = this._client.ListOrderItems( this._request );
-				AmazonLogger.Log.Trace( "[amazon] Checking order items for seller {0} and order id {1} finished", this._request.SellerId, this._request.AmazonOrderId );
+				AmazonLogger.Trace( "IsOrderItemsReceived", this._credentials.SellerId, marker, "Begin invoke for order '{0}'", orderId );
+
+				var request = new ListOrderItemsRequest
+				{
+					AmazonOrderId = orderId,
+					SellerId = this._credentials.SellerId,
+					MWSAuthToken = this._credentials.MwsAuthToken
+				};
+				var response = this._client.ListOrderItems( request, marker );
 				return response.IsSetListOrderItemsResult();
 			}
 			catch( Exception ex )
 			{
-				AmazonLogger.Log.Warn( ex, "[amazon] Checking order items for seller {0} and order id {1} failed", this._request.SellerId, this._request.AmazonOrderId );
+				AmazonLogger.Warn( "IsOrderItemsReceived", this._credentials.SellerId, marker, ex, "Checking order '{0}' items failed", orderId );
 				return false;
 			}
-		}
-
-		private void LoadNextOrderItemsInfoPage( ListOrderItemsByNextTokenResult listOrderItemsSupplyResult, List< OrderItem > orderItems )
-		{
-			if( listOrderItemsSupplyResult.IsSetOrderItems() )
-				orderItems.AddRange( listOrderItemsSupplyResult.OrderItems );
-
-			if( listOrderItemsSupplyResult.IsSetNextToken() )
+			finally
 			{
-				var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () =>
-					this._client.ListOrderItemsByNextToken( new ListOrderItemsByNextTokenRequest
-					{
-						SellerId = this._request.SellerId,
-						NextToken = listOrderItemsSupplyResult.NextToken,
-						MWSAuthToken = this._request.MWSAuthToken
-					} ) ) );
-
-				this.LoadNextOrderItemsInfoPage( response.ListOrderItemsByNextTokenResult, orderItems );
+				AmazonLogger.Trace( "IsOrderItemsReceived", this._credentials.SellerId, marker, "End invoke for order '{0}'", orderId );
 			}
 		}
 	}

@@ -34,32 +34,32 @@ namespace AmazonAccess.Services.Orders.Mock
 	/// </remarks>
 	public class MarketplaceWebServiceOrdersMock: IOrdersServiceClient
 	{
-		public GetOrderResponse GetOrder( GetOrderRequest request )
+		public GetOrderResponse GetOrder( GetOrderRequest request, string marker )
 		{
 			return this.newResponse< GetOrderResponse >();
 		}
 
-		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request )
+		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker )
 		{
 			return this.newResponse< GetServiceStatusResponse >();
 		}
 
-		public ListOrderItemsResponse ListOrderItems( ListOrderItemsRequest request )
+		public ListOrderItemsResponse ListOrderItems( ListOrderItemsRequest request, string marker )
 		{
 			return this.newResponse< ListOrderItemsResponse >();
 		}
 
-		public ListOrderItemsByNextTokenResponse ListOrderItemsByNextToken( ListOrderItemsByNextTokenRequest request )
+		public ListOrderItemsByNextTokenResponse ListOrderItemsByNextToken( ListOrderItemsByNextTokenRequest request, string marker )
 		{
 			return this.newResponse< ListOrderItemsByNextTokenResponse >();
 		}
 
-		public ListOrdersResponse ListOrders( ListOrdersRequest request )
+		public ListOrdersResponse ListOrders( ListOrdersRequest request, string marker )
 		{
 			return this.newResponse< ListOrdersResponse >();
 		}
 
-		public ListOrdersByNextTokenResponse ListOrdersByNextToken( ListOrdersByNextTokenRequest request )
+		public ListOrdersByNextTokenResponse ListOrdersByNextToken( ListOrdersByNextTokenRequest request, string marker )
 		{
 			return this.newResponse< ListOrdersByNextTokenResponse >();
 		}

@@ -97,34 +97,34 @@ namespace AmazonAccess.Services.Orders
 		{
 		}
 
-		public GetOrderResponse GetOrder( GetOrderRequest request )
+		public GetOrderResponse GetOrder( GetOrderRequest request, string marker )
 		{
-			return this.connection.Call( new Request< GetOrderResponse >( "GetOrder", this.servicePath ), request );
+			return this.connection.Call( new Request< GetOrderResponse >( "GetOrder", this.servicePath ), request, marker );
 		}
 
-		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request )
+		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker )
 		{
-			return this.connection.Call( new Request< GetServiceStatusResponse >( "GetServiceStatus", this.servicePath ), request );
+			return this.connection.Call( new Request< GetServiceStatusResponse >( "GetServiceStatus", this.servicePath ), request, marker );
 		}
 
-		public ListOrderItemsResponse ListOrderItems( ListOrderItemsRequest request )
+		public ListOrderItemsResponse ListOrderItems( ListOrderItemsRequest request, string marker )
 		{
-			return this.connection.Call( new Request< ListOrderItemsResponse >( "ListOrderItems", this.servicePath ), request );
+			return this.connection.Call( new Request< ListOrderItemsResponse >( "ListOrderItems", this.servicePath ), request, marker );
 		}
 
-		public ListOrderItemsByNextTokenResponse ListOrderItemsByNextToken( ListOrderItemsByNextTokenRequest request )
+		public ListOrderItemsByNextTokenResponse ListOrderItemsByNextToken( ListOrderItemsByNextTokenRequest request, string marker )
 		{
-			return this.connection.Call( new Request< ListOrderItemsByNextTokenResponse >( "ListOrderItemsByNextToken", this.servicePath ), request );
+			return this.connection.Call( new Request< ListOrderItemsByNextTokenResponse >( "ListOrderItemsByNextToken", this.servicePath ), request, marker );
 		}
 
-		public ListOrdersResponse ListOrders( ListOrdersRequest request )
+		public ListOrdersResponse ListOrders( ListOrdersRequest request, string marker )
 		{
-			return this.connection.Call( new Request< ListOrdersResponse >( "ListOrders", this.servicePath ), request );
+			return this.connection.Call( new Request< ListOrdersResponse >( "ListOrders", this.servicePath ), request, marker );
 		}
 
-		public ListOrdersByNextTokenResponse ListOrdersByNextToken( ListOrdersByNextTokenRequest request )
+		public ListOrdersByNextTokenResponse ListOrdersByNextToken( ListOrdersByNextTokenRequest request, string marker )
 		{
-			return this.connection.Call( new Request< ListOrdersByNextTokenResponse >( "ListOrdersByNextToken", this.servicePath ), request );
+			return this.connection.Call( new Request< ListOrdersByNextTokenResponse >( "ListOrdersByNextToken", this.servicePath ), request, marker );
 		}
 
 		private class Request< TResponse >: IMwsRequestType< TResponse > where TResponse : IMwsObject

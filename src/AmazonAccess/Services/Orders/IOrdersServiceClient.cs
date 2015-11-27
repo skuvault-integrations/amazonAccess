@@ -31,7 +31,7 @@ namespace AmazonAccess.Services.Orders
 		/// <remarks>
 		/// This operation takes up to 50 order ids and returns the corresponding orders.
 		/// </remarks>
-		GetOrderResponse GetOrder( GetOrderRequest request );
+		GetOrderResponse GetOrder( GetOrderRequest request, string marker );
 
 		/// <summary>
 		/// Get Service Status
@@ -42,7 +42,7 @@ namespace AmazonAccess.Services.Orders
 		/// Returns the service status of a particular MWS API section. The operation
 		/// 		takes no input.
 		/// </remarks>
-		GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request );
+		GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker );
 
 		/// <summary>
 		/// List Order Items
@@ -53,7 +53,7 @@ namespace AmazonAccess.Services.Orders
 		/// This operation can be used to list the items of the order indicated by the
 		///         given order id (only a single Amazon order id is allowed).
 		/// </remarks>
-		ListOrderItemsResponse ListOrderItems( ListOrderItemsRequest request );
+		ListOrderItemsResponse ListOrderItems( ListOrderItemsRequest request, string marker );
 
 		/// <summary>
 		/// List Order Items By Next Token
@@ -65,7 +65,7 @@ namespace AmazonAccess.Services.Orders
 		///         provide a nextToken. That nextToken can be used with this operation to
 		///         retrive the next batch of items for that order.
 		/// </remarks>
-		ListOrderItemsByNextTokenResponse ListOrderItemsByNextToken( ListOrderItemsByNextTokenRequest request );
+		ListOrderItemsByNextTokenResponse ListOrderItemsByNextToken( ListOrderItemsByNextTokenRequest request, string marker );
 
 		/// <summary>
 		/// List Orders
@@ -75,7 +75,7 @@ namespace AmazonAccess.Services.Orders
 		/// <remarks>
 		/// ListOrders can be used to find orders that meet the specified criteria.
 		/// </remarks>
-		ListOrdersResponse ListOrders( ListOrdersRequest request );
+		ListOrdersResponse ListOrders( ListOrdersRequest request, string marker );
 
 		/// <summary>
 		/// List Orders By Next Token
@@ -87,6 +87,6 @@ namespace AmazonAccess.Services.Orders
 		///         than returned that matched the given filter criteria, ListOrdersByNextToken
 		///         can be used to retrieve those other orders using that nextToken.
 		/// </remarks>
-		ListOrdersByNextTokenResponse ListOrdersByNextToken( ListOrdersByNextTokenRequest request );
+		ListOrdersByNextTokenResponse ListOrdersByNextToken( ListOrdersByNextTokenRequest request, string marker );
 	}
 }

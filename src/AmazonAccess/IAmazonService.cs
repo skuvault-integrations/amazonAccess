@@ -14,10 +14,11 @@ namespace AmazonAccess
 		/// This operation takes up to 50 order ids and returns the corresponding orders.
 		/// </summary>
 		/// <param name="ids"></param>
+		/// <param name="processOrderAction"></param>
 		/// <returns></returns>
-		IEnumerable< ComposedOrder > GetOrdersById( List< string > ids );
+		int GetOrdersById( List< string > ids, Action< ComposedOrder > processOrderAction );
 
-		IEnumerable< ComposedOrder > GetOrders( DateTime dateFrom, DateTime dateTo );
+		int GetOrders( DateTime dateFrom, DateTime dateTo, Action< ComposedOrder > processOrderAction );
 		bool IsOrdersReceived( DateTime? dateFrom = null, DateTime? dateTo = null );
 
 		void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems );

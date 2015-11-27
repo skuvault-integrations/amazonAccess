@@ -36,83 +36,31 @@ namespace AmazonAccess
 		/// This operation takes up to 50 order ids and returns the corresponding orders.
 		/// </summary>
 		/// <param name="ids"></param>
+		/// <param name="processOrderAction"></param>
 		/// <returns></returns>
-		public IEnumerable< ComposedOrder > GetOrdersById( List< string > ids )
+		public int GetOrdersById( List< string > ids, Action< ComposedOrder > processOrderAction )
 		{
 			var client = this._factory.CreateOrdersClient();
-			var request = new GetOrderRequest
-			{
-				SellerId = this._credentials.SellerId,
-				MWSAuthToken = this._credentials.MwsAuthToken,
-				AmazonOrderId = ids
-			};
-
-			AmazonLogger.Log.Trace( "[amazon] Loading orders by id for seller {0}", this._credentials.SellerId );
-
-			var service = new OrdersByIdService( client, request );
-			foreach( var order in service.LoadOrders() )
-			{
-				yield return order;
-			}
-
-			AmazonLogger.Log.Trace( "[amazon] Orders by id for seller {0} loaded", this._credentials.SellerId );
+			var service = new OrdersByIdService( client, this._credentials );
+			var ordersCount = service.LoadOrdersById( ids, processOrderAction, this.GetMarker() );
+			return ordersCount;
 		}
 
-		public IEnumerable< ComposedOrder > GetOrders( DateTime dateFrom, DateTime dateTo )
+		public int GetOrders( DateTime dateFrom, DateTime dateTo, Action< ComposedOrder > processOrderAction )
 		{
 			var client = this._factory.CreateOrdersClient();
-			var request = new ListOrdersRequest
-			{
-				SellerId = this._credentials.SellerId,
-				LastUpdatedAfter = dateFrom,
-				//LastUpdatedBefore = dateTo,
-				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
-				MWSAuthToken = this._credentials.MwsAuthToken
-			};
-
-			AmazonLogger.Log.Trace( "[amazon] Loading orders for seller {0}", this._credentials.SellerId );
-
-			var service = new OrdersService( client, request );
-			foreach( var order in service.LoadOrders() )
-			{
-				yield return order;
-			}
-
-			AmazonLogger.Log.Trace( "[amazon] Orders for seller {0} loaded", this._credentials.SellerId );
+			var service = new OrdersService( client, this._credentials );
+			var ordersCount = service.LoadOrders( dateFrom, dateTo, processOrderAction, this.GetMarker() );
+			return ordersCount;
 		}
 
 		public bool IsOrdersReceived( DateTime? dateFrom = null, DateTime? dateTo = null )
 		{
-			try
-			{
-				dateFrom = dateFrom ?? DateTime.UtcNow.AddHours( -1 );
-				dateTo = dateTo ?? DateTime.UtcNow.AddMinutes( -10 );
-				var client = this._factory.CreateOrdersClient();
-				var request = new ListOrdersRequest
-				{
-					SellerId = this._credentials.SellerId,
-					LastUpdatedAfter = dateFrom.Value,
-					//LastUpdatedBefore = dateTo,
-					MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
-					MWSAuthToken = this._credentials.MwsAuthToken
-				};
-
-				AmazonLogger.Log.Trace( "[amazon] Checking orders for seller {0}", this._credentials.SellerId );
-
-				var service = new OrdersService( client, request );
-				if( service.IsOrdersReceived() )
-				{
-					AmazonLogger.Log.Trace( "[amazon] Checking orders for seller {0} finished", this._credentials.SellerId );
-					return true;
-				}
-				AmazonLogger.Log.Warn( "[amazon] Checking orders for seller {0} failed", this._credentials.SellerId );
-				return false;
-			}
-			catch( Exception ex )
-			{
-				AmazonLogger.Log.Warn( ex, "[amazon] Checking orders for seller {0} failed", this._credentials.SellerId );
-				return false;
-			}
+			dateFrom = dateFrom ?? DateTime.UtcNow.AddHours( -1 );
+			dateTo = dateTo ?? DateTime.UtcNow.AddMinutes( -10 );
+			var client = this._factory.CreateOrdersClient();
+			var service = new OrdersService( client, this._credentials );
+			return service.IsOrdersReceived( dateFrom.Value, dateTo.Value, this.GetMarker() );
 		}
 		#endregion
 

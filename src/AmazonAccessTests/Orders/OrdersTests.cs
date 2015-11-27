@@ -21,9 +21,14 @@ namespace AmazonAccessTests.Orders
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 
 			var ids = new List< string > { "" };
-			var orders = service.GetOrdersById( ids ).ToList();
+			var allOrders = new List< ComposedOrder >();
+			var ordersCount = service.GetOrdersById( ids, o =>
+			{
+				allOrders.Add( o );
+			} );
 
-			orders.Count().Should().BeGreaterThan( 0 );
+			allOrders.Count().Should().BeGreaterThan( 0 );
+			allOrders.Count().Should().Be( ordersCount );
 		}
 
 		[ Test ]
@@ -31,17 +36,16 @@ namespace AmazonAccessTests.Orders
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 
-			var count = 0;
-			var stopwatch = new Stopwatch();
-			var orders = service.GetOrders( DateTime.UtcNow - TimeSpan.FromDays( 3 ), DateTime.UtcNow );
-			//var orders = service.GetOrders( new DateTime( 2015, 5, 19, 0, 0, 0, 0, DateTimeKind.Utc ), new DateTime( 2015, 5, 22, 0, 0, 0, 0, DateTimeKind.Utc ) );
-			stopwatch.Start();
-
 			var allOrders = new List< ComposedOrder >();
 			var foundOrders = new List< ComposedOrder >();
 			var ids = new List< string > { "" };
+			var count = 0;
 
-			foreach( var order in orders )
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+
+			//var ordersCount = service.GetOrders( new DateTime( 2015, 5, 19, 0, 0, 0, 0, DateTimeKind.Utc ), new DateTime( 2015, 5, 22, 0, 0, 0, 0, DateTimeKind.Utc ), order =>
+			var ordersCount = service.GetOrders( DateTime.UtcNow - TimeSpan.FromDays( 3 ), DateTime.UtcNow, order =>
 			{
 				allOrders.Add( order );
 				//if( ids.Any( o => o.Equals( order.AmazonOrder.AmazonOrderId, StringComparison.InvariantCultureIgnoreCase ) ) )
@@ -54,10 +58,11 @@ namespace AmazonAccessTests.Orders
 					count = 0;
 					stopwatch.Restart();
 				}
-			}
+			} );
 
 			var marketplaces = allOrders.GroupBy( x => x.AmazonOrder.MarketplaceId ).ToList();
-			orders.Count().Should().BeGreaterThan( 0 );
+			allOrders.Count().Should().BeGreaterThan( 0 );
+			allOrders.Count().Should().Be( ordersCount );
 		}
 
 		[ Test ]

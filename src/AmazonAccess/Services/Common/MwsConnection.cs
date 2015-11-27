@@ -124,8 +124,9 @@ namespace AmazonAccess.Services.Common
 		/// <typeparam name="T"></typeparam>
 		/// <param name="type"></param>
 		/// <param name="requestData"></param>
+		/// <param name="marker"></param>
 		/// <returns></returns>
-		public T Call< T >( IMwsRequestType< T > type, IMwsObject requestData, string marker = null ) where T : IMwsObject
+		public T Call< T >( IMwsRequestType< T > type, IMwsObject requestData, string marker ) where T : IMwsObject
 		{
 			try
 			{
