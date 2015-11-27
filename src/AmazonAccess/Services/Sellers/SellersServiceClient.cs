@@ -40,10 +40,10 @@ namespace AmazonAccess.Services.Sellers
 		/// <param name="secretKey">Secret Key</param>
 		/// <param name="config">configuration</param>
 		public SellersServiceClient(
-			string applicationName,
-			string applicationVersion,
 			string accessKey,
 			string secretKey,
+			string applicationName,
+			string applicationVersion,
 			MwsConfig config )
 
 		{
