@@ -15,7 +15,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml;
 
 namespace AmazonAccess.Services.Common
@@ -210,6 +212,21 @@ namespace AmazonAccess.Services.Common
 				mwsObject.WriteFragmentTo( this );
 				this.EndObject( name );
 			}
+		}
+
+		public void WriteHeader( string name, object value )
+		{
+			throw new NotImplementedException();
+		}
+
+		public void WriteRequestBody( Stream bodyStream )
+		{
+			throw new NotImplementedException();
+		}
+
+		public void WriteRequestBody( string bodyData, Encoding encoding )
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

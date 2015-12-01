@@ -4,11 +4,12 @@ using System.Linq;
 using AmazonAccess.Misc;
 using AmazonAccess.Models;
 using AmazonAccess.Services;
+using AmazonAccess.Services.Common;
 using AmazonAccess.Services.FbaInventory;
 using AmazonAccess.Services.FbaInventory.Model;
-using AmazonAccess.Services.MarketplaceWebServiceFeedsReports;
-using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
-using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel;
+using AmazonAccess.Services.FeedsReports;
+using AmazonAccess.Services.FeedsReports.Model;
+using AmazonAccess.Services.FeedsReports.ReportModel;
 using AmazonAccess.Services.Orders;
 using AmazonAccess.Services.Orders.Model;
 using AmazonAccess.Services.Sellers;
@@ -91,24 +92,22 @@ namespace AmazonAccess
 		{
 			var xmlService = new InventoryFeedXmlService( inventoryItems, this._credentials.SellerId );
 			var contentString = xmlService.GetDocumentString();
-			var contentStream = xmlService.GetDocumentStream();
 
 			AmazonLogger.Log.Trace( "[amazon] Inventory document for seller {0}\n{1}", this._credentials.SellerId, contentString );
 
 			var request = new SubmitFeedRequest
 			{
-				MarketplaceIdList = new IdList { Id = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList() },
-				Merchant = this._credentials.SellerId,
+				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
+				SellerId = this._credentials.SellerId,
 				FeedType = FeedType.InventoryQuantityUpdate.Description,
-				FeedContent = contentStream,
-				ContentMD5 = MarketplaceWebServiceFeedsReportsClient.CalculateContentMD5( contentStream ),
+				FeedContent = contentString,
 				MWSAuthToken = this._credentials.MwsAuthToken
 			};
 
 			return request;
 		}
 
-		private void SubmitInventoryUpdateRequest( IMarketplaceWebServiceFeedsReports client, IEnumerable< AmazonInventoryItem > inventoryItems )
+		private void SubmitInventoryUpdateRequest( IFeedReportServiceClient client, IEnumerable< AmazonInventoryItem > inventoryItems )
 		{
 			var request = this.InitInventoryFeedRequest( inventoryItems );
 			var service = new FeedsService( client );
@@ -116,7 +115,6 @@ namespace AmazonAccess
 			ActionPolicies.Submit.Do( () =>
 			{
 				service.SubmitFeed( request );
-				request.FeedContent.Close();
 				ActionPolicies.CreateApiDelay( 2 ).Wait();
 			} );
 		}

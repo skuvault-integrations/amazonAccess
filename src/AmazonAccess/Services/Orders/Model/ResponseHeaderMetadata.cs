@@ -19,13 +19,13 @@ namespace AmazonAccess.Services.Orders.Model
 {
 	public class ResponseHeaderMetadata: MwsResponseHeaderMetadata
 	{
-		public ResponseHeaderMetadata( string requestId, string responseContext, string timestamp, double? quotaMax, double? quotaRemaining, DateTime? quotaResetsAt )
-			: base( requestId, responseContext, timestamp, quotaMax, quotaRemaining, quotaResetsAt )
+		public ResponseHeaderMetadata( string requestId, string responseContext, string timestamp, double? quotaMax, double? quotaRemaining, DateTime? quotaResetsAt, string contentMd5 )
+			: base( requestId, responseContext, timestamp, quotaMax, quotaRemaining, quotaResetsAt, contentMd5 )
 		{
 		}
 
 		public ResponseHeaderMetadata()
-			: base( null, "", null, null, null, null )
+			: base( null, "", null, null, null, null, null )
 		{
 		}
 

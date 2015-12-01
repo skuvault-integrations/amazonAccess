@@ -69,5 +69,7 @@ namespace AmazonAccess.Services.Common
 		/// </summary>
 		/// <returns>A List of w3c DOM Elements</returns>
 		List< XmlElement > ReadAny();
+
+		string ReadAll();
 	}
 }

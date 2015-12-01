@@ -12,6 +12,8 @@
  */
 
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Xml;
 
 namespace AmazonAccess.Services.Common
@@ -47,6 +49,8 @@ namespace AmazonAccess.Services.Common
 		/// <param name="name">The label for the value.</param>
 		/// <param name="value">The value to output.</param>
 		void Write( string name, object value );
+
+		void WriteHeader( string name, object value );
 
 		/// <summary>
 		/// Write out an attribute value with proper escaping and delimiters for the context. 
@@ -96,5 +100,9 @@ namespace AmazonAccess.Services.Common
 		/// </summary>
 		/// <param name="elements">Collection of w3c DOM elements to write</param>
 		void WriteAny( ICollection< XmlElement > elements );
+
+		void WriteRequestBody( Stream bodyStream );
+
+		void WriteRequestBody( string bodyData, Encoding encoding );
 	}
 }

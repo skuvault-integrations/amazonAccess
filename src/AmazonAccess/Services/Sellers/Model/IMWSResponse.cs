@@ -16,13 +16,8 @@ using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.Sellers.Model
 {
-    public interface IMWSResponse : IMwsObject
-    {
-        ResponseHeaderMetadata ResponseHeaderMetadata
-        {
-            get;
-            set;
-        }
-
-    }
+	public interface IMWSResponse: IMwsObject
+	{
+		ResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
+	}
 }

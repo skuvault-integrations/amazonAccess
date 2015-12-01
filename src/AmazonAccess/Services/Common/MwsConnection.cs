@@ -20,12 +20,15 @@ namespace AmazonAccess.Services.Common
 {
 	public class MwsConnection: ICloneable
 	{
+		private const string DEFAULT_SERVICE_PATH = "";
+
 		#region Fields and Constructors
 		private readonly object lockThis = new object();
 
 		private string applicationName;
 		private string applicationVersion;
 		private string libraryVersion;
+		private string serviceVersion;
 		private string userAgent;
 		private Dictionary< string, string > headers;
 
@@ -43,7 +46,7 @@ namespace AmazonAccess.Services.Common
 		private string proxyPassword;
 
 		private volatile bool frozen;
-		private Dictionary< string, ServiceEndpoint > cachedServiceMap;
+		private Dictionary< string, MwsConnection.ServiceEndpoint > cachedServiceMap;
 
 		public MwsConnection()
 		{
@@ -55,6 +58,7 @@ namespace AmazonAccess.Services.Common
 			this.signatureMethod = "HmacSHA256";
 			this.connectionTimeout = 50000;
 			this.libraryVersion = "1.0.0";
+			this.serviceVersion = string.Empty;
 		}
 
 		public MwsConnection( Uri endpoint, string applicationName, string applicationVersion, string awsAccessKeyId, string awsSecretKeyId ): this()
@@ -79,7 +83,14 @@ namespace AmazonAccess.Services.Common
 			}
 		}
 
-		internal HttpWebRequest GetHttpClient( Uri uri )
+		internal HttpWebRequest GetHttpClient( Uri uri, string queryParameters, IDictionary< string, string > additionalHeaders, string contentMd5 )
+		{
+			uri = new Uri( uri.AbsoluteUri + "?" + queryParameters );
+			additionalHeaders.Add( "Content-MD5", contentMd5 );
+			return this.GetHttpClient( uri, additionalHeaders, "text/xml; charset=iso-8859-1" );
+		}
+
+		internal HttpWebRequest GetHttpClient( Uri uri, IDictionary< string, string > additionalHeaders, string contentType = "application/x-www-form-urlencoded; charset=utf-8" )
 		{
 			if( this.frozen )
 			{
@@ -92,8 +103,12 @@ namespace AmazonAccess.Services.Common
 				request.UserAgent = this.UserAgent;
 				request.Method = "POST";
 				request.Timeout = this.ConnectionTimeout;
-				request.ContentType = "application/x-www-form-urlencoded; charset=utf-8";
+				request.ContentType = contentType;
 				foreach( KeyValuePair< string, string > header in this.headers )
+				{
+					request.Headers[ header.Key ] = header.Value;
+				}
+				foreach( KeyValuePair< string, string > header in additionalHeaders )
 				{
 					request.Headers[ header.Key ] = header.Value;
 				}
@@ -106,15 +121,14 @@ namespace AmazonAccess.Services.Common
 		/// <summary>
 		/// Creates a new MwsCall
 		/// </summary>
-		/// <param name="servicePath"></param>
 		/// <param name="operationName"></param>
 		/// <returns>A new request</returns>
-		public IMwsCall NewCall( string servicePath, string operationName )
+		public IMwsCall NewCall( string operationName )
 		{
 			if( !this.frozen )
 				this.freeze();
 
-			ServiceEndpoint sep = this.GetServiceEndpoint( servicePath );
+			ServiceEndpoint sep = this.GetServiceEndpoint( this.ServicePath );
 			return new MwsAQCall( this, sep, operationName );
 		}
 
@@ -130,9 +144,8 @@ namespace AmazonAccess.Services.Common
 		{
 			try
 			{
-				var servicePath = type.ServicePath;
 				var operationName = type.OperationName;
-				var mc = this.NewCall( servicePath, operationName );
+				var mc = this.NewCall( operationName );
 				requestData.WriteFragmentTo( mc );
 				var responseReader = mc.invoke( marker );
 				var rhmd = mc.GetResponseMetadataHeader();
@@ -187,7 +200,7 @@ namespace AmazonAccess.Services.Common
 		/// <param name="applicationVersion">Escaped application version</param>
 		/// <param name="programmingLanguage">Escaped programming language</param>
 		/// <param name="additionalNameValuePairs">Raw attribute name,value pair</param>        
-		public void SetUserAgent( string applicationName, string applicationVersion, string programmingLanguage, string[] additionalNameValuePairs )
+		public void SetUserAgent( string applicationName, string applicationVersion, string programmingLanguage, params string[] additionalNameValuePairs )
 		{
 			lock( this.lockThis )
 			{
@@ -259,6 +272,16 @@ namespace AmazonAccess.Services.Common
 			}
 		}
 
+		public string ServiceVersion
+		{
+			get { return this.serviceVersion; }
+			set
+			{
+				this.CheckUpdatable();
+				this.serviceVersion = value;
+			}
+		}
+
 		public string UserAgent
 		{
 			get { return this.userAgent; }
@@ -314,6 +337,39 @@ namespace AmazonAccess.Services.Common
 					this.cachedServiceMap.Add( servicePath, sep );
 				}
 				return this.cachedServiceMap[ servicePath ];
+			}
+		}
+
+		public string ServicePath{ get; private set; }
+
+		/// <summary>
+		/// Gets and sets of the URL to base MWS calls on
+		/// May include the path to make MWS calls to. Defaults to Sellers/2011-07-01
+		/// </summary>
+		public string ServiceURL
+		{
+			get { return new Uri( this.Endpoint, this.ServicePath ).ToString(); }
+			set
+			{
+				try
+				{
+					var fullUri = new Uri( value );
+					this.Endpoint = new Uri( fullUri.Scheme + "://" + fullUri.Authority );
+
+					// Strip slashes
+					var path = fullUri.PathAndQuery;
+					if( path != null )
+						path = path.Trim( new[] { '/' } );
+
+					if( String.IsNullOrEmpty( path ) )
+						this.ServicePath = DEFAULT_SERVICE_PATH;
+					else
+						this.ServicePath = path;
+				}
+				catch( Exception e )
+				{
+					throw MwsUtil.Wrap( e );
+				}
 			}
 		}
 

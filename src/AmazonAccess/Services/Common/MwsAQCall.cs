@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
 using AmazonAccess.Misc;
@@ -29,9 +30,11 @@ namespace AmazonAccess.Services.Common
 	{
 		private readonly MwsConnection connection;
 		private readonly IDictionary< string, string > parameters = new SortedDictionary< string, string >( StringComparer.Ordinal );
+		private readonly IDictionary< string, string > headers = new SortedDictionary< string, string >( StringComparer.Ordinal );
 		private readonly MwsConnection.ServiceEndpoint serviceEndPoint;
-
-		public HttpWebRequest request;
+		private Stream StreamForRequestBody;
+		private string DataForRequestBody;
+		private Encoding EncodingForRequestBody;
 
 		private readonly string operationName;
 		private MwsResponseHeaderMetadata ResponseHeaderMetadata;
@@ -63,16 +66,33 @@ namespace AmazonAccess.Services.Common
 			HttpStatusCode statusCode;
 			try
 			{
-				this.request = this.connection.GetHttpClient( this.serviceEndPoint.URI );
-				var requestData = new UTF8Encoding().GetBytes( queryString );
-				this.request.ContentLength = requestData.Length;
-				using( var requestStream = this.request.GetRequestStream() )
-					requestStream.Write( requestData, 0, requestData.Length );
+				HttpWebRequest request;
+				if( this.StreamForRequestBody != null )
+				{
+					request = this.connection.GetHttpClient( this.serviceEndPoint.URI, queryString, this.headers, CalculateContentMD5( this.StreamForRequestBody ) );
+					this.StreamForRequestBody.Position = 0;
+					var streamReader = new StreamReader( this.StreamForRequestBody );
+					var bodyForLog = streamReader.ReadToEnd();
+					AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Request body:\n{0}", bodyForLog );
+					this.WriteToRequestBody( request, this.StreamForRequestBody );
+				}
+				else if( !string.IsNullOrEmpty( this.DataForRequestBody ) && this.EncodingForRequestBody != null )
+				{
+					var bites = this.EncodingForRequestBody.GetBytes( this.DataForRequestBody );
+					request = this.connection.GetHttpClient( this.serviceEndPoint.URI, queryString, this.headers, CalculateContentMD5( bites ) );
+					AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Request body:\n{0}", this.DataForRequestBody );
+					this.WriteToRequestBody( request, bites );
+				}
+				else
+				{
+					request = this.connection.GetHttpClient( this.serviceEndPoint.URI, this.headers );
+					this.WriteToRequestBody( request, queryString );
+				}
 
-				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "URL:'{0}' Getting response", this.request.RequestUri.AbsoluteUri );
+				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "URL:'{0}' Getting response", request.RequestUri.AbsoluteUri );
 
 				string message;
-				using( var httpResponse = ( HttpWebResponse )this.request.GetResponse() )
+				using( var httpResponse = ( HttpWebResponse )request.GetResponse() )
 				{
 					statusCode = httpResponse.StatusCode;
 					message = httpResponse.StatusDescription;
@@ -84,10 +104,17 @@ namespace AmazonAccess.Services.Common
 				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "StatusCode:'{0}' Response received with: \n--- Response header metadata: ---\n{1} \n--- Response body: ---\n{2}",
 					statusCode, this.ResponseHeaderMetadata, responseBody );
 
-				if( statusCode == HttpStatusCode.OK )
-					return new MwsXmlReader( responseBody );
+				if( statusCode != HttpStatusCode.OK )
+					throw new MwsException( ( int )statusCode, message, null, null, responseBody, this.ResponseHeaderMetadata );
 
-				throw new MwsException( ( int )statusCode, message, null, null, responseBody, this.ResponseHeaderMetadata );
+				try
+				{
+					return new MwsXmlReader( responseBody );
+				}
+				catch( XmlException )
+				{
+					return new MwsStringReader( responseBody );
+				}
 			}
 			catch( WebException we ) // Web exception is thrown on unsuccessful responses
 			{
@@ -114,6 +141,28 @@ namespace AmazonAccess.Services.Common
 			{
 				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Undefined exception message:'{0}'", e.Message );
 				throw new MwsException( e );
+			}
+		}
+
+		private void WriteToRequestBody( HttpWebRequest request, string requestData )
+		{
+			var bytes = new UTF8Encoding().GetBytes( requestData );
+			this.WriteToRequestBody( request, bytes );
+		}
+
+		private void WriteToRequestBody( HttpWebRequest request, byte[] requestData )
+		{
+			request.ContentLength = requestData.Length;
+			using( var requestStream = request.GetRequestStream() )
+				requestStream.Write( requestData, 0, requestData.Length );
+		}
+
+		private void WriteToRequestBody( HttpWebRequest request, Stream requestData )
+		{
+			using( var requestStream = request.GetRequestStream() )
+			{
+				requestData.Position = 0;
+				this.CopyStream( requestData, requestStream );
 			}
 		}
 
@@ -162,7 +211,17 @@ namespace AmazonAccess.Services.Common
 				quotaResetsAt = null;
 			}
 
-			return new MwsResponseHeaderMetadata( requestId, context, timestamp, quotaMax, quotaRemaining, quotaResetsAt );
+			string contentMD5;
+			try
+			{
+				contentMD5 = httpResponse.GetResponseHeader( "Content-MD5" );
+			}
+			catch( Exception )
+			{
+				contentMD5 = null;
+			}
+
+			return new MwsResponseHeaderMetadata( requestId, context, timestamp, quotaMax, quotaRemaining, quotaResetsAt, contentMD5 );
 		}
 
 		/// <summary>
@@ -198,7 +257,9 @@ namespace AmazonAccess.Services.Common
 			this.parameters.Add( "AWSAccessKeyId", this.connection.AwsAccessKeyId );
 			this.parameters.Add( "Action", this.operationName );
 			this.parameters.Add( "Timestamp", MwsUtil.GetFormattedTimestamp() );
-			this.parameters.Add( "Version", this.serviceEndPoint.version );
+			var version = this.serviceEndPoint.version ?? this.connection.ServiceVersion;
+			if( !string.IsNullOrEmpty( version ) )
+				this.parameters.Add( "Version", version );
 			string signature = MwsUtil.SignParameters( this.serviceEndPoint.URI, this.connection.SignatureVersion, this.connection.SignatureMethod, this.parameters, this.connection.AwsSecretKeyId );
 			this.parameters.Add( "Signature", signature );
 		}
@@ -218,20 +279,20 @@ namespace AmazonAccess.Services.Common
 			return sellerId.Value ?? string.Empty;
 		}
 
-		private void putValue( object value )
+		private void PutValue( IDictionary< string, string > dictionary, object value, StringBuilder prefix )
 		{
 			if( value == null )
 				return;
 			if( value is IMwsObject )
 			{
-				this.parameterPrefix.Append( '.' );
+				prefix.Append( '.' );
 				( value as IMwsObject ).WriteFragmentTo( this );
 				return;
 			}
-			var name = this.parameterPrefix.ToString();
+			var name = prefix.ToString();
 			if( value is DateTime )
 			{
-				this.parameters.Add( name, MwsUtil.GetFormattedTimestamp( ( DateTime )value ) );
+				dictionary.Add( name, MwsUtil.GetFormattedTimestamp( ( DateTime )value ) );
 				return;
 			}
 			var valueStr = value.ToString();
@@ -239,7 +300,7 @@ namespace AmazonAccess.Services.Common
 				return;
 			if( value is bool )
 				valueStr = valueStr.ToLower();
-			this.parameters.Add( name, valueStr );
+			dictionary.Add( name, valueStr );
 		}
 
 		public MwsResponseHeaderMetadata GetResponseMetadataHeader()
@@ -249,13 +310,22 @@ namespace AmazonAccess.Services.Common
 
 		/** The parameter prefix */
 		private readonly StringBuilder parameterPrefix = new StringBuilder();
+		private readonly StringBuilder headerPrefix = new StringBuilder();
 
 		public void Write( string name, object value )
 		{
 			int holdParameterPrefixLen = this.parameterPrefix.Length;
 			this.parameterPrefix.Append( name );
-			this.putValue( value );
+			this.PutValue( this.parameters, value, this.parameterPrefix );
 			this.parameterPrefix.Length = holdParameterPrefixLen;
+		}
+
+		public void WriteHeader( string name, object value )
+		{
+			int holdPrefixLen = this.headerPrefix.Length;
+			this.headerPrefix.Append( name );
+			this.PutValue( this.headers, value, this.headerPrefix );
+			this.headerPrefix.Length = holdPrefixLen;
 		}
 
 		public void Write( string xmlNamespace, string name, IMwsObject value )
@@ -289,7 +359,7 @@ namespace AmazonAccess.Services.Common
 			{
 				this.parameterPrefix.Length = dotLen;
 				this.parameterPrefix.Append( i );
-				this.putValue( v );
+				this.PutValue( this.parameters, v, this.parameterPrefix );
 				i++;
 			}
 			this.parameterPrefix.Length = holdParameterPrefixLen;
@@ -303,6 +373,17 @@ namespace AmazonAccess.Services.Common
 		public void WriteAny( ICollection< XmlElement > elements )
 		{
 			throw new NotSupportedException( "WriteAny not supported" );
+		}
+
+		public void WriteRequestBody( Stream bodyStream )
+		{
+			this.StreamForRequestBody = bodyStream;
+		}
+
+		public void WriteRequestBody( string bodyData, Encoding encoding )
+		{
+			this.DataForRequestBody = bodyData;
+			this.EncodingForRequestBody = encoding;
 		}
 
 		public void WriteValue( object value )
@@ -323,6 +404,36 @@ namespace AmazonAccess.Services.Common
 		public void EndObject( string name )
 		{
 			throw new NotSupportedException( "Complex object writing not supported" );
+		}
+
+		public static string CalculateContentMD5( Stream content )
+		{
+			var provider = new MD5CryptoServiceProvider();
+			var hash = provider.ComputeHash( content );
+			return Convert.ToBase64String( hash );
+		}
+
+		public static string CalculateContentMD5( byte[] content )
+		{
+			var provider = new MD5CryptoServiceProvider();
+			var hash = provider.ComputeHash( content );
+			return Convert.ToBase64String( hash );
+		}
+
+		private void CopyStream( Stream from, Stream to )
+		{
+			if( !from.CanRead )
+				throw new ArgumentException( "from Stream must implement the Read method." );
+
+			if( !to.CanWrite )
+				throw new ArgumentException( "to Stream must implement the Write method." );
+
+			const int SIZE = 1024 * 1024;
+			var buffer = new byte[ SIZE ];
+
+			var read = 0;
+			while( ( read = from.Read( buffer, 0, buffer.Length ) ) > 0 )
+				to.Write( buffer, 0, read );
 		}
 	}
 }

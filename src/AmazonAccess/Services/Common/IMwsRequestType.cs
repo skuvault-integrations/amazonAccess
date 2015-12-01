@@ -20,7 +20,7 @@ namespace AmazonAccess.Services.Common
 	/// <para>This includes the service, version, operation name, response object class
 	/// and call parameters.</para>
 	/// </summary>
-	public interface IMwsRequestType< Response > where Response : IMwsObject
+	public interface IMwsRequestType< TResponse > where TResponse : IMwsObject
 	{
 		/// <summary>
 		/// Get the class that will be thrown for an exception response.
@@ -37,12 +37,6 @@ namespace AmazonAccess.Services.Common
 		/// Get the class that will hold a successful response
 		/// </summary>
 		Type ResponseClass{ get; }
-
-		/// <summary>
-		/// Get the service path string that identifies the service and version
-		/// to call on the server
-		/// </summary>
-		string ServicePath{ get; }
 
 		/// <summary>
 		/// wrap response header metadata and set into response object

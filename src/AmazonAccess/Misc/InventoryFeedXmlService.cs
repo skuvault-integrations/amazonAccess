@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
-using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
-using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model.AmazonEnvelope.InventoryFeed;
+using AmazonAccess.Services.FeedsReports.Model;
+using AmazonAccess.Services.FeedsReports.Model.AmazonEnvelope.InventoryFeed;
 using CuttingEdge.Conditions;
 
 namespace AmazonAccess.Misc
@@ -24,13 +27,27 @@ namespace AmazonAccess.Misc
 
 		public Stream GetDocumentStream()
 		{
-			var stream = new MemoryStream();
 			var ser = new XmlSerializer( typeof( InventoryFeed ) );
-
+			var stream = new MemoryStream();
 			ser.Serialize( stream, this._document );
 			stream.Position = 0;
 
 			return stream;
+		}
+
+		public string GetDocumentString()
+		{
+			using( var stream = this.GetDocumentStream() )
+			{
+				var streamReader = new StreamReader( stream );
+				return streamReader.ReadToEnd();
+			}
+
+			//var ser = new XmlSerializer( typeof( InventoryFeed ) );
+			//var stringWriter = new StringWriter();
+			//ser.Serialize( stringWriter, this._document );
+			//var str = stringWriter.ToString();
+			//return str;
 		}
 
 		private InventoryFeed CreateDocument( string sellerId )
@@ -45,12 +62,6 @@ namespace AmazonAccess.Misc
 			this.CreateMessageNodes( document );
 
 			return document;
-		}
-
-		public string GetDocumentString()
-		{
-			var reader = new StreamReader( this.GetDocumentStream() );
-			return reader.ReadToEnd();
 		}
 
 		private void CreateMessageNodes( InventoryFeed document )

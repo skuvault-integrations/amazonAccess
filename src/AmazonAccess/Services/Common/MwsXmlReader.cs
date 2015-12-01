@@ -151,6 +151,11 @@ namespace AmazonAccess.Services.Common
 				return this.ConvertValue< T >( this.currentChild.Value );
 		}
 
+		public string ReadAll()
+		{
+			return this.doc.InnerXml;
+		}
+
 		private void BeginObject( XmlNode node )
 		{
 			if( node == null )

@@ -25,106 +25,57 @@ namespace AmazonAccess.Services.FbaInventory
 	/// </summary>
 	public class FbaInventoryServiceClient: IFbaInventoryServiceClient
 	{
-		private const string libraryVersion = "2015-06-18";
-
-		private readonly string servicePath;
-
 		private readonly MwsConnection connection;
 
 		/// <summary>
 		/// Create client.
 		/// </summary>
-		/// <param name="accessKey">Access Key</param>
+		/// <param name="accessKey">Access Key</param>  
 		/// <param name="secretKey">Secret Key</param>
-		/// <param name="applicationName">Application Name</param>
-		/// <param name="applicationVersion">Application Version</param>
-		/// <param name="config">configuration</param>
+		/// <param name="serviceUrl"></param>
 		public FbaInventoryServiceClient(
 			string accessKey,
 			string secretKey,
-			string applicationName,
-			string applicationVersion,
-			MwsConfig config )
+			string serviceUrl )
+
 		{
-			this.connection = config.CopyConnection();
-			this.connection.AwsAccessKeyId = accessKey;
-			this.connection.AwsSecretKeyId = secretKey;
-			this.connection.ApplicationName = applicationName;
-			this.connection.ApplicationVersion = applicationVersion;
-			this.connection.LibraryVersion = libraryVersion;
-			this.servicePath = config.ServicePath;
+			this.connection = new MwsConnection
+			{
+				AwsAccessKeyId = accessKey,
+				AwsSecretKeyId = secretKey,
+				ServiceURL = serviceUrl
+			};
 		}
 
-		/// <summary>
-		/// Create client.
-		/// </summary>
-		/// <param name="accessKey">Access Key</param>
-		/// <param name="secretKey">Secret Key</param>
-		/// <param name="config">configuration</param>
-		public FbaInventoryServiceClient( String accessKey, String secretKey, MwsConfig config )
+		public FbaInventoryServiceClient( MwsConnection mwsConnection )
 		{
-			this.connection = config.CopyConnection();
-			this.connection.AwsAccessKeyId = accessKey;
-			this.connection.AwsSecretKeyId = secretKey;
-			this.connection.LibraryVersion = libraryVersion;
-			this.servicePath = config.ServicePath;
-		}
-
-		/// <summary>
-		/// Create client.
-		/// </summary>
-		/// <param name="accessKey">Access Key</param>
-		/// <param name="secretKey">Secret Key</param>
-		public FbaInventoryServiceClient( String accessKey, String secretKey )
-			: this( accessKey, secretKey, new MwsConfig() )
-		{
-		}
-
-		/// <summary>
-		/// Create client.
-		/// </summary>
-		/// <param name="accessKey">Access Key</param>
-		/// <param name="secretKey">Secret Key</param>
-		/// <param name="applicationName">Application Name</param>
-		/// <param name="applicationVersion">Application Version</param>
-		public FbaInventoryServiceClient(
-			String accessKey,
-			String secretKey,
-			String applicationName,
-			String applicationVersion )
-			: this( accessKey, secretKey, applicationName,
-				applicationVersion, new MwsConfig() )
-		{
+			this.connection = mwsConnection;
 		}
 
 		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker )
 		{
-			return this.connection.Call( new Request< GetServiceStatusResponse >( "GetServiceStatus", this.servicePath ), request, marker );
+			return this.connection.Call( new Request< GetServiceStatusResponse >( "GetServiceStatus" ), request, marker );
 		}
 
 		public ListInventorySupplyResponse ListInventorySupply( ListInventorySupplyRequest request, string marker )
 		{
-			return this.connection.Call( new Request< ListInventorySupplyResponse >( "ListInventorySupply", this.servicePath ), request, marker );
+			return this.connection.Call( new Request< ListInventorySupplyResponse >( "ListInventorySupply" ), request, marker );
 		}
 
 		public ListInventorySupplyByNextTokenResponse ListInventorySupplyByNextToken( ListInventorySupplyByNextTokenRequest request, string marker )
 		{
-			return this.connection.Call( new Request< ListInventorySupplyByNextTokenResponse >( "ListInventorySupplyByNextToken", this.servicePath ), request, marker );
+			return this.connection.Call( new Request< ListInventorySupplyByNextTokenResponse >( "ListInventorySupplyByNextToken" ), request, marker );
 		}
 
 		private class Request< TResponse >: IMwsRequestType< TResponse > where TResponse : IMwsObject
 		{
-			public Request( string operationName, string servicePath )
+			public Request( string operationName )
 			{
 				this.OperationName = operationName;
-				this.ServicePath = servicePath;
 				this.ResponseClass = typeof( TResponse );
 			}
 
-			public string ServicePath{ get; private set; }
-
 			public string OperationName{ get; private set; }
-
 			public Type ResponseClass{ get; private set; }
 
 			public MwsException WrapException( Exception cause )

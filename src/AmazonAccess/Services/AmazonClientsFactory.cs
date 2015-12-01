@@ -1,7 +1,7 @@
 ﻿using AmazonAccess.Models;
 using AmazonAccess.Services.Common;
 using AmazonAccess.Services.FbaInventory;
-using AmazonAccess.Services.MarketplaceWebServiceFeedsReports;
+using AmazonAccess.Services.FeedsReports;
 using AmazonAccess.Services.Orders;
 using AmazonAccess.Services.Sellers;
 using CuttingEdge.Conditions;
@@ -21,34 +21,51 @@ namespace AmazonAccess.Services
 
 		public IFbaInventoryServiceClient CreateFbaInventoryClient()
 		{
-			var config = new MwsConfig { ServiceURL = this._credentials.AmazonMarketplaces.FbaInventoryServiceUrl };
-			config.SetUserAgentHeader( "C#", "-1", "3" );
-
-			return new FbaInventoryServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, "SkuVault", "1.0", config );
+			var connection = new MwsConnection
+			{
+				AwsAccessKeyId = this._credentials.AccessKeyId,
+				AwsSecretKeyId = this._credentials.SecretAccessKeyId,
+				ServiceURL = this._credentials.AmazonMarketplaces.FbaInventoryServiceUrl
+			};
+			connection.SetUserAgent( "SkuVault", "1.0", "C#" );
+			return new FbaInventoryServiceClient( connection );
 		}
 
-		public IMarketplaceWebServiceFeedsReports CreateFeedsReportsClient()
+		public IFeedReportServiceClient CreateFeedsReportsClient()
 		{
-			var config = new MarketplaceWebServiceFeedsReportsConfig { ServiceURL = this._credentials.AmazonMarketplaces.FeedsServiceUrl, MaxErrorRetry = 4 };
-			config.SetUserAgentHeader( "C#", "-1", "3" );
-
-			return new MarketplaceWebServiceFeedsReportsClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, config );
+			var connection = new MwsConnection
+			{
+				AwsAccessKeyId = this._credentials.AccessKeyId,
+				AwsSecretKeyId = this._credentials.SecretAccessKeyId,
+				ServiceURL = this._credentials.AmazonMarketplaces.FeedsServiceUrl,
+				ServiceVersion = "2009-01-01"
+			};
+			connection.SetUserAgent( "SkuVault", "1.0", "C#" );
+			return new FeedReportServiceClient( connection );
 		}
 
 		public IOrdersServiceClient CreateOrdersClient()
 		{
-			var config = new MwsConfig { ServiceURL = this._credentials.AmazonMarketplaces.OrdersServiceUrl };
-			config.SetUserAgentHeader( "C#", "-1", "3" );
-
-			return new OrdersServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, "SkuVault", "1.0", config );
+			var connection = new MwsConnection
+			{
+				AwsAccessKeyId = this._credentials.AccessKeyId,
+				AwsSecretKeyId = this._credentials.SecretAccessKeyId,
+				ServiceURL = this._credentials.AmazonMarketplaces.OrdersServiceUrl
+			};
+			connection.SetUserAgent( "SkuVault", "1.0", "C#" );
+			return new OrdersServiceClient( connection );
 		}
 
 		public ISellersServiceClient CreateSellersClient()
 		{
-			var config = new MwsConfig { ServiceURL = this._credentials.AmazonMarketplaces.SellersServiceUrl };
-			config.SetUserAgentHeader( "C#", "-1", "3" );
-
-			return new SellersServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, "SkuVault", "1.0", config );
+			var connection = new MwsConnection
+			{
+				AwsAccessKeyId = this._credentials.AccessKeyId,
+				AwsSecretKeyId = this._credentials.SecretAccessKeyId,
+				ServiceURL = this._credentials.AmazonMarketplaces.SellersServiceUrl
+			};
+			connection.SetUserAgent( "SkuVault", "1.0", "C#" );
+			return new SellersServiceClient( connection );
 		}
 	}
 }

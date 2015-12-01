@@ -61,7 +61,7 @@ namespace AmazonAccess.Services.FbaInventory.Mock
 				MwsXmlReader reader = new MwsXmlReader( xmlStr );
 				T obj = ( T )Activator.CreateInstance( typeof( T ) );
 				obj.ReadFragmentFrom( reader );
-				obj.ResponseHeaderMetadata = new ResponseHeaderMetadata( "mockRequestId", "A,B,C", "mockTimestamp", 0d, 0d, new DateTime() );
+				obj.ResponseHeaderMetadata = new ResponseHeaderMetadata( "mockRequestId", "A,B,C", "mockTimestamp", 0d, 0d, new DateTime(), null );
 				return obj;
 			}
 			catch( Exception e )

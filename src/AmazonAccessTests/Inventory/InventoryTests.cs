@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using AmazonAccess.Services.FbaInventory.Model;
-using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.Model;
-using AmazonAccess.Services.MarketplaceWebServiceFeedsReports.ReportModel;
+using AmazonAccess.Services.FeedsReports.Model;
+using AmazonAccess.Services.FeedsReports.ReportModel;
 using FluentAssertions;
 using NUnit.Framework;
 
