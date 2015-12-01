@@ -16,66 +16,68 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using AmazonAccess.Services.Common;
-using AmazonAccess.Services.FeedsReports.Attributes;
 
 namespace AmazonAccess.Services.FeedsReports.Model
 {
 	[ XmlType( Namespace = "http://mws.amazonaws.com/doc/2009-01-01/" ) ]
 	[ XmlRoot( Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false ) ]
-	[ MarketplaceWebService( RequestType = RequestType.DEFAULT, ResponseType = ResponseType.DEFAULT ) ]
 	public class GetReportCountRequest: AbstractMwsObject
 	{
 		private Boolean? acknowledgedField;
-
 		private DateTime? availableFromDateField;
-
 		private DateTime? availableToDateField;
+		private List< string > _marketplaceId;
 
 		/// <summary>
-		/// Gets and sets the Marketplace property.
+		/// Gets and sets the MarketplaceId property.
 		/// </summary>
-		[ XmlElement( ElementName = "Marketplace" ) ]
-		[ Obsolete( "Not used anymore. MWS ignores this parameter, but it is left in here for backwards compatibility." ) ]
-		public String Marketplace{ get; set; }
-
-		/// <summary>
-		/// Sets the Marketplace property
-		/// </summary>
-		/// <param name="marketplace">Marketplace property</param>
-		/// <returns>this instance</returns>
-		[ Obsolete( "Not used anymore. MWS ignores this parameter, but it is left in here for backwards compatibility." ) ]
-		public GetReportCountRequest WithMarketplace( String marketplace )
+		public List< string > MarketplaceId
 		{
-			this.Marketplace = marketplace;
+			get
+			{
+				if( this._marketplaceId == null )
+					this._marketplaceId = new List< string >();
+				return this._marketplaceId;
+			}
+			set { this._marketplaceId = value; }
+		}
+
+		/// <summary>
+		/// Sets the MarketplaceId property.
+		/// </summary>
+		/// <param name="marketplaceId">MarketplaceId property.</param>
+		/// <returns>this instance.</returns>
+		public GetReportCountRequest WithMarketplaceId( string[] marketplaceId )
+		{
+			this.MarketplaceId.AddRange( marketplaceId );
 			return this;
 		}
 
 		/// <summary>
-		/// Checks if Marketplace property is set
+		/// Checks if MarketplaceId property is set.
 		/// </summary>
-		/// <returns>true if Marketplace property is set</returns>
-		[ Obsolete( "Not used anymore. MWS ignores this parameter, but it is left in here for backwards compatibility." ) ]
-		public Boolean IsSetMarketplace()
+		/// <returns>true if MarketplaceId property is set.</returns>
+		public bool IsSetMarketplaceId()
 		{
-			return this.Marketplace != null;
+			return this.MarketplaceId.Count > 0;
 		}
 
 		/// <summary>
 		/// Gets and sets the Merchant property.
 		/// </summary>
-		[ XmlElement( ElementName = "Merchant" ) ]
-		public String Merchant{ get; set; }
+		public String SellerId{ get; set; }
 
 		/// <summary>
 		/// Sets the Merchant property
 		/// </summary>
-		/// <param name="merchant">Merchant property</param>
+		/// <param name="sellerId"></param>
 		/// <returns>this instance</returns>
-		public GetReportCountRequest WithMerchant( String merchant )
+		public GetReportCountRequest WithSellerId( String sellerId )
 		{
-			this.Merchant = merchant;
+			this.SellerId = sellerId;
 			return this;
 		}
 
@@ -83,9 +85,9 @@ namespace AmazonAccess.Services.FeedsReports.Model
 		/// Checks if Merchant property is set
 		/// </summary>
 		/// <returns>true if Merchant property is set</returns>
-		public Boolean IsSetMerchant()
+		public Boolean IsSetSeller()
 		{
-			return this.Merchant != null;
+			return this.SellerId != null;
 		}
 
 		/// <summary>
@@ -232,14 +234,17 @@ namespace AmazonAccess.Services.FeedsReports.Model
 
 		public override void ReadFragmentFrom( IMwsReader r )
 		{
+			throw new NotImplementedException();
 		}
 
 		public override void WriteFragmentTo( IMwsWriter w )
 		{
+			throw new NotImplementedException();
 		}
 
 		public override void WriteTo( IMwsWriter w )
 		{
+			throw new NotImplementedException();
 		}
 	}
 }

@@ -16,7 +16,6 @@
  */
 
 using System;
-using System.Text;
 using System.Xml.Serialization;
 using AmazonAccess.Services.Common;
 
@@ -80,75 +79,17 @@ namespace AmazonAccess.Services.FeedsReports.Model
 
 		public override void ReadFragmentFrom( IMwsReader r )
 		{
+			throw new NotImplementedException();
 		}
 
 		public override void WriteFragmentTo( IMwsWriter w )
 		{
+			throw new NotImplementedException();
 		}
 
 		public override void WriteTo( IMwsWriter w )
 		{
-		}
-
-		/// <summary>
-		/// XML Representation for this object
-		/// </summary>
-		/// <returns>XML String</returns>
-		public String ToXML()
-		{
-			StringBuilder xml = new StringBuilder();
-			xml.Append( "<CancelFeedSubmissionsResponse xmlns=\"http://mws.amazonaws.com/doc/2009-01-01/\">" );
-			if( this.IsSetCancelFeedSubmissionsResult() )
-			{
-				CancelFeedSubmissionsResult cancelFeedSubmissionsResult = this.CancelFeedSubmissionsResult;
-				xml.Append( "<CancelFeedSubmissionsResult>" );
-				xml.Append( cancelFeedSubmissionsResult.ToXMLFragment() );
-				xml.Append( "</CancelFeedSubmissionsResult>" );
-			}
-			if( this.IsSetResponseMetadata() )
-			{
-				ResponseMetadata responseMetadata = this.ResponseMetadata;
-				xml.Append( "<ResponseMetadata>" );
-				xml.Append( responseMetadata.ToXMLFragment() );
-				xml.Append( "</ResponseMetadata>" );
-			}
-			xml.Append( "</CancelFeedSubmissionsResponse>" );
-			return xml.ToString();
-		}
-
-		/**
-         * 
-         * Escape XML special characters
-         */
-
-		private String EscapeXML( String str )
-		{
-			StringBuilder sb = new StringBuilder();
-			foreach( Char c in str )
-			{
-				switch( c )
-				{
-					case '&':
-						sb.Append( "&amp;" );
-						break;
-					case '<':
-						sb.Append( "&lt;" );
-						break;
-					case '>':
-						sb.Append( "&gt;" );
-						break;
-					case '\'':
-						sb.Append( "&#039;" );
-						break;
-					case '"':
-						sb.Append( "&quot;" );
-						break;
-					default:
-						sb.Append( c );
-						break;
-				}
-			}
-			return sb.ToString();
+			throw new NotImplementedException();
 		}
 
 		public ResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }

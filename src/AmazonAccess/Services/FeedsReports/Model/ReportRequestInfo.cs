@@ -158,7 +158,7 @@ namespace AmazonAccess.Services.FeedsReports.Model
 		/// <returns>true if Scheduled property is set</returns>
 		public Boolean IsSetScheduled()
 		{
-			return this.Scheduled != null;
+			return true;// this.Scheduled != null;
 		}
 
 		/// <summary>

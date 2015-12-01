@@ -154,8 +154,7 @@ namespace AmazonAccess.Services.Common
 
 		private void populateFromMWSException( MwsException e )
 		{
-			if( e.StatusCode != null )
-				this.statusCode = ( int )e.StatusCode;
+			this.statusCode = ( int )e.StatusCode;
 			if( e.Message != null )
 				this.message = e.Message;
 			if( e.ErrorCode != null )
