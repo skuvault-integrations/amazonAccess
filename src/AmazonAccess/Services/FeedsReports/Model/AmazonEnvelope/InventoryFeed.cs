@@ -20,8 +20,6 @@ namespace AmazonAccess.Services.FeedsReports.Model.AmazonEnvelope.InventoryFeed
 	[ Serializable ]
 	public class Header
 	{
-		//<DocumentVersion>1.01</DocumentVersion>
-		//<MerchantIdentifier>A7I0VA9RRJTE8</MerchantIdentifier>
 		[ XmlElement ]
 		public string DocumentVersion{ get; set; }
 
@@ -32,9 +30,6 @@ namespace AmazonAccess.Services.FeedsReports.Model.AmazonEnvelope.InventoryFeed
 	[ Serializable ]
 	public class Message
 	{
-		//<MessageID>2</MessageID>
-		//<OperationType>Update</OperationType>
-		//<Inventory>
 		[ XmlElement( ElementName = "MessageID" ) ]
 		public int MessageId{ get; set; }
 
@@ -48,9 +43,6 @@ namespace AmazonAccess.Services.FeedsReports.Model.AmazonEnvelope.InventoryFeed
 	[ Serializable ]
 	public class Inventory
 	{
-		//<SKU>memaAZARAKnewhappyNVWT XL</SKU>
-		//<Quantity>8</Quantity>
-		//<FulfillmentLatency>1</FulfillmentLatency>
 		[ XmlElement( ElementName = "SKU" ) ]
 		public string Sku{ get; set; }
 

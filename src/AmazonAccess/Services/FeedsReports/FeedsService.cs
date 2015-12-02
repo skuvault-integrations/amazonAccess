@@ -2,71 +2,101 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Xml.Serialization;
 using AmazonAccess.Misc;
+using AmazonAccess.Models;
 using AmazonAccess.Services.FeedsReports.Model;
 using AmazonAccess.Services.FeedsReports.Model.AmazonEnvelope.FeedSubmissionResult;
+using CuttingEdge.Conditions;
 
 namespace AmazonAccess.Services.FeedsReports
 {
 	public class FeedsService
 	{
 		private readonly IFeedReportServiceClient _client;
+		private readonly AmazonCredentials _credentials;
+		private readonly Throttler _submitFeedThrottler = new Throttler( 15, 121 );
+		private readonly Throttler _getFeedSubmissionListThrottler = new Throttler( 10, 46 );
+		private readonly Throttler _getFeedSubmissionResultThrottler = new Throttler( 15, 61 );
 
-		public FeedsService( IFeedReportServiceClient client )
+		public FeedsService( IFeedReportServiceClient client, AmazonCredentials credentials )
 		{
+			Condition.Requires( client, "client" ).IsNotNull();
+			Condition.Requires( credentials, "credentials" ).IsNotNull();
+
 			this._client = client;
+			this._credentials = credentials;
 		}
 
-		public void SubmitFeed( SubmitFeedRequest request )
+		public void SubmitFeed( string feedType, string feedContent, string marker )
 		{
-			var response = this._client.SubmitFeed( request, null );
+			AmazonLogger.Trace( "SubmitFeed", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var request = new SubmitFeedRequest
+			{
+				SellerId = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
+				FeedType = feedType,
+				FeedContent = feedContent,
+			};
+			var response = ActionPolicies.Get.Get( () => this._submitFeedThrottler.Execute( () => this._client.SubmitFeed( request, marker ) ) );
 			if( !response.IsSetSubmitFeedResult() )
-				throw new Exception( string.Format( "[amazon] SubmitFeed. Seller: {0}\nResult was not received", request.SellerId ) );
+				throw AmazonLogger.Error( "SubmitFeed", this._credentials.SellerId, marker, "Result was not received" );
 
 			var feedSubmissionId = response.SubmitFeedResult.FeedSubmissionInfo.FeedSubmissionId;
-			while( !this.IsFeedSubmitted( this._client, feedSubmissionId, request.SellerId, request.MWSAuthToken ) )
-				Thread.Sleep( TimeSpan.FromSeconds( 20 ) );
+			this.WaitFeedSubmission( feedSubmissionId, marker );
+			this.CheckSubmissionResult( feedSubmissionId, marker );
 
-			this.CheckSubmissionResult( feedSubmissionId, request.SellerId, request.MWSAuthToken );
+			AmazonLogger.Trace( "SubmitFeed", this._credentials.SellerId, marker, "End invoke" );
 		}
 
-		private bool IsFeedSubmitted( IFeedReportServiceClient client, string feedSubmissionId, string merchant, string mwsAuthToken )
+		private void WaitFeedSubmission( string feedSubmissionId, string marker )
 		{
-			var response = client.GetFeedSubmissionList( new GetFeedSubmissionListRequest
+			AmazonLogger.Trace( "WaitFeedSubmitting", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var request = new GetFeedSubmissionListRequest
 			{
-				FeedSubmissionIdList = new List< string > { feedSubmissionId },
-				SellerId = merchant,
-				MWSAuthToken = mwsAuthToken
-			}, null );
-			ActionPolicies.CreateApiDelay( 2 ).Wait();
+				SellerId = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
+				FeedSubmissionIdList = new List< string > { feedSubmissionId }
+			};
 
-			if( !response.IsSetGetFeedSubmissionListResult() )
-				throw new Exception( string.Format( "[amazon] IsFeedSubmitted. Seller: {0}\nResult was not received", merchant ) );
+			while( true )
+			{
+				ActionPolicies.CreateApiDelay( 50 ).Wait();
+				var response = ActionPolicies.Get.Get( () => this._getFeedSubmissionListThrottler.Execute( () => this._client.GetFeedSubmissionList( request, marker ) ) );
+				if( !response.IsSetGetFeedSubmissionListResult() )
+					throw AmazonLogger.Error( "WaitFeedSubmitting", this._credentials.SellerId, marker, "Result was not received for SubmissionId {0}", feedSubmissionId );
 
-			var info = response.GetFeedSubmissionListResult.FeedSubmissionInfo.FirstOrDefault( i => i.FeedSubmissionId.Equals( feedSubmissionId ) );
-			if( info == null )
-				throw new Exception( string.Format( "[amazon] IsFeedSubmitted. Seller: {0}\nSubmissionId was not found", merchant ) );
-			if( info.FeedProcessingStatus.Equals( "_CANCELLED_" ) )
-				throw new Exception( string.Format( "[amazon] IsFeedSubmitted. Seller: {0}\nThe request has been aborted due to a fatal error", merchant ) );
+				var info = response.GetFeedSubmissionListResult.FeedSubmissionInfo.FirstOrDefault( i => i.FeedSubmissionId.Equals( feedSubmissionId ) );
+				if( info == null )
+					throw AmazonLogger.Error( "WaitFeedSubmitting", this._credentials.SellerId, marker, "SubmissionId {0} was not found", feedSubmissionId );
+				if( info.FeedProcessingStatus.Equals( "_CANCELLED_" ) )
+					throw AmazonLogger.Error( "WaitFeedSubmitting", this._credentials.SellerId, marker, "The request has been aborted due to a fatal error" );
 
-			return info.FeedProcessingStatus.Equals( "_DONE_" );
+				if( info.FeedProcessingStatus.Equals( "_DONE_" ) )
+					break;
+			}
+
+			AmazonLogger.Trace( "WaitFeedSubmitting", this._credentials.SellerId, marker, "End invoke" );
 		}
 
-		private void CheckSubmissionResult( string feedSubmissionId, string merchant, string mwsAuthToken )
+		private void CheckSubmissionResult( string feedSubmissionId, string marker )
 		{
+			AmazonLogger.Trace( "CheckSubmissionResult", this._credentials.SellerId, marker, "Begin invoke" );
+
 			var request = new GetFeedSubmissionResultRequest
 			{
-				FeedSubmissionId = feedSubmissionId,
-				SellerId = merchant,
-				MWSAuthToken = mwsAuthToken
+				SellerId = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
+				FeedSubmissionId = feedSubmissionId
 			};
-			var response = this._client.GetFeedSubmissionResult( request, null );
-			ActionPolicies.CreateApiDelay( 2 ).Wait();
-
+			var response = ActionPolicies.Get.Get( () => this._getFeedSubmissionResultThrottler.Execute( () => this._client.GetFeedSubmissionResult( request, marker ) ) );
 			if( !response.IsSetGetFeedSubmissionResultResult() || !response.GetFeedSubmissionResultResult.IsSetResult() )
-				throw new Exception( string.Format( "[amazon] CheckSubmissionResult. Seller: {0}\nResult was not received", merchant ) );
+				throw AmazonLogger.Error( "CheckSubmissionResult", this._credentials.SellerId, marker, "Result was not received for SubmissionId {0}", feedSubmissionId );
 
 			try
 			{
@@ -77,17 +107,17 @@ namespace AmazonAccess.Services.FeedsReports
 				var firstMessage = envelope.Message.First();
 				var processingSummary = firstMessage.ProcessingReport.ProcessingSummary ?? ( firstMessage.ProcessingReport.Summary != null ? firstMessage.ProcessingReport.Summary.ProcessingSummary : null );
 				if( processingSummary == null )
-					AmazonLogger.Log.Warn( "[amazon] CheckSubmissionResult. Seller: {0}. ProcessingSummary is null", merchant );
+					AmazonLogger.Warn( "CheckSubmissionResult", this._credentials.SellerId, marker, "ProcessingSummary is null" );
 				else
 				{
-					AmazonLogger.Log.Info( "[amazon] CheckSubmissionResult. Seller: {0}. Processed:{1} Successful:{2} Errors:{3} Warnings:{4}", merchant,
+					AmazonLogger.Trace( "CheckSubmissionResult", this._credentials.SellerId, marker, "Processed:{0} Successful:{1} Errors:{2} Warnings:{3}",
 						processingSummary.MessagesProcessed, processingSummary.MessagesSuccessful, processingSummary.MessagesWithError, processingSummary.MessagesWithWarning );
 				}
 
 				var result = firstMessage.ProcessingReport.Result ?? ( firstMessage.ProcessingReport.Summary != null ? firstMessage.ProcessingReport.Summary.Result : null );
 				if( result == null )
 				{
-					AmazonLogger.Log.Info( "[amazon] CheckSubmissionResult. Seller: {0}. Result is null", merchant );
+					AmazonLogger.Trace( "CheckSubmissionResult", this._credentials.SellerId, marker, "Result is null" );
 					return;
 				}
 				var groupedResults = result.GroupBy( x => x.ResultMessageCode );
@@ -97,14 +127,16 @@ namespace AmazonAccess.Services.FeedsReports
 					// 5000 - SKU length is too big (max:40)
 					var count = groupedResult.Count();
 					var type = groupedResult.First().ResultCode;
-					AmazonLogger.Log.Warn( "[amazon] CheckSubmissionResult. Seller: {0}. Message type: {1}. Message code: {2}. Massages count: {3}",
-						merchant, type, groupedResult.Key, count );
+					AmazonLogger.Warn( "CheckSubmissionResult", this._credentials.SellerId, marker, "Message type: {0}. Message code: {1}. Massages count: {2}",
+						type, groupedResult.Key, count );
 				}
 			}
 			catch( Exception ex )
 			{
-				AmazonLogger.Log.Error( ex, "[amazon] CheckSubmissionResult. Seller: {0}. Can not parse result", merchant );
+				AmazonLogger.Error( "CheckSubmissionResult", this._credentials.SellerId, marker, ex, "Can not parse result" );
 			}
+
+			AmazonLogger.Trace( "CheckSubmissionResult", this._credentials.SellerId, marker, "End invoke" );
 		}
 	}
 }

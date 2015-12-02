@@ -4,7 +4,6 @@ using System.Linq;
 using AmazonAccess.Misc;
 using AmazonAccess.Models;
 using AmazonAccess.Services;
-using AmazonAccess.Services.Common;
 using AmazonAccess.Services.FbaInventory;
 using AmazonAccess.Services.FbaInventory.Model;
 using AmazonAccess.Services.FeedsReports;
@@ -15,6 +14,7 @@ using AmazonAccess.Services.Orders.Model;
 using AmazonAccess.Services.Sellers;
 using AmazonAccess.Services.Sellers.Model;
 using CuttingEdge.Conditions;
+using Netco.Extensions;
 
 namespace AmazonAccess
 {
@@ -68,55 +68,21 @@ namespace AmazonAccess
 		#region update inventory
 		public void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems )
 		{
+			var marker = this.GetMarker();
+			AmazonLogger.Trace( "UpdateInventory", this._credentials.SellerId, marker, "Begin invoke" );
+
 			var client = this._factory.CreateFeedsReportsClient();
+			var service = new FeedsService( client, this._credentials );
 
-			AmazonLogger.Log.Trace( "[amazon] Updating inventory for seller {0}", this._credentials.SellerId );
-
-			if( inventoryItems.Count() > Updateitemslimit )
+			var parts = inventoryItems.Slice( Updateitemslimit );
+			foreach( var part in parts )
 			{
-				var partsCount = inventoryItems.Count() / Updateitemslimit + 1;
-				var parts = inventoryItems.Split( partsCount );
-
-				foreach( var part in parts )
-				{
-					this.SubmitInventoryUpdateRequest( client, part );
-				}
+				var xmlService = new InventoryFeedXmlService( part.ToList(), this._credentials.SellerId );
+				var contentString = xmlService.GetDocumentString();
+				service.SubmitFeed( FeedType.InventoryQuantityUpdate.Description, contentString, marker );
 			}
-			else
-				this.SubmitInventoryUpdateRequest( client, inventoryItems );
 
-			AmazonLogger.Log.Trace( "[amazon] Inventory for seller {0} loaded", this._credentials.SellerId );
-		}
-
-		private SubmitFeedRequest InitInventoryFeedRequest( IEnumerable< AmazonInventoryItem > inventoryItems )
-		{
-			var xmlService = new InventoryFeedXmlService( inventoryItems, this._credentials.SellerId );
-			var contentString = xmlService.GetDocumentString();
-
-			AmazonLogger.Log.Trace( "[amazon] Inventory document for seller {0}\n{1}", this._credentials.SellerId, contentString );
-
-			var request = new SubmitFeedRequest
-			{
-				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
-				SellerId = this._credentials.SellerId,
-				FeedType = FeedType.InventoryQuantityUpdate.Description,
-				FeedContent = contentString,
-				MWSAuthToken = this._credentials.MwsAuthToken
-			};
-
-			return request;
-		}
-
-		private void SubmitInventoryUpdateRequest( IFeedReportServiceClient client, IEnumerable< AmazonInventoryItem > inventoryItems )
-		{
-			var request = this.InitInventoryFeedRequest( inventoryItems );
-			var service = new FeedsService( client );
-
-			ActionPolicies.Submit.Do( () =>
-			{
-				service.SubmitFeed( request );
-				ActionPolicies.CreateApiDelay( 2 ).Wait();
-			} );
+			AmazonLogger.Trace( "UpdateInventory", this._credentials.SellerId, marker, "End invoke" );
 		}
 		#endregion
 

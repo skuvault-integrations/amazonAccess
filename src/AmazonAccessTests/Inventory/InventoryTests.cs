@@ -64,20 +64,26 @@ namespace AmazonAccessTests.Inventory
 			{
 				new AmazonInventoryItem
 				{
-					Quantity = 30,
+					Quantity = 35,
 					Sku = "VK16AZN_KIT",
 					FulfillmentLatency = 1
 				},
 				new AmazonInventoryItem
 				{
-					Quantity = 30,
+					Quantity = 36,
 					Sku = "testsku1",
 					FulfillmentLatency = 1
 				},
 				new AmazonInventoryItem
 				{
-					Quantity = 30,
+					Quantity = 37,
 					Sku = "VK16AZN",
+					FulfillmentLatency = 1
+				},
+				new AmazonInventoryItem
+				{
+					Quantity = 38,
+					Sku = "FakeSku",
 					FulfillmentLatency = 1
 				}
 			} );
