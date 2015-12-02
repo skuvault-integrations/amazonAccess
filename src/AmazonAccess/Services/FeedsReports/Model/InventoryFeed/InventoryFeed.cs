@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace AmazonAccess.Services.FeedsReports.Model.AmazonEnvelope.InventoryFeed
+namespace AmazonAccess.Services.FeedsReports.Model.InventoryFeed
 {
 	[ Serializable ]
 	[ XmlRoot( ElementName = "AmazonEnvelope" ) ]

@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 using AmazonAccess.Misc;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FeedsReports.Model;
-using AmazonAccess.Services.FeedsReports.Model.AmazonEnvelope.FeedSubmissionResult;
+using AmazonAccess.Services.FeedsReports.Model.FeedSubmissionResult;
 using CuttingEdge.Conditions;
 
 namespace AmazonAccess.Services.FeedsReports

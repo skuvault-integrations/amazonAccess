@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace AmazonAccess.Services.FeedsReports.Model.AmazonEnvelope.FeedSubmissionResult
+namespace AmazonAccess.Services.FeedsReports.Model.FeedSubmissionResult
 {
 	[ Serializable ]
 	[ XmlRoot( ElementName = "AmazonEnvelope" ) ]

@@ -108,8 +108,8 @@
     <Compile Include="Services\FeedsReports\Model\IMWSResponse.cs" />
     <Compile Include="Services\IAmazonClientsFactory.cs" />
     <Compile Include="Services\FeedsReports\FeedsService.cs" />
-    <Compile Include="Services\FeedsReports\Model\AmazonEnvelope\FeedSubmissionResult.cs" />
-    <Compile Include="Services\FeedsReports\Model\AmazonEnvelope\InventoryFeed.cs" />
+    <Compile Include="Services\FeedsReports\Model\FeedSubmissionResult\FeedSubmissionResult.cs" />
+    <Compile Include="Services\FeedsReports\Model\InventoryFeed\InventoryFeed.cs" />
     <Compile Include="Services\FeedsReports\Model\CancelFeedSubmissionsRequest.cs" />
     <Compile Include="Services\FeedsReports\Model\CancelFeedSubmissionsResponse.cs" />
     <Compile Include="Services\FeedsReports\Model\CancelFeedSubmissionsResult.cs" />

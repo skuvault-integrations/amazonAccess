@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using AmazonAccess.Services.FeedsReports.Model;
-using AmazonAccess.Services.FeedsReports.Model.AmazonEnvelope.InventoryFeed;
+using AmazonAccess.Services.FeedsReports.Model.InventoryFeed;
 using CuttingEdge.Conditions;
 
 namespace AmazonAccess.Services.FeedsReports
