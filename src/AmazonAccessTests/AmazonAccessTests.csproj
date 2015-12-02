@@ -71,7 +71,6 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="TestsBase.cs" />
-    <Compile Include="Feeds\FeedsTests.cs" />
     <Compile Include="Inventory\InventoryTests.cs" />
     <Compile Include="Misc\ThrottlerTests.cs" />
     <Compile Include="Orders\OrdersTests.cs" />

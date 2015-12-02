@@ -66,7 +66,7 @@ namespace AmazonAccess
 		}
 		#endregion
 
-		#region update inventory
+		#region Update inventory
 		public void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems )
 		{
 			var marker = this.GetMarker();
