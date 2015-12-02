@@ -8,7 +8,7 @@ namespace AmazonAccess.Services
 	public interface IAmazonClientsFactory
 	{
 		IFbaInventoryServiceClient CreateFbaInventoryClient();
-		IFeedReportServiceClient CreateFeedsReportsClient();
+		IFeedsReportsServiceClient CreateFeedsReportsClient();
 		IOrdersServiceClient CreateOrdersClient();
 		ISellersServiceClient CreateSellersClient();
 	}

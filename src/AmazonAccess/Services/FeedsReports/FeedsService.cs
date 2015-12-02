@@ -13,13 +13,13 @@ namespace AmazonAccess.Services.FeedsReports
 {
 	public class FeedsService
 	{
-		private readonly IFeedReportServiceClient _client;
+		private readonly IFeedsReportsServiceClient _client;
 		private readonly AmazonCredentials _credentials;
 		private readonly Throttler _submitFeedThrottler = new Throttler( 15, 121 );
 		private readonly Throttler _getFeedSubmissionListThrottler = new Throttler( 10, 46 );
 		private readonly Throttler _getFeedSubmissionResultThrottler = new Throttler( 15, 61 );
 
-		public FeedsService( IFeedReportServiceClient client, AmazonCredentials credentials )
+		public FeedsService( IFeedsReportsServiceClient client, AmazonCredentials credentials )
 		{
 			Condition.Requires( client, "client" ).IsNotNull();
 			Condition.Requires( credentials, "credentials" ).IsNotNull();

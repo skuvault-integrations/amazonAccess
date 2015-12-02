@@ -31,7 +31,7 @@ namespace AmazonAccess.Services
 			return new FbaInventoryServiceClient( connection );
 		}
 
-		public IFeedReportServiceClient CreateFeedsReportsClient()
+		public IFeedsReportsServiceClient CreateFeedsReportsClient()
 		{
 			var connection = new MwsConnection
 			{
@@ -41,7 +41,7 @@ namespace AmazonAccess.Services
 				ServiceVersion = "2009-01-01"
 			};
 			connection.SetUserAgent( "SkuVault", "1.0", "C#" );
-			return new FeedReportServiceClient( connection );
+			return new FeedsReportsServiceClient( connection );
 		}
 
 		public IOrdersServiceClient CreateOrdersClient()

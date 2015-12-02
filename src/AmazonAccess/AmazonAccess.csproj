@@ -100,8 +100,8 @@
     <Compile Include="Services\FeedsReports\Attributes\RequestType.cs" />
     <Compile Include="Services\FeedsReports\Attributes\ResponseType.cs" />
     <Compile Include="Services\FeedsReports\Attributes\StreamType.cs" />
-    <Compile Include="Services\FeedsReports\IFeedReportServiceClient.cs" />
-    <Compile Include="Services\FeedsReports\FeedReportServiceClient.cs" />
+    <Compile Include="Services\FeedsReports\IFeedsReportsServiceClient.cs" />
+    <Compile Include="Services\FeedsReports\FeedsReportsServiceClient.cs" />
     <Compile Include="Services\FeedsReports\Model\FeedReportServiceException.cs" />
     <Compile Include="Services\FeedsReports\Mock\MarketplaceWebServiceMock.cs" />
     <Compile Include="Services\FeedsReports\Model\AmazonInventoryItem.cs" />

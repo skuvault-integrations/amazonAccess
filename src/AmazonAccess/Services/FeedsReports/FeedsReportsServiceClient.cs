@@ -21,7 +21,7 @@ using AmazonAccess.Services.FeedsReports.Model;
 
 namespace AmazonAccess.Services.FeedsReports
 {
-	public class FeedReportServiceClient: IFeedReportServiceClient
+	public class FeedsReportsServiceClient: IFeedsReportsServiceClient
 	{
 		private readonly MwsConnection connection;
 
@@ -31,7 +31,7 @@ namespace AmazonAccess.Services.FeedsReports
 		/// <param name="accessKey">Access Key</param>  
 		/// <param name="secretKey">Secret Key</param>
 		/// <param name="serviceUrl"></param>
-		public FeedReportServiceClient(
+		public FeedsReportsServiceClient(
 			string accessKey,
 			string secretKey,
 			string serviceUrl )
@@ -45,7 +45,7 @@ namespace AmazonAccess.Services.FeedsReports
 			};
 		}
 
-		public FeedReportServiceClient( MwsConnection mwsConnection )
+		public FeedsReportsServiceClient( MwsConnection mwsConnection )
 		{
 			this.connection = mwsConnection;
 		}

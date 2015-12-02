@@ -34,7 +34,7 @@ namespace AmazonAccess.Services.FeedsReports.Mock
 	/// 
 	/// Note, current Mock Service implementation does not valiadate requests
 	/// </remarks>
-	public class MarketplaceWebServiceMock: IFeedReportServiceClient
+	public class MarketplaceWebServiceMock: IFeedsReportsServiceClient
 	{
 		// Public API ------------------------------------------------------------//
 

@@ -23,7 +23,7 @@ namespace AmazonAccess.Services.FeedsReports
 	/// The Amazon Marketplace Web Service contain APIs for inventory and order management.
 	/// 
 	/// </summary>
-	public interface IFeedReportServiceClient
+	public interface IFeedsReportsServiceClient
 	{
 		/// <summary>
 		/// Get Report 

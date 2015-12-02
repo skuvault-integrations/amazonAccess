@@ -13,7 +13,7 @@ namespace AmazonAccess.Services.FeedsReports
 {
 	public class ReportsService
 	{
-		private readonly IFeedReportServiceClient _client;
+		private readonly IFeedsReportsServiceClient _client;
 		private readonly AmazonCredentials _credentials;
 		private readonly Throttler _requestReportThrottler = new Throttler( 15, 61 );
 		private readonly Throttler _getReportRequestListThrottler = new Throttler( 10, 46 );
@@ -21,7 +21,7 @@ namespace AmazonAccess.Services.FeedsReports
 		private readonly Throttler _getReportListByNextTokenThrottler = new Throttler( 30, 3 );
 		private readonly Throttler _getReportThrottler = new Throttler( 15, 61 );
 
-		public ReportsService( IFeedReportServiceClient client, AmazonCredentials credentials )
+		public ReportsService( IFeedsReportsServiceClient client, AmazonCredentials credentials )
 		{
 			Condition.Requires( client, "client" ).IsNotNull();
 			Condition.Requires( credentials, "credentials" ).IsNotNull();
