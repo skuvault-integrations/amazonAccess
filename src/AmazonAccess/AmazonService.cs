@@ -59,6 +59,7 @@ namespace AmazonAccess
 		{
 			dateFrom = dateFrom ?? DateTime.UtcNow.AddHours( -1 );
 			dateTo = dateTo ?? DateTime.UtcNow.AddMinutes( -10 );
+
 			var client = this._factory.CreateOrdersClient();
 			var service = new OrdersService( client, this._credentials );
 			return service.IsOrdersReceived( dateFrom.Value, dateTo.Value, this.GetMarker() );
@@ -79,7 +80,7 @@ namespace AmazonAccess
 			{
 				var xmlService = new InventoryFeedXmlService( part.ToList(), this._credentials.SellerId );
 				var contentString = xmlService.GetDocumentString();
-				service.SubmitFeed( FeedType.InventoryQuantityUpdate.Description, contentString, marker );
+				service.SubmitFeed( FeedType.InventoryQuantityUpdate, contentString, marker );
 			}
 
 			AmazonLogger.Trace( "UpdateInventory", this._credentials.SellerId, marker, "End invoke" );
@@ -104,23 +105,18 @@ namespace AmazonAccess
 
 		public IEnumerable< FbaManageInventory > GetDetailedFbaInventory()
 		{
-			var inventory = new List< FbaManageInventory >();
+			var marker = this.GetMarker();
+			AmazonLogger.Trace( "GetDetailedFbaInventory", this._credentials.SellerId, marker, "Begin invoke" );
 
-			ActionPolicies.Get.Do( () =>
-			{
-				var client = this._factory.CreateFeedsReportsClient();
-				var service = new ReportsService( client, this._credentials );
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var inventory = service.GetReport< FbaManageInventory >(
+				ReportType.FbaManageInventoryArchived,
+				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(),
+				DateTime.UtcNow.ToUniversalTime(),
+				marker );
 
-				AmazonLogger.Log.Trace( "[amazon] Loading Detailed FBA inventory for seller {0}", this._credentials.SellerId );
-
-				inventory.AddRange( service.GetReport< FbaManageInventory >(
-					ReportType.FbaManageInventoryArchived,
-					DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(),
-					DateTime.UtcNow.ToUniversalTime() ) );
-
-				AmazonLogger.Log.Trace( "[amazon] Detailed FBA inventiry for seller {0} loaded", this._credentials.SellerId );
-			} );
-
+			AmazonLogger.Trace( "GetDetailedFbaInventory", this._credentials.SellerId, marker, "End invoke" );
 			return inventory;
 		}
 		#endregion

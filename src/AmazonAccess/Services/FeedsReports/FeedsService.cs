@@ -28,7 +28,7 @@ namespace AmazonAccess.Services.FeedsReports
 			this._credentials = credentials;
 		}
 
-		public void SubmitFeed( string feedType, string feedContent, string marker )
+		public void SubmitFeed( FeedType feedType, string feedContent, string marker )
 		{
 			AmazonLogger.Trace( "SubmitFeed", this._credentials.SellerId, marker, "Begin invoke" );
 
@@ -37,7 +37,7 @@ namespace AmazonAccess.Services.FeedsReports
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
 				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
-				FeedType = feedType,
+				FeedType = feedType.Description,
 				FeedContent = feedContent,
 			};
 			var response = ActionPolicies.Get.Get( () => this._submitFeedThrottler.Execute( () => this._client.SubmitFeed( request, marker ) ) );
@@ -66,6 +66,7 @@ namespace AmazonAccess.Services.FeedsReports
 			while( true )
 			{
 				ActionPolicies.CreateApiDelay( 50 ).Wait();
+
 				var response = ActionPolicies.Get.Get( () => this._getFeedSubmissionListThrottler.Execute( () => this._client.GetFeedSubmissionList( request, marker ) ) );
 				if( !response.IsSetGetFeedSubmissionListResult() )
 					throw AmazonLogger.Error( "WaitFeedSubmitting", this._credentials.SellerId, marker, "Result was not received for SubmissionId {0}", feedSubmissionId );
@@ -79,8 +80,6 @@ namespace AmazonAccess.Services.FeedsReports
 				if( info.FeedProcessingStatus.Equals( "_DONE_" ) )
 					break;
 			}
-
-			AmazonLogger.Trace( "WaitFeedSubmitting", this._credentials.SellerId, marker, "End invoke" );
 		}
 
 		private void CheckSubmissionResult( string feedSubmissionId, string marker )
@@ -135,8 +134,6 @@ namespace AmazonAccess.Services.FeedsReports
 			{
 				AmazonLogger.Error( "CheckSubmissionResult", this._credentials.SellerId, marker, ex, "Can not parse result" );
 			}
-
-			AmazonLogger.Trace( "CheckSubmissionResult", this._credentials.SellerId, marker, "End invoke" );
 		}
 	}
 }

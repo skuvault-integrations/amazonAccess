@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
+using AmazonAccess.Misc;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FeedsReports.Model;
+using CuttingEdge.Conditions;
 using LINQtoCSV;
 
 namespace AmazonAccess.Services.FeedsReports
@@ -14,32 +15,46 @@ namespace AmazonAccess.Services.FeedsReports
 	{
 		private readonly IFeedReportServiceClient _client;
 		private readonly AmazonCredentials _credentials;
+		private readonly Throttler _requestReportThrottler = new Throttler( 15, 61 );
+		private readonly Throttler _getReportRequestListThrottler = new Throttler( 10, 46 );
+		private readonly Throttler _getReportListThrottler = new Throttler( 10, 61 );
+		private readonly Throttler _getReportListByNextTokenThrottler = new Throttler( 30, 3 );
+		private readonly Throttler _getReportThrottler = new Throttler( 15, 61 );
 
 		public ReportsService( IFeedReportServiceClient client, AmazonCredentials credentials )
 		{
+			Condition.Requires( client, "client" ).IsNotNull();
+			Condition.Requires( credentials, "credentials" ).IsNotNull();
+
 			this._client = client;
 			this._credentials = credentials;
 		}
 
-		public IEnumerable< T > GetReport< T >( ReportType reportType, DateTime startDate, DateTime endDate ) where T : class, new()
+		public IEnumerable< T > GetReport< T >( ReportType reportType, DateTime startDate, DateTime endDate, string marker ) where T : class, new()
 		{
-			var reportRequestId = this.GetReportRequestId( reportType, startDate, endDate );
-			var reportId = this.GetNewReportId( reportRequestId );
-			if( string.IsNullOrEmpty( reportId ) )
-				reportId = this.GetExistingReportId( reportType );
-			if( string.IsNullOrEmpty( reportId ) )
-				throw new Exception( "Can't request new report or find existing" );
+			AmazonLogger.Trace( "GetReport", this._credentials.SellerId, marker, "Begin invoke" );
 
-			var reportString = this.GetReportById( reportId );
+			var reportRequestId = this.GetReportRequestId( reportType, startDate, endDate, marker );
+
+			var reportId = this.GetNewReportId( reportRequestId, marker );
+			if( string.IsNullOrEmpty( reportId ) )
+				reportId = this.GetExistingReportId( reportType, marker );
+			if( string.IsNullOrEmpty( reportId ) )
+				throw AmazonLogger.Error( "GetReport", this._credentials.SellerId, marker, "Can't request new report or find existing" );
+
+			var reportString = this.GetReportById( reportId, marker );
 			if( reportString == null )
-				throw new Exception( "Can't get report" );
+				throw AmazonLogger.Error( "GetReport", this._credentials.SellerId, marker, "Can't get report" );
 
 			var report = this.ConvertReport< T >( reportString );
+			AmazonLogger.Trace( "GetReport", this._credentials.SellerId, marker, "End invoke" );
 			return report;
 		}
 
-		private string GetReportRequestId( ReportType reportType, DateTime startDate, DateTime endDate )
+		private string GetReportRequestId( ReportType reportType, DateTime startDate, DateTime endDate, string marker )
 		{
+			AmazonLogger.Trace( "GetReportRequestId", this._credentials.SellerId, marker, "Begin invoke" );
+
 			var request = new RequestReportRequest
 			{
 				SellerId = this._credentials.SellerId,
@@ -49,102 +64,109 @@ namespace AmazonAccess.Services.FeedsReports
 				StartDate = startDate,
 				EndDate = endDate
 			};
-			var response = this._client.RequestReport( request, null );
+			var response = ActionPolicies.Get.Get( () => this._requestReportThrottler.Execute( () => this._client.RequestReport( request, marker ) ) );
+			if( response.IsSetRequestReportResult() && response.RequestReportResult.IsSetReportRequestInfo() )
+				return response.RequestReportResult.ReportRequestInfo.ReportRequestId;
 
-			var reportId = response.IsSetRequestReportResult() ? response.RequestReportResult.ReportRequestInfo.ReportRequestId : string.Empty;
-			return reportId;
+			return string.Empty;
 		}
 
-		private string GetNewReportId( string reportRequestId )
+		private string GetNewReportId( string reportRequestId, string marker )
 		{
-			var reportId = string.Empty;
+			AmazonLogger.Trace( "GetNewReportId", this._credentials.SellerId, marker, "Begin invoke" );
+
 			var request = new GetReportRequestListRequest
 			{
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
+				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
 				ReportRequestIdList = new List< string > { reportRequestId },
 				RequestedFromDate = DateTime.MinValue.ToUniversalTime(),
 				RequestedToDate = DateTime.UtcNow.ToUniversalTime()
 			};
 			while( true )
 			{
-				var response = this._client.GetReportRequestList( request, null );
+				ActionPolicies.CreateApiDelay( 30 ).Wait();
+
+				var response = ActionPolicies.Get.Get( () => this._getReportRequestListThrottler.Execute( () => this._client.GetReportRequestList( request, marker ) ) );
+				if( !response.IsSetGetReportRequestListResult() || !response.GetReportRequestListResult.IsSetReportRequestInfo() )
+					break;
 				var info = response.GetReportRequestListResult.ReportRequestInfo.FirstOrDefault( i => i.ReportRequestId.Equals( reportRequestId ) );
 				if( info == null || !info.IsSetReportProcessingStatus() || info.ReportProcessingStatus.Equals( "_CANCELLED_", StringComparison.InvariantCultureIgnoreCase ) )
 					break;
-
-				if( info.ReportProcessingStatus.Equals( "_IN_PROGRESS_", StringComparison.InvariantCultureIgnoreCase ) )
-				{
-					Thread.Sleep( TimeSpan.FromSeconds( 30 ) );
-					continue;
-				}
 
 				if( !string.IsNullOrEmpty( info.GeneratedReportId ) )
 					return info.GeneratedReportId;
 			}
 
-			return reportId;
+			return string.Empty;
 		}
 
-		private string GetExistingReportId( ReportType reportType )
+		private string GetExistingReportId( ReportType reportType, string marker )
 		{
-			var reportListResponse = this._client.GetReportList( new GetReportListRequest
+			AmazonLogger.Trace( "GetExistingReportId", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var request = new GetReportListRequest
 			{
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
+				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
 				AvailableFromDate = DateTime.MinValue.ToUniversalTime(),
 				AvailableToDate = DateTime.UtcNow.ToUniversalTime()
-			}, null );
+			};
+			var reportListResponse = ActionPolicies.Get.Get( () => this._getReportListThrottler.Execute( () => this._client.GetReportList( request, marker ) ) );
 			if( !reportListResponse.IsSetGetReportListResult() || !reportListResponse.GetReportListResult.IsSetReportInfo() )
 				return string.Empty;
 
-			var reportListResult = reportListResponse.GetReportListResult;
-			var reportInfo = reportListResult.ReportInfo.FirstOrDefault( r => r.ReportType.Equals( reportType.Description ) );
+			var reportInfo = reportListResponse.GetReportListResult.ReportInfo.FirstOrDefault( r => r.ReportType.Equals( reportType.Description ) );
 			if( reportInfo != null )
 				return reportInfo.ReportId;
 
-			if( !reportListResult.IsSetNextToken() )
-				return string.Empty;
-
-			var reportId = this.GetExistingReportIdInNextPages( reportListResult.NextToken, reportType.Description );
-			return reportId;
+			return this.GetExistingReportIdInNextPages( reportListResponse.GetReportListResult.NextToken, reportType.Description, marker );
 		}
 
-		private string GetExistingReportIdInNextPages( string nextToken, string reportType )
+		private string GetExistingReportIdInNextPages( string nextToken, string reportType, string marker )
 		{
-			var nextResponse = this._client.GetReportListByNextToken( new GetReportListByNextTokenRequest
+			while( !string.IsNullOrEmpty( nextToken ) )
 			{
-				SellerId = this._credentials.SellerId,
-				MWSAuthToken = this._credentials.MwsAuthToken,
-				NextToken = nextToken
-			}, null );
+				AmazonLogger.Trace( "GetExistingReportIdInNextPages", this._credentials.SellerId, marker, "NextToken:{0}", nextToken );
 
-			if( !nextResponse.IsSetGetReportListByNextTokenResult() || !nextResponse.GetReportListByNextTokenResult.IsSetReportInfo() )
-				return string.Empty;
+				var request = new GetReportListByNextTokenRequest
+				{
+					SellerId = this._credentials.SellerId,
+					MWSAuthToken = this._credentials.MwsAuthToken,
+					MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
+					NextToken = nextToken
+				};
+				var response = ActionPolicies.Get.Get( () => this._getReportListByNextTokenThrottler.Execute( () => this._client.GetReportListByNextToken( request, marker ) ) );
+				if( !response.IsSetGetReportListByNextTokenResult() || !response.GetReportListByNextTokenResult.IsSetReportInfo() )
+					return string.Empty;
 
-			var reportListByNextTokenResult = nextResponse.GetReportListByNextTokenResult;
-			var reportInfo = reportListByNextTokenResult.ReportInfo.FirstOrDefault( r => r.ReportType.Equals( reportType ) );
-			if( reportInfo != null )
-				return reportInfo.ReportId;
+				var reportInfo = response.GetReportListByNextTokenResult.ReportInfo.FirstOrDefault( r => r.ReportType.Equals( reportType ) );
+				if( reportInfo != null )
+					return reportInfo.ReportId;
 
-			if( !reportListByNextTokenResult.IsSetNextToken() )
-				return string.Empty;
-
-			return this.GetExistingReportIdInNextPages( reportListByNextTokenResult.NextToken, reportType );
+				nextToken = response.GetReportListByNextTokenResult.NextToken;
+			}
+			return string.Empty;
 		}
 
-		private string GetReportById( string reportId )
+		private string GetReportById( string reportId, string marker )
 		{
+			AmazonLogger.Trace( "GetReportById", this._credentials.SellerId, marker, "Begin invoke" );
+
 			var request = new GetReportRequest
 			{
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
+				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
 				ReportId = reportId
 			};
-			var response = this._client.GetReport( request, null );
-			if( !response.IsSetGetReportResult() || !response.GetReportResult.IsSetResult() )
-				return null;
-			return response.GetReportResult.Result;
+			var response = ActionPolicies.Get.Get( () => this._getReportThrottler.Execute( () => this._client.GetReport( request, marker ) ) );
+			if( response.IsSetGetReportResult() && response.GetReportResult.IsSetResult() )
+				return response.GetReportResult.Result;
+
+			return null;
 		}
 
 		private IEnumerable< T > ConvertReport< T >( string reportString ) where T : class, new()
