@@ -53,11 +53,10 @@ namespace AmazonAccess.Services.Common
 		/// <exception cref="MwsException">Exceptions from invoking the request</exception>
 		public IMwsReader invoke( string marker )
 		{
-			var operationNameForLog = "Invoke-" + this.operationName;
 			var sellerId = this.GetSellerId();
 			marker = marker ?? Guid.NewGuid().ToString();
-			var parametersForLog = this.GetParametersForLog();
-			AmazonLogger.Trace( operationNameForLog, sellerId, marker, "AwsAccessKeyId:'{0}' Other parameters:'{1}' Begin invoke", this.connection.AwsAccessKeyId, parametersForLog );
+			var operationNameForLog = "Invoke-" + this.operationName;
+			AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Begin invoke" );
 
 			this.AddRequiredParameters();
 			var queryString = this.GetParametersAsString( this.parameters );
@@ -66,30 +65,32 @@ namespace AmazonAccess.Services.Common
 			HttpStatusCode statusCode;
 			try
 			{
+				string requestBody;
 				HttpWebRequest request;
 				if( this.StreamForRequestBody != null )
 				{
 					request = this.connection.GetHttpClient( this.serviceEndPoint.URI, queryString, this.headers, CalculateContentMD5( this.StreamForRequestBody ) );
 					this.StreamForRequestBody.Position = 0;
 					var streamReader = new StreamReader( this.StreamForRequestBody );
-					var bodyForLog = streamReader.ReadToEnd();
-					AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Request body:\n{0}", bodyForLog );
+					requestBody = streamReader.ReadToEnd();
 					this.WriteToRequestBody( request, this.StreamForRequestBody );
 				}
 				else if( !string.IsNullOrEmpty( this.DataForRequestBody ) && this.EncodingForRequestBody != null )
 				{
 					var bites = this.EncodingForRequestBody.GetBytes( this.DataForRequestBody );
 					request = this.connection.GetHttpClient( this.serviceEndPoint.URI, queryString, this.headers, CalculateContentMD5( bites ) );
-					AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Request body:\n{0}", this.DataForRequestBody );
+					requestBody = this.DataForRequestBody;
 					this.WriteToRequestBody( request, bites );
 				}
 				else
 				{
 					request = this.connection.GetHttpClient( this.serviceEndPoint.URI, this.headers );
+					requestBody = queryString;
 					this.WriteToRequestBody( request, queryString );
 				}
 
-				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "URL:'{0}' Getting response", request.RequestUri.AbsoluteUri );
+				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Getting response for request with\n--- Request URL: ---\n{0}\n--- Request body ---\n{1}",
+					request.RequestUri.OriginalString, requestBody );
 
 				string message;
 				using( var httpResponse = ( HttpWebResponse )request.GetResponse() )
@@ -101,7 +102,7 @@ namespace AmazonAccess.Services.Common
 					responseBody = reader.ReadToEnd();
 				}
 
-				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "StatusCode:'{0}' Response received with: \n--- Response header metadata: ---\n{1} \n--- Response body: ---\n{2}",
+				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Response received with StatusCode:'{0}'\n--- Response header metadata: ---\n{1} \n--- Response body: ---\n{2}",
 					statusCode, this.ResponseHeaderMetadata, responseBody );
 
 				if( statusCode != HttpStatusCode.OK )
@@ -124,7 +125,7 @@ namespace AmazonAccess.Services.Common
 				{
 					if( httpErrorResponse == null )
 					{
-						AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Web exception message:'{0}'", we.Message );
+						AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Web exception message:\n{0}", we.Message );
 						throw new MwsException( we );
 					}
 
@@ -132,14 +133,14 @@ namespace AmazonAccess.Services.Common
 					using( var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 ) )
 					{
 						responseBody = reader.ReadToEnd();
-						AmazonLogger.Trace( operationNameForLog, sellerId, marker, "StatusCode:'{0}' Web exception message:'{1}'", statusCode, responseBody );
+						AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Web exception message with StatusCode:'{0}'\n{1}", statusCode, responseBody );
 					}
 				}
 				throw new MwsException( ( int )statusCode, null, null, null, responseBody, null );
 			}
 			catch( Exception e ) // Catch other exceptions, attempt to convert to formatted exception, else rethrow wrapped exception 
 			{
-				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Undefined exception message:'{0}'", e.Message );
+				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Undefined exception message:\n{0}", e.Message );
 				throw new MwsException( e );
 			}
 		}

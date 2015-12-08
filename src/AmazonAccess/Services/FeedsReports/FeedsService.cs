@@ -63,10 +63,10 @@ namespace AmazonAccess.Services.FeedsReports
 				FeedSubmissionIdList = new List< string > { feedSubmissionId }
 			};
 
+			ActionPolicies.CreateApiDelay( 140 ).Wait();
+
 			while( true )
 			{
-				ActionPolicies.CreateApiDelay( 50 ).Wait();
-
 				var response = ActionPolicies.Get.Get( () => this._getFeedSubmissionListThrottler.Execute( () => this._client.GetFeedSubmissionList( request, marker ) ) );
 				if( !response.IsSetGetFeedSubmissionListResult() )
 					throw AmazonLogger.Error( "WaitFeedSubmitting", this._credentials.SellerId, marker, "Result was not received for SubmissionId {0}", feedSubmissionId );
@@ -79,6 +79,8 @@ namespace AmazonAccess.Services.FeedsReports
 
 				if( info.FeedProcessingStatus.Equals( "_DONE_" ) )
 					break;
+
+				ActionPolicies.CreateApiDelay( 40 ).Wait();
 			}
 		}
 
