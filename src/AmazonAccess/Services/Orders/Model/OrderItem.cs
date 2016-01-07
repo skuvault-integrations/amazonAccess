@@ -146,7 +146,7 @@ namespace AmazonAccess.Services.Orders.Model
 		/// <returns>true if QuantityOrdered property is set.</returns>
 		public bool IsSetQuantityOrdered()
 		{
-			return true;//this.QuantityOrdered != null;
+			return true; //this.QuantityOrdered != null;
 		}
 
 		/// <summary>
