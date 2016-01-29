@@ -41,6 +41,11 @@ namespace AmazonAccess.Services.FeedsReports
 				reportId = this.GetExistingReportId( reportType, marker );
 			if( string.IsNullOrEmpty( reportId ) )
 				throw AmazonLogger.Error( "GetReport", this._credentials.SellerId, marker, "Can't request new report or find existing" );
+			if( reportId.Equals( "_NO_DATA_" ) )
+			{
+				AmazonLogger.Trace( "GetReport", this._credentials.SellerId, marker, "Empty report" );
+				return new List< T >();
+			}
 
 			var reportString = this.GetReportById( reportId, marker );
 			if( reportString == null )
@@ -89,16 +94,18 @@ namespace AmazonAccess.Services.FeedsReports
 
 				var response = ActionPolicies.Get.Get( () => this._getReportRequestListThrottler.Execute( () => this._client.GetReportRequestList( request, marker ) ) );
 				if( !response.IsSetGetReportRequestListResult() || !response.GetReportRequestListResult.IsSetReportRequestInfo() )
-					break;
+					return string.Empty;
+
 				var info = response.GetReportRequestListResult.ReportRequestInfo.FirstOrDefault( i => i.ReportRequestId.Equals( reportRequestId ) );
 				if( info == null || !info.IsSetReportProcessingStatus() || info.ReportProcessingStatus.Equals( "_CANCELLED_", StringComparison.InvariantCultureIgnoreCase ) )
-					break;
+					return string.Empty;
+
+				if( info.ReportProcessingStatus.Equals( "_DONE_NO_DATA_", StringComparison.InvariantCultureIgnoreCase ) )
+					return "_NO_DATA_";
 
 				if( !string.IsNullOrEmpty( info.GeneratedReportId ) )
 					return info.GeneratedReportId;
 			}
-
-			return string.Empty;
 		}
 
 		private string GetExistingReportId( ReportType reportType, string marker )

@@ -84,7 +84,7 @@ namespace AmazonAccess
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
 			var inventory = service.GetReport< FbaManageInventory >(
-				ReportType.InventoryReport,
+				ReportType.ActiveListingsReport,
 				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(),
 				DateTime.UtcNow.ToUniversalTime(),
 				marker );
