@@ -25,20 +25,20 @@ namespace AmazonAccess.Services.FeedsReports.Model
 	{
 		private DateTime? startDateField;
 		private DateTime? endDateField;
-		private List< string > _marketplaceId;
+		private List< string > _marketplaceIdList;
 
 		/// <summary>
 		/// Gets and sets the MarketplaceId property.
 		/// </summary>
-		public List< string > MarketplaceId
+		public List< string > MarketplaceIdList
 		{
 			get
 			{
-				if( this._marketplaceId == null )
-					this._marketplaceId = new List< string >();
-				return this._marketplaceId;
+				if( this._marketplaceIdList == null )
+					this._marketplaceIdList = new List< string >();
+				return this._marketplaceIdList;
 			}
-			set { this._marketplaceId = value; }
+			set { this._marketplaceIdList = value; }
 		}
 
 		/// <summary>
@@ -48,7 +48,7 @@ namespace AmazonAccess.Services.FeedsReports.Model
 		/// <returns>this instance.</returns>
 		public RequestReportRequest WithMarketplaceId( string[] marketplaceId )
 		{
-			this.MarketplaceId.AddRange( marketplaceId );
+			this.MarketplaceIdList.AddRange( marketplaceId );
 			return this;
 		}
 
@@ -58,7 +58,7 @@ namespace AmazonAccess.Services.FeedsReports.Model
 		/// <returns>true if MarketplaceId property is set.</returns>
 		public bool IsSetMarketplaceId()
 		{
-			return this.MarketplaceId.Count > 0;
+			return this.MarketplaceIdList.Count > 0;
 		}
 
 		/// <summary>
@@ -227,7 +227,7 @@ namespace AmazonAccess.Services.FeedsReports.Model
 			this.endDateField = reader.Read< DateTime? >( "EndDate" );
 			this.ReportType = reader.Read< string >( "ReportType" );
 			this.ReportOptions = reader.Read< string >( "ReportOptions" );
-			this._marketplaceId = reader.ReadList< string >( "MarketplaceId", "Id" );
+			this._marketplaceIdList = reader.ReadList< string >( "MarketplaceIdList", "Id" );
 		}
 
 		public override void WriteFragmentTo( IMwsWriter writer )
@@ -238,7 +238,7 @@ namespace AmazonAccess.Services.FeedsReports.Model
 			writer.Write( "EndDate", this.endDateField );
 			writer.Write( "ReportType", this.ReportType );
 			writer.Write( "ReportOptions", this.ReportOptions );
-			writer.WriteList( "MarketplaceId", "Id", this._marketplaceId );
+			writer.WriteList( "MarketplaceIdList", "Id", this._marketplaceIdList );
 		}
 
 		public override void WriteTo( IMwsWriter writer )

@@ -12,11 +12,20 @@
 		public static readonly ReportType FbaReservedInventory = new ReportType( "_GET_RESERVED_INVENTORY_DATA_" );
 		public static readonly ReportType FbaInventoryEventDetail = new ReportType( "_GET_FBA_FULFILLMENT_INVENTORY_SUMMARY_DATA_" );
 
+		public static readonly ReportType InventoryReport = new ReportType( "_GET_FLAT_FILE_OPEN_LISTINGS_DATA_" );
+		public static readonly ReportType ActiveListingsReport = new ReportType( "_GET_MERCHANT_LISTINGS_DATA_" );
+		public static readonly ReportType OpenListingsReport = new ReportType( "_GET_MERCHANT_LISTINGS_DATA_BACK_COMPAT_" );
+		public static readonly ReportType OpenListingsReportLite = new ReportType( "_GET_MERCHANT_LISTINGS_DATA_LITE_" );
+		public static readonly ReportType OpenListingsReportLiter = new ReportType( "_GET_MERCHANT_LISTINGS_DATA_LITER_" );
+		public static readonly ReportType CanceledListingsReport = new ReportType( "_GET_MERCHANT_CANCELLED_LISTINGS_DATA_" );
+		public static readonly ReportType SoldListingsReport = new ReportType( "_GET_CONVERGED_FLAT_FILE_SOLD_LISTINGS_DATA_" );
+		public static readonly ReportType ListingQualityAndSuppressedListingReport = new ReportType( "_GET_MERCHANT_LISTINGS_DEFECT_DATA_" );
+
 		private ReportType( string description )
 		{
 			this.Description = description;
 		}
 
-		public string Description { get; private set; }
+		public string Description{ get; private set; }
 	}
 }

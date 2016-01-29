@@ -23,6 +23,7 @@ namespace AmazonAccess
 		bool IsOrdersReceived( DateTime? dateFrom = null, DateTime? dateTo = null );
 
 		List< string > GetProductsBySkus( List< string > skus, Action< Product > processProductAction );
+		IEnumerable< FbaManageInventory > GetProducts();
 
 		void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems );
 

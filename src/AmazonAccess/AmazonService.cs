@@ -75,6 +75,23 @@ namespace AmazonAccess
 			var service = new ProductsBySkuService( client, this._credentials );
 			return service.GetProductsBySkus( skus, processProductAction, this.GetMarker() );
 		}
+
+		public IEnumerable< FbaManageInventory > GetProducts()
+		{
+			var marker = this.GetMarker();
+			AmazonLogger.Trace( "GetProducts", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var inventory = service.GetReport< FbaManageInventory >(
+				ReportType.InventoryReport,
+				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(),
+				DateTime.UtcNow.ToUniversalTime(),
+				marker );
+
+			AmazonLogger.Trace( "GetProducts", this._credentials.SellerId, marker, "End invoke" );
+			return inventory;
+		}
 		#endregion
 
 		#region Update inventory

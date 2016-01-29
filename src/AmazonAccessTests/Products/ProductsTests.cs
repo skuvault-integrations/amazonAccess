@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using AmazonAccess.Services.Products.Model;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace AmazonAccessTests.Products
@@ -25,6 +26,16 @@ namespace AmazonAccessTests.Products
 			var products = new ConcurrentBag< Product >();
 
 			var result = service.GetProductsBySkus( skus, product => products.Add( product ) );
+			result.Should().BeNullOrEmpty();
+		}
+
+		[ Test ]
+		public void GetProducts()
+		{
+			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
+
+			var result = service.GetProducts();
+			result.Should().BeNullOrEmpty();
 		}
 	}
 }

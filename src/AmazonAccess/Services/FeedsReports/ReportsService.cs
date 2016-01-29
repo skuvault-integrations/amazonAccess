@@ -59,7 +59,7 @@ namespace AmazonAccess.Services.FeedsReports
 			{
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
-				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
+				MarketplaceIdList = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
 				ReportType = reportType.Description,
 				StartDate = startDate,
 				EndDate = endDate
@@ -79,7 +79,6 @@ namespace AmazonAccess.Services.FeedsReports
 			{
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
-				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
 				ReportRequestIdList = new List< string > { reportRequestId },
 				RequestedFromDate = DateTime.MinValue.ToUniversalTime(),
 				RequestedToDate = DateTime.UtcNow.ToUniversalTime()
@@ -110,7 +109,6 @@ namespace AmazonAccess.Services.FeedsReports
 			{
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
-				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
 				AvailableFromDate = DateTime.MinValue.ToUniversalTime(),
 				AvailableToDate = DateTime.UtcNow.ToUniversalTime()
 			};
@@ -135,7 +133,6 @@ namespace AmazonAccess.Services.FeedsReports
 				{
 					SellerId = this._credentials.SellerId,
 					MWSAuthToken = this._credentials.MwsAuthToken,
-					MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
 					NextToken = nextToken
 				};
 				var response = ActionPolicies.Get.Get( () => this._getReportListByNextTokenThrottler.Execute( () => this._client.GetReportListByNextToken( request, marker ) ) );
@@ -159,7 +156,6 @@ namespace AmazonAccess.Services.FeedsReports
 			{
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
-				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(),
 				ReportId = reportId
 			};
 			var response = ActionPolicies.Get.Get( () => this._getReportThrottler.Execute( () => this._client.GetReport( request, marker ) ) );
