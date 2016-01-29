@@ -232,6 +232,7 @@
     <Compile Include="Services\Orders\OrderItemsService.cs" />
     <Compile Include="Services\Orders\OrdersByIdService.cs" />
     <Compile Include="Services\Orders\OrdersService.cs" />
+    <Compile Include="Services\Products\ProductsBySkuService.cs" />
     <Compile Include="Services\Products\IProductsServiceClient.cs" />
     <Compile Include="Services\Products\ProductsServiceClient.cs" />
     <Compile Include="Services\Products\Model\MarketplaceWebServiceProductsException.cs" />

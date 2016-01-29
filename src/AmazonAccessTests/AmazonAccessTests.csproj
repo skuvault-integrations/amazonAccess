@@ -70,6 +70,7 @@
     <Compile Include="..\Global\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Products\ProductsTests.cs" />
     <Compile Include="TestsBase.cs" />
     <Compile Include="Inventory\InventoryTests.cs" />
     <Compile Include="Misc\ThrottlerTests.cs" />

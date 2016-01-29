@@ -8,6 +8,7 @@ namespace AmazonAccess.Models
 	{
 		public AmazonRegionCodeEnum RegionCode{ get; private set; }
 		public string OrdersServiceUrl{ get; private set; }
+		public string ProductsServiceUrl{ get; private set; }
 		public string FbaInventoryServiceUrl{ get; private set; }
 		public string FeedsServiceUrl{ get; private set; }
 		public string SellersServiceUrl{ get; private set; }
@@ -29,6 +30,7 @@ namespace AmazonAccess.Models
 
 			this.RegionCode = marketplace.RegionCode;
 			this.OrdersServiceUrl = marketplace.OrdersServiceUrl;
+			this.ProductsServiceUrl = marketplace.ProductsServiceUrl;
 			this.FbaInventoryServiceUrl = marketplace.FbaInventoryServiceUrl;
 			this.FeedsServiceUrl = marketplace.FeedsServiceUrl;
 			this.SellersServiceUrl = marketplace.SellersServiceUrl;
@@ -44,6 +46,7 @@ namespace AmazonAccess.Models
 			var marketplace = marketplaces.First();
 			this.RegionCode = marketplace.RegionCode;
 			this.OrdersServiceUrl = marketplace.OrdersServiceUrl;
+			this.ProductsServiceUrl = marketplace.ProductsServiceUrl;
 			this.FbaInventoryServiceUrl = marketplace.FbaInventoryServiceUrl;
 			this.FeedsServiceUrl = marketplace.FeedsServiceUrl;
 			this.SellersServiceUrl = marketplace.SellersServiceUrl;

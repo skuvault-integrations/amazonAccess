@@ -4,6 +4,7 @@ using AmazonAccess.Services.FbaInventory.Model;
 using AmazonAccess.Services.FeedsReports.Model;
 using AmazonAccess.Services.FeedsReports.ReportModel;
 using AmazonAccess.Services.Orders.Model;
+using AmazonAccess.Services.Products.Model;
 using AmazonAccess.Services.Sellers.Model;
 
 namespace AmazonAccess
@@ -20,6 +21,8 @@ namespace AmazonAccess
 
 		int GetOrders( DateTime dateFrom, DateTime dateTo, Action< ComposedOrder > processOrderAction );
 		bool IsOrdersReceived( DateTime? dateFrom = null, DateTime? dateTo = null );
+
+		List< string > GetProductsBySkus( List< string > skus, Action< Product > processProductAction );
 
 		void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems );
 

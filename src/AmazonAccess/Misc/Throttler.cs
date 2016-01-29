@@ -12,6 +12,7 @@ namespace AmazonAccess.Misc
 		private readonly Action _delay;
 		private readonly int _maxRetryCount;
 
+		//TODO: Update delayInSeconds to milliseconds or change type to decimal
 		public Throttler( int maxQuota, int delayInSeconds ):
 			this( maxQuota, el => el / delayInSeconds, () => Task.Delay( delayInSeconds * 1000 ).Wait(), 10 )
 		{

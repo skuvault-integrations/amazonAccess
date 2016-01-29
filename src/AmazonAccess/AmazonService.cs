@@ -11,6 +11,8 @@ using AmazonAccess.Services.FeedsReports.Model;
 using AmazonAccess.Services.FeedsReports.ReportModel;
 using AmazonAccess.Services.Orders;
 using AmazonAccess.Services.Orders.Model;
+using AmazonAccess.Services.Products;
+using AmazonAccess.Services.Products.Model;
 using AmazonAccess.Services.Sellers;
 using AmazonAccess.Services.Sellers.Model;
 using CuttingEdge.Conditions;
@@ -63,6 +65,15 @@ namespace AmazonAccess
 			var client = this._factory.CreateOrdersClient();
 			var service = new OrdersService( client, this._credentials );
 			return service.IsOrdersReceived( dateFrom.Value, dateTo.Value, this.GetMarker() );
+		}
+		#endregion
+
+		#region Products	
+		public List< string > GetProductsBySkus( List< string > skus, Action< Product > processProductAction )
+		{
+			var client = this._factory.CreateProductsClient();
+			var service = new ProductsBySkuService( client, this._credentials );
+			return service.GetProductsBySkus( skus, processProductAction, this.GetMarker() );
 		}
 		#endregion
 
