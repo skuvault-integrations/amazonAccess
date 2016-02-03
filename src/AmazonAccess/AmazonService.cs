@@ -76,21 +76,30 @@ namespace AmazonAccess
 			return service.GetProductsBySkus( skus, processProductAction, this.GetMarker() );
 		}
 
-		public IEnumerable< FbaManageInventory > GetProducts()
+		public List< ProductShort > GetActiveProducts()
 		{
 			var marker = this.GetMarker();
-			AmazonLogger.Trace( "GetProducts", this._credentials.SellerId, marker, "Begin invoke" );
+			AmazonLogger.Trace( "GetActiveProducts", this._credentials.SellerId, marker, "Begin invoke" );
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var inventory = service.GetReport< FbaManageInventory >(
-				ReportType.ActiveListingsReport,
-				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(),
-				DateTime.UtcNow.ToUniversalTime(),
-				marker );
+			var products = service.GetReport< ProductShort >( ReportType.ActiveListingsReport, DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), marker );
 
-			AmazonLogger.Trace( "GetProducts", this._credentials.SellerId, marker, "End invoke" );
-			return inventory;
+			AmazonLogger.Trace( "GetActiveProducts", this._credentials.SellerId, marker, "End invoke" );
+			return products.ToList();
+		}
+
+		public List< ProductShort > GetOpenProducts()
+		{
+			var marker = this.GetMarker();
+			AmazonLogger.Trace( "GetOpenProducts", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var products = service.GetReport< ProductShort >( ReportType.OpenListingsReport, DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), marker );
+
+			AmazonLogger.Trace( "GetOpenProducts", this._credentials.SellerId, marker, "End invoke" );
+			return products.ToList();
 		}
 		#endregion
 
@@ -116,12 +125,12 @@ namespace AmazonAccess
 		#endregion
 
 		#region Get FBA inventory
-		public IEnumerable< InventorySupply > GetFbaInventory()
+		public List< InventorySupply > GetFbaInventory()
 		{
 			var client = this._factory.CreateFbaInventoryClient();
 			var service = new FbaInventorySupplyService( client, this._credentials );
 			var inventory = service.LoadFbaInventory( this.GetMarker() );
-			return inventory;
+			return inventory.ToList();
 		}
 
 		public bool IsFbaInventoryReceived()
@@ -131,21 +140,17 @@ namespace AmazonAccess
 			return service.IsFbaInventoryReceived( this.GetMarker() );
 		}
 
-		public IEnumerable< FbaManageInventory > GetDetailedFbaInventory()
+		public List< FbaManageInventory > GetDetailedFbaInventory()
 		{
 			var marker = this.GetMarker();
 			AmazonLogger.Trace( "GetDetailedFbaInventory", this._credentials.SellerId, marker, "Begin invoke" );
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var inventory = service.GetReport< FbaManageInventory >(
-				ReportType.FbaManageInventoryArchived,
-				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(),
-				DateTime.UtcNow.ToUniversalTime(),
-				marker );
+			var inventory = service.GetReport< FbaManageInventory >( ReportType.FbaManageInventoryArchived, DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), marker );
 
 			AmazonLogger.Trace( "GetDetailedFbaInventory", this._credentials.SellerId, marker, "End invoke" );
-			return inventory;
+			return inventory.ToList();
 		}
 		#endregion
 

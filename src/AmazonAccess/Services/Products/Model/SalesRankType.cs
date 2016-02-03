@@ -72,7 +72,7 @@ namespace AmazonAccess.Services.Products.Model
 		/// <returns>true if Rank property is set.</returns>
 		public bool IsSetRank()
 		{
-			return this.Rank != null;
+			return true;
 		}
 
 		public override void ReadFragmentFrom( IMwsReader reader )

@@ -30,12 +30,21 @@ namespace AmazonAccessTests.Products
 		}
 
 		[ Test ]
-		public void GetProducts()
+		public void GetActiveProducts()
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 
-			var result = service.GetProducts();
-			result.Should().BeNullOrEmpty();
+			var result = service.GetActiveProducts();
+			result.Should().NotBeNullOrEmpty();
+		}
+
+		[ Test ]
+		public void GetOpenProducts()
+		{
+			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
+
+			var result = service.GetOpenProducts();
+			result.Should().NotBeNullOrEmpty();
 		}
 	}
 }

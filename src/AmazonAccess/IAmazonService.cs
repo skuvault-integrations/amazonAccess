@@ -23,12 +23,13 @@ namespace AmazonAccess
 		bool IsOrdersReceived( DateTime? dateFrom = null, DateTime? dateTo = null );
 
 		List< string > GetProductsBySkus( List< string > skus, Action< Product > processProductAction );
-		IEnumerable< FbaManageInventory > GetProducts();
+		List< ProductShort > GetActiveProducts();
+		List< ProductShort > GetOpenProducts();
 
 		void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems );
 
-		IEnumerable< FbaManageInventory > GetDetailedFbaInventory();
-		IEnumerable< InventorySupply > GetFbaInventory();
+		List< FbaManageInventory > GetDetailedFbaInventory();
+		List< InventorySupply > GetFbaInventory();
 		bool IsFbaInventoryReceived();
 
 		MarketplaceParticipations GetMarketplaceParticipations();

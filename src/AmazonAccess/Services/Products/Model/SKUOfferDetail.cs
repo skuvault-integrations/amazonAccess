@@ -49,7 +49,7 @@ namespace AmazonAccess.Services.Products.Model
 		/// <returns>true if MyOffer property is set.</returns>
 		public bool IsSetMyOffer()
 		{
-			return this.MyOffer != null;
+			return true;
 		}
 
 		/// <summary>
@@ -257,7 +257,7 @@ namespace AmazonAccess.Services.Products.Model
 		/// <returns>true if IsFulfilledByAmazon property is set.</returns>
 		public bool IsSetIsFulfilledByAmazon()
 		{
-			return this.IsFulfilledByAmazon != null;
+			return true;
 		}
 
 		/// <summary>

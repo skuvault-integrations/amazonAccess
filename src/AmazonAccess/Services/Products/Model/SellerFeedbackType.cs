@@ -78,7 +78,7 @@ namespace AmazonAccess.Services.Products.Model
 		/// <returns>true if FeedbackCount property is set.</returns>
 		public bool IsSetFeedbackCount()
 		{
-			return this.FeedbackCount != null;
+			return true;
 		}
 
 		public override void ReadFragmentFrom( IMwsReader reader )

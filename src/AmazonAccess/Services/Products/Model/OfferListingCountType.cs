@@ -46,7 +46,7 @@ namespace AmazonAccess.Services.Products.Model
 		/// <returns>true if Value property is set.</returns>
 		public bool IsSetValue()
 		{
-			return this.Value != null;
+			return true;
 		}
 
 		/// <summary>

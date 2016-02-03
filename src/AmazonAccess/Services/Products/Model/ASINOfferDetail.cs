@@ -231,7 +231,7 @@ namespace AmazonAccess.Services.Products.Model
 		/// <returns>true if IsFulfilledByAmazon property is set.</returns>
 		public bool IsSetIsFulfilledByAmazon()
 		{
-			return this.IsFulfilledByAmazon != null;
+			return true;
 		}
 
 		/// <summary>

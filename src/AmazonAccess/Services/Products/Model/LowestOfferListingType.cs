@@ -104,7 +104,7 @@ namespace AmazonAccess.Services.Products.Model
 		/// <returns>true if SellerFeedbackCount property is set.</returns>
 		public bool IsSetSellerFeedbackCount()
 		{
-			return this.SellerFeedbackCount != null;
+			return true;
 		}
 
 		/// <summary>

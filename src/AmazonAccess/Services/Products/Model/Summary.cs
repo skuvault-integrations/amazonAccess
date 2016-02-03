@@ -46,7 +46,7 @@ namespace AmazonAccess.Services.Products.Model
 		/// <returns>true if TotalOfferCount property is set.</returns>
 		public bool IsSetTotalOfferCount()
 		{
-			return this.TotalOfferCount != null;
+			return true;
 		}
 
 		/// <summary>
