@@ -28,7 +28,7 @@ namespace AmazonAccessTests.Products
 			};
 			var products = new ConcurrentBag< Product >();
 
-			var result = service.GetProductsBySkus( skus, true, product => products.Add( product ) );
+			var result = service.GetProductsBySkus( skus, false, product => products.Add( product ) );
 			result.Should().NotBeEmpty();
 		}
 
@@ -37,7 +37,7 @@ namespace AmazonAccessTests.Products
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 
-			var result = service.GetActiveProducts( true );
+			var result = service.GetActiveProducts( false );
 			result.Should().NotBeEmpty();
 		}
 
