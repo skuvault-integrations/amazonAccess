@@ -233,6 +233,10 @@
     <Compile Include="Services\Orders\OrderItemsService.cs" />
     <Compile Include="Services\Orders\OrdersByIdService.cs" />
     <Compile Include="Services\Orders\OrdersService.cs" />
+    <Compile Include="Services\Products\Model\Dimensions.cs" />
+    <Compile Include="Services\Products\Model\ListPrice.cs" />
+    <Compile Include="Services\Products\Model\ProductImage.cs" />
+    <Compile Include="Services\Products\Model\ItemAttributes.cs" />
     <Compile Include="Services\Products\ProductsBySkuService.cs" />
     <Compile Include="Services\Products\IProductsServiceClient.cs" />
     <Compile Include="Services\Products\ProductsServiceClient.cs" />

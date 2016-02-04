@@ -22,9 +22,11 @@ namespace AmazonAccess
 		int GetOrders( DateTime dateFrom, DateTime dateTo, Action< ComposedOrder > processOrderAction );
 		bool IsOrdersReceived( DateTime? dateFrom = null, DateTime? dateTo = null );
 
-		List< string > GetProductsBySkus( List< string > skus, Action< Product > processProductAction );
-		List< ProductShort > GetActiveProducts();
-		List< ProductShort > GetOpenProducts();
+		Dictionary< string, List< string > > GetProductsBySkus( List< string > skus, bool skipDuplicates, Action< Product > processProductAction );
+		Dictionary< string, List< ProductShort > > GetActiveProducts( bool skipDuplicates );
+		void GetActiveProducts( bool skipDuplicates, Action< string, ProductShort > processReportAction );
+		Dictionary< string, List< ProductShort > > GetOpenProducts( bool skipDuplicates );
+		void GetOpenProducts( bool skipDuplicates, Action< string, ProductShort > processReportAction );
 
 		void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems );
 

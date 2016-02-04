@@ -14,7 +14,6 @@
  * Generated: Thu Sep 10 06:52:19 PDT 2015
  */
 
-using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
@@ -26,18 +25,18 @@ namespace AmazonAccess.Services.Products.Model
 	[ XmlRoot( Namespace = "http://mws.amazonservices.com/schema/Products/2011-10-01", IsNullable = false ) ]
 	public class AttributeSetList: AbstractMwsObject
 	{
-		private List< Object > _any;
+		private List< object > _any;
 
 		/// <summary>
 		/// Gets and sets the Any property.
 		/// </summary>
 		[ XmlElement( ElementName = "Any" ) ]
-		public List< Object > Any
+		public List< object > Any
 		{
 			get
 			{
 				if( this._any == null )
-					this._any = new List< Object >();
+					this._any = new List< object >();
 				return this._any;
 			}
 			set { this._any = value; }
@@ -48,7 +47,7 @@ namespace AmazonAccess.Services.Products.Model
 		/// </summary>
 		/// <param name="any">Any property.</param>
 		/// <returns>this instance.</returns>
-		public AttributeSetList WithAny( Object[] any )
+		public AttributeSetList WithAny( object[] any )
 		{
 			this._any.AddRange( any );
 			return this;
@@ -63,18 +62,22 @@ namespace AmazonAccess.Services.Products.Model
 			return this.Any.Count > 0;
 		}
 
+		public List< ItemAttributes > Attributes{ get; set; }
+
 		public override void ReadFragmentFrom( IMwsReader reader )
 		{
 			this._any = new List< object >();
-			foreach( XmlElement element in reader.ReadAny() )
+			foreach( var element in reader.ReadAny() )
 			{
 				this._any.Add( element );
 			}
+
+			this.Attributes = reader.ReadList< ItemAttributes >( "ns2:ItemAttributes" );
 		}
 
 		public override void WriteFragmentTo( IMwsWriter writer )
 		{
-			List< XmlElement > temp = new List< XmlElement >();
+			var temp = new List< XmlElement >();
 			foreach( object element in this._any )
 			{
 				temp.Add( ( XmlElement )element );
@@ -85,10 +88,6 @@ namespace AmazonAccess.Services.Products.Model
 		public override void WriteTo( IMwsWriter writer )
 		{
 			writer.Write( "http://mws.amazonservices.com/schema/Products/2011-10-01", "AttributeSetList", this );
-		}
-
-		public AttributeSetList(): base()
-		{
 		}
 	}
 }

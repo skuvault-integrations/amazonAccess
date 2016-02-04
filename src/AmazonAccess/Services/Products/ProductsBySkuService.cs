@@ -26,20 +26,23 @@ namespace AmazonAccess.Services.Products
 			this._credentials = credentials;
 		}
 
-		public List< string > GetProductsBySkus( List< string > skus, Action< Product > processProductAction, string marker )
+		public Dictionary< string, List< string > > GetProductsBySkus( List< string > skus, bool skipDuplicates, Action< Product > processProductAction, string marker )
 		{
-			var skusCopy = skus.ToList();
 			AmazonLogger.Trace( "GetProductsBySkus", this._credentials.SellerId, marker, "Begin invoke" );
 
-			var result = new List< string >();
+			var skusCopy = skus.ToList();
+			var result = new Dictionary< string, List< string > >();
 			var marketplaces = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList();
 			foreach( var marketplace in marketplaces )
 			{
 				var receivedSkus = this.GetProductsBySkusForMarketplace( skusCopy, marketplace, processProductAction, marker );
-				result.AddRange( receivedSkus );
-				foreach( var receivedSku in receivedSkus )
+				result.Add( marketplace, receivedSkus );
+				if( skipDuplicates )
 				{
-					skusCopy.Remove( receivedSku );
+					foreach( var receivedSku in receivedSkus )
+					{
+						skusCopy.Remove( receivedSku );
+					}
 				}
 			}
 
@@ -78,7 +81,17 @@ namespace AmazonAccess.Services.Products
 						continue;
 
 					result.Add( productResult.Id );
-					processProductAction( productResult.Products.Product.First() );
+					var product = productResult.Products.Product.First();
+					if( !product.Identifiers.IsSetSKUIdentifier() )
+					{
+						product.Identifiers.SKUIdentifier = new SellerSKUIdentifier
+						{
+							MarketplaceId = marketplace,
+							SellerId = this._credentials.SellerId,
+							SellerSKU = productResult.Id
+						};
+					}
+					processProductAction( product );
 				}
 			}
 
