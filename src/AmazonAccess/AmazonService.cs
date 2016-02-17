@@ -90,6 +90,11 @@ namespace AmazonAccess
 			return products;
 		}
 
+		/// <summary>
+		/// Get Active Products
+		/// </summary>
+		/// <param name="skipDuplicates"></param>
+		/// <param name="processReportAction">Marketplace and Product</param>
 		public void GetActiveProducts( bool skipDuplicates, Action< string, ProductShort > processReportAction )
 		{
 			var marker = this.GetMarker();
@@ -117,6 +122,11 @@ namespace AmazonAccess
 			return products;
 		}
 
+		/// <summary>
+		/// Get Open Products
+		/// </summary>
+		/// <param name="skipDuplicates"></param>
+		/// <param name="processReportAction">Marketplace and Product</param>
 		public void GetOpenProducts( bool skipDuplicates, Action< string, ProductShort > processReportAction )
 		{
 			var marker = this.GetMarker();

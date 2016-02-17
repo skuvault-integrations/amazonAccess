@@ -15,17 +15,62 @@ namespace AmazonAccess
 		/// This operation takes up to 50 order ids and returns the corresponding orders.
 		/// </summary>
 		/// <param name="ids"></param>
-		/// <param name="processOrderAction"></param>
+		/// <param name="processOrderAction">Order</param>
 		/// <returns></returns>
 		int GetOrdersById( List< string > ids, Action< ComposedOrder > processOrderAction );
 
+		/// <summary>
+		/// Get Orders
+		/// </summary>
+		/// <param name="dateFrom"></param>
+		/// <param name="dateTo"></param>
+		/// <param name="processOrderAction">Order</param>
+		/// <returns></returns>
 		int GetOrders( DateTime dateFrom, DateTime dateTo, Action< ComposedOrder > processOrderAction );
+
+		/// <summary>
+		/// Is Orders Received
+		/// </summary>
+		/// <param name="dateFrom"></param>
+		/// <param name="dateTo"></param>
+		/// <returns></returns>
 		bool IsOrdersReceived( DateTime? dateFrom = null, DateTime? dateTo = null );
 
+		/// <summary>
+		/// Get Products By Skus
+		/// </summary>
+		/// <param name="skus"></param>
+		/// <param name="skipDuplicates"></param>
+		/// <param name="processProductAction">Product</param>
+		/// <returns>Marketplace and Product SKUs</returns>
 		Dictionary< string, List< string > > GetProductsBySkus( List< string > skus, bool skipDuplicates, Action< Product > processProductAction );
+
+		/// <summary>
+		/// Get Active Products
+		/// </summary>
+		/// <param name="skipDuplicates"></param>
+		/// <returns>Marketplace and Products</returns>
 		Dictionary< string, List< ProductShort > > GetActiveProducts( bool skipDuplicates );
+
+		/// <summary>
+		/// Get Active Products
+		/// </summary>
+		/// <param name="skipDuplicates"></param>
+		/// <param name="processReportAction">Marketplace and Product</param>
 		void GetActiveProducts( bool skipDuplicates, Action< string, ProductShort > processReportAction );
+
+		/// <summary>
+		/// Get Open Products
+		/// </summary>
+		/// <param name="skipDuplicates"></param>
+		/// <returns>Marketplace and Products</returns>
 		Dictionary< string, List< ProductShort > > GetOpenProducts( bool skipDuplicates );
+
+		/// <summary>
+		/// Get Open Products
+		/// </summary>
+		/// <param name="skipDuplicates"></param>
+		/// <param name="processReportAction">Marketplace and Product</param>
 		void GetOpenProducts( bool skipDuplicates, Action< string, ProductShort > processReportAction );
 
 		void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems );
