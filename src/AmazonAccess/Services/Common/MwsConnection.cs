@@ -46,7 +46,7 @@ namespace AmazonAccess.Services.Common
 		private string proxyPassword;
 
 		private volatile bool frozen;
-		private Dictionary< string, MwsConnection.ServiceEndpoint > cachedServiceMap;
+		private Dictionary< string, ServiceEndpoint > cachedServiceMap;
 
 		public MwsConnection()
 		{
@@ -145,14 +145,16 @@ namespace AmazonAccess.Services.Common
 			try
 			{
 				var operationName = type.OperationName;
-				var mc = this.NewCall( operationName );
-				requestData.WriteFragmentTo( mc );
-				var responseReader = mc.invoke( marker );
-				var rhmd = mc.GetResponseMetadataHeader();
-				var response = MwsUtil.NewInstance< T >();
-				type.SetResponseHeaderMetadata( response, rhmd );
-				response.ReadFragmentFrom( responseReader );
-				return response;
+				using( var mc = this.NewCall( operationName ) )
+				{
+					requestData.WriteFragmentTo( mc );
+					var responseReader = mc.invoke( marker );
+					var rhmd = mc.GetResponseMetadataHeader();
+					var response = MwsUtil.NewInstance< T >();
+					type.SetResponseHeaderMetadata( response, rhmd );
+					response.ReadFragmentFrom( responseReader );
+					return response;
+				}
 			}
 			catch( Exception e )
 			{

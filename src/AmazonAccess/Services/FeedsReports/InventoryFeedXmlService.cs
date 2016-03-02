@@ -24,10 +24,9 @@ namespace AmazonAccess.Services.FeedsReports
 		public string GetDocumentString()
 		{
 			using( var stream = this.GetDocumentStream() )
+			using( var streamReader = new StreamReader( stream ) )
 			{
-				var streamReader = new StreamReader( stream );
 				var str = streamReader.ReadToEnd();
-				streamReader.Close();
 				return str;
 			}
 

@@ -402,11 +402,6 @@ namespace AmazonAccess.Services.Common
 			throw new NotSupportedException( "Complex object writing not supported" );
 		}
 
-		public void close()
-		{
-			//nothing to do
-		}
-
 		public void EndObject( string name )
 		{
 			throw new NotSupportedException( "Complex object writing not supported" );
@@ -441,5 +436,36 @@ namespace AmazonAccess.Services.Common
 			while( ( read = from.Read( buffer, 0, buffer.Length ) ) > 0 )
 				to.Write( buffer, 0, read );
 		}
+
+		public void Close()
+		{
+			//nothing to do
+		}
+
+		#region IDisposable Members
+		public void Dispose()
+		{
+			this.Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		protected virtual void Dispose( bool disposing )
+		{
+			if( this._disposed )
+				return;
+
+			if( disposing )
+				this.Close();
+
+			this._disposed = true;
+		}
+
+		~MwsAQCall()
+		{
+			this.Dispose( false );
+		}
+
+		private bool _disposed;
+		#endregion IDisposable Members
 	}
 }

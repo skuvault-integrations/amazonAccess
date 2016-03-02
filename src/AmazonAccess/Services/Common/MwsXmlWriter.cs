@@ -38,22 +38,6 @@ namespace AmazonAccess.Services.Common
 		{
 		}
 
-		public void close()
-		{
-			if( this.writer != null )
-			{
-				this.writer.WriteEndDocument();
-				try
-				{
-					this.writer.Close();
-				}
-				catch( Exception ex )
-				{
-					throw new SystemException( "Error closing the writer", ex.InnerException );
-				}
-			}
-		}
-
 		public void BeginObject( string name )
 		{
 			this.BeginObject( name, false );
@@ -228,5 +212,47 @@ namespace AmazonAccess.Services.Common
 		{
 			throw new NotImplementedException();
 		}
+
+		public void Close()
+		{
+			if( this.writer == null )
+				return;
+
+			this.writer.WriteEndDocument();
+			try
+			{
+				this.writer.Close();
+			}
+			catch( Exception ex )
+			{
+				throw new SystemException( "Error closing the writer", ex.InnerException );
+			}
+		}
+
+		#region IDisposable Members
+		public void Dispose()
+		{
+			this.Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		protected virtual void Dispose( bool disposing )
+		{
+			if( this._disposed )
+				return;
+
+			if( disposing )
+				this.Close();
+
+			this._disposed = true;
+		}
+
+		~MwsXmlWriter()
+		{
+			this.Dispose( false );
+		}
+
+		private bool _disposed;
+		#endregion IDisposable Members
 	}
 }

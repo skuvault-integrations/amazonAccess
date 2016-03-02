@@ -11,6 +11,7 @@
  * Marketplace Web Service Runtime Client Library
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -18,7 +19,7 @@ using System.Xml;
 
 namespace AmazonAccess.Services.Common
 {
-	public interface IMwsWriter
+	public interface IMwsWriter: IDisposable
 	{
 		/// <summary>
 		/// Write a begin tag for an object value. Can be nested.
@@ -32,7 +33,7 @@ namespace AmazonAccess.Services.Common
 		/// <summary>
 		/// Close or dispose the writer
 		/// </summary>
-		void close();
+		void Close();
 
 		/// <summary>
 		/// End a list. Must match previous begin list. 

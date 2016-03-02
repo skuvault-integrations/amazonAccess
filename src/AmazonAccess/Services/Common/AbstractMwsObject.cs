@@ -22,16 +22,20 @@ namespace AmazonAccess.Services.Common
 	{
 		public string ToXML()
 		{
-			IMwsWriter writer = new MwsXmlBuilder();
-			this.WriteTo( writer );
-			return writer.ToString();
+			using( var writer = new MwsXmlBuilder() )
+			{
+				this.WriteTo( writer );
+				return writer.ToString();
+			}
 		}
 
 		public string ToXMLFragment()
 		{
-			IMwsWriter writer = new MwsXmlBuilder( false, ConformanceLevel.Fragment );
-			this.WriteFragmentTo( writer );
-			return writer.ToString();
+			using( var writer = new MwsXmlBuilder( false, ConformanceLevel.Fragment ) )
+			{
+				this.WriteFragmentTo( writer );
+				return writer.ToString();
+			}
 		}
 
 		public abstract void ReadFragmentFrom( IMwsReader r );
