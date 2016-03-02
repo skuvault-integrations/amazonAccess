@@ -105,7 +105,6 @@ namespace AmazonAccess.Services.FeedsReports
 				{
 					var serlizer = new XmlSerializer( typeof( FeedSubmissionResult ) );
 					var envelope = ( FeedSubmissionResult )serlizer.Deserialize( reader );
-					reader.Close();
 
 					var firstMessage = envelope.Message.First();
 					var processingSummary = firstMessage.ProcessingReport.ProcessingSummary ?? ( firstMessage.ProcessingReport.Summary != null ? firstMessage.ProcessingReport.Summary.ProcessingSummary : null );

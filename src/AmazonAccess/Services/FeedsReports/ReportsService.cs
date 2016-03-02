@@ -229,11 +229,10 @@ namespace AmazonAccess.Services.FeedsReports
 		private IEnumerable< T > ConvertReport< T >( string reportString ) where T : class, new()
 		{
 			using( var ms = new MemoryStream( Encoding.UTF8.GetBytes( reportString ) ) )
+			using( var reader = new StreamReader( ms ) )
 			{
-				var reader = new StreamReader( ms );
 				var cc = new CsvContext();
 				var report = cc.Read< T >( reader, new CsvFileDescription { FirstLineHasColumnNames = true, SeparatorChar = '\t', IgnoreUnknownColumns = true } );
-				reader.Close();
 				return report.ToList();
 			}
 		}

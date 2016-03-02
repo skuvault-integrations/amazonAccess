@@ -71,10 +71,12 @@ namespace AmazonAccess.Services.Common
 				{
 					request = this.connection.GetHttpClient( this.serviceEndPoint.URI, queryString, this.headers, CalculateContentMD5( this.StreamForRequestBody ) );
 					this.StreamForRequestBody.Position = 0;
-					var streamReader = new StreamReader( this.StreamForRequestBody );
-					requestBody = streamReader.ReadToEnd();
-					this.WriteToRequestBody( request, this.StreamForRequestBody );
-					streamReader.Close();
+					using( var streamReader = new StreamReader( this.StreamForRequestBody ) )
+					{
+						requestBody = streamReader.ReadToEnd();
+						this.WriteToRequestBody( request, this.StreamForRequestBody );
+						this.StreamForRequestBody.Close();
+					}
 				}
 				else if( !string.IsNullOrEmpty( this.DataForRequestBody ) && this.EncodingForRequestBody != null )
 				{
@@ -100,11 +102,8 @@ namespace AmazonAccess.Services.Common
 					message = httpResponse.StatusDescription;
 					this.ResponseHeaderMetadata = GetResponseHeaderMetadata( httpResponse );
 					using( var responseStream = httpResponse.GetResponseStream() )
-					{
-						var reader = new StreamReader( responseStream, Encoding.UTF8 );
+					using( var reader = new StreamReader( responseStream, Encoding.UTF8 ) )
 						responseBody = reader.ReadToEnd();
-						reader.Close();
-					}
 				}
 
 				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Response received with StatusCode:'{0}'\n--- Response header metadata: ---\n{1} \n--- Response body: ---\n{2}",
@@ -136,10 +135,9 @@ namespace AmazonAccess.Services.Common
 
 					statusCode = httpErrorResponse.StatusCode;
 					using( var responseStream = httpErrorResponse.GetResponseStream() )
+					using( var reader = new StreamReader( responseStream, Encoding.UTF8 ) )
 					{
-						var reader = new StreamReader( responseStream, Encoding.UTF8 );
 						responseBody = reader.ReadToEnd();
-						reader.Close();
 						AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Web exception message with StatusCode:'{0}'\n{1}", statusCode, responseBody );
 					}
 				}
