@@ -233,6 +233,7 @@ namespace AmazonAccess.Services.FeedsReports
 				var reader = new StreamReader( ms );
 				var cc = new CsvContext();
 				var report = cc.Read< T >( reader, new CsvFileDescription { FirstLineHasColumnNames = true, SeparatorChar = '\t', IgnoreUnknownColumns = true } );
+				reader.Close();
 				return report.ToList();
 			}
 		}

@@ -101,35 +101,38 @@ namespace AmazonAccess.Services.FeedsReports
 
 			try
 			{
-				var reader = new StringReader( response.GetFeedSubmissionResultResult.Result );
-				var serlizer = new XmlSerializer( typeof( FeedSubmissionResult ) );
-				var envelope = ( FeedSubmissionResult )serlizer.Deserialize( reader );
+				using( var reader = new StringReader( response.GetFeedSubmissionResultResult.Result ) )
+				{
+					var serlizer = new XmlSerializer( typeof( FeedSubmissionResult ) );
+					var envelope = ( FeedSubmissionResult )serlizer.Deserialize( reader );
+					reader.Close();
 
-				var firstMessage = envelope.Message.First();
-				var processingSummary = firstMessage.ProcessingReport.ProcessingSummary ?? ( firstMessage.ProcessingReport.Summary != null ? firstMessage.ProcessingReport.Summary.ProcessingSummary : null );
-				if( processingSummary == null )
-					AmazonLogger.Warn( "CheckSubmissionResult", this._credentials.SellerId, marker, "ProcessingSummary is null" );
-				else
-				{
-					AmazonLogger.Trace( "CheckSubmissionResult", this._credentials.SellerId, marker, "Processed:{0} Successful:{1} Errors:{2} Warnings:{3}",
-						processingSummary.MessagesProcessed, processingSummary.MessagesSuccessful, processingSummary.MessagesWithError, processingSummary.MessagesWithWarning );
-				}
+					var firstMessage = envelope.Message.First();
+					var processingSummary = firstMessage.ProcessingReport.ProcessingSummary ?? ( firstMessage.ProcessingReport.Summary != null ? firstMessage.ProcessingReport.Summary.ProcessingSummary : null );
+					if( processingSummary == null )
+						AmazonLogger.Warn( "CheckSubmissionResult", this._credentials.SellerId, marker, "ProcessingSummary is null" );
+					else
+					{
+						AmazonLogger.Trace( "CheckSubmissionResult", this._credentials.SellerId, marker, "Processed:{0} Successful:{1} Errors:{2} Warnings:{3}",
+							processingSummary.MessagesProcessed, processingSummary.MessagesSuccessful, processingSummary.MessagesWithError, processingSummary.MessagesWithWarning );
+					}
 
-				var result = firstMessage.ProcessingReport.Result ?? ( firstMessage.ProcessingReport.Summary != null ? firstMessage.ProcessingReport.Summary.Result : null );
-				if( result == null )
-				{
-					AmazonLogger.Trace( "CheckSubmissionResult", this._credentials.SellerId, marker, "Result is null" );
-					return;
-				}
-				var groupedResults = result.GroupBy( x => x.ResultMessageCode );
-				foreach( var groupedResult in groupedResults )
-				{
-					// 13013 - SKU do not exist in Amazon
-					// 5000 - SKU length is too big (max:40)
-					var count = groupedResult.Count();
-					var type = groupedResult.First().ResultCode;
-					AmazonLogger.Warn( "CheckSubmissionResult", this._credentials.SellerId, marker, "Message type: {0}. Message code: {1}. Massages count: {2}",
-						type, groupedResult.Key, count );
+					var result = firstMessage.ProcessingReport.Result ?? ( firstMessage.ProcessingReport.Summary != null ? firstMessage.ProcessingReport.Summary.Result : null );
+					if( result == null )
+					{
+						AmazonLogger.Trace( "CheckSubmissionResult", this._credentials.SellerId, marker, "Result is null" );
+						return;
+					}
+					var groupedResults = result.GroupBy( x => x.ResultMessageCode );
+					foreach( var groupedResult in groupedResults )
+					{
+						// 13013 - SKU do not exist in Amazon
+						// 5000 - SKU length is too big (max:40)
+						var count = groupedResult.Count();
+						var type = groupedResult.First().ResultCode;
+						AmazonLogger.Warn( "CheckSubmissionResult", this._credentials.SellerId, marker, "Message type: {0}. Message code: {1}. Massages count: {2}",
+							type, groupedResult.Key, count );
+					}
 				}
 			}
 			catch( Exception ex )
