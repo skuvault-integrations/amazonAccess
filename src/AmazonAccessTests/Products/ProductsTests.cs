@@ -22,9 +22,11 @@ namespace AmazonAccessTests.Products
 			var skus = new List< string >
 			{
 				//"4GBDGSUSB2", "PKAMZNCADIR-SMPL32", "PKAMZNCADIR-SMPL4", "TC-N7DR-TVNA", "VK16AZN", "VK16AZN_KIT", "8gbpkbx", "PKAMZNCADIR-004",
-				//"testsku1",
+				"testsku1",
 				"testsku3",
-				//"mxczxcvdsf", "1xPK8Store"
+				"mxczxcvdsf", 
+				"HC-063B-DJDU", 
+				//"1xPK8Store"
 			};
 			var products = new ConcurrentBag< Product >();
 

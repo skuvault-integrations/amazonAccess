@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 using AmazonAccess.Services.FeedsReports.Model;
 using AmazonAccess.Services.FeedsReports.Model.InventoryFeed;
@@ -22,22 +21,14 @@ namespace AmazonAccess.Services.FeedsReports
 			this._document = this.CreateDocument( sellerId );
 		}
 
-		public Stream GetDocumentStream()
-		{
-			var ser = new XmlSerializer( typeof( InventoryFeed ) );
-			var stream = new MemoryStream();
-			ser.Serialize( stream, this._document );
-			stream.Position = 0;
-
-			return stream;
-		}
-
 		public string GetDocumentString()
 		{
 			using( var stream = this.GetDocumentStream() )
 			{
 				var streamReader = new StreamReader( stream );
-				return streamReader.ReadToEnd();
+				var str = streamReader.ReadToEnd();
+				streamReader.Close();
+				return str;
 			}
 
 			//var ser = new XmlSerializer( typeof( InventoryFeed ) );
@@ -45,6 +36,16 @@ namespace AmazonAccess.Services.FeedsReports
 			//ser.Serialize( stringWriter, this._document );
 			//var str = stringWriter.ToString();
 			//return str;
+		}
+
+		private Stream GetDocumentStream()
+		{
+			var ser = new XmlSerializer( typeof( InventoryFeed ) );
+			var stream = new MemoryStream();
+			ser.Serialize( stream, this._document );
+			stream.Position = 0;
+
+			return stream;
 		}
 
 		private InventoryFeed CreateDocument( string sellerId )

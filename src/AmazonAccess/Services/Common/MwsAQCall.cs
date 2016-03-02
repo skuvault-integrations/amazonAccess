@@ -74,6 +74,7 @@ namespace AmazonAccess.Services.Common
 					var streamReader = new StreamReader( this.StreamForRequestBody );
 					requestBody = streamReader.ReadToEnd();
 					this.WriteToRequestBody( request, this.StreamForRequestBody );
+					streamReader.Close();
 				}
 				else if( !string.IsNullOrEmpty( this.DataForRequestBody ) && this.EncodingForRequestBody != null )
 				{
@@ -98,8 +99,12 @@ namespace AmazonAccess.Services.Common
 					statusCode = httpResponse.StatusCode;
 					message = httpResponse.StatusDescription;
 					this.ResponseHeaderMetadata = GetResponseHeaderMetadata( httpResponse );
-					var reader = new StreamReader( httpResponse.GetResponseStream(), Encoding.UTF8 );
-					responseBody = reader.ReadToEnd();
+					using( var responseStream = httpResponse.GetResponseStream() )
+					{
+						var reader = new StreamReader( responseStream, Encoding.UTF8 );
+						responseBody = reader.ReadToEnd();
+						reader.Close();
+					}
 				}
 
 				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Response received with StatusCode:'{0}'\n--- Response header metadata: ---\n{1} \n--- Response body: ---\n{2}",
@@ -130,9 +135,11 @@ namespace AmazonAccess.Services.Common
 					}
 
 					statusCode = httpErrorResponse.StatusCode;
-					using( var reader = new StreamReader( httpErrorResponse.GetResponseStream(), Encoding.UTF8 ) )
+					using( var responseStream = httpErrorResponse.GetResponseStream() )
 					{
+						var reader = new StreamReader( responseStream, Encoding.UTF8 );
 						responseBody = reader.ReadToEnd();
+						reader.Close();
 						AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Web exception message with StatusCode:'{0}'\n{1}", statusCode, responseBody );
 					}
 				}
