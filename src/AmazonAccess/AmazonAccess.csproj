@@ -60,6 +60,7 @@
     <Compile Include="IAmazonService.cs" />
     <Compile Include="Misc\ActionPolicies.cs" />
     <Compile Include="Misc\AmazonLogger.cs" />
+    <Compile Include="Misc\ThrottlerAsync.cs" />
     <Compile Include="Services\FeedsReports\InventoryFeedXmlService.cs" />
     <Compile Include="Misc\Throttler.cs" />
     <Compile Include="Models\AmazonAppCredentials.cs" />
