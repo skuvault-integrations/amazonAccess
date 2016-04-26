@@ -85,6 +85,12 @@ namespace AmazonAccessTests.Inventory
 					Quantity = 48,
 					Sku = "FakeSku",
 					FulfillmentLatency = 1
+				},
+				new AmazonInventoryItem
+				{
+					Quantity = 49,
+					Sku = "8gbpkbx",
+					FulfillmentLatency = 1
 				}
 			} );
 		}

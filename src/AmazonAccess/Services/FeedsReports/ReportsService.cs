@@ -30,27 +30,34 @@ namespace AmazonAccess.Services.FeedsReports
 			this._credentials = credentials;
 		}
 
-		public IEnumerable< T > GetReport< T >( ReportType reportType, DateTime startDate, DateTime endDate, string marker ) where T : class, new()
+		public IEnumerable< T > GetReportWithOneCallForAllMarketplaces< T >( ReportType reportType, DateTime startDate, DateTime endDate, string marker ) where T : class, new()
 		{
-			AmazonLogger.Trace( "GetReport", this._credentials.SellerId, marker, "Begin invoke" );
+			AmazonLogger.Trace( "GetReportWithOneCallForAllMarketplaces", this._credentials.SellerId, marker, "Begin invoke" );
 
 			var report = this.GetReportForMarketplaces< T >( reportType, this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(), startDate, endDate, marker );
 
-			AmazonLogger.Trace( "GetReport", this._credentials.SellerId, marker, "End invoke" );
+			AmazonLogger.Trace( "GetReportWithOneCallForAllMarketplaces", this._credentials.SellerId, marker, "End invoke" );
+			return report;
+		}
+
+		public List< T > GetReportWithCallForEachMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey, string marker ) where T : class, new()
+		{
+			var report = new List< T >();
+			this.GetReportByMarketplace( reportType, startDate, endDate, skipDuplicates, getKey, ( marketplace, portion ) => report.AddRange( portion ), marker );
 			return report;
 		}
 
 		public Dictionary< string, List< T > > GetReportByMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey, string marker ) where T : class, new()
 		{
 			var report = new Dictionary< string, List< T > >();
-			this.GetReportByMarketplace< T >( reportType, startDate, endDate, skipDuplicates, getKey, ( marketplace, portion ) => report.Add( marketplace, portion ), marker );
+			this.GetReportByMarketplace( reportType, startDate, endDate, skipDuplicates, getKey, ( marketplace, portion ) => report.Add( marketplace, portion ), marker );
 			return report;
 		}
 
 		public void GetReportByMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey,
 			Action< string, T > processReportAction, string marker ) where T : class, new()
 		{
-			this.GetReportByMarketplace< T >( reportType, startDate, endDate, skipDuplicates, getKey, ( marketplace, portion ) =>
+			this.GetReportByMarketplace( reportType, startDate, endDate, skipDuplicates, getKey, ( marketplace, portion ) =>
 			{
 				foreach( var p in portion )
 				{

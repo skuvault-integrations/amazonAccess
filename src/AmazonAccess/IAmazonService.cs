@@ -46,32 +46,67 @@ namespace AmazonAccess
 		Dictionary< string, List< string > > GetProductsBySkus( List< string > skus, bool skipDuplicates, Action< Product > processProductAction );
 
 		/// <summary>
+		/// Get Products Inventory
+		/// </summary>
+		/// <param name="skipDuplicates"></param>
+		/// <returns>Marketplace and Products</returns>
+		List< ProductInventory > GetProductsInventory( bool skipDuplicates );
+
+		/// <summary>
+		/// Get Products Inventory
+		/// </summary>
+		/// <param name="skipDuplicates"></param>
+		/// <returns>Marketplace and Products</returns>
+		Dictionary< string, List< ProductInventory > > GetProductsInventoryByMarketplace( bool skipDuplicates );
+
+		/// <summary>
+		/// Get Products Inventory
+		/// </summary>
+		/// <param name="skipDuplicates"></param>
+		/// <param name="processReportAction">Marketplace and Product</param>
+		void GetProductsInventoryByMarketplace( bool skipDuplicates, Action< string, ProductInventory > processReportAction );
+
+		/// <summary>
 		/// Get Active Products
 		/// </summary>
 		/// <param name="skipDuplicates"></param>
 		/// <returns>Marketplace and Products</returns>
-		Dictionary< string, List< ProductShort > > GetActiveProducts( bool skipDuplicates );
+		List< ProductShort > GetActiveProducts( bool skipDuplicates );
+
+		/// <summary>
+		/// Get Active Products
+		/// </summary>
+		/// <param name="skipDuplicates"></param>
+		/// <returns>Marketplace and Products</returns>
+		Dictionary< string, List< ProductShort > > GetActiveProductsByMarketplace( bool skipDuplicates );
 
 		/// <summary>
 		/// Get Active Products
 		/// </summary>
 		/// <param name="skipDuplicates"></param>
 		/// <param name="processReportAction">Marketplace and Product</param>
-		void GetActiveProducts( bool skipDuplicates, Action< string, ProductShort > processReportAction );
+		void GetActiveProductsByMarketplace( bool skipDuplicates, Action< string, ProductShort > processReportAction );
 
 		/// <summary>
 		/// Get Open Products
 		/// </summary>
 		/// <param name="skipDuplicates"></param>
 		/// <returns>Marketplace and Products</returns>
-		Dictionary< string, List< ProductShort > > GetOpenProducts( bool skipDuplicates );
+		List< ProductShort > GetOpenProducts( bool skipDuplicates );
+
+		/// <summary>
+		/// Get Open Products
+		/// </summary>
+		/// <param name="skipDuplicates"></param>
+		/// <returns>Marketplace and Products</returns>
+		Dictionary< string, List< ProductShort > > GetOpenProductsByMarketplace( bool skipDuplicates );
 
 		/// <summary>
 		/// Get Open Products
 		/// </summary>
 		/// <param name="skipDuplicates"></param>
 		/// <param name="processReportAction">Marketplace and Product</param>
-		void GetOpenProducts( bool skipDuplicates, Action< string, ProductShort > processReportAction );
+		void GetOpenProductsByMarketplace( bool skipDuplicates, Action< string, ProductShort > processReportAction );
 
 		void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems );
 
