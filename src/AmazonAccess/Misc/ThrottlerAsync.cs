@@ -45,7 +45,7 @@ namespace AmazonAccess.Misc
 
 					this._remainingQuota = 0;
 					this._requestTimer.Restart();
-					await this._delay();
+					this._delay().Wait();
 					retryCount++;
 					// try again through loop
 				}
