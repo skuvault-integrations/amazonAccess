@@ -24,6 +24,32 @@ namespace AmazonAccess.Services.FbaInventory.Model
 	public class ListInventorySupplyResult: AbstractMwsObject
 	{
 		/// <summary>
+		/// Gets and sets the Marketplace property.
+		/// </summary>
+		[ XmlElement( ElementName = "MarketplaceId" ) ]
+		public string MarketplaceId{ get; set; }
+
+		/// <summary>
+		/// Sets the Marketplace property.
+		/// </summary>
+		/// <param name="marketplaceId">Marketplace property.</param>
+		/// <returns>this instance.</returns>
+		public ListInventorySupplyResult WithMarketplace( string marketplaceId )
+		{
+			this.MarketplaceId = marketplaceId;
+			return this;
+		}
+
+		/// <summary>
+		/// Checks if Marketplace property is set.
+		/// </summary>
+		/// <returns>true if Marketplace property is set.</returns>
+		public bool IsSetMarketplace()
+		{
+			return this.MarketplaceId != null;
+		}
+
+		/// <summary>
 		/// Gets and sets the InventorySupplyList property.
 		/// </summary>
 		[ XmlElement( ElementName = "InventorySupplyList" ) ]
@@ -77,12 +103,14 @@ namespace AmazonAccess.Services.FbaInventory.Model
 
 		public override void ReadFragmentFrom( IMwsReader reader )
 		{
+			this.MarketplaceId = reader.Read< string >( "MarketplaceId" );
 			this.InventorySupplyList = reader.Read< InventorySupplyList >( "InventorySupplyList" );
 			this.NextToken = reader.Read< string >( "NextToken" );
 		}
 
 		public override void WriteFragmentTo( IMwsWriter writer )
 		{
+			writer.Write( "MarketplaceId", this.MarketplaceId );
 			writer.Write( "InventorySupplyList", this.InventorySupplyList );
 			writer.Write( "NextToken", this.NextToken );
 		}

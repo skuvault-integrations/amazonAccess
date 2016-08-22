@@ -81,17 +81,17 @@ namespace AmazonAccess.Services.FbaInventory.Model
 		/// <summary>
 		/// Gets and sets the Marketplace property.
 		/// </summary>
-		[ XmlElement( ElementName = "Marketplace" ) ]
-		public string Marketplace{ get; set; }
+		[ XmlElement( ElementName = "MarketplaceId" ) ]
+		public string MarketplaceId{ get; set; }
 
 		/// <summary>
 		/// Sets the Marketplace property.
 		/// </summary>
-		/// <param name="marketplace">Marketplace property.</param>
+		/// <param name="marketplaceId">Marketplace property.</param>
 		/// <returns>this instance.</returns>
-		public ListInventorySupplyRequest WithMarketplace( string marketplace )
+		public ListInventorySupplyRequest WithMarketplace( string marketplaceId )
 		{
-			this.Marketplace = marketplace;
+			this.MarketplaceId = marketplaceId;
 			return this;
 		}
 
@@ -101,7 +101,7 @@ namespace AmazonAccess.Services.FbaInventory.Model
 		/// <returns>true if Marketplace property is set.</returns>
 		public bool IsSetMarketplace()
 		{
-			return this.Marketplace != null;
+			return this.MarketplaceId != null;
 		}
 
 		/// <summary>
@@ -216,7 +216,7 @@ namespace AmazonAccess.Services.FbaInventory.Model
 		{
 			this.SellerId = reader.Read< string >( "SellerId" );
 			this.MWSAuthToken = reader.Read< string >( "MWSAuthToken" );
-			this.Marketplace = reader.Read< string >( "Marketplace" );
+			this.MarketplaceId = reader.Read< string >( "MarketplaceId" );
 			this.SupplyRegion = reader.Read< string >( "SupplyRegion" );
 			this.SellerSkus = reader.Read< SellerSkuList >( "SellerSkus" );
 			this._queryStartDateTime = reader.Read< DateTime? >( "QueryStartDateTime" );
@@ -227,7 +227,7 @@ namespace AmazonAccess.Services.FbaInventory.Model
 		{
 			writer.Write( "SellerId", this.SellerId );
 			writer.Write( "MWSAuthToken", this.MWSAuthToken );
-			writer.Write( "Marketplace", this.Marketplace );
+			writer.Write( "MarketplaceId", this.MarketplaceId );
 			writer.Write( "SupplyRegion", this.SupplyRegion );
 			writer.Write( "SellerSkus", this.SellerSkus );
 			writer.Write( "QueryStartDateTime", this._queryStartDateTime );
