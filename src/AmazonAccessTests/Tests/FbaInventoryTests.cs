@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventory.Model;
 using AmazonAccessTests.Misc;
@@ -21,6 +22,7 @@ namespace AmazonAccessTests.Tests
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 			var inventory = service.GetFbaInventory();
+			this.SaveToFile( "FbaInventory.txt", inventory );
 
 			inventory.Count().Should().BeGreaterThan( 0 );
 		}
@@ -34,11 +36,13 @@ namespace AmazonAccessTests.Tests
 
 			foreach( var amazonMarketplace in marketplaces.Marketplaces )
 			{
+				var fileName = string.Format( "FbaInventory_{0}-{1}.txt", amazonMarketplace.CountryCode, amazonMarketplace.MarketplaceId );
 				var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( amazonMarketplace ) );
-				var inventory = service.GetFbaInventory();
-				this.SaveToFile( "FbaInventory_" + amazonMarketplace.MarketplaceId + ".txt", inventory.ToList() );
 
-				inventory = this.ReadFromFile< List< InventorySupply > >( "FbaInventory_" + amazonMarketplace.MarketplaceId + ".txt" );
+				var inventory = service.GetFbaInventory();
+				this.SaveToFile( fileName, inventory.ToList() );
+
+				inventory = this.ReadFromFile< List< InventorySupply > >( fileName );
 				inventoryCollection.Add( amazonMarketplace.MarketplaceId, inventory );
 
 				//inventory.Count().Should().BeGreaterThan( 0 );
@@ -52,23 +56,37 @@ namespace AmazonAccessTests.Tests
 				join marketplace6 in inventoryCollection[ marketplaces.Marketplaces[ 5 ].MarketplaceId ] on marketplace1.SellerSKU equals marketplace6.SellerSKU
 				select new { marketplace1, marketplace2, marketplace3, marketplace4, marketplace5, marketplace6 } ).ToList();
 
-			var diff = megaJoin.Where( x =>
-				x.marketplace1.TotalSupplyQuantity != x.marketplace2.TotalSupplyQuantity ||
-				x.marketplace1.TotalSupplyQuantity != x.marketplace3.TotalSupplyQuantity ||
-				x.marketplace1.TotalSupplyQuantity != x.marketplace4.TotalSupplyQuantity ||
-				x.marketplace1.TotalSupplyQuantity != x.marketplace5.TotalSupplyQuantity ||
-				x.marketplace1.TotalSupplyQuantity != x.marketplace6.TotalSupplyQuantity ||
-				x.marketplace2.TotalSupplyQuantity != x.marketplace3.TotalSupplyQuantity ||
-				x.marketplace2.TotalSupplyQuantity != x.marketplace4.TotalSupplyQuantity ||
-				x.marketplace2.TotalSupplyQuantity != x.marketplace5.TotalSupplyQuantity ||
-				x.marketplace2.TotalSupplyQuantity != x.marketplace6.TotalSupplyQuantity ||
-				x.marketplace3.TotalSupplyQuantity != x.marketplace4.TotalSupplyQuantity ||
-				x.marketplace3.TotalSupplyQuantity != x.marketplace5.TotalSupplyQuantity ||
-				x.marketplace3.TotalSupplyQuantity != x.marketplace6.TotalSupplyQuantity ||
-				x.marketplace4.TotalSupplyQuantity != x.marketplace5.TotalSupplyQuantity ||
-				x.marketplace4.TotalSupplyQuantity != x.marketplace6.TotalSupplyQuantity ||
-				x.marketplace5.TotalSupplyQuantity != x.marketplace6.TotalSupplyQuantity
-				).ToList();
+			var usDiff = megaJoin.Where( sku => this.IsNotEquals( sku.marketplace1, sku.marketplace2, sku.marketplace3, sku.marketplace4 ) ).ToList();
+			var usDiff2 = megaJoin.Where( sku => this.IsNotEquals( sku.marketplace1, sku.marketplace2 ) ).ToList();
+			var usDiff3 = megaJoin.Where( sku => this.IsNotEquals( sku.marketplace3, sku.marketplace4 ) ).ToList();
+			var usDiff4 = megaJoin.Where( sku => this.IsNotEquals( sku.marketplace1, sku.marketplace3 ) ).ToList();
+			var usDiff5 = megaJoin.Where( sku => this.IsNotEquals( sku.marketplace2, sku.marketplace3 ) ).ToList();
+			var usDiff6 = megaJoin.Where( sku => this.IsNotEquals( sku.marketplace1, sku.marketplace4 ) ).ToList();
+
+			var caDiff = megaJoin.Where( sku => this.IsNotEquals( sku.marketplace5, sku.marketplace6 ) ).ToList();
+			var diff = megaJoin.Where( sku => this.IsNotEquals( sku.marketplace1, sku.marketplace2, sku.marketplace3, sku.marketplace4, sku.marketplace5, sku.marketplace6 ) ).ToList();
+
+			//var usDiff = megaJoin.Where( sku => this.IsNotEquals( sku.marketplace1, sku.marketplace4 ) ).ToList();
+			//var caDiff = megaJoin.Where( sku => this.IsNotEquals( sku.marketplace3, sku.marketplace5 ) ).ToList();
+			//var diff = megaJoin.Where( sku => this.IsNotEquals( sku.marketplace1, sku.marketplace2, sku.marketplace3, sku.marketplace4, sku.marketplace5 ) ).ToList();
+		}
+
+		private bool IsNotEquals( params InventorySupply[] objs )
+		{
+			for( var i = 0; i < objs.Length; i++ )
+			{
+				for( var j = i + 1; j < objs.Length; j++ )
+				{
+					if( this.IsNotEquals( objs[ i ], objs[ j ] ) )
+						return true;
+				}
+			}
+			return false;
+		}
+
+		private bool IsNotEquals( InventorySupply obj1, InventorySupply obj2 )
+		{
+			return obj1.TotalSupplyQuantity != obj2.TotalSupplyQuantity || obj1.InStockSupplyQuantity != obj2.InStockSupplyQuantity;
 		}
 
 		[ Test ]
