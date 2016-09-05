@@ -2,7 +2,7 @@
 using AmazonAccess.Models;
 using LINQtoCSV;
 
-namespace AmazonAccessTests
+namespace AmazonAccessTests.Misc
 {
 	internal class ClientCredentialsConfig
 	{

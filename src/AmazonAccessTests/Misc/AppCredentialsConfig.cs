@@ -1,6 +1,6 @@
 ﻿using LINQtoCSV;
 
-namespace AmazonAccessTests
+namespace AmazonAccessTests.Misc
 {
 	internal class AppCredentialsConfig
 	{

@@ -110,7 +110,7 @@ namespace AmazonAccess
 
 		void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems );
 
-		List< FbaManageInventory > GetDetailedFbaInventory();
+		List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = false );
 		List< InventorySupply > GetFbaInventory();
 		bool IsFbaInventoryReceived();
 

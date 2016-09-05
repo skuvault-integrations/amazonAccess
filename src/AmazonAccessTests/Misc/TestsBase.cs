@@ -1,11 +1,15 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Serialization;
 using AmazonAccess;
 using AmazonAccess.Models;
+using AmazonAccess.Services.FbaInventory.Model;
 using LINQtoCSV;
 using Netco.Logging;
 using NUnit.Framework;
 
-namespace AmazonAccessTests
+namespace AmazonAccessTests.Misc
 {
 	[ TestFixture ]
 	internal abstract class TestsBase
@@ -32,6 +36,27 @@ namespace AmazonAccessTests
 					euRegionCredentials : AmazonAppCredentials.TryCreate( this.AppConfig.EuAccessKeyId, this.AppConfig.EuSecretAccessKeyId ),
 					feRegionCredentials : AmazonAppCredentials.TryCreate( this.AppConfig.FeAccessKeyId, this.AppConfig.FeSecretAccessKeyId ),
 					cnRegionCredentials : AmazonAppCredentials.TryCreate( this.AppConfig.CnAccessKeyId, this.AppConfig.CnSecretAccessKeyId ) );
+			}
+		}
+
+		protected void SaveToFile< T >( string fileName, T obj )
+		{
+			using( var writer = new StreamWriter( fileName ) )
+			{
+				var serializer = new XmlSerializer( typeof( T ) );
+				serializer.Serialize( writer, obj );
+				writer.Flush();
+			}
+		}
+
+		protected T ReadFromFile< T >( string fileName )
+		{
+			using( var stream = new FileStream( fileName, FileMode.Open ) )
+			using( var reader = new StreamReader( stream ) )
+			{
+				var serializer = new XmlSerializer( typeof( T ) );
+				var inventory = ( T )serializer.Deserialize( reader );
+				return inventory;
 			}
 		}
 	}

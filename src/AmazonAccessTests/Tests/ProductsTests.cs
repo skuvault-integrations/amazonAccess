@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using AmazonAccess.Services.FeedsReports.ReportModel;
 using AmazonAccess.Services.Products.Model;
+using AmazonAccessTests.Misc;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace AmazonAccessTests.Products
+namespace AmazonAccessTests.Tests
 {
 	internal class ProductsTests: TestsBase
 	{

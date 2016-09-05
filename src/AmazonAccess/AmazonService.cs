@@ -252,17 +252,18 @@ namespace AmazonAccess
 			return service.IsFbaInventoryReceived( this.GetMarker() );
 		}
 
-		public List< FbaManageInventory > GetDetailedFbaInventory()
+		public List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = false )
 		{
 			var marker = this.GetMarker();
-			AmazonLogger.Trace( "GetDetailedFbaInventory", this._credentials.SellerId, marker, "Begin invoke" );
+			var operationName = includeArchived ? "GetDetailedFbaInventoryArchived" : "GetDetailedFbaInventory";
+			AmazonLogger.Trace( operationName, this._credentials.SellerId, marker, "Begin invoke" );
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var inventory = service.GetReportWithOneCallForAllMarketplaces< FbaManageInventory >( ReportType.FbaManageInventoryArchived,
-				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), marker );
+			var reportType = includeArchived ? ReportType.FbaManageInventoryArchived : ReportType.FbaManageInventory;
+			var inventory = service.GetReportWithOneCallForAllMarketplaces< FbaManageInventory >( reportType, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
 
-			AmazonLogger.Trace( "GetDetailedFbaInventory", this._credentials.SellerId, marker, "End invoke" );
+			AmazonLogger.Trace( operationName, this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();
 		}
 		#endregion
