@@ -266,6 +266,19 @@ namespace AmazonAccess
 			AmazonLogger.Trace( operationName, this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();
 		}
+
+		public List< FbaMultiCountryInventory > GetFbaMultiCountryInventory()
+		{
+			var marker = this.GetMarker();
+			AmazonLogger.Trace( "GetFbaMultiCountryInventory", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var inventory = service.GetReportWithOneCallForAllMarketplaces< FbaMultiCountryInventory >( ReportType.FbaMultiCountryInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
+
+			AmazonLogger.Trace( "GetFbaMultiCountryInventory", this._credentials.SellerId, marker, "End invoke" );
+			return inventory.ToList();
+		}
 		#endregion
 
 		#region Sellers

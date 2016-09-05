@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventory.Model;
-using AmazonAccess.Services.FeedsReports.ReportModel;
 using AmazonAccessTests.Misc;
 using FluentAssertions;
 using NUnit.Framework;
@@ -97,6 +94,16 @@ namespace AmazonAccessTests.Tests
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 			var inventory = service.GetDetailedFbaInventory( true );
+
+			inventory.Count.Should().BeGreaterThan( 0 );
+		}
+
+		[ Test ]
+		public void GetFbaMultiCountryInventory()
+		{
+			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
+			var inventory = service.GetFbaMultiCountryInventory();
+			this.SaveToFile( "FbaMultiCountryInventory.txt", inventory );
 
 			inventory.Count.Should().BeGreaterThan( 0 );
 		}

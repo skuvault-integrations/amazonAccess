@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AmazonAccess.Misc;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventory.Model;
@@ -74,11 +75,13 @@ namespace AmazonAccess.Services.FbaInventory
 		{
 			AmazonLogger.Trace( "LoadFbaInventory", this._credentials.SellerId, marker, "Begin invoke" );
 
+			var marketplaces = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList();
 			var request = new ListInventorySupplyRequest
 			{
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
 				QueryStartDateTime = DateTime.MinValue,
+				MarketplaceId = marketplaces.Count == 1 ? marketplaces.First() : null,
 				ResponseGroup = "Detailed"
 			};
 			var result = new List< InventorySupply >();
