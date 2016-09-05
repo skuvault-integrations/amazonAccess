@@ -107,6 +107,7 @@
     <Compile Include="Services\FeedsReports\Mock\MarketplaceWebServiceMock.cs" />
     <Compile Include="Services\FeedsReports\Model\AmazonInventoryItem.cs" />
     <Compile Include="Services\FeedsReports\Model\IMWSResponse.cs" />
+    <Compile Include="Services\FeedsReports\ReportModel\FbaFulfilledInventory.cs" />
     <Compile Include="Services\FeedsReports\ReportModel\FbaMultiCountryInventory.cs" />
     <Compile Include="Services\FeedsReports\ReportModel\ProductInventory.cs" />
     <Compile Include="Services\FeedsReports\ReportModel\ProductShort.cs" />

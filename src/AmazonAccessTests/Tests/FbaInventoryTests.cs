@@ -107,5 +107,15 @@ namespace AmazonAccessTests.Tests
 
 			inventory.Count.Should().BeGreaterThan( 0 );
 		}
+
+		[ Test ]
+		public void GetFbaFulfilledInventory()
+		{
+			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
+			var inventory = service.GetFbaFulfilledInventory();
+			this.SaveToFile( "FbaFulfilledInventory.txt", inventory );
+
+			inventory.Count.Should().BeGreaterThan( 0 );
+		}
 	}
 }

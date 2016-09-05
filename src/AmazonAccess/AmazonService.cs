@@ -279,6 +279,19 @@ namespace AmazonAccess
 			AmazonLogger.Trace( "GetFbaMultiCountryInventory", this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();
 		}
+
+		public List< FbaFulfilledInventory > GetFbaFulfilledInventory()
+		{
+			var marker = this.GetMarker();
+			AmazonLogger.Trace( "GetFbaFulfilledInventory", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var inventory = service.GetReportWithOneCallForAllMarketplaces< FbaFulfilledInventory >( ReportType.FbaFulfilledInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
+
+			AmazonLogger.Trace( "GetFbaFulfilledInventory", this._credentials.SellerId, marker, "End invoke" );
+			return inventory.ToList();
+		}
 		#endregion
 
 		#region Sellers

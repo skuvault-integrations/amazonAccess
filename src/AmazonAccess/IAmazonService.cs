@@ -115,6 +115,7 @@ namespace AmazonAccess
 
 		List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = false );
 		List< FbaMultiCountryInventory > GetFbaMultiCountryInventory();
+		List< FbaFulfilledInventory > GetFbaFulfilledInventory();
 
 		MarketplaceParticipations GetMarketplaceParticipations();
 	}
