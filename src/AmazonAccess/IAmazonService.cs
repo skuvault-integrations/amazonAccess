@@ -108,13 +108,41 @@ namespace AmazonAccess
 		/// <param name="processReportAction">Marketplace and Product</param>
 		void GetOpenProductsByMarketplace( bool skipDuplicates, Action< string, ProductShort > processReportAction );
 
+		/// <summary>
+		/// Update Inventory
+		/// </summary>
+		/// <param name="inventoryItems"></param>
 		void UpdateInventory( IEnumerable< AmazonInventoryItem > inventoryItems );
 
+		/// <summary>
+		/// Get Fba Inventory (not using reports API)
+		/// </summary>
+		/// <returns></returns>
 		List< InventorySupply > GetFbaInventory();
+
+		/// <summary>
+		/// Is Fba Inventory Received (not using reports API)
+		/// </summary>
+		/// <returns></returns>
 		bool IsFbaInventoryReceived();
 
+		/// <summary>
+		/// Get Detailed Fba Inventory (using reports API)
+		/// </summary>
+		/// <param name="includeArchived"></param>
+		/// <returns></returns>
 		List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = false );
+
+		/// <summary>
+		/// Get Fba Multi-Country Inventory Report (returns inventory for all marketplaces)
+		/// </summary>
+		/// <returns></returns>
 		List< FbaMultiCountryInventory > GetFbaMultiCountryInventory();
+
+		/// <summary>
+		/// Get Fba Fulfilled Inventory Report (returns inventory for all marketplaces)
+		/// </summary>
+		/// <returns></returns>
 		List< FbaFulfilledInventory > GetFbaFulfilledInventory();
 
 		MarketplaceParticipations GetMarketplaceParticipations();

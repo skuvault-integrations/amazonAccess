@@ -20,8 +20,8 @@ using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.FbaInventory.Model
 {
-	[ XmlType( Namespace = "http://mws.amazonaws.com/FulfillmentInventory/2010-10-01/" ) ]
-	[ XmlRoot( Namespace = "http://mws.amazonaws.com/FulfillmentInventory/2010-10-01/", IsNullable = false ) ]
+	[ XmlType ]
+	[ XmlRoot( IsNullable = false ) ]
 	public class Timepoint: AbstractMwsObject
 	{
 		private DateTime? _dateTime;
