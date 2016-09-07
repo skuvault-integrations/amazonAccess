@@ -2,6 +2,7 @@
 using System.Linq;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventory.Model;
+using AmazonAccess.Services.FeedsReports.ReportModel;
 using AmazonAccessTests.Misc;
 using FluentAssertions;
 using NUnit.Framework;
@@ -85,6 +86,24 @@ namespace AmazonAccessTests.Tests
 			this.SaveToFile( "someItems.txt", someItems );
 		}
 
+		private void SelectSameSkusAsInReport( Dictionary< string, List< InventorySupply > > inventoryDic )
+		{
+			var inventoryByCountry = this.ReadFromFile< List< FbaMultiCountryInventory > >( "FbaMultiCountryInventory.txt" );
+			var skus = inventoryByCountry.Where( x => x.CountryCode == AmazonCountryCodeEnum.Ca ).Select( x => x.SKU ).ToList();
+			var inventoryWithCa = inventoryByCountry.Where( x => skus.Contains( x.SKU ) ).OrderBy( x => x.SKU ).ToList();
+			this.SaveToFile( "FbaMultiCountryInventory_Filtered.txt", inventoryWithCa );
+
+			var defaultInventory = this.ReadFromFile< List< InventorySupply > >( "FbaInventory.txt" );
+			inventoryDic.Add( "Default", defaultInventory );
+
+			foreach( var inventory in inventoryDic )
+			{
+				var filteredInventory = inventory.Value.Where( x => skus.Contains( x.SellerSKU ) ).OrderBy( x => x.SellerSKU ).ToList();
+				var fileName = string.Format( "FbaInventory_{0}_Filtered.txt", inventory.Key );
+				this.SaveToFile( fileName, filteredInventory );
+			}
+		}
+
 		[ Test ]
 		public void IsFbaInventoryReceived()
 		{
@@ -118,6 +137,8 @@ namespace AmazonAccessTests.Tests
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 			var inventory = service.GetFbaMultiCountryInventory();
 			this.SaveToFile( "FbaMultiCountryInventory.txt", inventory );
+
+			//var inventory = this.ReadFromFile< List< FbaMultiCountryInventory > >( "FbaMultiCountryInventory.txt" );
 
 			inventory.Count.Should().BeGreaterThan( 0 );
 		}

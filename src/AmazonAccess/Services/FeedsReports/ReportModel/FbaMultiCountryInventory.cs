@@ -1,4 +1,6 @@
-﻿using LINQtoCSV;
+﻿using AmazonAccess.Models;
+using LINQtoCSV;
+using Netco.Extensions;
 
 namespace AmazonAccess.Services.FeedsReports.ReportModel
 {
@@ -17,9 +19,11 @@ namespace AmazonAccess.Services.FeedsReports.ReportModel
 		public string Condition{ get; set; }
 
 		[ CsvColumn( Name = "country", FieldIndex = 5 ) ]
-		public string Country{ get; set; }
+		public string CountryCodeStr{ get; set; }
 
 		[ CsvColumn( Name = "quantity-for-local-fulfillment", FieldIndex = 6 ) ]
 		public string QuantityForLocalFulfillment{ get; set; }
+
+		public AmazonCountryCodeEnum CountryCode => this.CountryCodeStr.ToEnum( AmazonCountryCodeEnum.Unknown );
 	}
 }
