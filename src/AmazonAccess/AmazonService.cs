@@ -252,7 +252,7 @@ namespace AmazonAccess
 			return service.IsFbaInventoryReceived( this.GetMarker() );
 		}
 
-		public List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = false )
+		public List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = true )
 		{
 			var marker = this.GetMarker();
 			var operationName = includeArchived ? "GetDetailedFbaInventoryArchived" : "GetDetailedFbaInventory";

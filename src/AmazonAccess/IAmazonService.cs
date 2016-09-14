@@ -131,7 +131,7 @@ namespace AmazonAccess
 		/// </summary>
 		/// <param name="includeArchived"></param>
 		/// <returns></returns>
-		List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = false );
+		List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = true );
 
 		/// <summary>
 		/// Get Fba Multi-Country Inventory Report (returns inventory for all marketplaces)

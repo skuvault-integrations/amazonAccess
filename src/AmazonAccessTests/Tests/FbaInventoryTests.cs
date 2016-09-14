@@ -22,9 +22,9 @@ namespace AmazonAccessTests.Tests
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 			List< InventorySupply > inventory = null;
-			//inventory = service.GetFbaInventory();
+			inventory = service.GetFbaInventory();
 			//this.SaveToFile( "FbaInventory.txt", inventory );
-			inventory = this.ReadFromFile< List< InventorySupply > >( "FbaInventory.txt" );
+			//inventory = this.ReadFromFile< List< InventorySupply > >( "FbaInventory.txt" );
 			var notEmpty = inventory.Where( x => this.IsNotEmpty( x ) ).ToList();
 
 			inventory.Count().Should().BeGreaterThan( 0 );
@@ -34,6 +34,7 @@ namespace AmazonAccessTests.Tests
 		public void GetFbaInventoryByOneMarketplace()
 		{
 			var inventoryList = new List< List< InventorySupply > >();
+			var notEmptyInventoryList = new List< List< InventorySupply > >();
 			var inventoryDic = new Dictionary< string, List< InventorySupply > >();
 			var notEmptyDic = new Dictionary< string, List< InventorySupply > >();
 
@@ -47,15 +48,21 @@ namespace AmazonAccessTests.Tests
 				var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( amazonMarketplace ) );
 
 				inventory = service.GetFbaInventory();
-				this.SaveToFile( fileName, inventory.ToList() );
+				//this.SaveToFile( fileName, inventory.ToList() );
 
-				inventory = this.ReadFromFile< List< InventorySupply > >( fileName );
+				//inventory = this.ReadFromFile< List< InventorySupply > >( fileName );
 				inventoryList.Add( inventory );
 				inventoryDic.Add( name, inventory );
-				notEmptyDic.Add( name, inventory.Where( x => this.IsNotEmpty( x ) ).ToList() );
+
+				var notEmptyInventory = inventory.Where( x => this.IsNotEmpty( x ) ).ToList();
+				notEmptyInventoryList.Add( notEmptyInventory );
+				notEmptyDic.Add( name, notEmptyInventory );
 
 				//inventory.Count().Should().BeGreaterThan( 0 );
 			}
+
+			var allinventory = this.ReadFromFile< List< InventorySupply > >( "FbaInventory.txt" );
+			var notEmpty = allinventory.Where( x => this.IsNotEmpty( x ) ).ToList();
 
 			var megaJoin = ( from marketplace0 in inventoryList[ 0 ]
 				join marketplace1 in inventoryList[ 1 ] on marketplace0.SellerSKU equals marketplace1.SellerSKU
@@ -81,9 +88,24 @@ namespace AmazonAccessTests.Tests
 			//var caDiff = megaJoin.Where( sku => this.IsNotEquals( sku.marketplace3, sku.marketplace5 ) ).ToList();
 			//var diff = megaJoin.Where( sku => this.IsNotEquals( sku.marketplace1, sku.marketplace2, sku.marketplace3, sku.marketplace4, sku.marketplace5 ) ).ToList();
 
+			var mergedList = new List< InventorySupply >();
+			mergedList.AddRange( inventoryList[ 0 ] );
+			var forAdd = inventoryList[ 6 ].Where( x => !mergedList.Any( x2 => x2.SellerSKU.Equals( x.SellerSKU ) ) ).ToList();
+			mergedList.AddRange( forAdd );
+
+			var someItems0 = mergedList.Where( x => !allinventory.Any( x2 => x2.SellerSKU.Equals( x.SellerSKU ) ) ).ToList();
+			var someItems00 = allinventory.Where( x => !mergedList.Any( x2 => x2.SellerSKU.Equals( x.SellerSKU ) ) ).ToList();
+
 			var someItems = inventoryList[ 0 ].Where( x => !inventoryList[ 6 ].Any( x2 => x2.SellerSKU.Equals( x.SellerSKU ) ) ).ToList();
 			var someItems2 = inventoryList[ 6 ].Where( x => !inventoryList[ 0 ].Any( x2 => x2.SellerSKU.Equals( x.SellerSKU ) ) ).ToList();
-			this.SaveToFile( "someItems.txt", someItems );
+
+			var someItems3 = inventoryList[ 0 ].Where( x => !allinventory.Any( x2 => x2.SellerSKU.Equals( x.SellerSKU ) ) ).ToList();
+			var someItems4 = allinventory.Where( x => !inventoryList[ 0 ].Any( x2 => x2.SellerSKU.Equals( x.SellerSKU ) ) ).ToList();
+
+			var someItems5 = inventoryList[ 6 ].Where( x => !allinventory.Any( x2 => x2.SellerSKU.Equals( x.SellerSKU ) ) ).ToList();
+			var someItems6 = allinventory.Where( x => !inventoryList[ 6 ].Any( x2 => x2.SellerSKU.Equals( x.SellerSKU ) ) ).ToList();
+
+			//this.SaveToFile( "someItems.txt", someItems );
 		}
 
 		private void SelectSameSkusAsInReport( Dictionary< string, List< InventorySupply > > inventoryDic )
@@ -117,7 +139,7 @@ namespace AmazonAccessTests.Tests
 		public void GetDetailedFbaInventory()
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
-			var inventory = service.GetDetailedFbaInventory();
+			var inventory = service.GetDetailedFbaInventory( false );
 
 			inventory.Count.Should().BeGreaterThan( 0 );
 		}
@@ -126,7 +148,7 @@ namespace AmazonAccessTests.Tests
 		public void GetDetailedFbaInventoryWithArchived()
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
-			var inventory = service.GetDetailedFbaInventory( true );
+			var inventory = service.GetDetailedFbaInventory();
 
 			inventory.Count.Should().BeGreaterThan( 0 );
 		}
