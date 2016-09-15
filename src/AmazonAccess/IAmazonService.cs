@@ -127,9 +127,9 @@ namespace AmazonAccess
 		bool IsFbaInventoryReceived();
 
 		/// <summary>
-		/// Get Detailed Fba Inventory (using reports API)
+		/// Get Detailed Fba Inventory using reports API (returns inventory for each marketplace)
 		/// </summary>
-		/// <param name="includeArchived"></param>
+		/// <param name="includeArchived">Include archived</param>
 		/// <returns></returns>
 		List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = true );
 
@@ -144,6 +144,12 @@ namespace AmazonAccess
 		/// </summary>
 		/// <returns></returns>
 		List< FbaFulfilledInventory > GetFbaFulfilledInventory();
+
+		/// <summary>
+		/// Get Fba Reserved Inventory (returns inventory for each marketplace)
+		/// </summary>
+		/// <returns></returns>
+		List< FbaReservedInventory > GetFbaReservedInventory();
 
 		MarketplaceParticipations GetMarketplaceParticipations();
 	}

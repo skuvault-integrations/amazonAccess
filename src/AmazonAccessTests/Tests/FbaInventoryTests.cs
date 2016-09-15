@@ -23,7 +23,7 @@ namespace AmazonAccessTests.Tests
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 			List< InventorySupply > inventory = null;
 			inventory = service.GetFbaInventory();
-			//this.SaveToFile( "FbaInventory.txt", inventory );
+			this.SaveToFile( "FbaInventory.txt", inventory );
 			//inventory = this.ReadFromFile< List< InventorySupply > >( "FbaInventory.txt" );
 			var notEmpty = inventory.Where( x => this.IsNotEmpty( x ) ).ToList();
 
@@ -39,7 +39,7 @@ namespace AmazonAccessTests.Tests
 			var notEmptyDic = new Dictionary< string, List< InventorySupply > >();
 
 			var marketplaces = this.ClientConfig.ParseMarketplaces();
-			
+
 			foreach( var amazonMarketplace in marketplaces.Marketplaces )
 			{
 				List< InventorySupply > inventory = null;
@@ -140,6 +140,8 @@ namespace AmazonAccessTests.Tests
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 			var inventory = service.GetDetailedFbaInventory( false );
+			this.SaveToFile( "FbaManageInventory.txt", inventory );
+			//var inventory = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventory.txt" );
 
 			inventory.Count.Should().BeGreaterThan( 0 );
 		}
@@ -149,6 +151,8 @@ namespace AmazonAccessTests.Tests
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 			var inventory = service.GetDetailedFbaInventory();
+			this.SaveToFile( "FbaManageInventoryArchived.txt", inventory );
+			//var inventory = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived.txt" );
 
 			inventory.Count.Should().BeGreaterThan( 0 );
 		}
@@ -159,7 +163,6 @@ namespace AmazonAccessTests.Tests
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 			var inventory = service.GetFbaMultiCountryInventory();
 			this.SaveToFile( "FbaMultiCountryInventory.txt", inventory );
-
 			//var inventory = this.ReadFromFile< List< FbaMultiCountryInventory > >( "FbaMultiCountryInventory.txt" );
 
 			inventory.Count.Should().BeGreaterThan( 0 );
@@ -171,8 +174,76 @@ namespace AmazonAccessTests.Tests
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 			var inventory = service.GetFbaFulfilledInventory();
 			this.SaveToFile( "FbaFulfilledInventory.txt", inventory );
+			//var inventory = this.ReadFromFile< List< FbaFulfilledInventory > >( "FbaFulfilledInventory.txt" );
 
 			inventory.Count.Should().BeGreaterThan( 0 );
+		}
+
+		[ Test ]
+		public void GetFbaReservedInventory()
+		{
+			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
+			var inventory = service.GetFbaReservedInventory();
+			this.SaveToFile( "FbaReservedInventory.txt", inventory );
+			//var inventory = this.ReadFromFile< List< FbaReservedInventory > >( "FbaReservedInventory.txt" );
+
+			inventory.Count.Should().BeGreaterThan( 0 );
+		}
+
+		[ Test ]
+		public void ReportsDiff()
+		{
+			//var serviceUS = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "US" ) );
+			//var inventoryUS = serviceUS.GetDetailedFbaInventory();
+			//this.SaveToFile( "FbaManageInventoryArchived_US.txt", inventoryUS );
+			//var serviceCA = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "CA" ) );
+			//var inventoryCA = serviceCA.GetDetailedFbaInventory();
+			//this.SaveToFile( "FbaManageInventoryArchived_CA.txt", inventoryCA );
+			//var reservedInventoryUsService = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "US" ) );
+			//var reservedInventoryUs = reservedInventoryUsService.GetFbaReservedInventory();
+			//this.SaveToFile( "FbaReservedInventory_Us.txt", reservedInventoryUs );
+			//var reservedInventoryCaService = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "CA" ) );
+			//var reservedInventoryCa = reservedInventoryCaService.GetFbaReservedInventory();
+			//this.SaveToFile( "FbaReservedInventory_Ca.txt", reservedInventoryCa );
+			//var multiCountryService = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
+			//var multiCountryInventory = multiCountryService.GetFbaMultiCountryInventory();
+			//this.SaveToFile( "FbaMultiCountryInventory.txt", multiCountryInventory );
+			//var fulfilledInventoryService = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
+			//var fulfilledInventory = fulfilledInventoryService.GetFbaFulfilledInventory();
+			//this.SaveToFile( "FbaFulfilledInventory.txt", fulfilledInventory );
+
+			var inventoryUS = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived_US.txt" );
+			var inventoryCA = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived_CA.txt" );
+			var reservedInventoryUs = this.ReadFromFile< List< FbaReservedInventory > >( "FbaReservedInventory_Us.txt" );
+			var reservedInventoryCa = this.ReadFromFile< List< FbaReservedInventory > >( "FbaReservedInventory_Ca.txt" );
+			var multiCountryInventory = this.ReadFromFile< List< FbaMultiCountryInventory > >( "FbaMultiCountryInventory.txt" );
+			var fulfilledInventory = this.ReadFromFile< List< FbaFulfilledInventory > >( "FbaFulfilledInventory.txt" );
+
+			var megaJoin = ( from marketplaceUs in inventoryUS
+				join marketplaceCa in inventoryCA on marketplaceUs.SKU equals marketplaceCa.SKU
+				join reservedUs in reservedInventoryUs on marketplaceUs.SKU equals reservedUs.SKU into reservedUs
+				join reservedCa in reservedInventoryCa on marketplaceUs.SKU equals reservedCa.SKU into reservedCa
+				join multiCountry in multiCountryInventory on marketplaceUs.SKU equals multiCountry.SKU into multiCountry
+				join fulfilled in fulfilledInventory on marketplaceUs.SKU equals fulfilled.SKU into fulfilled
+				select new ReportsDiffModel
+				{
+					MarketplaceUs = marketplaceUs,
+					MarketplaceCa = marketplaceCa,
+					ReservedUs = reservedUs.FirstOrDefault(),
+					ReservedCa = reservedCa.FirstOrDefault(),
+					MultiCountry = multiCountry.ToList(),
+					Fulfilled = fulfilled.ToList(),
+					MultiCountryTotal = multiCountry.Sum( x2 => x2.QuantityForLocalFulfillment ),
+					FulfilledSellableTotal = fulfilled.Where( x2 => x2.WarehouseConditionCode == "SELLABLE" ).Sum( x2 => x2.QuantityAvailable ),
+					FulfilledUnsellableTotal = fulfilled.Where( x2 => x2.WarehouseConditionCode == "UNSELLABLE" ).Sum( x2 => x2.QuantityAvailable )
+				} ).ToList();
+
+			var diff = megaJoin.Where( x => x.MarketplaceUs.AfnTotalQuantity != x.MarketplaceCa.AfnTotalQuantity ||
+			                                x.MarketplaceUs.AfnFulfillableQuantity != x.MarketplaceCa.AfnFulfillableQuantity ).ToList();
+			var diffUs = diff.Where( x => x.MarketplaceUs.AfnTotalQuantity > 0 ).ToList();
+			var diffCa = diff.Where( x => x.MarketplaceCa.AfnTotalQuantity > 0 ).ToList();
+			var diffUsCa = diff.Where( x => x.MarketplaceUs.AfnTotalQuantity > 0 && x.MarketplaceCa.AfnTotalQuantity > 0 ).ToList();
+			this.SaveToFile( "ReportsDiff.txt", diffUsCa );
 		}
 
 		#region Misc
@@ -199,5 +270,18 @@ namespace AmazonAccessTests.Tests
 			return obj1.TotalSupplyQuantity != obj2.TotalSupplyQuantity || obj1.InStockSupplyQuantity != obj2.InStockSupplyQuantity;
 		}
 		#endregion
+	}
+
+	public class ReportsDiffModel
+	{
+		public FbaManageInventory MarketplaceUs{ get; set; }
+		public FbaManageInventory MarketplaceCa{ get; set; }
+		public FbaReservedInventory ReservedUs{ get; set; }
+		public FbaReservedInventory ReservedCa{ get; set; }
+		public List< FbaMultiCountryInventory > MultiCountry{ get; set; }
+		public List<FbaFulfilledInventory> Fulfilled{ get; set; }
+		public int MultiCountryTotal{ get; set; }
+		public int FulfilledSellableTotal{ get; set; }
+		public int FulfilledUnsellableTotal{ get; set; }
 	}
 }

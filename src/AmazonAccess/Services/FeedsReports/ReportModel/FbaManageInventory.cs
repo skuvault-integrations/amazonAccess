@@ -20,42 +20,42 @@ namespace AmazonAccess.Services.FeedsReports.ReportModel
 		public string Condition{ get; set; }
 
 		[ CsvColumn( Name = "your-price", FieldIndex = 6 ) ]
-		public string YourPrice{ get; set; }
+		public decimal YourPrice{ get; set; }
 
 		[ CsvColumn( Name = "mfn-listing-exists", FieldIndex = 7 ) ]
 		public string MfnListingExists{ get; set; }
 
 		[ CsvColumn( Name = "mfn-fulfillable-quantity", FieldIndex = 8 ) ]
-		public string MfnFulfillableQuantity{ get; set; }
+		public int MfnFulfillableQuantity{ get; set; }
 
 		[ CsvColumn( Name = "afn-listing-exists", FieldIndex = 9 ) ]
 		public string AfnListingExists{ get; set; }
 
 		[ CsvColumn( Name = "afn-warehouse-quantity", FieldIndex = 10 ) ]
-		public string AfnWarehouseQuantity{ get; set; }
+		public int AfnWarehouseQuantity{ get; set; }
 
 		[ CsvColumn( Name = "afn-fulfillable-quantity", FieldIndex = 11 ) ]
-		public string AfnFulfillableQuantity{ get; set; }
+		public int AfnFulfillableQuantity{ get; set; }
 
 		[ CsvColumn( Name = "afn-unsellable-quantity", FieldIndex = 12 ) ]
-		public string AfnUnsellableQuantity{ get; set; }
+		public int AfnUnsellableQuantity{ get; set; }
 
 		[ CsvColumn( Name = "afn-reserved-quantity", FieldIndex = 13 ) ]
-		public string AfnReservedQuantity{ get; set; }
+		public int AfnReservedQuantity{ get; set; }
 
 		[ CsvColumn( Name = "afn-total-quantity", FieldIndex = 14 ) ]
-		public string AfnTotalQuantity{ get; set; }
+		public int AfnTotalQuantity{ get; set; }
 
 		[ CsvColumn( Name = "per-unit-volume", FieldIndex = 15 ) ]
-		public string PerUnitVolume{ get; set; }
+		public decimal PerUnitVolume{ get; set; }
 
 		[ CsvColumn( Name = "afn-inbound-working-quantity", FieldIndex = 16 ) ]
-		public string AfnInboundWorkingQuantity{ get; set; }
+		public int AfnInboundWorkingQuantity{ get; set; }
 
 		[ CsvColumn( Name = "afn-inbound-shipped-quantity", FieldIndex = 17 ) ]
-		public string AfnInboundShippedQuantity{ get; set; }
+		public int AfnInboundShippedQuantity{ get; set; }
 
 		[ CsvColumn( Name = "afn-inbound-receiving-quantity", FieldIndex = 18 ) ]
-		public string AfnInboundReceivingQuantity{ get; set; }
+		public int AfnInboundReceivingQuantity{ get; set; }
 	}
 }

@@ -20,6 +20,6 @@ namespace AmazonAccess.Services.FeedsReports.ReportModel
 		public string WarehouseConditionCode{ get; set; }
 
 		[ CsvColumn( Name = "Quantity Available", FieldIndex = 6 ) ]
-		public string QuantityAvailable{ get; set; }
+		public int QuantityAvailable{ get; set; }
 	}
 }

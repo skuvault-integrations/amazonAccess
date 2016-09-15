@@ -22,7 +22,7 @@ namespace AmazonAccess.Services.FeedsReports.ReportModel
 		public string CountryCodeStr{ get; set; }
 
 		[ CsvColumn( Name = "quantity-for-local-fulfillment", FieldIndex = 6 ) ]
-		public string QuantityForLocalFulfillment{ get; set; }
+		public int QuantityForLocalFulfillment{ get; set; }
 
 		public AmazonCountryCodeEnum CountryCode => this.CountryCodeStr.ToEnum( AmazonCountryCodeEnum.Unknown );
 	}
