@@ -193,13 +193,13 @@ namespace AmazonAccessTests.Tests
 		[ Test ]
 		public void ReportsDiff()
 		{
-			//var manageInventoryServiceUS = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "US" ) );
-			//var manageInventoryUS = manageInventoryServiceUS.GetDetailedFbaInventory();
-			//this.SaveToFile( "FbaManageInventoryArchived_US.txt", manageInventoryUS );
+			//var manageInventoryServiceUs = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "US" ) );
+			//var manageInventoryUs = manageInventoryServiceUs.GetDetailedFbaInventory();
+			//this.SaveToFile( "FbaManageInventoryArchived_US.txt", manageInventoryUs );
 
-			//var manageInventoryServiceCA = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "CA" ) );
-			//var manageInventoryCA = manageInventoryServiceCA.GetDetailedFbaInventory();
-			//this.SaveToFile( "FbaManageInventoryArchived_CA.txt", manageInventoryCA );
+			//var manageInventoryServiceCa = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "CA" ) );
+			//var manageInventoryCa = manageInventoryServiceCa.GetDetailedFbaInventory();
+			//this.SaveToFile( "FbaManageInventoryArchived_CA.txt", manageInventoryCa );
 
 			//var reservedInventoryUsService = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "US" ) );
 			//var reservedInventoryUs = reservedInventoryUsService.GetFbaReservedInventory();
@@ -217,38 +217,38 @@ namespace AmazonAccessTests.Tests
 			//var fulfilledInventory = fulfilledInventoryService.GetFbaFulfilledInventory();
 			//this.SaveToFile( "FbaFulfilledInventory.txt", fulfilledInventory );
 
-			//var apiInventoryServiceUS = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "US" ) );
-			//var apiInventoryUS = apiInventoryServiceUS.GetFbaInventory();
-			//this.SaveToFile( "FbaInventory_US.txt", apiInventoryUS );
+			//var apiInventoryServiceUs = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "US" ) );
+			//var apiInventoryUs = apiInventoryServiceUs.GetFbaInventory();
+			//this.SaveToFile( "FbaInventory_US.txt", apiInventoryUs );
 
-			//var apiInventoryServiceCA = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "CA" ) );
-			//var apiInventoryCA = apiInventoryServiceCA.GetFbaInventory();
-			//this.SaveToFile( "FbaInventory_CA.txt", apiInventoryCA );
+			//var apiInventoryServiceCa = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "CA" ) );
+			//var apiInventoryCa = apiInventoryServiceCa.GetFbaInventory();
+			//this.SaveToFile( "FbaInventory_CA.txt", apiInventoryCa );
 
-			var manageInventoryUS = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived_US.txt" );
-			var manageInventoryCA = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived_CA.txt" );
+			var manageInventoryUs = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived_US.txt" );
+			var manageInventoryCa = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived_CA.txt" );
 			var reservedInventoryUs = this.ReadFromFile< List< FbaReservedInventory > >( "FbaReservedInventory_Us.txt" );
 			var reservedInventoryCa = this.ReadFromFile< List< FbaReservedInventory > >( "FbaReservedInventory_Ca.txt" );
 			var multiCountryInventory = this.ReadFromFile< List< FbaMultiCountryInventory > >( "FbaMultiCountryInventory.txt" );
 			var fulfilledInventory = this.ReadFromFile< List< FbaFulfilledInventory > >( "FbaFulfilledInventory.txt" );
-			var apiInventoryUS = this.ReadFromFile< List< InventorySupply > >( "FbaInventory_US.txt" );
-			var apiInventoryCA = this.ReadFromFile< List< InventorySupply > >( "FbaInventory_CA.txt" );
+			var apiInventoryUs = this.ReadFromFile< List< InventorySupply > >( "FbaInventory_US.txt" );
+			var apiInventoryCa = this.ReadFromFile< List< InventorySupply > >( "FbaInventory_CA.txt" );
 
-			var megaJoin = ( from manageUs in manageInventoryUS
-				join manageCa in manageInventoryCA on manageUs.SKU equals manageCa.SKU
+			var megaJoin = ( from manageUs in manageInventoryUs
+				join manageCa in manageInventoryCa on manageUs.SKU equals manageCa.SKU
 				//join manageCa in manageInventoryCA on manageUs.SKU equals manageCa.SKU into manageCa
 				join reservedUs in reservedInventoryUs on manageUs.SKU equals reservedUs.SKU into reservedUs
 				join reservedCa in reservedInventoryCa on manageUs.SKU equals reservedCa.SKU into reservedCa
 				join multiCountry in multiCountryInventory on manageUs.SKU equals multiCountry.SKU into multiCountry
 				join fulfilled in fulfilledInventory on manageUs.SKU equals fulfilled.SKU into fulfilled
-				join apiUs in apiInventoryUS on manageUs.SKU equals apiUs.SellerSKU into apiUs
-				join apiCa in apiInventoryCA on manageUs.SKU equals apiCa.SellerSKU into apiCa
+				join apiUs in apiInventoryUs on manageUs.SKU equals apiUs.SellerSKU into apiUs
+				join apiCa in apiInventoryCa on manageUs.SKU equals apiCa.SellerSKU into apiCa
 				//where manageUs.AfnUnsellableQuantity > 0
 				//where manageUs.AfnInboundWorkingQuantity > 0 && manageUs.AfnInboundShippedQuantity > 0 && manageUs.AfnInboundReceivingQuantity > 0
 				select new ReportsDiffModel
 				{
-					MarketplaceUs = manageUs,
-					MarketplaceCa = manageCa,
+					ManageInventoryUs = manageUs,
+					ManageInventoryCa = manageCa,
 					//MarketplaceCa = manageCa.FirstOrDefault(),
 					ReservedUs = reservedUs.FirstOrDefault(),
 					ReservedCa = reservedCa.FirstOrDefault(),
@@ -261,36 +261,111 @@ namespace AmazonAccessTests.Tests
 					ApiInventoryCa = apiCa.FirstOrDefault()
 				} ).ToList();
 
-			var diff = megaJoin.Where( x => x.MarketplaceUs.AfnTotalQuantity != x.MarketplaceCa.AfnTotalQuantity ||
-			                                x.MarketplaceUs.AfnFulfillableQuantity != x.MarketplaceCa.AfnFulfillableQuantity ).ToList();
-			var diffUs = diff.Where( x => x.MarketplaceUs.AfnTotalQuantity > 0 ).ToList();
-			var diffCa = diff.Where( x => x.MarketplaceCa.AfnTotalQuantity > 0 ).ToList();
-			var diffUsCa = diff.Where( x => x.MarketplaceUs.AfnTotalQuantity > 0 && x.MarketplaceCa.AfnTotalQuantity > 0 ).ToList();
+			var diff = megaJoin.Where( x => x.ManageInventoryUs.AfnTotalQuantity != x.ManageInventoryCa.AfnTotalQuantity ||
+			                                x.ManageInventoryUs.AfnFulfillableQuantity != x.ManageInventoryCa.AfnFulfillableQuantity ).ToList();
+			var diffUs = diff.Where( x => x.ManageInventoryUs.AfnTotalQuantity > 0 ).ToList();
+			var diffCa = diff.Where( x => x.ManageInventoryCa.AfnTotalQuantity > 0 ).ToList();
+			var diffUsCa = diff.Where( x => x.ManageInventoryUs.AfnTotalQuantity > 0 && x.ManageInventoryCa.AfnTotalQuantity > 0 ).ToList();
 			this.SaveToFile( "ReportsDiff.txt", diffUsCa );
 
 			var diffUsCaShort = diffUsCa.Select( x => new ReportsDiffSummaryModel
 			{
-				SKU = x.MarketplaceUs.SKU,
+				SKU = x.ManageInventoryUs.SKU,
 				FulfilledSellableTotal = x.FulfilledSellableTotal,
 				FulfilledUnsellableTotal = x.FulfilledUnsellableTotal,
 				MultiCountryUs = x.MultiCountry?.Where( x2 => x2.CountryCode == AmazonCountryCodeEnum.Us ).Sum( x2 => x2.QuantityForLocalFulfillment ) ?? 0,
 				MultiCountryCa = x.MultiCountry?.Where( x2 => x2.CountryCode == AmazonCountryCodeEnum.Ca ).Sum( x2 => x2.QuantityForLocalFulfillment ) ?? 0,
-				ManageInventoryUs = new FbaManageInventoryMain( x.MarketplaceUs ),
-				ManageInventoryCa = new FbaManageInventoryMain( x.MarketplaceCa ),
+				ManageInventoryUs = new FbaManageInventoryMain( x.ManageInventoryUs ),
+				ManageInventoryCa = new FbaManageInventoryMain( x.ManageInventoryCa ),
 				ApiInventoryUs = new InventorySupplyMain( x.ApiInventoryUs ),
 				ApiInventoryCa = new InventorySupplyMain( x.ApiInventoryCa ),
 				ReservedUs = new FbaReservedInventoryMain( x.ReservedUs ),
 				ReservedCa = new FbaReservedInventoryMain( x.ReservedCa )
 			} ).ToList();
-			this.SaveToFile( "ReportsDiffShort.txt", diffUsCaShort );
+			this.SaveToFile( "ReportsDiffSummary.txt", diffUsCaShort );
 
-			var diffUsCaShort2 = diffUsCa.Select( x => new ReportsDiffSummaryModel2
+			var diffUsCaShort2 = diffUsCa.Select( x => new ReportsDiffSummaryShortModel
 			{
-				SKU = x.MarketplaceUs.SKU,
-				ReportsInventoryUs = new FbaReportsItemSummary( x.MarketplaceUs, x.ReservedUs ),
-				ReportsInventoryCa = new FbaReportsItemSummary( x.MarketplaceCa, x.ReservedCa ),
+				SKU = x.ManageInventoryUs.SKU,
+				ReportsInventoryUs = new FbaReportsItemSummary( x.ManageInventoryUs, x.ReservedUs ),
+				ReportsInventoryCa = new FbaReportsItemSummary( x.ManageInventoryCa, x.ReservedCa ),
 				ApiInventoryUs = new InventorySupplyMain( x.ApiInventoryUs ),
 				ApiInventoryCa = new InventorySupplyMain( x.ApiInventoryCa )
+			} ).ToList();
+			this.SaveToFile( "ReportsDiffShort.txt", diffUsCaShort2 );
+		}
+
+		[ Test ]
+		public void ReportsDiff2()
+		{
+			//var manageInventoryService = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
+			//var manageInventory = manageInventoryService.GetDetailedFbaInventory();
+			//this.SaveToFile( "FbaManageInventoryArchived.txt", manageInventory );
+
+			//var manageInventoryServiceUs = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "US" ) );
+			//var manageInventoryUs = manageInventoryServiceUs.GetDetailedFbaInventory();
+			//this.SaveToFile( "FbaManageInventoryArchived_US.txt", manageInventoryUs );
+
+			//var manageInventoryServiceUs2 = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( new AmazonMarketplace( "US", "A2ZV50J4W1RKNI" ) ) );
+			//var manageInventoryUs2 = manageInventoryServiceUs2.GetDetailedFbaInventory();
+			//this.SaveToFile( "FbaManageInventoryArchived_US-A2ZV50J4W1RKNI.txt", manageInventoryUs2 );
+
+			//var manageInventoryServiceCa = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "CA" ) );
+			//var manageInventoryCa = manageInventoryServiceCa.GetDetailedFbaInventory();
+			//this.SaveToFile( "FbaManageInventoryArchived_CA.txt", manageInventoryCa );
+
+			//var reservedInventoryService = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
+			//var reservedInventory = reservedInventoryService.GetFbaReservedInventory();
+			//this.SaveToFile( "FbaReservedInventory.txt", reservedInventory );
+
+			//var reservedInventoryUsService = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "US" ) );
+			//var reservedInventoryUs = reservedInventoryUsService.GetFbaReservedInventory();
+			//this.SaveToFile( "FbaReservedInventory_Us.txt", reservedInventoryUs );
+
+			//var reservedInventoryCaService = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "CA" ) );
+			//var reservedInventoryCa = reservedInventoryCaService.GetFbaReservedInventory();
+			//this.SaveToFile( "FbaReservedInventory_Ca.txt", reservedInventoryCa );
+
+			var manageInventory = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived.txt" );
+			var manageInventoryUs = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived_US.txt" );
+			var manageInventoryUs2 = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived_US-A2ZV50J4W1RKNI.txt" );
+			var manageInventoryCa = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived_CA.txt" );
+			var reservedInventory = this.ReadFromFile< List< FbaReservedInventory > >( "FbaReservedInventory.txt" );
+			var reservedInventoryUs = this.ReadFromFile< List< FbaReservedInventory > >( "FbaReservedInventory_Us.txt" );
+			var reservedInventoryCa = this.ReadFromFile< List< FbaReservedInventory > >( "FbaReservedInventory_Ca.txt" );
+
+			var megaJoin = ( from manage in manageInventory
+				join manageUs in manageInventoryUs on manage.SKU equals manageUs.SKU
+				join manageUs2 in manageInventoryUs2 on manage.SKU equals manageUs2.SKU
+				join manageCa in manageInventoryCa on manage.SKU equals manageCa.SKU
+				join reserved in reservedInventory on manage.SKU equals reserved.SKU into reserved
+				join reservedUs in reservedInventoryUs on manage.SKU equals reservedUs.SKU into reservedUs
+				join reservedCa in reservedInventoryCa on manage.SKU equals reservedCa.SKU into reservedCa
+				select new ReportsDiffModel2
+				{
+					ManageInventory = manage,
+					ManageInventoryUs = manageUs,
+					ManageInventoryUs2 = manageUs2,
+					ManageInventoryCa = manageCa,
+					Reserved = reserved.FirstOrDefault(),
+					ReservedUs = reservedUs.FirstOrDefault(),
+					ReservedCa = reservedCa.FirstOrDefault(),
+				} ).ToList();
+
+			var diff = megaJoin.Where( x => x.ManageInventoryUs.AfnTotalQuantity != x.ManageInventoryCa.AfnTotalQuantity ||
+			                                x.ManageInventoryUs.AfnFulfillableQuantity != x.ManageInventoryCa.AfnFulfillableQuantity ).ToList();
+			var diffUs = diff.Where( x => x.ManageInventoryUs.AfnTotalQuantity > 0 ).ToList();
+			var diffCa = diff.Where( x => x.ManageInventoryCa.AfnTotalQuantity > 0 ).ToList();
+			var diffUsCa = diff.Where( x => x.ManageInventoryUs.AfnTotalQuantity > 0 && x.ManageInventoryCa.AfnTotalQuantity > 0 ).ToList();
+			this.SaveToFile( "ReportsDiff2.txt", diffUsCa );
+
+			var diffUsCaShort2 = diffUsCa.Select( x => new ReportsDiffSummaryShortModel2
+			{
+				SKU = x.ManageInventoryUs.SKU,
+				ReportsInventory = new FbaReportsItemSummary( x.ManageInventory, x.Reserved ),
+				ReportsInventoryUs = new FbaReportsItemSummary( x.ManageInventoryUs, x.ReservedUs ),
+				ReportsInventoryUs2 = new FbaReportsItemSummary( x.ManageInventoryUs2, x.ReservedUs ),
+				ReportsInventoryCa = new FbaReportsItemSummary( x.ManageInventoryCa, x.ReservedCa ),
 			} ).ToList();
 			this.SaveToFile( "ReportsDiffShort2.txt", diffUsCaShort2 );
 		}
@@ -322,11 +397,10 @@ namespace AmazonAccessTests.Tests
 	}
 
 	#region reports models	
-
 	public class ReportsDiffModel
 	{
-		public FbaManageInventory MarketplaceUs{ get; set; }
-		public FbaManageInventory MarketplaceCa{ get; set; }
+		public FbaManageInventory ManageInventoryUs{ get; set; }
+		public FbaManageInventory ManageInventoryCa{ get; set; }
 		public FbaReservedInventory ReservedUs{ get; set; }
 		public FbaReservedInventory ReservedCa{ get; set; }
 		public int MultiCountryTotal{ get; set; }
@@ -336,6 +410,17 @@ namespace AmazonAccessTests.Tests
 		public List< FbaFulfilledInventory > Fulfilled{ get; set; }
 		public InventorySupply ApiInventoryUs{ get; set; }
 		public InventorySupply ApiInventoryCa{ get; set; }
+	}
+
+	public class ReportsDiffModel2
+	{
+		public FbaManageInventory ManageInventory{ get; set; }
+		public FbaManageInventory ManageInventoryUs{ get; set; }
+		public FbaManageInventory ManageInventoryUs2{ get; set; }
+		public FbaManageInventory ManageInventoryCa{ get; set; }
+		public FbaReservedInventory Reserved{ get; set; }
+		public FbaReservedInventory ReservedUs{ get; set; }
+		public FbaReservedInventory ReservedCa{ get; set; }
 	}
 
 	public class ReportsDiffSummaryModel
@@ -353,13 +438,22 @@ namespace AmazonAccessTests.Tests
 		public FbaReservedInventoryMain ReservedCa{ get; set; }
 	}
 
-	public class ReportsDiffSummaryModel2
+	public class ReportsDiffSummaryShortModel
 	{
 		public string SKU{ get; set; }
 		public FbaReportsItemSummary ReportsInventoryUs{ get; set; }
 		public FbaReportsItemSummary ReportsInventoryCa{ get; set; }
 		public InventorySupplyMain ApiInventoryUs{ get; set; }
 		public InventorySupplyMain ApiInventoryCa{ get; set; }
+	}
+
+	public class ReportsDiffSummaryShortModel2
+	{
+		public string SKU{ get; set; }
+		public FbaReportsItemSummary ReportsInventory{ get; set; }
+		public FbaReportsItemSummary ReportsInventoryUs{ get; set; }
+		public FbaReportsItemSummary ReportsInventoryUs2{ get; set; }
+		public FbaReportsItemSummary ReportsInventoryCa{ get; set; }
 	}
 
 	public class FbaManageInventoryMain
