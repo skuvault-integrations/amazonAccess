@@ -147,7 +147,7 @@ namespace AmazonAccess.Services.FeedsReports
 				RequestedToDate = DateTime.UtcNow.ToUniversalTime()
 			};
 
-			for( var i = 0; i < 30; i++ )
+			for( var i = 0; i < 100; i++ )
 			{
 				ActionPolicies.CreateApiDelay( 30 ).Wait();
 
