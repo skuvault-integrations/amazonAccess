@@ -193,49 +193,72 @@ namespace AmazonAccessTests.Tests
 		[ Test ]
 		public void ReportsDiff()
 		{
-			//var serviceUS = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "US" ) );
-			//var inventoryUS = serviceUS.GetDetailedFbaInventory();
-			//this.SaveToFile( "FbaManageInventoryArchived_US.txt", inventoryUS );
-			//var serviceCA = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "CA" ) );
-			//var inventoryCA = serviceCA.GetDetailedFbaInventory();
-			//this.SaveToFile( "FbaManageInventoryArchived_CA.txt", inventoryCA );
+			//var manageInventoryServiceUS = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "US" ) );
+			//var manageInventoryUS = manageInventoryServiceUS.GetDetailedFbaInventory();
+			//this.SaveToFile( "FbaManageInventoryArchived_US.txt", manageInventoryUS );
+
+			//var manageInventoryServiceCA = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "CA" ) );
+			//var manageInventoryCA = manageInventoryServiceCA.GetDetailedFbaInventory();
+			//this.SaveToFile( "FbaManageInventoryArchived_CA.txt", manageInventoryCA );
+
 			//var reservedInventoryUsService = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "US" ) );
 			//var reservedInventoryUs = reservedInventoryUsService.GetFbaReservedInventory();
 			//this.SaveToFile( "FbaReservedInventory_Us.txt", reservedInventoryUs );
+
 			//var reservedInventoryCaService = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "CA" ) );
 			//var reservedInventoryCa = reservedInventoryCaService.GetFbaReservedInventory();
 			//this.SaveToFile( "FbaReservedInventory_Ca.txt", reservedInventoryCa );
+
 			//var multiCountryService = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 			//var multiCountryInventory = multiCountryService.GetFbaMultiCountryInventory();
 			//this.SaveToFile( "FbaMultiCountryInventory.txt", multiCountryInventory );
+
 			//var fulfilledInventoryService = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 			//var fulfilledInventory = fulfilledInventoryService.GetFbaFulfilledInventory();
 			//this.SaveToFile( "FbaFulfilledInventory.txt", fulfilledInventory );
 
-			var inventoryUS = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived_US.txt" );
-			var inventoryCA = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived_CA.txt" );
+			//var apiInventoryServiceUS = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "US" ) );
+			//var apiInventoryUS = apiInventoryServiceUS.GetFbaInventory();
+			//this.SaveToFile( "FbaInventory_US.txt", apiInventoryUS );
+
+			//var apiInventoryServiceCA = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, new AmazonMarketplaces( "CA" ) );
+			//var apiInventoryCA = apiInventoryServiceCA.GetFbaInventory();
+			//this.SaveToFile( "FbaInventory_CA.txt", apiInventoryCA );
+
+			var manageInventoryUS = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived_US.txt" );
+			var manageInventoryCA = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived_CA.txt" );
 			var reservedInventoryUs = this.ReadFromFile< List< FbaReservedInventory > >( "FbaReservedInventory_Us.txt" );
 			var reservedInventoryCa = this.ReadFromFile< List< FbaReservedInventory > >( "FbaReservedInventory_Ca.txt" );
 			var multiCountryInventory = this.ReadFromFile< List< FbaMultiCountryInventory > >( "FbaMultiCountryInventory.txt" );
 			var fulfilledInventory = this.ReadFromFile< List< FbaFulfilledInventory > >( "FbaFulfilledInventory.txt" );
+			var apiInventoryUS = this.ReadFromFile< List< InventorySupply > >( "FbaInventory_US.txt" );
+			var apiInventoryCA = this.ReadFromFile< List< InventorySupply > >( "FbaInventory_CA.txt" );
 
-			var megaJoin = ( from marketplaceUs in inventoryUS
-				join marketplaceCa in inventoryCA on marketplaceUs.SKU equals marketplaceCa.SKU
-				join reservedUs in reservedInventoryUs on marketplaceUs.SKU equals reservedUs.SKU into reservedUs
-				join reservedCa in reservedInventoryCa on marketplaceUs.SKU equals reservedCa.SKU into reservedCa
-				join multiCountry in multiCountryInventory on marketplaceUs.SKU equals multiCountry.SKU into multiCountry
-				join fulfilled in fulfilledInventory on marketplaceUs.SKU equals fulfilled.SKU into fulfilled
+			var megaJoin = ( from manageUs in manageInventoryUS
+				join manageCa in manageInventoryCA on manageUs.SKU equals manageCa.SKU
+				//join manageCa in manageInventoryCA on manageUs.SKU equals manageCa.SKU into manageCa
+				join reservedUs in reservedInventoryUs on manageUs.SKU equals reservedUs.SKU into reservedUs
+				join reservedCa in reservedInventoryCa on manageUs.SKU equals reservedCa.SKU into reservedCa
+				join multiCountry in multiCountryInventory on manageUs.SKU equals multiCountry.SKU into multiCountry
+				join fulfilled in fulfilledInventory on manageUs.SKU equals fulfilled.SKU into fulfilled
+				join apiUs in apiInventoryUS on manageUs.SKU equals apiUs.SellerSKU into apiUs
+				join apiCa in apiInventoryCA on manageUs.SKU equals apiCa.SellerSKU into apiCa
+				//where manageUs.AfnUnsellableQuantity > 0
+				//where manageUs.AfnInboundWorkingQuantity > 0 && manageUs.AfnInboundShippedQuantity > 0 && manageUs.AfnInboundReceivingQuantity > 0
 				select new ReportsDiffModel
 				{
-					MarketplaceUs = marketplaceUs,
-					MarketplaceCa = marketplaceCa,
+					MarketplaceUs = manageUs,
+					MarketplaceCa = manageCa,
+					//MarketplaceCa = manageCa.FirstOrDefault(),
 					ReservedUs = reservedUs.FirstOrDefault(),
 					ReservedCa = reservedCa.FirstOrDefault(),
 					MultiCountry = multiCountry.ToList(),
 					Fulfilled = fulfilled.ToList(),
 					MultiCountryTotal = multiCountry.Sum( x2 => x2.QuantityForLocalFulfillment ),
 					FulfilledSellableTotal = fulfilled.Where( x2 => x2.WarehouseConditionCode == "SELLABLE" ).Sum( x2 => x2.QuantityAvailable ),
-					FulfilledUnsellableTotal = fulfilled.Where( x2 => x2.WarehouseConditionCode == "UNSELLABLE" ).Sum( x2 => x2.QuantityAvailable )
+					FulfilledUnsellableTotal = fulfilled.Where( x2 => x2.WarehouseConditionCode == "UNSELLABLE" ).Sum( x2 => x2.QuantityAvailable ),
+					ApiInventoryUs = apiUs.FirstOrDefault(),
+					ApiInventoryCa = apiCa.FirstOrDefault()
 				} ).ToList();
 
 			var diff = megaJoin.Where( x => x.MarketplaceUs.AfnTotalQuantity != x.MarketplaceCa.AfnTotalQuantity ||
@@ -244,6 +267,32 @@ namespace AmazonAccessTests.Tests
 			var diffCa = diff.Where( x => x.MarketplaceCa.AfnTotalQuantity > 0 ).ToList();
 			var diffUsCa = diff.Where( x => x.MarketplaceUs.AfnTotalQuantity > 0 && x.MarketplaceCa.AfnTotalQuantity > 0 ).ToList();
 			this.SaveToFile( "ReportsDiff.txt", diffUsCa );
+
+			var diffUsCaShort = diffUsCa.Select( x => new ReportsDiffSummaryModel
+			{
+				SKU = x.MarketplaceUs.SKU,
+				FulfilledSellableTotal = x.FulfilledSellableTotal,
+				FulfilledUnsellableTotal = x.FulfilledUnsellableTotal,
+				MultiCountryUs = x.MultiCountry?.Where( x2 => x2.CountryCode == AmazonCountryCodeEnum.Us ).Sum( x2 => x2.QuantityForLocalFulfillment ) ?? 0,
+				MultiCountryCa = x.MultiCountry?.Where( x2 => x2.CountryCode == AmazonCountryCodeEnum.Ca ).Sum( x2 => x2.QuantityForLocalFulfillment ) ?? 0,
+				ManageInventoryUs = new FbaManageInventoryMain( x.MarketplaceUs ),
+				ManageInventoryCa = new FbaManageInventoryMain( x.MarketplaceCa ),
+				ApiInventoryUs = new InventorySupplyMain( x.ApiInventoryUs ),
+				ApiInventoryCa = new InventorySupplyMain( x.ApiInventoryCa ),
+				ReservedUs = new FbaReservedInventoryMain( x.ReservedUs ),
+				ReservedCa = new FbaReservedInventoryMain( x.ReservedCa )
+			} ).ToList();
+			this.SaveToFile( "ReportsDiffShort.txt", diffUsCaShort );
+
+			var diffUsCaShort2 = diffUsCa.Select( x => new ReportsDiffSummaryModel2
+			{
+				SKU = x.MarketplaceUs.SKU,
+				ReportsInventoryUs = new FbaReportsItemSummary( x.MarketplaceUs, x.ReservedUs ),
+				ReportsInventoryCa = new FbaReportsItemSummary( x.MarketplaceCa, x.ReservedCa ),
+				ApiInventoryUs = new InventorySupplyMain( x.ApiInventoryUs ),
+				ApiInventoryCa = new InventorySupplyMain( x.ApiInventoryCa )
+			} ).ToList();
+			this.SaveToFile( "ReportsDiffShort2.txt", diffUsCaShort2 );
 		}
 
 		#region Misc
@@ -272,16 +321,165 @@ namespace AmazonAccessTests.Tests
 		#endregion
 	}
 
+	#region reports models	
+
 	public class ReportsDiffModel
 	{
 		public FbaManageInventory MarketplaceUs{ get; set; }
 		public FbaManageInventory MarketplaceCa{ get; set; }
 		public FbaReservedInventory ReservedUs{ get; set; }
 		public FbaReservedInventory ReservedCa{ get; set; }
-		public List< FbaMultiCountryInventory > MultiCountry{ get; set; }
-		public List<FbaFulfilledInventory> Fulfilled{ get; set; }
 		public int MultiCountryTotal{ get; set; }
+		public List< FbaMultiCountryInventory > MultiCountry{ get; set; }
 		public int FulfilledSellableTotal{ get; set; }
 		public int FulfilledUnsellableTotal{ get; set; }
+		public List< FbaFulfilledInventory > Fulfilled{ get; set; }
+		public InventorySupply ApiInventoryUs{ get; set; }
+		public InventorySupply ApiInventoryCa{ get; set; }
 	}
+
+	public class ReportsDiffSummaryModel
+	{
+		public string SKU{ get; set; }
+		public int FulfilledSellableTotal{ get; set; }
+		public int FulfilledUnsellableTotal{ get; set; }
+		public int MultiCountryUs{ get; set; }
+		public int MultiCountryCa{ get; set; }
+		public FbaManageInventoryMain ManageInventoryUs{ get; set; }
+		public FbaManageInventoryMain ManageInventoryCa{ get; set; }
+		public InventorySupplyMain ApiInventoryUs{ get; set; }
+		public InventorySupplyMain ApiInventoryCa{ get; set; }
+		public FbaReservedInventoryMain ReservedUs{ get; set; }
+		public FbaReservedInventoryMain ReservedCa{ get; set; }
+	}
+
+	public class ReportsDiffSummaryModel2
+	{
+		public string SKU{ get; set; }
+		public FbaReportsItemSummary ReportsInventoryUs{ get; set; }
+		public FbaReportsItemSummary ReportsInventoryCa{ get; set; }
+		public InventorySupplyMain ApiInventoryUs{ get; set; }
+		public InventorySupplyMain ApiInventoryCa{ get; set; }
+	}
+
+	public class FbaManageInventoryMain
+	{
+		public int MfnFulfillable{ get; set; }
+		public int AfnWarehouse{ get; set; }
+		public int AfnFulfillable{ get; set; }
+		public int AfnUnsellable{ get; set; }
+		public int AfnReserved{ get; set; }
+		public int AfnTotal{ get; set; }
+		public int AfnInboundWorking{ get; set; }
+		public int AfnInboundShipped{ get; set; }
+		public int AfnInboundReceiving{ get; set; }
+
+		public FbaManageInventoryMain()
+		{
+		}
+
+		public FbaManageInventoryMain( FbaManageInventory fbaManageInventory )
+		{
+			if( fbaManageInventory == null )
+				return;
+			this.MfnFulfillable = fbaManageInventory.MfnFulfillableQuantity;
+			this.AfnWarehouse = fbaManageInventory.AfnWarehouseQuantity;
+			this.AfnFulfillable = fbaManageInventory.AfnFulfillableQuantity;
+			this.AfnUnsellable = fbaManageInventory.AfnUnsellableQuantity;
+			this.AfnReserved = fbaManageInventory.AfnReservedQuantity;
+			this.AfnTotal = fbaManageInventory.AfnTotalQuantity;
+			this.AfnInboundWorking = fbaManageInventory.AfnInboundWorkingQuantity;
+			this.AfnInboundShipped = fbaManageInventory.AfnInboundShippedQuantity;
+			this.AfnInboundReceiving = fbaManageInventory.AfnInboundReceivingQuantity;
+		}
+	}
+
+	public class FbaReservedInventoryMain
+	{
+		public int ReservedQty{ get; set; }
+		public int ReservedCustomerOrders{ get; set; }
+		public int ReservedFcTransfers{ get; set; }
+		public int ReservedFcProcessing{ get; set; }
+
+		public FbaReservedInventoryMain()
+		{
+		}
+
+		public FbaReservedInventoryMain( FbaReservedInventory fbaReservedInventory )
+		{
+			if( fbaReservedInventory == null )
+				return;
+			this.ReservedQty = fbaReservedInventory.ReservedQty;
+			this.ReservedCustomerOrders = fbaReservedInventory.ReservedCustomerOrders;
+			this.ReservedFcTransfers = fbaReservedInventory.ReservedFcTransfers;
+			this.ReservedFcProcessing = fbaReservedInventory.ReservedFcProcessing;
+		}
+	}
+
+	public class InventorySupplyMain
+	{
+		public decimal Total{ get; set; }
+		public decimal InStock{ get; set; }
+		public decimal Inbound{ get; set; }
+		public decimal Transfer{ get; set; }
+
+		public InventorySupplyMain()
+		{
+		}
+
+		public InventorySupplyMain( InventorySupply inventorySupply )
+		{
+			if( inventorySupply == null )
+				return;
+			this.Total = inventorySupply.TotalSupplyQuantity;
+			this.InStock = inventorySupply.InStockSupplyQuantity;
+			this.Inbound = inventorySupply.SupplyDetail.member.Where( x => x.SupplyType == "Inbound" ).Sum( x => x.Quantity );
+			this.Transfer = inventorySupply.SupplyDetail.member.Where( x => x.SupplyType == "Transfer" ).Sum( x => x.Quantity );
+		}
+	}
+
+	public class FbaReportsItemSummary
+	{
+		public int MfnFulfillable{ get; set; }
+		public int AfnTotal{ get; set; }
+		public int AfnWarehouse{ get; set; }
+		public int AfnFulfillable{ get; set; }
+		public int AfnUnsellable{ get; set; }
+		public int AfnReservedTotal{ get; set; }
+		public int AfnReservedCustomerOrders{ get; set; }
+		public int AfnReservedFcTransfers{ get; set; }
+		public int AfnReservedFcProcessing{ get; set; }
+		public int AfnInboundTotal{ get; set; }
+		public int AfnInboundWorking{ get; set; }
+		public int AfnInboundShipped{ get; set; }
+		public int AfnInboundReceiving{ get; set; }
+
+		public FbaReportsItemSummary()
+		{
+		}
+
+		public FbaReportsItemSummary( FbaManageInventory fbaManageInventory, FbaReservedInventory fbaReservedInventory )
+		{
+			if( fbaManageInventory != null )
+			{
+				this.MfnFulfillable = fbaManageInventory.MfnFulfillableQuantity;
+				this.AfnWarehouse = fbaManageInventory.AfnWarehouseQuantity;
+				this.AfnFulfillable = fbaManageInventory.AfnFulfillableQuantity;
+				this.AfnUnsellable = fbaManageInventory.AfnUnsellableQuantity;
+				this.AfnReservedTotal = fbaManageInventory.AfnReservedQuantity;
+				this.AfnTotal = fbaManageInventory.AfnTotalQuantity;
+				this.AfnInboundWorking = fbaManageInventory.AfnInboundWorkingQuantity;
+				this.AfnInboundShipped = fbaManageInventory.AfnInboundShippedQuantity;
+				this.AfnInboundReceiving = fbaManageInventory.AfnInboundReceivingQuantity;
+				this.AfnInboundTotal = this.AfnInboundWorking + this.AfnInboundShipped + this.AfnInboundReceiving;
+			}
+			if( fbaReservedInventory != null )
+			{
+				this.AfnReservedCustomerOrders = fbaReservedInventory.ReservedCustomerOrders;
+				this.AfnReservedFcTransfers = fbaReservedInventory.ReservedFcTransfers;
+				this.AfnReservedFcProcessing = fbaReservedInventory.ReservedFcProcessing;
+			}
+		}
+	}
+	#endregion
 }

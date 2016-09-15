@@ -20,7 +20,7 @@ namespace AmazonAccess.Services.FeedsReports.ReportModel
 		public string Condition{ get; set; }
 
 		[ CsvColumn( Name = "your-price", FieldIndex = 6 ) ]
-		public decimal YourPrice{ get; set; }
+		public string YourPrice{ get; set; }
 
 		[ CsvColumn( Name = "mfn-listing-exists", FieldIndex = 7 ) ]
 		public string MfnListingExists{ get; set; }
@@ -47,7 +47,7 @@ namespace AmazonAccess.Services.FeedsReports.ReportModel
 		public int AfnTotalQuantity{ get; set; }
 
 		[ CsvColumn( Name = "per-unit-volume", FieldIndex = 15 ) ]
-		public decimal PerUnitVolume{ get; set; }
+		public string PerUnitVolume{ get; set; }
 
 		[ CsvColumn( Name = "afn-inbound-working-quantity", FieldIndex = 16 ) ]
 		public int AfnInboundWorkingQuantity{ get; set; }
