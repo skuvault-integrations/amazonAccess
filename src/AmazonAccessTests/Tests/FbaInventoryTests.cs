@@ -269,7 +269,7 @@ namespace AmazonAccessTests.Tests
 			var diffUs = diff.Where( x => x.ManageInventoryUs.AfnTotalQuantity > 0 ).ToList();
 			var diffCa = diff.Where( x => x.ManageInventoryCa.AfnTotalQuantity > 0 ).ToList();
 			var diffUsCa = diff.Where( x => x.ManageInventoryUs.AfnTotalQuantity > 0 && x.ManageInventoryCa.AfnTotalQuantity > 0 ).ToList();
-			this.SaveToFile( "ReportsDiff.txt", megaJoin );
+			this.SaveToFile( "ReportsDiff.txt", diffUsCa );
 
 			var diffUsCaShort = diffUsCa.Select( x => new ReportsDiffSummaryModel
 			{
