@@ -35,7 +35,7 @@ namespace AmazonAccess.Services.FbaInventory.Model
 		{
 		}
 
-		public FBAInventoryServiceMWSException( string message, HttpStatusCode statusCode, ResponseHeaderMetadata rhmd )
+		public FBAInventoryServiceMWSException( string message, HttpStatusCode statusCode, MwsResponseHeaderMetadata rhmd )
 			: base( ( int )statusCode, message, null, null, null, rhmd )
 		{
 		}
@@ -65,21 +65,9 @@ namespace AmazonAccess.Services.FbaInventory.Model
 		}
 
 		public FBAInventoryServiceMWSException( string message, HttpStatusCode statusCode, string errorCode,
-			string errorType, string requestId, string xml, ResponseHeaderMetadata rhmd )
+			string errorType, string requestId, string xml, MwsResponseHeaderMetadata rhmd )
 			: base( ( int )statusCode, message, errorCode, errorType, xml, rhmd )
 		{
-		}
-
-		public new ResponseHeaderMetadata ResponseHeaderMetadata
-		{
-			get
-			{
-				MwsResponseHeaderMetadata baseRHMD = base.ResponseHeaderMetadata;
-				if( baseRHMD != null )
-					return new ResponseHeaderMetadata( baseRHMD );
-				else
-					return null;
-			}
 		}
 	}
 }

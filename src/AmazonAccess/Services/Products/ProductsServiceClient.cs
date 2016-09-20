@@ -141,7 +141,7 @@ namespace AmazonAccess.Services.Products
 
 			public void SetResponseHeaderMetadata( IMwsObject response, MwsResponseHeaderMetadata rhmd )
 			{
-				( ( IMWSResponse )response ).ResponseHeaderMetadata = new ResponseHeaderMetadata( rhmd );
+				( ( IMwsResponse )response ).ResponseHeaderMetadata = rhmd;
 			}
 		}
 	}

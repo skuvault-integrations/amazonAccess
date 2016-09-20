@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -180,54 +181,48 @@ namespace AmazonAccess.Services.Common
 		private static MwsResponseHeaderMetadata GetResponseHeaderMetadata( HttpWebResponse httpResponse )
 		{
 			var requestId = httpResponse.GetResponseHeader( "x-mws-request-id" );
-			var timestamp = httpResponse.GetResponseHeader( "x-mws-timestamp" );
-			var contextStr = httpResponse.GetResponseHeader( "x-mws-response-context" );
-			var context = new List< string >( contextStr.Split( ',' ) );
+			var context = httpResponse.GetResponseHeader( "x-mws-response-context" );
+			var timestamp = TryGetResponseHeaderForStruct( httpResponse, "x-mws-timestamp", MwsUtil.ParseTimestamp );
 
-			double? quotaMax;
+			var quotaMax = TryGetResponseHeaderForStruct( httpResponse, "x-mws-quota-max", x => decimal.Parse( x, CultureInfo.InvariantCulture ) );
+			var quotaRemaining = TryGetResponseHeaderForStruct( httpResponse, "x-mws-quota-remaining", x => decimal.Parse( x, CultureInfo.InvariantCulture ) );
+			var quotaResetsAt = TryGetResponseHeaderForStruct( httpResponse, "x-mws-quota-resetsOn", MwsUtil.ParseTimestamp );
+
+			var aAmzDate = TryGetResponseHeaderForStruct( httpResponse, "x-amz-Date", MwsUtil.ParseTimestamp );
+			var date = TryGetResponseHeaderForStruct( httpResponse, "date", MwsUtil.ParseTimestamp );
+			var connection = TryGetResponseHeaderForClass( httpResponse, "connection", x => x );
+			var contentLength = TryGetResponseHeaderForClass( httpResponse, "content-length", x => x );
+			var contentType = TryGetResponseHeaderForClass( httpResponse, "content-type", x => x );
+			var contentMD5 = TryGetResponseHeaderForClass( httpResponse, "Content-MD5", x => x );
+
+			return new MwsResponseHeaderMetadata( requestId, context, timestamp, quotaMax, quotaRemaining, quotaResetsAt,
+				aAmzDate, date, connection, contentLength, contentType, contentMD5 );
+		}
+
+		private static T TryGetResponseHeaderForClass< T >( HttpWebResponse httpResponse, string headerName, Func< string, T > convertFunc ) where T : class
+		{
 			try
 			{
-				string quotaMaxStr = httpResponse.GetResponseHeader( "x-mws-quota-max" );
-				quotaMax = Double.Parse( quotaMaxStr );
+				var headerValue = httpResponse.GetResponseHeader( headerName );
+				return convertFunc( headerValue );
 			}
 			catch( Exception )
 			{
-				quotaMax = null;
+				return null;
 			}
+		}
 
-			double? quotaRemaining;
+		private static T? TryGetResponseHeaderForStruct< T >( HttpWebResponse httpResponse, string headerName, Func< string, T > convertFunc ) where T : struct
+		{
 			try
 			{
-				string quotaRemainingStr = httpResponse.GetResponseHeader( "x-mws-quota-remaining" );
-				quotaRemaining = Double.Parse( quotaRemainingStr );
+				var headerValue = httpResponse.GetResponseHeader( headerName );
+				return convertFunc( headerValue );
 			}
 			catch( Exception )
 			{
-				quotaRemaining = null;
+				return null;
 			}
-
-			DateTime? quotaResetsAt;
-			try
-			{
-				string quotaResetsAtStr = httpResponse.GetResponseHeader( "x-mws-quota-resetsOn" );
-				quotaResetsAt = MwsUtil.ParseTimestamp( quotaResetsAtStr );
-			}
-			catch( Exception )
-			{
-				quotaResetsAt = null;
-			}
-
-			string contentMD5;
-			try
-			{
-				contentMD5 = httpResponse.GetResponseHeader( "Content-MD5" );
-			}
-			catch( Exception )
-			{
-				contentMD5 = null;
-			}
-
-			return new MwsResponseHeaderMetadata( requestId, context, timestamp, quotaMax, quotaRemaining, quotaResetsAt, contentMD5 );
 		}
 
 		/// <summary>

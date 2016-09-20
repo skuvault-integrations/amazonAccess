@@ -21,7 +21,7 @@ namespace AmazonAccess.Services.Products.Model
 {
 	[ XmlType( Namespace = "http://mws.amazonservices.com/schema/Products/2011-10-01" ) ]
 	[ XmlRoot( Namespace = "http://mws.amazonservices.com/schema/Products/2011-10-01", IsNullable = false ) ]
-	public class ListMatchingProductsResponse: AbstractMwsObject, IMWSResponse
+	public class ListMatchingProductsResponse: AbstractMwsObject, IMwsResponse
 	{
 		/// <summary>
 		/// Gets and sets the ListMatchingProductsResult property.
@@ -79,14 +79,14 @@ namespace AmazonAccess.Services.Products.Model
 		/// Gets and sets the ResponseHeaderMetadata property.
 		/// </summary>
 		[ XmlElement( ElementName = "ResponseHeaderMetadata" ) ]
-		public ResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
+		public MwsResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
 
 		/// <summary>
 		/// Sets the ResponseHeaderMetadata property.
 		/// </summary>
 		/// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
 		/// <returns>this instance.</returns>
-		public ListMatchingProductsResponse WithResponseHeaderMetadata( ResponseHeaderMetadata responseHeaderMetadata )
+		public ListMatchingProductsResponse WithResponseHeaderMetadata( MwsResponseHeaderMetadata responseHeaderMetadata )
 		{
 			this.ResponseHeaderMetadata = responseHeaderMetadata;
 			return this;

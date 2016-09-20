@@ -5,21 +5,13 @@ namespace AmazonAccess.Services.Sellers.Model
 {
 	[ XmlType( Namespace = "https://mws.amazonservices.com/Sellers/2011-07-01" ) ]
 	[ XmlRoot( Namespace = "https://mws.amazonservices.com/Sellers/2011-07-01", IsNullable = false ) ]
-	public class GetAuthTokenResponse: AbstractMwsObject, IMWSResponse
+	public class GetAuthTokenResponse: AbstractMwsObject, IMwsResponse
 	{
-		private GetAuthTokenResult _getAuthTokenResult;
-		private ResponseMetadata _responseMetadata;
-		private ResponseHeaderMetadata _responseHeaderMetadata;
-
 		/// <summary>
 		/// Gets and sets the GetServiceStatusResult property.
 		/// </summary>
 		[ XmlElement( ElementName = "GetAuthTokenResponse" ) ]
-		public GetAuthTokenResult GetAuthTokenResult
-		{
-			get { return this._getAuthTokenResult; }
-			set { this._getAuthTokenResult = value; }
-		}
+		public GetAuthTokenResult GetAuthTokenResult{ get; set; }
 
 		/// <summary>
 		/// Sets the GetAuthTokenResult property.
@@ -28,7 +20,7 @@ namespace AmazonAccess.Services.Sellers.Model
 		/// <returns>this instance.</returns>
 		public GetAuthTokenResponse WithGetServiceStatusResult( GetAuthTokenResult getAuthTokenResult )
 		{
-			this._getAuthTokenResult = getAuthTokenResult;
+			this.GetAuthTokenResult = getAuthTokenResult;
 			return this;
 		}
 
@@ -38,18 +30,14 @@ namespace AmazonAccess.Services.Sellers.Model
 		/// <returns>true if GetAuthTokenResult property is set.</returns>
 		public bool IsSetGetAuthTokenResult()
 		{
-			return this._getAuthTokenResult != null;
+			return this.GetAuthTokenResult != null;
 		}
 
 		/// <summary>
 		/// Gets and sets the ResponseMetadata property.
 		/// </summary>
 		[ XmlElement( ElementName = "ResponseMetadata" ) ]
-		public ResponseMetadata ResponseMetadata
-		{
-			get { return this._responseMetadata; }
-			set { this._responseMetadata = value; }
-		}
+		public ResponseMetadata ResponseMetadata{ get; set; }
 
 		/// <summary>
 		/// Sets the ResponseMetadata property.
@@ -58,7 +46,7 @@ namespace AmazonAccess.Services.Sellers.Model
 		/// <returns>this instance.</returns>
 		public GetAuthTokenResponse WithResponseMetadata( ResponseMetadata responseMetadata )
 		{
-			this._responseMetadata = responseMetadata;
+			this.ResponseMetadata = responseMetadata;
 			return this;
 		}
 
@@ -68,27 +56,23 @@ namespace AmazonAccess.Services.Sellers.Model
 		/// <returns>true if ResponseMetadata property is set.</returns>
 		public bool IsSetResponseMetadata()
 		{
-			return this._responseMetadata != null;
+			return this.ResponseMetadata != null;
 		}
 
 		/// <summary>
 		/// Gets and sets the ResponseHeaderMetadata property.
 		/// </summary>
 		[ XmlElement( ElementName = "ResponseHeaderMetadata" ) ]
-		public ResponseHeaderMetadata ResponseHeaderMetadata
-		{
-			get { return this._responseHeaderMetadata; }
-			set { this._responseHeaderMetadata = value; }
-		}
+		public MwsResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
 
 		/// <summary>
 		/// Sets the ResponseHeaderMetadata property.
 		/// </summary>
 		/// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
 		/// <returns>this instance.</returns>
-		public GetAuthTokenResponse WithResponseHeaderMetadata( ResponseHeaderMetadata responseHeaderMetadata )
+		public GetAuthTokenResponse WithResponseHeaderMetadata( MwsResponseHeaderMetadata responseHeaderMetadata )
 		{
-			this._responseHeaderMetadata = responseHeaderMetadata;
+			this.ResponseHeaderMetadata = responseHeaderMetadata;
 			return this;
 		}
 
@@ -98,20 +82,19 @@ namespace AmazonAccess.Services.Sellers.Model
 		/// <returns>true if ResponseHeaderMetadata property is set.</returns>
 		public bool IsSetResponseHeaderMetadata()
 		{
-			return this._responseHeaderMetadata != null;
+			return this.ResponseHeaderMetadata != null;
 		}
-
 
 		public override void ReadFragmentFrom( IMwsReader reader )
 		{
-			this._getAuthTokenResult = reader.Read< GetAuthTokenResult >( "GetAuthTokenResult" );
-			this._responseMetadata = reader.Read< ResponseMetadata >( "ResponseMetadata" );
+			this.GetAuthTokenResult = reader.Read< GetAuthTokenResult >( "GetAuthTokenResult" );
+			this.ResponseMetadata = reader.Read< ResponseMetadata >( "ResponseMetadata" );
 		}
 
 		public override void WriteFragmentTo( IMwsWriter writer )
 		{
-			writer.Write( "GetAuthTokenResult", this._getAuthTokenResult );
-			writer.Write( "ResponseMetadata", this._responseMetadata );
+			writer.Write( "GetAuthTokenResult", this.GetAuthTokenResult );
+			writer.Write( "ResponseMetadata", this.ResponseMetadata );
 		}
 
 		public override void WriteTo( IMwsWriter writer )

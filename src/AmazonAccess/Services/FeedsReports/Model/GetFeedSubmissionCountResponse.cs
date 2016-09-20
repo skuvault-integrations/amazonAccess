@@ -23,7 +23,7 @@ namespace AmazonAccess.Services.FeedsReports.Model
 {
 	[ XmlType( Namespace = "http://mws.amazonaws.com/doc/2009-01-01/" ) ]
 	[ XmlRoot( Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false ) ]
-	public class GetFeedSubmissionCountResponse: AbstractMwsObject, IMWSResponse
+	public class GetFeedSubmissionCountResponse: AbstractMwsObject, IMwsResponse
 	{
 		/// <summary>
 		/// Gets and sets the GetFeedSubmissionCountResult property.
@@ -92,6 +92,6 @@ namespace AmazonAccess.Services.FeedsReports.Model
 			throw new NotImplementedException();
 		}
 
-		public ResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
+		public MwsResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
 	}
 }

@@ -23,7 +23,7 @@ namespace AmazonAccess.Services.FeedsReports.Model
 {
 	[ XmlType( Namespace = "http://mws.amazonaws.com/doc/2009-01-01/" ) ]
 	[ XmlRoot( Namespace = "http://mws.amazonaws.com/doc/2009-01-01/", IsNullable = false ) ]
-	public class GetReportRequestListByNextTokenResponse: AbstractMwsObject, IMWSResponse
+	public class GetReportRequestListByNextTokenResponse: AbstractMwsObject, IMwsResponse
 	{
 		/// <summary>
 		/// Gets and sets the GetReportRequestListByNextTokenResult property.
@@ -92,6 +92,6 @@ namespace AmazonAccess.Services.FeedsReports.Model
 			throw new NotImplementedException();
 		}
 
-		public ResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
+		public MwsResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
 	}
 }

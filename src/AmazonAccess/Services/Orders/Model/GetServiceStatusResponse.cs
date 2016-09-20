@@ -18,7 +18,7 @@ using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.Orders.Model
 {
-	public class GetServiceStatusResponse: AbstractMwsObject, IMWSResponse
+	public class GetServiceStatusResponse: AbstractMwsObject, IMwsResponse
 	{
 		/// <summary>
 		/// Gets and sets the GetServiceStatusResult property.
@@ -73,14 +73,14 @@ namespace AmazonAccess.Services.Orders.Model
 		/// <summary>
 		/// Gets and sets the ResponseHeaderMetadata property.
 		/// </summary>
-		public ResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
+		public MwsResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
 
 		/// <summary>
 		/// Sets the ResponseHeaderMetadata property.
 		/// </summary>
 		/// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
 		/// <returns>this instance.</returns>
-		public GetServiceStatusResponse WithResponseHeaderMetadata( ResponseHeaderMetadata responseHeaderMetadata )
+		public GetServiceStatusResponse WithResponseHeaderMetadata( MwsResponseHeaderMetadata responseHeaderMetadata )
 		{
 			this.ResponseHeaderMetadata = responseHeaderMetadata;
 			return this;

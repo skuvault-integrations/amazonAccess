@@ -16,8 +16,8 @@ using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.Orders.Model
 {
-	public interface IMWSResponse: IMwsObject
+	public interface IMwsResponse: IMwsObject
 	{
-		ResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
+		MwsResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
 	}
 }

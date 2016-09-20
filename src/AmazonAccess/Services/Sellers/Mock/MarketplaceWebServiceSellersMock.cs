@@ -22,7 +22,6 @@ using AmazonAccess.Services.Sellers.Model;
 
 namespace AmazonAccess.Services.Sellers.Mock
 {
-
 	/// <summary>
 	/// MarketplaceWebServiceSellersMock is the implementation of MarketplaceWebServiceSellers based
 	/// on the pre-populated set of XML files that serve local data. It simulates
@@ -35,7 +34,6 @@ namespace AmazonAccess.Services.Sellers.Mock
 	/// </remarks>
 	public class MarketplaceWebServiceSellersMock: ISellersServiceClient
 	{
-
 		public GetServiceStatusResponse GetServiceStatus( GetServiceStatusRequest request, string marker )
 		{
 			return this.newResponse< GetServiceStatusResponse >();
@@ -56,7 +54,7 @@ namespace AmazonAccess.Services.Sellers.Mock
 			return null;
 		}
 
-		private T newResponse< T >() where T : IMWSResponse
+		private T newResponse< T >() where T : IMwsResponse
 		{
 			Stream xmlIn = null;
 			try
@@ -68,7 +66,7 @@ namespace AmazonAccess.Services.Sellers.Mock
 				MwsXmlReader reader = new MwsXmlReader( xmlStr );
 				T obj = ( T )Activator.CreateInstance( typeof( T ) );
 				obj.ReadFragmentFrom( reader );
-				obj.ResponseHeaderMetadata = new ResponseHeaderMetadata( "mockRequestId", "A,B,C", "mockTimestamp", 0d, 0d, new DateTime(), null );
+				obj.ResponseHeaderMetadata = new MwsResponseHeaderMetadata( "mockRequestId", "A,B,C", DateTime.UtcNow );
 				return obj;
 			}
 			catch( Exception e )
@@ -78,9 +76,7 @@ namespace AmazonAccess.Services.Sellers.Mock
 			finally
 			{
 				if( xmlIn != null )
-				{
 					xmlIn.Close();
-				}
 			}
 		}
 	}

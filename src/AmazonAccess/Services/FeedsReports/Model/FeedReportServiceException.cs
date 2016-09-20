@@ -36,7 +36,7 @@ namespace AmazonAccess.Services.FeedsReports.Model
 		{
 		}
 
-		public FeedReportServiceException( string message, HttpStatusCode statusCode, ResponseHeaderMetadata rhmd )
+		public FeedReportServiceException( string message, HttpStatusCode statusCode, MwsResponseHeaderMetadata rhmd )
 			: base( ( int )statusCode, message, null, null, null, rhmd )
 		{
 		}
@@ -52,7 +52,7 @@ namespace AmazonAccess.Services.FeedsReports.Model
 		}
 
 		public FeedReportServiceException( string message, HttpStatusCode statusCode, string errorCode,
-			string errorType, string requestId, string xml, ResponseHeaderMetadata rhmd )
+			string errorType, string requestId, string xml, MwsResponseHeaderMetadata rhmd )
 			: base( ( int )statusCode, message, errorCode, errorType, xml, rhmd )
 		{
 		}
@@ -73,18 +73,6 @@ namespace AmazonAccess.Services.FeedsReports.Model
 			string errorType, string requestId, string xml, Exception cause )
 			: base( ( int )statusCode, message, errorCode, errorType, xml, null, cause )
 		{
-		}
-
-		public new ResponseHeaderMetadata ResponseHeaderMetadata
-		{
-			get
-			{
-				MwsResponseHeaderMetadata baseRHMD = base.ResponseHeaderMetadata;
-				if( baseRHMD != null )
-					return new ResponseHeaderMetadata( baseRHMD );
-				else
-					return null;
-			}
 		}
 	}
 }

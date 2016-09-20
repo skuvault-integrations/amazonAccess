@@ -80,7 +80,7 @@
     <Compile Include="Services\FbaInventory\Model\GetServiceStatusRequest.cs" />
     <Compile Include="Services\FbaInventory\Model\GetServiceStatusResponse.cs" />
     <Compile Include="Services\FbaInventory\Model\GetServiceStatusResult.cs" />
-    <Compile Include="Services\FbaInventory\Model\IMWSResponse.cs" />
+    <Compile Include="Services\FbaInventory\Model\IMwsResponse.cs" />
     <Compile Include="Services\FbaInventory\Model\InventorySupply.cs" />
     <Compile Include="Services\FbaInventory\Model\InventorySupplyDetail.cs" />
     <Compile Include="Services\FbaInventory\Model\InventorySupplyDetailList.cs" />
@@ -91,7 +91,6 @@
     <Compile Include="Services\FbaInventory\Model\ListInventorySupplyRequest.cs" />
     <Compile Include="Services\FbaInventory\Model\ListInventorySupplyResponse.cs" />
     <Compile Include="Services\FbaInventory\Model\ListInventorySupplyResult.cs" />
-    <Compile Include="Services\FbaInventory\Model\ResponseHeaderMetadata.cs" />
     <Compile Include="Services\FbaInventory\Model\ResponseMetadata.cs" />
     <Compile Include="Services\FbaInventory\Model\SellerSkuList.cs" />
     <Compile Include="Services\FbaInventory\Model\Timepoint.cs" />
@@ -106,7 +105,7 @@
     <Compile Include="Services\FeedsReports\Model\FeedReportServiceException.cs" />
     <Compile Include="Services\FeedsReports\Mock\MarketplaceWebServiceMock.cs" />
     <Compile Include="Services\FeedsReports\Model\AmazonInventoryItem.cs" />
-    <Compile Include="Services\FeedsReports\Model\IMWSResponse.cs" />
+    <Compile Include="Services\FeedsReports\Model\IMwsResponse.cs" />
     <Compile Include="Services\FeedsReports\ReportModel\FbaReservedInventory.cs" />
     <Compile Include="Services\FeedsReports\ReportModel\FbaFulfilledInventory.cs" />
     <Compile Include="Services\FeedsReports\ReportModel\FbaMultiCountryInventory.cs" />
@@ -187,7 +186,6 @@
     <Compile Include="Services\FeedsReports\Model\RequestReportRequest.cs" />
     <Compile Include="Services\FeedsReports\Model\RequestReportResponse.cs" />
     <Compile Include="Services\FeedsReports\Model\RequestReportResult.cs" />
-    <Compile Include="Services\FeedsReports\Model\ResponseHeaderMetadata.cs" />
     <Compile Include="Services\FeedsReports\Model\ResponseMetadata.cs" />
     <Compile Include="Services\FeedsReports\Model\StatusList.cs" />
     <Compile Include="Services\FeedsReports\Model\SubmitFeedRequest.cs" />
@@ -213,7 +211,7 @@
     <Compile Include="Services\Orders\Model\GetServiceStatusRequest.cs" />
     <Compile Include="Services\Orders\Model\GetServiceStatusResponse.cs" />
     <Compile Include="Services\Orders\Model\GetServiceStatusResult.cs" />
-    <Compile Include="Services\Orders\Model\IMWSResponse.cs" />
+    <Compile Include="Services\Orders\Model\IMwsResponse.cs" />
     <Compile Include="Services\Orders\Model\InvoiceData.cs" />
     <Compile Include="Services\Orders\Model\ListOrderItemsByNextTokenRequest.cs" />
     <Compile Include="Services\Orders\Model\ListOrderItemsByNextTokenResponse.cs" />
@@ -233,7 +231,6 @@
     <Compile Include="Services\Orders\Model\OrderItem.cs" />
     <Compile Include="Services\Orders\Model\PaymentExecutionDetailItem.cs" />
     <Compile Include="Services\Orders\Model\PointsGrantedDetail.cs" />
-    <Compile Include="Services\Orders\Model\ResponseHeaderMetadata.cs" />
     <Compile Include="Services\Orders\Model\ResponseMetadata.cs" />
     <Compile Include="Services\Orders\OrderItemsService.cs" />
     <Compile Include="Services\Orders\OrdersByIdService.cs" />
@@ -306,7 +303,7 @@
     <Compile Include="Services\Products\Model\GetServiceStatusResult.cs" />
     <Compile Include="Services\Products\Model\IdentifierType.cs" />
     <Compile Include="Services\Products\Model\IdListType.cs" />
-    <Compile Include="Services\Products\Model\IMWSResponse.cs" />
+    <Compile Include="Services\Products\Model\IMwsResponse.cs" />
     <Compile Include="Services\Products\Model\ListMatchingProductsRequest.cs" />
     <Compile Include="Services\Products\Model\ListMatchingProductsResponse.cs" />
     <Compile Include="Services\Products\Model\ListMatchingProductsResult.cs" />
@@ -330,7 +327,6 @@
     <Compile Include="Services\Products\Model\ProductsUtil.cs" />
     <Compile Include="Services\Products\Model\QualifiersType.cs" />
     <Compile Include="Services\Products\Model\RelationshipList.cs" />
-    <Compile Include="Services\Products\Model\ResponseHeaderMetadata.cs" />
     <Compile Include="Services\Products\Model\ResponseMetadata.cs" />
     <Compile Include="Services\Products\Model\SalesRankList.cs" />
     <Compile Include="Services\Products\Model\SalesRankType.cs" />
@@ -355,7 +351,7 @@
     <Compile Include="Services\Sellers\Model\GetServiceStatusResponse.cs" />
     <Compile Include="Services\Sellers\Model\GetServiceStatusResult.cs" />
     <Compile Include="Services\Sellers\Model\HasSellerSuspendedListingsEnum.cs" />
-    <Compile Include="Services\Sellers\Model\IMWSResponse.cs" />
+    <Compile Include="Services\Sellers\Model\IMwsResponse.cs" />
     <Compile Include="Services\Sellers\Model\ListMarketplaceParticipationsByNextTokenRequest.cs" />
     <Compile Include="Services\Sellers\Model\ListMarketplaceParticipationsByNextTokenResponse.cs" />
     <Compile Include="Services\Sellers\Model\ListMarketplaceParticipationsByNextTokenResult.cs" />
@@ -368,7 +364,6 @@
     <Compile Include="Services\Sellers\Model\Message.cs" />
     <Compile Include="Services\Sellers\Model\MessageList.cs" />
     <Compile Include="Services\Sellers\Model\Participation.cs" />
-    <Compile Include="Services\Sellers\Model\ResponseHeaderMetadata.cs" />
     <Compile Include="Services\Sellers\Model\ResponseMetadata.cs" />
     <Compile Include="Services\Sellers\Model\ServiceStatusEnum.cs" />
     <Compile Include="Services\Sellers\SellerMarketplaceService.cs" />

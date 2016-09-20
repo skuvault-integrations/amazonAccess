@@ -104,7 +104,7 @@ namespace AmazonAccess.Services.Products.Mock
 			return this.newResponse< ListMatchingProductsResponse >();
 		}
 
-		private T newResponse< T >() where T : IMWSResponse
+		private T newResponse< T >() where T : IMwsResponse
 		{
 			Stream xmlIn = null;
 			try
@@ -116,7 +116,7 @@ namespace AmazonAccess.Services.Products.Mock
 				MwsXmlReader reader = new MwsXmlReader( xmlStr );
 				T obj = ( T )Activator.CreateInstance( typeof( T ) );
 				obj.ReadFragmentFrom( reader );
-				obj.ResponseHeaderMetadata = new ResponseHeaderMetadata( "mockRequestId", "A,B,C", "mockTimestamp", 0d, 0d, new DateTime(), null );
+				obj.ResponseHeaderMetadata = new MwsResponseHeaderMetadata( "mockRequestId", "A,B,C", DateTime.UtcNow );
 				return obj;
 			}
 			catch( Exception e )

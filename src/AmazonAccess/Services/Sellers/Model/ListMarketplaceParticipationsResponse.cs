@@ -19,125 +19,107 @@ using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.Sellers.Model
 {
-    [XmlType(Namespace = "https://mws.amazonservices.com/Sellers/2011-07-01")]
-    [XmlRoot(Namespace = "https://mws.amazonservices.com/Sellers/2011-07-01", IsNullable = false)]
-    public class ListMarketplaceParticipationsResponse : AbstractMwsObject, IMWSResponse
-    {
+	[ XmlType( Namespace = "https://mws.amazonservices.com/Sellers/2011-07-01" ) ]
+	[ XmlRoot( Namespace = "https://mws.amazonservices.com/Sellers/2011-07-01", IsNullable = false ) ]
+	public class ListMarketplaceParticipationsResponse: AbstractMwsObject, IMwsResponse
+	{
+		/// <summary>
+		/// Gets and sets the ListMarketplaceParticipationsResult property.
+		/// </summary>
+		[ XmlElement( ElementName = "ListMarketplaceParticipationsResult" ) ]
+		public ListMarketplaceParticipationsResult ListMarketplaceParticipationsResult{ get; set; }
 
-        private ListMarketplaceParticipationsResult _listMarketplaceParticipationsResult;
-        private ResponseMetadata _responseMetadata;
-        private ResponseHeaderMetadata _responseHeaderMetadata;
+		/// <summary>
+		/// Sets the ListMarketplaceParticipationsResult property.
+		/// </summary>
+		/// <param name="listMarketplaceParticipationsResult">ListMarketplaceParticipationsResult property.</param>
+		/// <returns>this instance.</returns>
+		public ListMarketplaceParticipationsResponse WithListMarketplaceParticipationsResult( ListMarketplaceParticipationsResult listMarketplaceParticipationsResult )
+		{
+			this.ListMarketplaceParticipationsResult = listMarketplaceParticipationsResult;
+			return this;
+		}
 
-        /// <summary>
-        /// Gets and sets the ListMarketplaceParticipationsResult property.
-        /// </summary>
-        [XmlElement(ElementName = "ListMarketplaceParticipationsResult")]
-        public ListMarketplaceParticipationsResult ListMarketplaceParticipationsResult
-        {
-            get { return this._listMarketplaceParticipationsResult; }
-            set { this._listMarketplaceParticipationsResult = value; }
-        }
+		/// <summary>
+		/// Checks if ListMarketplaceParticipationsResult property is set.
+		/// </summary>
+		/// <returns>true if ListMarketplaceParticipationsResult property is set.</returns>
+		public bool IsSetListMarketplaceParticipationsResult()
+		{
+			return this.ListMarketplaceParticipationsResult != null;
+		}
 
-        /// <summary>
-        /// Sets the ListMarketplaceParticipationsResult property.
-        /// </summary>
-        /// <param name="listMarketplaceParticipationsResult">ListMarketplaceParticipationsResult property.</param>
-        /// <returns>this instance.</returns>
-        public ListMarketplaceParticipationsResponse WithListMarketplaceParticipationsResult(ListMarketplaceParticipationsResult listMarketplaceParticipationsResult)
-        {
-            this._listMarketplaceParticipationsResult = listMarketplaceParticipationsResult;
-            return this;
-        }
+		/// <summary>
+		/// Gets and sets the ResponseMetadata property.
+		/// </summary>
+		[ XmlElement( ElementName = "ResponseMetadata" ) ]
+		public ResponseMetadata ResponseMetadata{ get; set; }
 
-        /// <summary>
-        /// Checks if ListMarketplaceParticipationsResult property is set.
-        /// </summary>
-        /// <returns>true if ListMarketplaceParticipationsResult property is set.</returns>
-        public bool IsSetListMarketplaceParticipationsResult()
-        {
-            return this._listMarketplaceParticipationsResult != null;
-        }
+		/// <summary>
+		/// Sets the ResponseMetadata property.
+		/// </summary>
+		/// <param name="responseMetadata">ResponseMetadata property.</param>
+		/// <returns>this instance.</returns>
+		public ListMarketplaceParticipationsResponse WithResponseMetadata( ResponseMetadata responseMetadata )
+		{
+			this.ResponseMetadata = responseMetadata;
+			return this;
+		}
 
-        /// <summary>
-        /// Gets and sets the ResponseMetadata property.
-        /// </summary>
-        [XmlElement(ElementName = "ResponseMetadata")]
-        public ResponseMetadata ResponseMetadata
-        {
-            get { return this._responseMetadata; }
-            set { this._responseMetadata = value; }
-        }
+		/// <summary>
+		/// Checks if ResponseMetadata property is set.
+		/// </summary>
+		/// <returns>true if ResponseMetadata property is set.</returns>
+		public bool IsSetResponseMetadata()
+		{
+			return this.ResponseMetadata != null;
+		}
 
-        /// <summary>
-        /// Sets the ResponseMetadata property.
-        /// </summary>
-        /// <param name="responseMetadata">ResponseMetadata property.</param>
-        /// <returns>this instance.</returns>
-        public ListMarketplaceParticipationsResponse WithResponseMetadata(ResponseMetadata responseMetadata)
-        {
-            this._responseMetadata = responseMetadata;
-            return this;
-        }
+		/// <summary>
+		/// Gets and sets the ResponseHeaderMetadata property.
+		/// </summary>
+		[ XmlElement( ElementName = "ResponseHeaderMetadata" ) ]
+		public MwsResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
 
-        /// <summary>
-        /// Checks if ResponseMetadata property is set.
-        /// </summary>
-        /// <returns>true if ResponseMetadata property is set.</returns>
-        public bool IsSetResponseMetadata()
-        {
-            return this._responseMetadata != null;
-        }
+		/// <summary>
+		/// Sets the ResponseHeaderMetadata property.
+		/// </summary>
+		/// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
+		/// <returns>this instance.</returns>
+		public ListMarketplaceParticipationsResponse WithResponseHeaderMetadata( MwsResponseHeaderMetadata responseHeaderMetadata )
+		{
+			this.ResponseHeaderMetadata = responseHeaderMetadata;
+			return this;
+		}
 
-        /// <summary>
-        /// Gets and sets the ResponseHeaderMetadata property.
-        /// </summary>
-        [XmlElement(ElementName = "ResponseHeaderMetadata")]
-        public ResponseHeaderMetadata ResponseHeaderMetadata
-        {
-            get { return this._responseHeaderMetadata; }
-            set { this._responseHeaderMetadata = value; }
-        }
+		/// <summary>
+		/// Checks if ResponseHeaderMetadata property is set.
+		/// </summary>
+		/// <returns>true if ResponseHeaderMetadata property is set.</returns>
+		public bool IsSetResponseHeaderMetadata()
+		{
+			return this.ResponseHeaderMetadata != null;
+		}
 
-        /// <summary>
-        /// Sets the ResponseHeaderMetadata property.
-        /// </summary>
-        /// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
-        /// <returns>this instance.</returns>
-        public ListMarketplaceParticipationsResponse WithResponseHeaderMetadata(ResponseHeaderMetadata responseHeaderMetadata)
-        {
-            this._responseHeaderMetadata = responseHeaderMetadata;
-            return this;
-        }
+		public override void ReadFragmentFrom( IMwsReader reader )
+		{
+			this.ListMarketplaceParticipationsResult = reader.Read< ListMarketplaceParticipationsResult >( "ListMarketplaceParticipationsResult" );
+			this.ResponseMetadata = reader.Read< ResponseMetadata >( "ResponseMetadata" );
+		}
 
-        /// <summary>
-        /// Checks if ResponseHeaderMetadata property is set.
-        /// </summary>
-        /// <returns>true if ResponseHeaderMetadata property is set.</returns>
-        public bool IsSetResponseHeaderMetadata()
-        {
-            return this._responseHeaderMetadata != null;
-        }
+		public override void WriteFragmentTo( IMwsWriter writer )
+		{
+			writer.Write( "ListMarketplaceParticipationsResult", this.ListMarketplaceParticipationsResult );
+			writer.Write( "ResponseMetadata", this.ResponseMetadata );
+		}
 
+		public override void WriteTo( IMwsWriter writer )
+		{
+			writer.Write( "https://mws.amazonservices.com/Sellers/2011-07-01", "ListMarketplaceParticipationsResponse", this );
+		}
 
-        public override void ReadFragmentFrom(IMwsReader reader)
-        {
-            this._listMarketplaceParticipationsResult = reader.Read<ListMarketplaceParticipationsResult>("ListMarketplaceParticipationsResult");
-            this._responseMetadata = reader.Read<ResponseMetadata>("ResponseMetadata");
-        }
-
-        public override void WriteFragmentTo(IMwsWriter writer)
-        {
-            writer.Write("ListMarketplaceParticipationsResult", this._listMarketplaceParticipationsResult);
-            writer.Write("ResponseMetadata", this._responseMetadata);
-        }
-
-        public override void WriteTo(IMwsWriter writer)
-        {
-            writer.Write("https://mws.amazonservices.com/Sellers/2011-07-01", "ListMarketplaceParticipationsResponse", this);
-        }
-
-        public ListMarketplaceParticipationsResponse() : base()
-        {
-        }
-    }
+		public ListMarketplaceParticipationsResponse(): base()
+		{
+		}
+	}
 }

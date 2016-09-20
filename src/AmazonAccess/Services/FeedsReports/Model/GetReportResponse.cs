@@ -20,7 +20,7 @@ using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.FeedsReports.Model
 {
-	public class GetReportResponse: AbstractMwsObject, IMWSResponse
+	public class GetReportResponse: AbstractMwsObject, IMwsResponse
 	{
 		/// <summary>
 		/// Gets and sets the GetReportResult property.
@@ -92,6 +92,6 @@ namespace AmazonAccess.Services.FeedsReports.Model
 			writer.Write( "http://mws.amazonaws.com/doc/2009-01-01/", "GetReportResponse", this );
 		}
 
-		public ResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
+		public MwsResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
 	}
 }

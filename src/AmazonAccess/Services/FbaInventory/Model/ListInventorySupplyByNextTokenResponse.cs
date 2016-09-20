@@ -21,7 +21,7 @@ namespace AmazonAccess.Services.FbaInventory.Model
 {
 	[ XmlType( Namespace = "http://mws.amazonaws.com/FulfillmentInventory/2010-10-01/" ) ]
 	[ XmlRoot( Namespace = "http://mws.amazonaws.com/FulfillmentInventory/2010-10-01/", IsNullable = false ) ]
-	public class ListInventorySupplyByNextTokenResponse: AbstractMwsObject, IMWSResponse
+	public class ListInventorySupplyByNextTokenResponse: AbstractMwsObject, IMwsResponse
 	{
 		/// <summary>
 		/// Gets and sets the ListInventorySupplyByNextTokenResult property.
@@ -79,14 +79,14 @@ namespace AmazonAccess.Services.FbaInventory.Model
 		/// Gets and sets the ResponseHeaderMetadata property.
 		/// </summary>
 		[ XmlElement( ElementName = "ResponseHeaderMetadata" ) ]
-		public ResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
+		public MwsResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
 
 		/// <summary>
 		/// Sets the ResponseHeaderMetadata property.
 		/// </summary>
 		/// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
 		/// <returns>this instance.</returns>
-		public ListInventorySupplyByNextTokenResponse WithResponseHeaderMetadata( ResponseHeaderMetadata responseHeaderMetadata )
+		public ListInventorySupplyByNextTokenResponse WithResponseHeaderMetadata( MwsResponseHeaderMetadata responseHeaderMetadata )
 		{
 			this.ResponseHeaderMetadata = responseHeaderMetadata;
 			return this;

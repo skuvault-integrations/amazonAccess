@@ -19,125 +19,107 @@ using AmazonAccess.Services.Common;
 
 namespace AmazonAccess.Services.Sellers.Model
 {
-    [XmlType(Namespace = "https://mws.amazonservices.com/Sellers/2011-07-01")]
-    [XmlRoot(Namespace = "https://mws.amazonservices.com/Sellers/2011-07-01", IsNullable = false)]
-    public class GetServiceStatusResponse : AbstractMwsObject, IMWSResponse
-    {
+	[ XmlType( Namespace = "https://mws.amazonservices.com/Sellers/2011-07-01" ) ]
+	[ XmlRoot( Namespace = "https://mws.amazonservices.com/Sellers/2011-07-01", IsNullable = false ) ]
+	public class GetServiceStatusResponse: AbstractMwsObject, IMwsResponse
+	{
+		/// <summary>
+		/// Gets and sets the GetServiceStatusResult property.
+		/// </summary>
+		[ XmlElement( ElementName = "GetServiceStatusResult" ) ]
+		public GetServiceStatusResult GetServiceStatusResult{ get; set; }
 
-        private GetServiceStatusResult _getServiceStatusResult;
-        private ResponseMetadata _responseMetadata;
-        private ResponseHeaderMetadata _responseHeaderMetadata;
+		/// <summary>
+		/// Sets the GetServiceStatusResult property.
+		/// </summary>
+		/// <param name="getServiceStatusResult">GetServiceStatusResult property.</param>
+		/// <returns>this instance.</returns>
+		public GetServiceStatusResponse WithGetServiceStatusResult( GetServiceStatusResult getServiceStatusResult )
+		{
+			this.GetServiceStatusResult = getServiceStatusResult;
+			return this;
+		}
 
-        /// <summary>
-        /// Gets and sets the GetServiceStatusResult property.
-        /// </summary>
-        [XmlElement(ElementName = "GetServiceStatusResult")]
-        public GetServiceStatusResult GetServiceStatusResult
-        {
-            get { return this._getServiceStatusResult; }
-            set { this._getServiceStatusResult = value; }
-        }
+		/// <summary>
+		/// Checks if GetServiceStatusResult property is set.
+		/// </summary>
+		/// <returns>true if GetServiceStatusResult property is set.</returns>
+		public bool IsSetGetServiceStatusResult()
+		{
+			return this.GetServiceStatusResult != null;
+		}
 
-        /// <summary>
-        /// Sets the GetServiceStatusResult property.
-        /// </summary>
-        /// <param name="getServiceStatusResult">GetServiceStatusResult property.</param>
-        /// <returns>this instance.</returns>
-        public GetServiceStatusResponse WithGetServiceStatusResult(GetServiceStatusResult getServiceStatusResult)
-        {
-            this._getServiceStatusResult = getServiceStatusResult;
-            return this;
-        }
+		/// <summary>
+		/// Gets and sets the ResponseMetadata property.
+		/// </summary>
+		[ XmlElement( ElementName = "ResponseMetadata" ) ]
+		public ResponseMetadata ResponseMetadata{ get; set; }
 
-        /// <summary>
-        /// Checks if GetServiceStatusResult property is set.
-        /// </summary>
-        /// <returns>true if GetServiceStatusResult property is set.</returns>
-        public bool IsSetGetServiceStatusResult()
-        {
-            return this._getServiceStatusResult != null;
-        }
+		/// <summary>
+		/// Sets the ResponseMetadata property.
+		/// </summary>
+		/// <param name="responseMetadata">ResponseMetadata property.</param>
+		/// <returns>this instance.</returns>
+		public GetServiceStatusResponse WithResponseMetadata( ResponseMetadata responseMetadata )
+		{
+			this.ResponseMetadata = responseMetadata;
+			return this;
+		}
 
-        /// <summary>
-        /// Gets and sets the ResponseMetadata property.
-        /// </summary>
-        [XmlElement(ElementName = "ResponseMetadata")]
-        public ResponseMetadata ResponseMetadata
-        {
-            get { return this._responseMetadata; }
-            set { this._responseMetadata = value; }
-        }
+		/// <summary>
+		/// Checks if ResponseMetadata property is set.
+		/// </summary>
+		/// <returns>true if ResponseMetadata property is set.</returns>
+		public bool IsSetResponseMetadata()
+		{
+			return this.ResponseMetadata != null;
+		}
 
-        /// <summary>
-        /// Sets the ResponseMetadata property.
-        /// </summary>
-        /// <param name="responseMetadata">ResponseMetadata property.</param>
-        /// <returns>this instance.</returns>
-        public GetServiceStatusResponse WithResponseMetadata(ResponseMetadata responseMetadata)
-        {
-            this._responseMetadata = responseMetadata;
-            return this;
-        }
+		/// <summary>
+		/// Gets and sets the ResponseHeaderMetadata property.
+		/// </summary>
+		[ XmlElement( ElementName = "ResponseHeaderMetadata" ) ]
+		public MwsResponseHeaderMetadata ResponseHeaderMetadata{ get; set; }
 
-        /// <summary>
-        /// Checks if ResponseMetadata property is set.
-        /// </summary>
-        /// <returns>true if ResponseMetadata property is set.</returns>
-        public bool IsSetResponseMetadata()
-        {
-            return this._responseMetadata != null;
-        }
+		/// <summary>
+		/// Sets the ResponseHeaderMetadata property.
+		/// </summary>
+		/// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
+		/// <returns>this instance.</returns>
+		public GetServiceStatusResponse WithResponseHeaderMetadata( MwsResponseHeaderMetadata responseHeaderMetadata )
+		{
+			this.ResponseHeaderMetadata = responseHeaderMetadata;
+			return this;
+		}
 
-        /// <summary>
-        /// Gets and sets the ResponseHeaderMetadata property.
-        /// </summary>
-        [XmlElement(ElementName = "ResponseHeaderMetadata")]
-        public ResponseHeaderMetadata ResponseHeaderMetadata
-        {
-            get { return this._responseHeaderMetadata; }
-            set { this._responseHeaderMetadata = value; }
-        }
+		/// <summary>
+		/// Checks if ResponseHeaderMetadata property is set.
+		/// </summary>
+		/// <returns>true if ResponseHeaderMetadata property is set.</returns>
+		public bool IsSetResponseHeaderMetadata()
+		{
+			return this.ResponseHeaderMetadata != null;
+		}
 
-        /// <summary>
-        /// Sets the ResponseHeaderMetadata property.
-        /// </summary>
-        /// <param name="responseHeaderMetadata">ResponseHeaderMetadata property.</param>
-        /// <returns>this instance.</returns>
-        public GetServiceStatusResponse WithResponseHeaderMetadata(ResponseHeaderMetadata responseHeaderMetadata)
-        {
-            this._responseHeaderMetadata = responseHeaderMetadata;
-            return this;
-        }
+		public override void ReadFragmentFrom( IMwsReader reader )
+		{
+			this.GetServiceStatusResult = reader.Read< GetServiceStatusResult >( "GetServiceStatusResult" );
+			this.ResponseMetadata = reader.Read< ResponseMetadata >( "ResponseMetadata" );
+		}
 
-        /// <summary>
-        /// Checks if ResponseHeaderMetadata property is set.
-        /// </summary>
-        /// <returns>true if ResponseHeaderMetadata property is set.</returns>
-        public bool IsSetResponseHeaderMetadata()
-        {
-            return this._responseHeaderMetadata != null;
-        }
+		public override void WriteFragmentTo( IMwsWriter writer )
+		{
+			writer.Write( "GetServiceStatusResult", this.GetServiceStatusResult );
+			writer.Write( "ResponseMetadata", this.ResponseMetadata );
+		}
 
+		public override void WriteTo( IMwsWriter writer )
+		{
+			writer.Write( "https://mws.amazonservices.com/Sellers/2011-07-01", "GetServiceStatusResponse", this );
+		}
 
-        public override void ReadFragmentFrom(IMwsReader reader)
-        {
-            this._getServiceStatusResult = reader.Read<GetServiceStatusResult>("GetServiceStatusResult");
-            this._responseMetadata = reader.Read<ResponseMetadata>("ResponseMetadata");
-        }
-
-        public override void WriteFragmentTo(IMwsWriter writer)
-        {
-            writer.Write("GetServiceStatusResult", this._getServiceStatusResult);
-            writer.Write("ResponseMetadata", this._responseMetadata);
-        }
-
-        public override void WriteTo(IMwsWriter writer)
-        {
-            writer.Write("https://mws.amazonservices.com/Sellers/2011-07-01", "GetServiceStatusResponse", this);
-        }
-
-        public GetServiceStatusResponse() : base()
-        {
-        }
-    }
+		public GetServiceStatusResponse(): base()
+		{
+		}
+	}
 }

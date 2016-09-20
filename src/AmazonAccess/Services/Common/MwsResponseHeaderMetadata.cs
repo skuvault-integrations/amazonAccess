@@ -24,7 +24,18 @@ namespace AmazonAccess.Services.Common
 	{
 		private readonly List< string > responseContext;
 
-		public MwsResponseHeaderMetadata( string requestId, List< string > responseContext, string timestamp, double? quotaMax, double? quotaRemaining, DateTime? quotaResetsAt, string contentMd5 )
+		public MwsResponseHeaderMetadata( string requestId,
+			List< string > responseContext,
+			DateTime? timestamp,
+			decimal? quotaMax,
+			decimal? quotaRemaining,
+			DateTime? quotaResetsAt,
+			DateTime? amzDate,
+			DateTime? date,
+			string connection,
+			string contentLength,
+			string contentType,
+			string contentMd5 )
 		{
 			this.RequestId = requestId;
 			this.Timestamp = timestamp;
@@ -34,26 +45,64 @@ namespace AmazonAccess.Services.Common
 			this.QuotaRemaining = quotaRemaining;
 			this.QuotaResetsAt = quotaResetsAt;
 
+			this.AmzDate = amzDate;
+			this.Date = date;
+			this.Connection = connection;
+			this.ContentLength = contentLength;
+			this.ContentType = contentType;
 			this.ContentMD5 = contentMd5;
 		}
 
-		public MwsResponseHeaderMetadata( string requestId, string responseContext, string timestamp, double? quotaMax, double? quotaRemaining, DateTime? quotaResetsAt, string contentMd5 )
-			: this( requestId, responseContext != null ? new List< string >( responseContext.Split( ',' ) ) : new List< string >(), timestamp, quotaMax, quotaRemaining, quotaResetsAt, contentMd5 )
+		public MwsResponseHeaderMetadata( string requestId,
+			string responseContext,
+			DateTime? timestamp,
+			decimal? quotaMax,
+			decimal? quotaRemaining,
+			DateTime? quotaResetsAt,
+			DateTime? amzDate,
+			DateTime? date,
+			string connection,
+			string contentLength,
+			string contentType,
+			string contentMd5 )
+			: this( requestId,
+				responseContext != null ? new List< string >( responseContext.Split( ',' ) ) : new List< string >(),
+				timestamp,
+				quotaMax,
+				quotaRemaining,
+				quotaResetsAt,
+				amzDate,
+				date,
+				connection,
+				contentLength,
+				contentType,
+				contentMd5 )
 		{
 		}
 
-		public MwsResponseHeaderMetadata( string requestId, List< string > responseContext, string timestamp )
-			: this( requestId, responseContext, timestamp, null, null, null, null )
+		public MwsResponseHeaderMetadata( string requestId, List< string > responseContext, DateTime? timestamp )
+			: this( requestId, responseContext, timestamp, null, null, null, null, null, null, null, null, null )
 		{
 		}
 
-		public MwsResponseHeaderMetadata( string requestId, string responseContext, string timestamp )
+		public MwsResponseHeaderMetadata( string requestId, string responseContext, DateTime? timestamp )
 			: this( requestId, responseContext != null ? new List< string >( responseContext.Split( ',' ) ) : new List< string >(), timestamp )
 		{
 		}
 
 		public MwsResponseHeaderMetadata( MwsResponseHeaderMetadata rhmd )
-			: this( rhmd.RequestId, rhmd.ResponseContext, rhmd.Timestamp, rhmd.QuotaMax, rhmd.QuotaRemaining, rhmd.QuotaResetsAt, rhmd.ContentMD5 )
+			: this( rhmd.RequestId,
+				rhmd.ResponseContext,
+				rhmd.Timestamp,
+				rhmd.QuotaMax,
+				rhmd.QuotaRemaining,
+				rhmd.QuotaResetsAt,
+				rhmd.AmzDate,
+				rhmd.Date,
+				rhmd.Connection,
+				rhmd.ContentLength,
+				rhmd.ContentType,
+				rhmd.ContentMD5 )
 		{
 		}
 
@@ -64,19 +113,19 @@ namespace AmazonAccess.Services.Common
 			get { return string.Join( ", ", this.responseContext.ToArray() ); }
 		}
 
-		public string Timestamp{ get; private set; }
+		public DateTime? Timestamp{ get; private set; }
 
 		/// <summary>
 		/// Gets the max quota allowed for a quota period 
 		/// (from the x-mws-quota-max header)
 		/// </summary>
-		public double? QuotaMax{ get; private set; }
+		public decimal? QuotaMax{ get; private set; }
 
 		/// <summary>
 		/// Gets the quota remaining within this quota period 
 		/// (from the x-mws-quota-remaining header)
 		/// </summary>
-		public double? QuotaRemaining{ get; private set; }
+		public decimal? QuotaRemaining{ get; private set; }
 
 		/// <summary>
 		/// Gets the time that this quota period ends
@@ -84,17 +133,27 @@ namespace AmazonAccess.Services.Common
 		/// </summary>
 		public DateTime? QuotaResetsAt{ get; private set; }
 
+		public DateTime? AmzDate{ get; private set; }
+		public DateTime? Date{ get; private set; }
+		public string Connection{ get; private set; }
+		public string ContentLength{ get; private set; }
+		public string ContentType{ get; private set; }
 		public string ContentMD5{ get; private set; }
 
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.Append( "requestId : " ).Append( this.RequestId ).Append( "\n" );
-			sb.Append( "responseContext : " ).Append( this.ResponseContext ).Append( "\n" );
-			sb.Append( "timestamp : " ).Append( this.Timestamp ).Append( "\n" );
-			sb.Append( "quotaMax : " ).Append( this.QuotaMax ).Append( "\n" );
-			sb.Append( "quotaRemaining : " ).Append( this.QuotaRemaining ).Append( "\n" );
-			sb.Append( "quotaResetsAt : " ).Append( this.QuotaResetsAt ).Append( "\n" );
+			sb.Append( "RequestId : " ).Append( this.RequestId ).Append( "\n" );
+			sb.Append( "ResponseContext : " ).Append( this.ResponseContext ).Append( "\n" );
+			sb.Append( "Timestamp : " ).Append( this.Timestamp?.ToUniversalTime() ).Append( "\n" );
+			sb.Append( "QuotaMax : " ).Append( this.QuotaMax ).Append( "\n" );
+			sb.Append( "QuotaRemaining : " ).Append( this.QuotaRemaining ).Append( "\n" );
+			sb.Append( "QuotaResetsAt : " ).Append( this.QuotaResetsAt?.ToUniversalTime() ).Append( "\n" );
+			sb.Append( "AmzDate : " ).Append( this.AmzDate?.ToUniversalTime() ).Append( "\n" );
+			sb.Append( "Date : " ).Append( this.Date?.ToUniversalTime() ).Append( "\n" );
+			sb.Append( "Connection : " ).Append( this.Connection ).Append( "\n" );
+			sb.Append( "ContentLength : " ).Append( this.ContentLength ).Append( "\n" );
+			sb.Append( "ContentType : " ).Append( this.ContentType ).Append( "\n" );
 			sb.Append( "ContentMD5 : " ).Append( this.ContentMD5 );
 			return sb.ToString();
 		}
