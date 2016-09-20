@@ -21,6 +21,12 @@ namespace AmazonAccess.Services.FeedsReports
 		private readonly Throttler _getReportListThrottler = new Throttler( 10, 61 );
 		private readonly Throttler _getReportListByNextTokenThrottler = new Throttler( 30, 3 );
 		private readonly Throttler _getReportThrottler = new Throttler( 15, 61 );
+		private const int GetNewReportIdRetryCount = 40;
+#if DEBUG
+		private readonly Func< int, int > GetNewReportIdRetryDelayFunc = i => 30;
+#else
+		private readonly Func< int, int > GetNewReportIdRetryDelayFunc = i => i < 2 ? 60 : 120;
+#endif
 
 		public ReportsService( IFeedsReportsServiceClient client, AmazonCredentials credentials )
 		{
@@ -148,9 +154,9 @@ namespace AmazonAccess.Services.FeedsReports
 				RequestedToDate = DateTime.UtcNow.ToUniversalTime()
 			};
 
-			for( var i = 0; i < 100; i++ )
+			for( var i = 0; i < GetNewReportIdRetryCount; i++ )
 			{
-				ActionPolicies.CreateApiDelay( 30 ).Wait();
+				ActionPolicies.CreateApiDelay( this.GetNewReportIdRetryDelayFunc( i ) ).Wait();
 
 				var response = ActionPolicies.Get.Get( () => this._getReportRequestListThrottler.Execute( () => this._client.GetReportRequestList( request, marker ) ) );
 				if( !response.IsSetGetReportRequestListResult() || !response.GetReportRequestListResult.IsSetReportRequestInfo() )
