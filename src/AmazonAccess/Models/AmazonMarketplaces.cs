@@ -37,7 +37,7 @@ namespace AmazonAccess.Models
 			this.Marketplaces.Add( marketplace );
 		}
 
-		public AmazonMarketplaces( List< AmazonMarketplace > marketplaces )
+		public AmazonMarketplaces( List< AmazonMarketplace > marketplaces, bool ignoreNonAmazonMarketplaces = false )
 		{
 			Condition.Requires( marketplaces, "marketplaces" ).IsNotNull().IsNotEmpty();
 			var regionsCount = marketplaces.GroupBy( x => x.RegionCode ).Count();
@@ -50,7 +50,7 @@ namespace AmazonAccess.Models
 			this.FbaInventoryServiceUrl = marketplace.FbaInventoryServiceUrl;
 			this.FeedsServiceUrl = marketplace.FeedsServiceUrl;
 			this.SellersServiceUrl = marketplace.SellersServiceUrl;
-			this.Marketplaces.AddRange( marketplaces );
+			this.Marketplaces.AddRange( ignoreNonAmazonMarketplaces ? marketplaces.Where( x => x.IsAmazonMarketplace ) : marketplaces );
 		}
 
 		public List< string > GetMarketplaceIdAsList()

@@ -39,7 +39,7 @@ namespace AmazonAccessTests.Tests
 		[ Test ]
 		public void GetProductsInventory()
 		{
-			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
+			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces( true ) );
 
 			var result = service.GetProductsInventory( true );
 

@@ -7,6 +7,7 @@ namespace AmazonAccess.Models
 	public sealed class AmazonMarketplace
 	{
 		public string MarketplaceId{ get; private set; }
+		public bool IsAmazonMarketplace{ get; private set; }
 		public string Endpoint{ get; private set; }
 		public string OrdersServiceUrl{ get; private set; }
 		public string ProductsServiceUrl{ get; private set; }
@@ -66,6 +67,7 @@ namespace AmazonAccess.Models
 		private void InitMarketplace( AmazonCountryCodeEnum countryCode, string marketplaceId )
 		{
 			this.CountryCode = countryCode;
+			this.IsAmazonMarketplace = true;
 			switch( countryCode )
 			{
 				case AmazonCountryCodeEnum.Ca:
@@ -131,8 +133,12 @@ namespace AmazonAccess.Models
 					throw new Exception( "Incorrect country code" );
 			}
 
-			if( !string.IsNullOrWhiteSpace( marketplaceId ) )
+			if( !string.IsNullOrWhiteSpace( marketplaceId ) && !this.MarketplaceId.Equals( marketplaceId, StringComparison.InvariantCultureIgnoreCase ) )
+			{
 				this.MarketplaceId = marketplaceId;
+				this.IsAmazonMarketplace = false;
+			}
+
 			this.OrdersServiceUrl = this.Endpoint + "/Orders/2013-09-01";
 			this.ProductsServiceUrl = this.Endpoint + "/Products/2011-10-01";
 			this.FbaInventoryServiceUrl = this.Endpoint + "/FulfillmentInventory/2010-10-01";
