@@ -122,7 +122,6 @@
     <Compile Include="Services\FeedsReports\Model\CancelReportRequestsRequest.cs" />
     <Compile Include="Services\FeedsReports\Model\CancelReportRequestsResponse.cs" />
     <Compile Include="Services\FeedsReports\Model\CancelReportRequestsResult.cs" />
-    <Compile Include="Services\FeedsReports\Model\ContentType.cs" />
     <Compile Include="Services\FeedsReports\Model\Error.cs" />
     <Compile Include="Services\FeedsReports\Model\ErrorResponse.cs" />
     <Compile Include="Services\FeedsReports\Model\FeedSubmissionInfo.cs" />
@@ -175,7 +174,6 @@
     <Compile Include="Services\FeedsReports\Model\ManageReportScheduleRequest.cs" />
     <Compile Include="Services\FeedsReports\Model\ManageReportScheduleResponse.cs" />
     <Compile Include="Services\FeedsReports\Model\ManageReportScheduleResult.cs" />
-    <Compile Include="Services\FeedsReports\Model\MediaType.cs" />
     <Compile Include="Services\FeedsReports\Model\Report.cs" />
     <Compile Include="Services\FeedsReports\Model\ReportInfo.cs" />
     <Compile Include="Services\FeedsReports\Model\ReportList.cs" />

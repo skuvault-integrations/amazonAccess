@@ -83,7 +83,7 @@ namespace AmazonAccess
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var products = service.GetReportWithCallForEachMarketplace< ProductInventory >( ReportType.InventoryReport,
+			var products = service.GetReportForEachMarketplaceAndJoin< ProductInventory >( ReportType.InventoryReport,
 				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), skipDuplicates, p => p.Sku, marker );
 
 			AmazonLogger.Trace( "GetProductsInventory", this._credentials.SellerId, marker, "End invoke" );
@@ -97,7 +97,7 @@ namespace AmazonAccess
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var products = service.GetReportByMarketplace< ProductInventory >( ReportType.InventoryReport,
+			var products = service.GetReportForEachMarketplace< ProductInventory >( ReportType.InventoryReport,
 				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), skipDuplicates, p => p.Sku, marker );
 
 			AmazonLogger.Trace( "GetProductsInventoryByMarketplace", this._credentials.SellerId, marker, "End invoke" );
@@ -116,7 +116,7 @@ namespace AmazonAccess
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			service.GetReportByMarketplace( ReportType.InventoryReport,
+			service.GetReportForEachMarketplace( ReportType.InventoryReport,
 				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), skipDuplicates, p => p.Sku, processReportAction, marker );
 
 			AmazonLogger.Trace( "GetProductsInventoryByMarketplace", this._credentials.SellerId, marker, "End invoke" );
@@ -129,7 +129,7 @@ namespace AmazonAccess
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var products = service.GetReportWithCallForEachMarketplace< ProductShort >( ReportType.ActiveListingsReport,
+			var products = service.GetReportForEachMarketplaceAndJoin< ProductShort >( ReportType.ActiveListingsReport,
 				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), skipDuplicates, p => p.SellerSku, marker );
 
 			AmazonLogger.Trace( "GetActiveProducts", this._credentials.SellerId, marker, "End invoke" );
@@ -143,7 +143,7 @@ namespace AmazonAccess
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var products = service.GetReportByMarketplace< ProductShort >( ReportType.ActiveListingsReport,
+			var products = service.GetReportForEachMarketplace< ProductShort >( ReportType.ActiveListingsReport,
 				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), skipDuplicates, p => p.SellerSku, marker );
 
 			AmazonLogger.Trace( "GetActiveProductsByMarketplace", this._credentials.SellerId, marker, "End invoke" );
@@ -162,7 +162,7 @@ namespace AmazonAccess
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			service.GetReportByMarketplace( ReportType.ActiveListingsReport,
+			service.GetReportForEachMarketplace( ReportType.ActiveListingsReport,
 				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), skipDuplicates, p => p.SellerSku, processReportAction, marker );
 
 			AmazonLogger.Trace( "GetActiveProductsByMarketplace", this._credentials.SellerId, marker, "End invoke" );
@@ -175,7 +175,7 @@ namespace AmazonAccess
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var products = service.GetReportWithCallForEachMarketplace< ProductShort >( ReportType.OpenListingsReport,
+			var products = service.GetReportForEachMarketplaceAndJoin< ProductShort >( ReportType.OpenListingsReport,
 				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), skipDuplicates, p => p.SellerSku, marker );
 
 			AmazonLogger.Trace( "GetOpenProducts", this._credentials.SellerId, marker, "End invoke" );
@@ -189,7 +189,7 @@ namespace AmazonAccess
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var products = service.GetReportByMarketplace< ProductShort >( ReportType.OpenListingsReport,
+			var products = service.GetReportForEachMarketplace< ProductShort >( ReportType.OpenListingsReport,
 				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), skipDuplicates, p => p.SellerSku, marker );
 
 			AmazonLogger.Trace( "GetOpenProductsByMarketplace", this._credentials.SellerId, marker, "End invoke" );
@@ -208,7 +208,7 @@ namespace AmazonAccess
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			service.GetReportByMarketplace( ReportType.OpenListingsReport,
+			service.GetReportForEachMarketplace( ReportType.OpenListingsReport,
 				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), skipDuplicates, p => p.SellerSku, processReportAction, marker );
 
 			AmazonLogger.Trace( "GetOpenProductsByMarketplace", this._credentials.SellerId, marker, "End invoke" );
@@ -261,7 +261,7 @@ namespace AmazonAccess
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
 			var reportType = includeArchived ? ReportType.FbaManageInventoryArchived : ReportType.FbaManageInventory;
-			var inventory = service.GetReportWithOneCallForAllMarketplaces< FbaManageInventory >( reportType, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
+			var inventory = service.GetReportForAllMarketplaces< FbaManageInventory >( reportType, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
 
 			AmazonLogger.Trace( operationName, this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();
@@ -274,7 +274,7 @@ namespace AmazonAccess
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var inventory = service.GetReportWithOneCallForAllMarketplaces< FbaMultiCountryInventory >( ReportType.FbaMultiCountryInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
+			var inventory = service.GetReportForAllMarketplaces< FbaMultiCountryInventory >( ReportType.FbaMultiCountryInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
 
 			AmazonLogger.Trace( "GetFbaMultiCountryInventory", this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();
@@ -287,7 +287,7 @@ namespace AmazonAccess
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var inventory = service.GetReportWithOneCallForAllMarketplaces< FbaFulfilledInventory >( ReportType.FbaFulfilledInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
+			var inventory = service.GetReportForAllMarketplaces< FbaFulfilledInventory >( ReportType.FbaFulfilledInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
 
 			AmazonLogger.Trace( "GetFbaFulfilledInventory", this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();
@@ -300,7 +300,7 @@ namespace AmazonAccess
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var inventory = service.GetReportWithOneCallForAllMarketplaces< FbaReservedInventory >( ReportType.FbaReservedInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
+			var inventory = service.GetReportForAllMarketplaces< FbaReservedInventory >( ReportType.FbaReservedInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
 
 			AmazonLogger.Trace( "GetFbaReservedInventory", this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();

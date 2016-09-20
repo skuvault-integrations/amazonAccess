@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -30,34 +31,34 @@ namespace AmazonAccess.Services.FeedsReports
 			this._credentials = credentials;
 		}
 
-		public IEnumerable< T > GetReportWithOneCallForAllMarketplaces< T >( ReportType reportType, DateTime startDate, DateTime endDate, string marker ) where T : class, new()
+		public IEnumerable< T > GetReportForAllMarketplaces< T >( ReportType reportType, DateTime startDate, DateTime endDate, string marker ) where T : class, new()
 		{
-			AmazonLogger.Trace( "GetReportWithOneCallForAllMarketplaces", this._credentials.SellerId, marker, "Begin invoke" );
+			AmazonLogger.Trace( "GetReportForAllMarketplaces", this._credentials.SellerId, marker, "Begin invoke" );
 
 			var report = this.GetReportForMarketplaces< T >( reportType, this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(), startDate, endDate, marker );
 
-			AmazonLogger.Trace( "GetReportWithOneCallForAllMarketplaces", this._credentials.SellerId, marker, "End invoke" );
+			AmazonLogger.Trace( "GetReportForAllMarketplaces", this._credentials.SellerId, marker, "End invoke" );
 			return report;
 		}
 
-		public List< T > GetReportWithCallForEachMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey, string marker ) where T : class, new()
+		public List< T > GetReportForEachMarketplaceAndJoin< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey, string marker ) where T : class, new()
 		{
 			var report = new List< T >();
-			this.GetReportByMarketplace( reportType, startDate, endDate, skipDuplicates, getKey, ( marketplace, portion ) => report.AddRange( portion ), marker );
+			this.GetReportForEachMarketplace( reportType, startDate, endDate, skipDuplicates, getKey, ( marketplace, portion ) => report.AddRange( portion ), marker );
 			return report;
 		}
 
-		public Dictionary< string, List< T > > GetReportByMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey, string marker ) where T : class, new()
+		public Dictionary< string, List< T > > GetReportForEachMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey, string marker ) where T : class, new()
 		{
 			var report = new Dictionary< string, List< T > >();
-			this.GetReportByMarketplace( reportType, startDate, endDate, skipDuplicates, getKey, ( marketplace, portion ) => report.Add( marketplace, portion ), marker );
+			this.GetReportForEachMarketplace( reportType, startDate, endDate, skipDuplicates, getKey, ( marketplace, portion ) => report.Add( marketplace, portion ), marker );
 			return report;
 		}
 
-		public void GetReportByMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey,
+		public void GetReportForEachMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey,
 			Action< string, T > processReportAction, string marker ) where T : class, new()
 		{
-			this.GetReportByMarketplace( reportType, startDate, endDate, skipDuplicates, getKey, ( marketplace, portion ) =>
+			this.GetReportForEachMarketplace( reportType, startDate, endDate, skipDuplicates, getKey, ( marketplace, portion ) =>
 			{
 				foreach( var p in portion )
 				{
@@ -66,7 +67,7 @@ namespace AmazonAccess.Services.FeedsReports
 			}, marker );
 		}
 
-		public void GetReportByMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey,
+		public void GetReportForEachMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey,
 			Action< string, List< T > > processReportAction, string marker ) where T : class, new()
 		{
 			AmazonLogger.Trace( "GetReportByMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
@@ -239,7 +240,7 @@ namespace AmazonAccess.Services.FeedsReports
 			using( var reader = new StreamReader( ms ) )
 			{
 				var cc = new CsvContext();
-				var report = cc.Read< T >( reader, new CsvFileDescription { FirstLineHasColumnNames = true, SeparatorChar = '\t', IgnoreUnknownColumns = true } );
+				var report = cc.Read< T >( reader, new CsvFileDescription { FirstLineHasColumnNames = true, SeparatorChar = '\t', IgnoreUnknownColumns = true, FileCultureInfo = CultureInfo.InvariantCulture } );
 				return report.ToList();
 			}
 		}

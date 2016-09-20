@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net.Mime;
 using System.Text;
 
 namespace AmazonAccess.Services.Common
@@ -49,7 +50,7 @@ namespace AmazonAccess.Services.Common
 			this.Date = date;
 			this.Connection = connection;
 			this.ContentLength = contentLength;
-			this.ContentType = contentType;
+			this.ContentType = string.IsNullOrEmpty( contentType ) ? new ContentType() : new ContentType( contentType.ToLower() );
 			this.ContentMD5 = contentMd5;
 		}
 
@@ -90,22 +91,6 @@ namespace AmazonAccess.Services.Common
 		{
 		}
 
-		public MwsResponseHeaderMetadata( MwsResponseHeaderMetadata rhmd )
-			: this( rhmd.RequestId,
-				rhmd.ResponseContext,
-				rhmd.Timestamp,
-				rhmd.QuotaMax,
-				rhmd.QuotaRemaining,
-				rhmd.QuotaResetsAt,
-				rhmd.AmzDate,
-				rhmd.Date,
-				rhmd.Connection,
-				rhmd.ContentLength,
-				rhmd.ContentType,
-				rhmd.ContentMD5 )
-		{
-		}
-
 		public string RequestId{ get; private set; }
 
 		public string ResponseContext
@@ -137,7 +122,7 @@ namespace AmazonAccess.Services.Common
 		public DateTime? Date{ get; private set; }
 		public string Connection{ get; private set; }
 		public string ContentLength{ get; private set; }
-		public string ContentType{ get; private set; }
+		public ContentType ContentType{ get; private set; }
 		public string ContentMD5{ get; private set; }
 
 		public override string ToString()

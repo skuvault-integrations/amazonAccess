@@ -17,6 +17,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
@@ -113,13 +114,14 @@ namespace AmazonAccess.Services.Common
 				if( statusCode != HttpStatusCode.OK )
 					throw new MwsException( ( int )statusCode, message, null, null, responseBody, this.ResponseHeaderMetadata );
 
-				try
+				switch( this.ResponseHeaderMetadata.ContentType.MediaType )
 				{
-					return new MwsXmlReader( responseBody );
-				}
-				catch( XmlException )
-				{
-					return new MwsStringReader( responseBody );
+					case "text/xml":
+						return new MwsXmlReader( responseBody );
+					case "text/plain":
+						return new MwsStringReader( responseBody );
+					default:
+						return new MwsXmlReader( responseBody );
 				}
 			}
 			catch( WebException we ) // Web exception is thrown on unsuccessful responses
