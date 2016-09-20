@@ -69,7 +69,7 @@ namespace AmazonAccess
 		#endregion
 
 		#region Products	
-		public Dictionary< string, List< string > > GetProductsBySkus( List< string > skus, bool skipDuplicates, Action< Product > processProductAction )
+		public Dictionary< AmazonMarketplace, List< string > > GetProductsBySkus( List< string > skus, bool skipDuplicates, Action< Product > processProductAction )
 		{
 			var client = this._factory.CreateProductsClient();
 			var service = new ProductsBySkuService( client, this._credentials );
@@ -90,7 +90,7 @@ namespace AmazonAccess
 			return products;
 		}
 
-		public Dictionary< string, List< ProductInventory > > GetProductsInventoryByMarketplace( bool skipDuplicates )
+		public Dictionary< AmazonMarketplace, List< ProductInventory > > GetProductsInventoryByMarketplace( bool skipDuplicates )
 		{
 			var marker = this.GetMarker();
 			AmazonLogger.Trace( "GetProductsInventoryByMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
@@ -109,7 +109,7 @@ namespace AmazonAccess
 		/// </summary>
 		/// <param name="skipDuplicates"></param>
 		/// <param name="processReportAction">Marketplace and Product</param>
-		public void GetProductsInventoryByMarketplace( bool skipDuplicates, Action< string, ProductInventory > processReportAction )
+		public void GetProductsInventoryByMarketplace( bool skipDuplicates, Action< AmazonMarketplace, ProductInventory > processReportAction )
 		{
 			var marker = this.GetMarker();
 			AmazonLogger.Trace( "GetProductsInventoryByMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
@@ -136,7 +136,7 @@ namespace AmazonAccess
 			return products;
 		}
 
-		public Dictionary< string, List< ProductShort > > GetActiveProductsByMarketplace( bool skipDuplicates )
+		public Dictionary< AmazonMarketplace, List< ProductShort > > GetActiveProductsByMarketplace( bool skipDuplicates )
 		{
 			var marker = this.GetMarker();
 			AmazonLogger.Trace( "GetActiveProductsByMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
@@ -155,7 +155,7 @@ namespace AmazonAccess
 		/// </summary>
 		/// <param name="skipDuplicates"></param>
 		/// <param name="processReportAction">Marketplace and Product</param>
-		public void GetActiveProductsByMarketplace( bool skipDuplicates, Action< string, ProductShort > processReportAction )
+		public void GetActiveProductsByMarketplace( bool skipDuplicates, Action< AmazonMarketplace, ProductShort > processReportAction )
 		{
 			var marker = this.GetMarker();
 			AmazonLogger.Trace( "GetActiveProductsByMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
@@ -182,7 +182,7 @@ namespace AmazonAccess
 			return products;
 		}
 
-		public Dictionary< string, List< ProductShort > > GetOpenProductsByMarketplace( bool skipDuplicates )
+		public Dictionary< AmazonMarketplace, List< ProductShort > > GetOpenProductsByMarketplace( bool skipDuplicates )
 		{
 			var marker = this.GetMarker();
 			AmazonLogger.Trace( "GetOpenProductsByMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
@@ -201,7 +201,7 @@ namespace AmazonAccess
 		/// </summary>
 		/// <param name="skipDuplicates"></param>
 		/// <param name="processReportAction">Marketplace and Product</param>
-		public void GetOpenProductsByMarketplace( bool skipDuplicates, Action< string, ProductShort > processReportAction )
+		public void GetOpenProductsByMarketplace( bool skipDuplicates, Action< AmazonMarketplace, ProductShort > processReportAction )
 		{
 			var marker = this.GetMarker();
 			AmazonLogger.Trace( "GetOpenProductsByMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
@@ -267,6 +267,47 @@ namespace AmazonAccess
 			return inventory.ToList();
 		}
 
+		public Dictionary< AmazonMarketplace, List< FbaManageInventory > > GetDetailedFbaInventoryByMarketplace( bool includeArchived = true )
+		{
+			var marker = this.GetMarker();
+			var operationName = includeArchived ? "GetDetailedFbaInventoryByMarketplaceArchived" : "GetDetailedFbaInventoryByMarketplace";
+			AmazonLogger.Trace( operationName, this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var reportType = includeArchived ? ReportType.FbaManageInventoryArchived : ReportType.FbaManageInventory;
+			var inventory = service.GetReportForEachMarketplace< FbaManageInventory >( reportType, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, false, x => x.SKU, marker );
+
+			AmazonLogger.Trace( operationName, this._credentials.SellerId, marker, "End invoke" );
+			return inventory;
+		}
+
+		public List< FbaReservedInventory > GetFbaReservedInventory()
+		{
+			var marker = this.GetMarker();
+			AmazonLogger.Trace( "GetFbaReservedInventory", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var inventory = service.GetReportForAllMarketplaces< FbaReservedInventory >( ReportType.FbaReservedInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
+
+			AmazonLogger.Trace( "GetFbaReservedInventory", this._credentials.SellerId, marker, "End invoke" );
+			return inventory.ToList();
+		}
+
+		public Dictionary< AmazonMarketplace, List< FbaReservedInventory > > GetFbaReservedInventoryByMarketplace()
+		{
+			var marker = this.GetMarker();
+			AmazonLogger.Trace( "GetFbaReservedInventoryByMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var inventory = service.GetReportForEachMarketplace< FbaReservedInventory >( ReportType.FbaReservedInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, false, x => x.SKU, marker );
+
+			AmazonLogger.Trace( "GetFbaReservedInventoryByMarketplace", this._credentials.SellerId, marker, "End invoke" );
+			return inventory;
+		}
+
 		public List< FbaMultiCountryInventory > GetFbaMultiCountryInventory()
 		{
 			var marker = this.GetMarker();
@@ -290,19 +331,6 @@ namespace AmazonAccess
 			var inventory = service.GetReportForAllMarketplaces< FbaFulfilledInventory >( ReportType.FbaFulfilledInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
 
 			AmazonLogger.Trace( "GetFbaFulfilledInventory", this._credentials.SellerId, marker, "End invoke" );
-			return inventory.ToList();
-		}
-
-		public List< FbaReservedInventory > GetFbaReservedInventory()
-		{
-			var marker = this.GetMarker();
-			AmazonLogger.Trace( "GetFbaReservedInventory", this._credentials.SellerId, marker, "Begin invoke" );
-
-			var client = this._factory.CreateFeedsReportsClient();
-			var service = new ReportsService( client, this._credentials );
-			var inventory = service.GetReportForAllMarketplaces< FbaReservedInventory >( ReportType.FbaReservedInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, marker );
-
-			AmazonLogger.Trace( "GetFbaReservedInventory", this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();
 		}
 		#endregion

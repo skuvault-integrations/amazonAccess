@@ -42,6 +42,8 @@ namespace AmazonAccess.Models
 			Condition.Requires( marketplaces, "marketplaces" ).IsNotNull().IsNotEmpty();
 			var regionsCount = marketplaces.GroupBy( x => x.RegionCode ).Count();
 			Condition.Requires( regionsCount, "marketplaces" ).IsEqualTo( 1, "Found marketplaces from different regions" );
+			var duplicates = marketplaces.GroupBy( x => x.MarketplaceId ).Any( x => x.Count() > 1 );
+			Condition.Requires( duplicates, "marketplaces" ).IsEqualTo( false, "Found duplicates of marketplaces" );
 
 			var marketplace = marketplaces.First();
 			this.RegionCode = marketplace.RegionCode;

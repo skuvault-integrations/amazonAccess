@@ -158,6 +158,35 @@ namespace AmazonAccessTests.Tests
 		}
 
 		[ Test ]
+		public void GetDetailedFbaInventoryByMarketplaceWithArchived()
+		{
+			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces( true ) );
+			var inventory = service.GetDetailedFbaInventoryByMarketplace();
+
+			inventory.Count.Should().BeGreaterThan( 0 );
+		}
+
+		[ Test ]
+		public void GetFbaReservedInventory()
+		{
+			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
+			var inventory = service.GetFbaReservedInventory();
+			this.SaveToFile( "FbaReservedInventory.txt", inventory );
+			//var inventory = this.ReadFromFile< List< FbaReservedInventory > >( "FbaReservedInventory.txt" );
+
+			inventory.Count.Should().BeGreaterThan( 0 );
+		}
+
+		[ Test ]
+		public void GetFbaReservedInventoryByMarketplace()
+		{
+			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces( true ) );
+			var inventory = service.GetFbaReservedInventoryByMarketplace();
+
+			inventory.Count.Should().BeGreaterThan( 0 );
+		}
+
+		[ Test ]
 		public void GetFbaMultiCountryInventory()
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
@@ -175,17 +204,6 @@ namespace AmazonAccessTests.Tests
 			var inventory = service.GetFbaFulfilledInventory();
 			this.SaveToFile( "FbaFulfilledInventory.txt", inventory );
 			//var inventory = this.ReadFromFile< List< FbaFulfilledInventory > >( "FbaFulfilledInventory.txt" );
-
-			inventory.Count.Should().BeGreaterThan( 0 );
-		}
-
-		[ Test ]
-		public void GetFbaReservedInventory()
-		{
-			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
-			var inventory = service.GetFbaReservedInventory();
-			this.SaveToFile( "FbaReservedInventory.txt", inventory );
-			//var inventory = this.ReadFromFile< List< FbaReservedInventory > >( "FbaReservedInventory.txt" );
 
 			inventory.Count.Should().BeGreaterThan( 0 );
 		}

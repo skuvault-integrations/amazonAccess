@@ -26,16 +26,15 @@ namespace AmazonAccess.Services.Products
 			this._credentials = credentials;
 		}
 
-		public Dictionary< string, List< string > > GetProductsBySkus( List< string > skus, bool skipDuplicates, Action< Product > processProductAction, string marker )
+		public Dictionary< AmazonMarketplace, List< string > > GetProductsBySkus( List< string > skus, bool skipDuplicates, Action< Product > processProductAction, string marker )
 		{
 			AmazonLogger.Trace( "GetProductsBySkus", this._credentials.SellerId, marker, "Begin invoke" );
 
 			var skusCopy = skus.ToList();
-			var result = new Dictionary< string, List< string > >();
-			var marketplaces = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList();
-			foreach( var marketplace in marketplaces )
+			var result = new Dictionary< AmazonMarketplace, List< string > >();
+			foreach( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
 			{
-				var receivedSkus = this.GetProductsBySkusForMarketplace( skusCopy, marketplace, processProductAction, marker );
+				var receivedSkus = this.GetProductsBySkusForMarketplace( skusCopy, marketplace.MarketplaceId, processProductAction, marker );
 				result.Add( marketplace, receivedSkus );
 				if( skipDuplicates )
 				{

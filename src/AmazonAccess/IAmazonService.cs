@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventory.Model;
 using AmazonAccess.Services.FeedsReports.Model;
 using AmazonAccess.Services.FeedsReports.ReportModel;
@@ -43,7 +44,7 @@ namespace AmazonAccess
 		/// <param name="skipDuplicates"></param>
 		/// <param name="processProductAction">Product</param>
 		/// <returns>Marketplace and Product SKUs</returns>
-		Dictionary< string, List< string > > GetProductsBySkus( List< string > skus, bool skipDuplicates, Action< Product > processProductAction );
+		Dictionary< AmazonMarketplace, List< string > > GetProductsBySkus( List< string > skus, bool skipDuplicates, Action< Product > processProductAction );
 
 		/// <summary>
 		/// Get Products Inventory
@@ -57,14 +58,14 @@ namespace AmazonAccess
 		/// </summary>
 		/// <param name="skipDuplicates"></param>
 		/// <returns>Marketplace and Products</returns>
-		Dictionary< string, List< ProductInventory > > GetProductsInventoryByMarketplace( bool skipDuplicates );
+		Dictionary< AmazonMarketplace, List< ProductInventory > > GetProductsInventoryByMarketplace( bool skipDuplicates );
 
 		/// <summary>
 		/// Get Products Inventory
 		/// </summary>
 		/// <param name="skipDuplicates"></param>
 		/// <param name="processReportAction">Marketplace and Product</param>
-		void GetProductsInventoryByMarketplace( bool skipDuplicates, Action< string, ProductInventory > processReportAction );
+		void GetProductsInventoryByMarketplace( bool skipDuplicates, Action< AmazonMarketplace, ProductInventory > processReportAction );
 
 		/// <summary>
 		/// Get Active Products
@@ -78,14 +79,14 @@ namespace AmazonAccess
 		/// </summary>
 		/// <param name="skipDuplicates"></param>
 		/// <returns>Marketplace and Products</returns>
-		Dictionary< string, List< ProductShort > > GetActiveProductsByMarketplace( bool skipDuplicates );
+		Dictionary< AmazonMarketplace, List< ProductShort > > GetActiveProductsByMarketplace( bool skipDuplicates );
 
 		/// <summary>
 		/// Get Active Products
 		/// </summary>
 		/// <param name="skipDuplicates"></param>
 		/// <param name="processReportAction">Marketplace and Product</param>
-		void GetActiveProductsByMarketplace( bool skipDuplicates, Action< string, ProductShort > processReportAction );
+		void GetActiveProductsByMarketplace( bool skipDuplicates, Action< AmazonMarketplace, ProductShort > processReportAction );
 
 		/// <summary>
 		/// Get Open Products
@@ -99,14 +100,14 @@ namespace AmazonAccess
 		/// </summary>
 		/// <param name="skipDuplicates"></param>
 		/// <returns>Marketplace and Products</returns>
-		Dictionary< string, List< ProductShort > > GetOpenProductsByMarketplace( bool skipDuplicates );
+		Dictionary< AmazonMarketplace, List< ProductShort > > GetOpenProductsByMarketplace( bool skipDuplicates );
 
 		/// <summary>
 		/// Get Open Products
 		/// </summary>
 		/// <param name="skipDuplicates"></param>
 		/// <param name="processReportAction">Marketplace and Product</param>
-		void GetOpenProductsByMarketplace( bool skipDuplicates, Action< string, ProductShort > processReportAction );
+		void GetOpenProductsByMarketplace( bool skipDuplicates, Action< AmazonMarketplace, ProductShort > processReportAction );
 
 		/// <summary>
 		/// Update Inventory
@@ -134,6 +135,25 @@ namespace AmazonAccess
 		List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = true );
 
 		/// <summary>
+		/// Get Detailed Fba Inventory by Marketplace using reports API (returns inventory for each marketplace only in NA region)
+		/// </summary>
+		/// <param name="includeArchived"></param>
+		/// <returns></returns>
+		Dictionary< AmazonMarketplace, List< FbaManageInventory > > GetDetailedFbaInventoryByMarketplace( bool includeArchived = true );
+
+		/// <summary>
+		/// Get Fba Reserved Inventory (returns inventory for each marketplace only in NA region)
+		/// </summary>
+		/// <returns></returns>
+		List< FbaReservedInventory > GetFbaReservedInventory();
+
+		/// <summary>
+		/// Get Fba Reserved Inventory by Marketplace (returns inventory for each marketplace only in NA region)
+		/// </summary>
+		/// <returns></returns>
+		Dictionary< AmazonMarketplace, List< FbaReservedInventory > > GetFbaReservedInventoryByMarketplace();
+
+		/// <summary>
 		/// Get Fba Multi-Country Inventory Report (returns inventory for all marketplaces)
 		/// </summary>
 		/// <returns></returns>
@@ -144,12 +164,6 @@ namespace AmazonAccess
 		/// </summary>
 		/// <returns></returns>
 		List< FbaFulfilledInventory > GetFbaFulfilledInventory();
-
-		/// <summary>
-		/// Get Fba Reserved Inventory (returns inventory for each marketplace only in NA region)
-		/// </summary>
-		/// <returns></returns>
-		List< FbaReservedInventory > GetFbaReservedInventory();
 
 		MarketplaceParticipations GetMarketplaceParticipations();
 	}

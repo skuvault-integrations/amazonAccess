@@ -54,15 +54,15 @@ namespace AmazonAccess.Services.FeedsReports
 			return report;
 		}
 
-		public Dictionary< string, List< T > > GetReportForEachMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey, string marker ) where T : class, new()
+		public Dictionary< AmazonMarketplace, List< T > > GetReportForEachMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey, string marker ) where T : class, new()
 		{
-			var report = new Dictionary< string, List< T > >();
+			var report = new Dictionary< AmazonMarketplace, List< T > >();
 			this.GetReportForEachMarketplace( reportType, startDate, endDate, skipDuplicates, getKey, ( marketplace, portion ) => report.Add( marketplace, portion ), marker );
 			return report;
 		}
 
 		public void GetReportForEachMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey,
-			Action< string, T > processReportAction, string marker ) where T : class, new()
+			Action< AmazonMarketplace, T > processReportAction, string marker ) where T : class, new()
 		{
 			this.GetReportForEachMarketplace( reportType, startDate, endDate, skipDuplicates, getKey, ( marketplace, portion ) =>
 			{
@@ -74,16 +74,14 @@ namespace AmazonAccess.Services.FeedsReports
 		}
 
 		public void GetReportForEachMarketplace< T >( ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey,
-			Action< string, List< T > > processReportAction, string marker ) where T : class, new()
+			Action< AmazonMarketplace, List< T > > processReportAction, string marker ) where T : class, new()
 		{
-			AmazonLogger.Trace( "GetReportByMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
-
-			var marketplaces = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList();
+			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
 
 			var keys = new List< string >();
-			foreach( var marketplace in marketplaces )
+			foreach( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
 			{
-				var reportPortion = this.GetReportForMarketplaces< T >( reportType, new List< string > { marketplace }, startDate, endDate, marker ).ToList();
+				var reportPortion = this.GetReportForMarketplaces< T >( reportType, new List< string > { marketplace.MarketplaceId }, startDate, endDate, marker ).ToList();
 				if( skipDuplicates )
 				{
 					var filteredItems = reportPortion.Select( x => new { key = getKey( x ), value = x } ).Where( x => !keys.Contains( x.key ) ).ToList();
@@ -93,7 +91,7 @@ namespace AmazonAccess.Services.FeedsReports
 				processReportAction( marketplace, reportPortion );
 			}
 
-			AmazonLogger.Trace( "GetReportByMarketplace", this._credentials.SellerId, marker, "End invoke" );
+			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "End invoke" );
 		}
 
 		private IEnumerable< T > GetReportForMarketplaces< T >( ReportType reportType, List< string > marketplaces, DateTime startDate, DateTime endDate, string marker ) where T : class, new()
