@@ -22,7 +22,8 @@ $src_dir = "$BuildRoot\src"
 $solution_file = "$src_dir\$project_name\$project_name.csproj"
 	
 # Use MSBuild.
-use Framework\v4.0.30319 MSBuild
+#use Framework\v4.0.30319 MSBuild
+Set-Alias MSBuild (Join-Path -Path (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\14.0").MSBuildToolsPath -ChildPath "MSBuild.exe")
 
 task Clean { 
 	exec { MSBuild "$solution_file" /t:Clean /p:Configuration=Release /p:Platform="AnyCPU" /v:quiet } 
