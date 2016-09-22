@@ -64,7 +64,7 @@ namespace AmazonAccess.Models
 			this.Init( marketplaces );
 		}
 
-		public AmazonMarketplaces TryCreate( List< AmazonMarketplace > marketplaces, bool ignoreNonAmazonMarketplaces = false )
+		public static AmazonMarketplaces TryCreate( List< AmazonMarketplace > marketplaces, bool ignoreNonAmazonMarketplaces = false )
 		{
 			if( marketplaces == null )
 				return null;
