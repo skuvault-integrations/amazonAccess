@@ -26,7 +26,7 @@ namespace AmazonAccess.Services.Orders
 			this._orderItemsService = new OrderItemsService( this._client, this._credentials, this._orderItemsThrottler );
 		}
 
-		public int LoadOrders( DateTime dateFrom, DateTime dateTo, Action< ComposedOrder > processOrderAction, string marker )
+		public int LoadOrders( string marker, DateTime dateFrom, DateTime dateTo, Action< ComposedOrder > processOrderAction )
 		{
 			AmazonLogger.Trace( "LoadOrders", this._credentials.SellerId, marker, "Begin invoke for date range from '{0}' to '{1}'", dateFrom, dateTo );
 
@@ -43,15 +43,15 @@ namespace AmazonAccess.Services.Orders
 			if( response.IsSetListOrdersResult() )
 			{
 				if( response.ListOrdersResult.IsSetOrders() )
-					ordersCount += this.FillAndProcessOrders( response.ListOrdersResult.Orders, processOrderAction, marker );
-				ordersCount += this.AddOrdersFromOtherPages( response.ListOrdersResult.NextToken, processOrderAction, marker );
+					ordersCount += this.FillAndProcessOrders( marker, response.ListOrdersResult.Orders, processOrderAction );
+				ordersCount += this.AddOrdersFromOtherPages( marker, response.ListOrdersResult.NextToken, processOrderAction );
 			}
 
 			AmazonLogger.Trace( "LoadOrders", this._credentials.SellerId, marker, "End invoke for date range from '{0}' to '{1}'. Received '{2}' orders", dateFrom, dateTo, ordersCount );
 			return ordersCount;
 		}
 
-		private int AddOrdersFromOtherPages( string nextToken, Action< ComposedOrder > processOrderAction, string marker )
+		private int AddOrdersFromOtherPages( string marker, string nextToken, Action< ComposedOrder > processOrderAction )
 		{
 			var ordersCount = 0;
 			while( !string.IsNullOrEmpty( nextToken ) )
@@ -68,25 +68,25 @@ namespace AmazonAccess.Services.Orders
 				if( response.IsSetListOrdersByNextTokenResult() )
 				{
 					if( response.ListOrdersByNextTokenResult.IsSetOrders() )
-						ordersCount += this.FillAndProcessOrders( response.ListOrdersByNextTokenResult.Orders, processOrderAction, marker );
+						ordersCount += this.FillAndProcessOrders( marker, response.ListOrdersByNextTokenResult.Orders, processOrderAction );
 					nextToken = response.ListOrdersByNextTokenResult.NextToken;
 				}
 			}
 			return ordersCount;
 		}
 
-		private int FillAndProcessOrders( IReadOnlyCollection< Order > orders, Action< ComposedOrder > processOrderAction, string marker )
+		private int FillAndProcessOrders( string marker, IReadOnlyCollection< Order > orders, Action< ComposedOrder > processOrderAction )
 		{
 			foreach( var order in orders )
 			{
 				var resultOrder = new ComposedOrder( order );
-				resultOrder.OrderItems = this._orderItemsService.LoadOrderItems( resultOrder.AmazonOrder.AmazonOrderId, marker );
+				resultOrder.OrderItems = this._orderItemsService.LoadOrderItems( marker, resultOrder.AmazonOrder.AmazonOrderId );
 				processOrderAction( resultOrder );
 			}
 			return orders.Count;
 		}
 
-		public bool IsOrdersReceived( DateTime dateFrom, DateTime dateTo, string marker )
+		public bool IsOrdersReceived( string marker, DateTime dateFrom, DateTime dateTo )
 		{
 			try
 			{
@@ -109,7 +109,7 @@ namespace AmazonAccess.Services.Orders
 				foreach( var order in response.ListOrdersResult.Orders.Take( 5 ) )
 				{
 					var resultOrder = new ComposedOrder( order );
-					if( !this._orderItemsService.IsOrderItemsReceived( resultOrder.AmazonOrder.AmazonOrderId, marker ) )
+					if( !this._orderItemsService.IsOrderItemsReceived( marker, resultOrder.AmazonOrder.AmazonOrderId ) )
 						return false;
 				}
 				return true;

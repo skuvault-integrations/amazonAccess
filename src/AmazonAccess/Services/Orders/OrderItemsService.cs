@@ -24,7 +24,7 @@ namespace AmazonAccess.Services.Orders
 			this._throttler = throttler;
 		}
 
-		public IEnumerable< OrderItem > LoadOrderItems( string orderId, string marker )
+		public IEnumerable< OrderItem > LoadOrderItems( string marker, string orderId )
 		{
 			AmazonLogger.Trace( "LoadOrderItems", this._credentials.SellerId, marker, "Begin invoke for order '{0}'", orderId );
 
@@ -40,14 +40,14 @@ namespace AmazonAccess.Services.Orders
 			{
 				if( response.ListOrderItemsResult.IsSetOrderItems() )
 					result.AddRange( response.ListOrderItemsResult.OrderItems );
-				this.AddOrderItemsFromOtherPages( response.ListOrderItemsResult.NextToken, result, marker );
+				this.AddOrderItemsFromOtherPages( marker, response.ListOrderItemsResult.NextToken, result );
 			}
 
 			AmazonLogger.Trace( "LoadOrderItems", this._credentials.SellerId, marker, "End invoke for order '{0}'", orderId );
 			return result;
 		}
 
-		private void AddOrderItemsFromOtherPages( string nextToken, List< OrderItem > result, string marker )
+		private void AddOrderItemsFromOtherPages( string marker, string nextToken, List< OrderItem > result )
 		{
 			while( !string.IsNullOrEmpty( nextToken ) )
 			{
@@ -69,7 +69,7 @@ namespace AmazonAccess.Services.Orders
 			}
 		}
 
-		public bool IsOrderItemsReceived( string orderId, string marker )
+		public bool IsOrderItemsReceived( string marker, string orderId )
 		{
 			try
 			{

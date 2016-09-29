@@ -26,7 +26,7 @@ namespace AmazonAccess.Services.Products
 			this._credentials = credentials;
 		}
 
-		public Dictionary< AmazonMarketplace, List< string > > GetProductsBySkus( List< string > skus, bool skipDuplicates, Action< Product > processProductAction, string marker )
+		public Dictionary< AmazonMarketplace, List< string > > GetProductsBySkus( string marker, List< string > skus, bool skipDuplicates, Action< Product > processProductAction )
 		{
 			AmazonLogger.Trace( "GetProductsBySkus", this._credentials.SellerId, marker, "Begin invoke" );
 
@@ -34,7 +34,7 @@ namespace AmazonAccess.Services.Products
 			var result = new Dictionary< AmazonMarketplace, List< string > >();
 			foreach( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
 			{
-				var receivedSkus = this.GetProductsBySkusForMarketplace( skusCopy, marketplace.MarketplaceId, processProductAction, marker );
+				var receivedSkus = this.GetProductsBySkusForMarketplace( marker, skusCopy, marketplace.MarketplaceId, processProductAction );
 				result.Add( marketplace, receivedSkus );
 				if( skipDuplicates )
 				{
@@ -49,7 +49,7 @@ namespace AmazonAccess.Services.Products
 			return result;
 		}
 
-		private List< string > GetProductsBySkusForMarketplace( IEnumerable< string > skus, string marketplace, Action< Product > processProductAction, string marker )
+		private List< string > GetProductsBySkusForMarketplace( string marker, IEnumerable< string > skus, string marketplace, Action< Product > processProductAction )
 		{
 			AmazonLogger.Trace( "GetProductsBySkusForMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
 

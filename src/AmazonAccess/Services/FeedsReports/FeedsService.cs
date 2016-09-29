@@ -28,7 +28,7 @@ namespace AmazonAccess.Services.FeedsReports
 			this._credentials = credentials;
 		}
 
-		public void SubmitFeed( FeedType feedType, string feedContent, string marker )
+		public void SubmitFeed( string marker, FeedType feedType, string feedContent )
 		{
 			AmazonLogger.Trace( "SubmitFeed", this._credentials.SellerId, marker, "Begin invoke" );
 
@@ -45,13 +45,13 @@ namespace AmazonAccess.Services.FeedsReports
 				throw AmazonLogger.Error( "SubmitFeed", this._credentials.SellerId, marker, "Result was not received" );
 
 			var feedSubmissionId = response.SubmitFeedResult.FeedSubmissionInfo.FeedSubmissionId;
-			this.WaitFeedSubmission( feedSubmissionId, marker );
-			this.CheckSubmissionResult( feedSubmissionId, marker );
+			this.WaitFeedSubmission( marker, feedSubmissionId );
+			this.CheckSubmissionResult( marker, feedSubmissionId );
 
 			AmazonLogger.Trace( "SubmitFeed", this._credentials.SellerId, marker, "End invoke" );
 		}
 
-		private void WaitFeedSubmission( string feedSubmissionId, string marker )
+		private void WaitFeedSubmission( string marker, string feedSubmissionId )
 		{
 			AmazonLogger.Trace( "WaitFeedSubmitting", this._credentials.SellerId, marker, "Begin invoke" );
 
@@ -84,7 +84,7 @@ namespace AmazonAccess.Services.FeedsReports
 			}
 		}
 
-		private void CheckSubmissionResult( string feedSubmissionId, string marker )
+		private void CheckSubmissionResult( string marker, string feedSubmissionId )
 		{
 			AmazonLogger.Trace( "CheckSubmissionResult", this._credentials.SellerId, marker, "Begin invoke" );
 

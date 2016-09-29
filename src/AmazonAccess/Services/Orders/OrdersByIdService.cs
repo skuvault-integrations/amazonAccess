@@ -25,7 +25,7 @@ namespace AmazonAccess.Services.Orders
 			this._orderItemsService = new OrderItemsService( this._client, this._credentials, this._orderItemsThrottler );
 		}
 
-		public int LoadOrdersById( List< string > ids, Action< ComposedOrder > processOrderAction, string marker )
+		public int LoadOrdersById( string marker, List< string > ids, Action< ComposedOrder > processOrderAction )
 		{
 			var idsStr = string.Join( ",", ids );
 			AmazonLogger.Trace( "LoadOrdersById", this._credentials.SellerId, marker, "Begin invoke for ids '{0}'", idsStr );
@@ -41,19 +41,19 @@ namespace AmazonAccess.Services.Orders
 			if( response.IsSetGetOrderResult() )
 			{
 				if( response.GetOrderResult.IsSetOrders() )
-					ordersCount += this.FillAndProcessOrders( response.GetOrderResult.Orders, processOrderAction, marker );
+					ordersCount += this.FillAndProcessOrders( marker, response.GetOrderResult.Orders, processOrderAction );
 			}
 
 			AmazonLogger.Trace( "LoadOrdersById", this._credentials.SellerId, marker, "End invoke for ids '{0}'. Received '{1}' orders", idsStr, ordersCount );
 			return ordersCount;
 		}
 
-		private int FillAndProcessOrders( IReadOnlyCollection< Order > orders, Action< ComposedOrder > processOrderAction, string marker )
+		private int FillAndProcessOrders( string marker, IReadOnlyCollection< Order > orders, Action< ComposedOrder > processOrderAction )
 		{
 			foreach( var order in orders )
 			{
 				var resultOrder = new ComposedOrder( order );
-				resultOrder.OrderItems = this._orderItemsService.LoadOrderItems( resultOrder.AmazonOrder.AmazonOrderId, marker );
+				resultOrder.OrderItems = this._orderItemsService.LoadOrderItems( marker, resultOrder.AmazonOrder.AmazonOrderId );
 				processOrderAction( resultOrder );
 			}
 			return orders.Count;

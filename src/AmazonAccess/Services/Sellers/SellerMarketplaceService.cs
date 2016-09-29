@@ -34,14 +34,14 @@ namespace AmazonAccess.Services.Sellers
 			if( response.IsSetListMarketplaceParticipationsResult() )
 			{
 				result.Add( response.ListMarketplaceParticipationsResult.ListMarketplaces, response.ListMarketplaceParticipationsResult.ListParticipations );
-				this.AddMarketplaceParticipationsFromOtherPages( response.ListMarketplaceParticipationsResult.NextToken, result, marker );
+				this.AddMarketplaceParticipationsFromOtherPages( marker, response.ListMarketplaceParticipationsResult.NextToken, result );
 			}
 
 			AmazonLogger.Trace( "GetMarketplaceParticipations", this._credentials.SellerId, marker, "End invoke" );
 			return result;
 		}
 
-		private void AddMarketplaceParticipationsFromOtherPages( string nextToken, MarketplaceParticipations result, string marker )
+		private void AddMarketplaceParticipationsFromOtherPages( string marker, string nextToken, MarketplaceParticipations result )
 		{
 			while( !string.IsNullOrEmpty( nextToken ) )
 			{

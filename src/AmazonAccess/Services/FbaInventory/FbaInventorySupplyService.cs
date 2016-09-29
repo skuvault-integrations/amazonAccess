@@ -90,14 +90,14 @@ namespace AmazonAccess.Services.FbaInventory
 			{
 				if( response.ListInventorySupplyResult.IsSetInventorySupplyList() )
 					result.AddRange( response.ListInventorySupplyResult.InventorySupplyList.member );
-				this.AddFbaInventoryFromOtherPages( response.ListInventorySupplyResult.NextToken, result, marker );
+				this.AddFbaInventoryFromOtherPages( marker, response.ListInventorySupplyResult.NextToken, result );
 			}
 
 			AmazonLogger.Trace( "LoadFbaInventory", this._credentials.SellerId, marker, "End invoke" );
 			return result;
 		}
 
-		private void AddFbaInventoryFromOtherPages( string nextToken, List< InventorySupply > result, string marker )
+		private void AddFbaInventoryFromOtherPages( string marker, string nextToken, List< InventorySupply > result )
 		{
 			while( !string.IsNullOrEmpty( nextToken ) )
 			{
