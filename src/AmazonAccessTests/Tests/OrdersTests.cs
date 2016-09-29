@@ -71,7 +71,7 @@ namespace AmazonAccessTests.Tests
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 
-			var result = service.IsOrdersReceived( DateTime.UtcNow - TimeSpan.FromDays( 14 ), DateTime.UtcNow );
+			var result = service.TryGetOrders( DateTime.UtcNow - TimeSpan.FromDays( 14 ), DateTime.UtcNow );
 			result.Should().BeTrue();
 		}
 	}

@@ -37,6 +37,26 @@ namespace AmazonAccess.Services.FeedsReports
 			this._credentials = credentials;
 		}
 
+		#region TryGetReport
+		public bool TryGetReportForEachMarketplace( string marker, ReportType reportType, DateTime startDate, DateTime endDate )
+		{
+			foreach( var marketplace in this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList() )
+			{
+				var isSuccess = this.TryGetReportForMarketplaces( marker, reportType, new List< string > { marketplace }, startDate, endDate );
+				if( !isSuccess )
+					return false;
+			}
+			return true;
+		}
+
+		public bool TryGetReportForAllMarketplaces( string marker, ReportType reportType, DateTime startDate, DateTime endDate, bool dontSendMarketplaces = false )
+		{
+			var marketplaces = dontSendMarketplaces ? new List< string >() : this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList();
+			var result = this.TryGetReportForMarketplaces( marker, reportType, marketplaces, startDate, endDate );
+			return result;
+		}
+		#endregion
+
 		#region GetReportForAllMarketplaces
 		public IEnumerable< T > GetReportForAllMarketplaces< T >( string marker, ReportType reportType, DateTime startDate, DateTime endDate, bool dontSendMarketplaces = false ) where T : class, new()
 		{
@@ -123,6 +143,28 @@ namespace AmazonAccess.Services.FeedsReports
 
 			var report = this.ConvertReport< T >( reportString );
 			return report;
+		}
+
+		private bool TryGetReportForMarketplaces( string marker, ReportType reportType, List< string > marketplaces, DateTime startDate, DateTime endDate )
+		{
+			try
+			{
+				var request = new RequestReportRequest
+				{
+					SellerId = this._credentials.SellerId,
+					MWSAuthToken = this._credentials.MwsAuthToken,
+					MarketplaceIdList = marketplaces,
+					ReportType = reportType.Description,
+					StartDate = startDate,
+					EndDate = endDate
+				};
+				var response = this._client.RequestReport( request, marker );
+				return true;
+			}
+			catch( Exception )
+			{
+				return false;
+			}
 		}
 
 		private string GetReportRequestId( string marker, ReportType reportType, List< string > marketplaces, DateTime startDate, DateTime endDate )

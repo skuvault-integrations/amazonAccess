@@ -131,7 +131,7 @@ namespace AmazonAccessTests.Tests
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 
-			var result = service.IsFbaInventoryReceived();
+			var result = service.TryGetFbaInventory();
 			result.Should().BeTrue();
 		}
 

@@ -49,15 +49,7 @@ namespace AmazonAccess
 			return ordersCount;
 		}
 
-		public int GetOrders( DateTime dateFrom, DateTime dateTo, Action< ComposedOrder > processOrderAction )
-		{
-			var client = this._factory.CreateOrdersClient();
-			var service = new OrdersService( client, this._credentials );
-			var ordersCount = service.LoadOrders( this.GetMarker(), dateFrom, dateTo, processOrderAction );
-			return ordersCount;
-		}
-
-		public bool IsOrdersReceived( DateTime? dateFrom = null, DateTime? dateTo = null )
+		public bool TryGetOrders( DateTime? dateFrom = null, DateTime? dateTo = null )
 		{
 			dateFrom = dateFrom ?? DateTime.UtcNow.AddHours( -1 );
 			dateTo = dateTo ?? DateTime.UtcNow.AddMinutes( -10 );
@@ -65,6 +57,14 @@ namespace AmazonAccess
 			var client = this._factory.CreateOrdersClient();
 			var service = new OrdersService( client, this._credentials );
 			return service.IsOrdersReceived( this.GetMarker(), dateFrom.Value, dateTo.Value );
+		}
+
+		public int GetOrders( DateTime dateFrom, DateTime dateTo, Action< ComposedOrder > processOrderAction )
+		{
+			var client = this._factory.CreateOrdersClient();
+			var service = new OrdersService( client, this._credentials );
+			var ordersCount = service.LoadOrders( this.GetMarker(), dateFrom, dateTo, processOrderAction );
+			return ordersCount;
 		}
 		#endregion
 
@@ -74,6 +74,19 @@ namespace AmazonAccess
 			var client = this._factory.CreateProductsClient();
 			var service = new ProductsBySkuService( client, this._credentials );
 			return service.GetProductsBySkus( this.GetMarker(), skus, skipDuplicates, processProductAction );
+		}
+
+		public bool TryGetProductsInventory()
+		{
+			var marker = this.GetMarker();
+			AmazonLogger.Trace( "TryGetProductsInventory", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var products = service.TryGetReportForEachMarketplace( marker, ReportType.InventoryReport, DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime() );
+
+			AmazonLogger.Trace( "TryGetProductsInventory", this._credentials.SellerId, marker, "End invoke" );
+			return products;
 		}
 
 		public List< ProductInventory > GetProductsInventory( bool skipDuplicates )
@@ -120,6 +133,19 @@ namespace AmazonAccess
 				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), skipDuplicates, p => p.Sku, processReportAction );
 
 			AmazonLogger.Trace( "GetProductsInventoryByMarketplace", this._credentials.SellerId, marker, "End invoke" );
+		}
+
+		public bool TryGetActiveProducts()
+		{
+			var marker = this.GetMarker();
+			AmazonLogger.Trace( "TryGetActiveProducts", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var products = service.TryGetReportForEachMarketplace( marker, ReportType.ActiveListingsReport, DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime() );
+
+			AmazonLogger.Trace( "TryGetActiveProducts", this._credentials.SellerId, marker, "End invoke" );
+			return products;
 		}
 
 		public List< ProductShort > GetActiveProducts( bool skipDuplicates )
@@ -237,6 +263,13 @@ namespace AmazonAccess
 		#endregion
 
 		#region Get FBA inventory
+		public bool TryGetFbaInventory()
+		{
+			var client = this._factory.CreateFbaInventoryClient();
+			var service = new FbaInventorySupplyService( client, this._credentials );
+			return service.IsFbaInventoryReceived( this.GetMarker() );
+		}
+
 		public List< InventorySupply > GetFbaInventory()
 		{
 			var client = this._factory.CreateFbaInventoryClient();
@@ -245,11 +278,19 @@ namespace AmazonAccess
 			return inventory.ToList();
 		}
 
-		public bool IsFbaInventoryReceived()
+		public bool TryGetDetailedFbaInventory( bool includeArchived = true, bool dontSendMarketplaces = false )
 		{
-			var client = this._factory.CreateFbaInventoryClient();
-			var service = new FbaInventorySupplyService( client, this._credentials );
-			return service.IsFbaInventoryReceived( this.GetMarker() );
+			var marker = this.GetMarker();
+			var operationName = includeArchived ? "TryGetDetailedFbaInventoryArchived" : "TryGetDetailedFbaInventory";
+			AmazonLogger.Trace( operationName, this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var reportType = includeArchived ? ReportType.FbaManageInventoryArchived : ReportType.FbaManageInventory;
+			var result = service.TryGetReportForAllMarketplaces( marker, reportType, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, dontSendMarketplaces );
+
+			AmazonLogger.Trace( operationName, this._credentials.SellerId, marker, "End invoke" );
+			return result;
 		}
 
 		public List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = true, bool dontSendMarketplaces = false )
@@ -267,6 +308,21 @@ namespace AmazonAccess
 			return inventory.ToList();
 		}
 
+		public bool TryGetDetailedFbaInventoryByMarketplace( bool includeArchived = true )
+		{
+			var marker = this.GetMarker();
+			var operationName = includeArchived ? "TryGetDetailedFbaInventoryByMarketplaceArchived" : "TryGetDetailedFbaInventoryByMarketplace";
+			AmazonLogger.Trace( operationName, this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var reportType = includeArchived ? ReportType.FbaManageInventoryArchived : ReportType.FbaManageInventory;
+			var inventory = service.TryGetReportForEachMarketplace( marker, reportType, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow );
+
+			AmazonLogger.Trace( operationName, this._credentials.SellerId, marker, "End invoke" );
+			return inventory;
+		}
+
 		public Dictionary< AmazonMarketplace, List< FbaManageInventory > > GetDetailedFbaInventoryByMarketplace( bool includeArchived = true )
 		{
 			var marker = this.GetMarker();
@@ -282,6 +338,19 @@ namespace AmazonAccess
 			return inventory;
 		}
 
+		public bool TryGetFbaReservedInventory( bool dontSendMarketplaces = false )
+		{
+			var marker = this.GetMarker();
+			AmazonLogger.Trace( "TryGetFbaReservedInventory", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var result = service.TryGetReportForAllMarketplaces( marker, ReportType.FbaReservedInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, dontSendMarketplaces );
+
+			AmazonLogger.Trace( "TryGetFbaReservedInventory", this._credentials.SellerId, marker, "End invoke" );
+			return result;
+		}
+
 		public List< FbaReservedInventory > GetFbaReservedInventory( bool dontSendMarketplaces = false )
 		{
 			var marker = this.GetMarker();
@@ -293,6 +362,19 @@ namespace AmazonAccess
 
 			AmazonLogger.Trace( "GetFbaReservedInventory", this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();
+		}
+
+		public bool TryGetFbaReservedInventoryByMarketplace()
+		{
+			var marker = this.GetMarker();
+			AmazonLogger.Trace( "TryGetFbaReservedInventoryByMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var inventory = service.TryGetReportForEachMarketplace( marker, ReportType.FbaReservedInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow );
+
+			AmazonLogger.Trace( "TryGetFbaReservedInventoryByMarketplace", this._credentials.SellerId, marker, "End invoke" );
+			return inventory;
 		}
 
 		public Dictionary< AmazonMarketplace, List< FbaReservedInventory > > GetFbaReservedInventoryByMarketplace()
