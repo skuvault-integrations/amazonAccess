@@ -150,7 +150,7 @@ namespace AmazonAccessTests.Tests
 		public void GetDetailedFbaInventoryWithArchived()
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
-			var inventory = service.GetDetailedFbaInventory();
+			var inventory = service.GetDetailedFbaInventory( true, true );
 			this.SaveToFile( "FbaManageInventoryArchived.txt", inventory );
 			//var inventory = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventoryArchived.txt" );
 
@@ -170,7 +170,7 @@ namespace AmazonAccessTests.Tests
 		public void GetFbaReservedInventory()
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
-			var inventory = service.GetFbaReservedInventory();
+			var inventory = service.GetFbaReservedInventory( true );
 			this.SaveToFile( "FbaReservedInventory.txt", inventory );
 			//var inventory = this.ReadFromFile< List< FbaReservedInventory > >( "FbaReservedInventory.txt" );
 

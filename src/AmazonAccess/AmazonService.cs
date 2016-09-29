@@ -252,7 +252,7 @@ namespace AmazonAccess
 			return service.IsFbaInventoryReceived( this.GetMarker() );
 		}
 
-		public List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = true )
+		public List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = true, bool dontSendMarketplaces = false )
 		{
 			var marker = this.GetMarker();
 			var operationName = includeArchived ? "GetDetailedFbaInventoryArchived" : "GetDetailedFbaInventory";
@@ -261,7 +261,7 @@ namespace AmazonAccess
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
 			var reportType = includeArchived ? ReportType.FbaManageInventoryArchived : ReportType.FbaManageInventory;
-			var inventory = service.GetReportForAllMarketplaces< FbaManageInventory >( marker, reportType, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow );
+			var inventory = service.GetReportForAllMarketplaces< FbaManageInventory >( marker, reportType, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, dontSendMarketplaces );
 
 			AmazonLogger.Trace( operationName, this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();
@@ -282,14 +282,14 @@ namespace AmazonAccess
 			return inventory;
 		}
 
-		public List< FbaReservedInventory > GetFbaReservedInventory()
+		public List< FbaReservedInventory > GetFbaReservedInventory( bool dontSendMarketplaces = false )
 		{
 			var marker = this.GetMarker();
 			AmazonLogger.Trace( "GetFbaReservedInventory", this._credentials.SellerId, marker, "Begin invoke" );
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var inventory = service.GetReportForAllMarketplaces< FbaReservedInventory >( marker, ReportType.FbaReservedInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow );
+			var inventory = service.GetReportForAllMarketplaces< FbaReservedInventory >( marker, ReportType.FbaReservedInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, dontSendMarketplaces );
 
 			AmazonLogger.Trace( "GetFbaReservedInventory", this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();
@@ -308,27 +308,27 @@ namespace AmazonAccess
 			return inventory;
 		}
 
-		public List< FbaMultiCountryInventory > GetFbaMultiCountryInventory()
+		public List< FbaMultiCountryInventory > GetFbaMultiCountryInventory( bool dontSendMarketplaces = false )
 		{
 			var marker = this.GetMarker();
 			AmazonLogger.Trace( "GetFbaMultiCountryInventory", this._credentials.SellerId, marker, "Begin invoke" );
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var inventory = service.GetReportForAllMarketplaces< FbaMultiCountryInventory >( marker, ReportType.FbaMultiCountryInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow );
+			var inventory = service.GetReportForAllMarketplaces< FbaMultiCountryInventory >( marker, ReportType.FbaMultiCountryInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, dontSendMarketplaces );
 
 			AmazonLogger.Trace( "GetFbaMultiCountryInventory", this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();
 		}
 
-		public List< FbaFulfilledInventory > GetFbaFulfilledInventory()
+		public List< FbaFulfilledInventory > GetFbaFulfilledInventory( bool dontSendMarketplaces = false )
 		{
 			var marker = this.GetMarker();
 			AmazonLogger.Trace( "GetFbaFulfilledInventory", this._credentials.SellerId, marker, "Begin invoke" );
 
 			var client = this._factory.CreateFeedsReportsClient();
 			var service = new ReportsService( client, this._credentials );
-			var inventory = service.GetReportForAllMarketplaces< FbaFulfilledInventory >( marker, ReportType.FbaFulfilledInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow );
+			var inventory = service.GetReportForAllMarketplaces< FbaFulfilledInventory >( marker, ReportType.FbaFulfilledInventory, DateTime.UtcNow.AddDays( -90 ), DateTime.UtcNow, dontSendMarketplaces );
 
 			AmazonLogger.Trace( "GetFbaFulfilledInventory", this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();

@@ -131,8 +131,9 @@ namespace AmazonAccess
 		/// Get Detailed Fba Inventory using reports API (returns inventory for each marketplace only in NA region)
 		/// </summary>
 		/// <param name="includeArchived">Include archived</param>
+		/// <param name="dontSendMarketplaces">Amazon will use home marketplace</param>
 		/// <returns></returns>
-		List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = true );
+		List< FbaManageInventory > GetDetailedFbaInventory( bool includeArchived = true, bool dontSendMarketplaces = false );
 
 		/// <summary>
 		/// Get Detailed Fba Inventory by Marketplace using reports API (returns inventory for each marketplace only in NA region)
@@ -144,8 +145,9 @@ namespace AmazonAccess
 		/// <summary>
 		/// Get Fba Reserved Inventory (returns inventory for each marketplace only in NA region)
 		/// </summary>
+		/// <param name="dontSendMarketplaces">Amazon will use home marketplace</param>
 		/// <returns></returns>
-		List< FbaReservedInventory > GetFbaReservedInventory();
+		List< FbaReservedInventory > GetFbaReservedInventory( bool dontSendMarketplaces = false );
 
 		/// <summary>
 		/// Get Fba Reserved Inventory by Marketplace (returns inventory for each marketplace only in NA region)
@@ -156,14 +158,16 @@ namespace AmazonAccess
 		/// <summary>
 		/// Get Fba Multi-Country Inventory Report (returns inventory for all marketplaces)
 		/// </summary>
+		/// <param name="dontSendMarketplaces">Amazon will use home marketplace</param>
 		/// <returns></returns>
-		List< FbaMultiCountryInventory > GetFbaMultiCountryInventory();
+		List< FbaMultiCountryInventory > GetFbaMultiCountryInventory( bool dontSendMarketplaces = false );
 
 		/// <summary>
 		/// Get Fba Fulfilled Inventory Report (returns inventory for all marketplaces)
 		/// </summary>
+		/// <param name="dontSendMarketplaces">Amazon will use home marketplace</param>
 		/// <returns></returns>
-		List< FbaFulfilledInventory > GetFbaFulfilledInventory();
+		List< FbaFulfilledInventory > GetFbaFulfilledInventory( bool dontSendMarketplaces = false );
 
 		MarketplaceParticipations GetMarketplaceParticipations();
 	}

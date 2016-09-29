@@ -42,7 +42,8 @@ namespace AmazonAccess.Services.FeedsReports
 		{
 			AmazonLogger.Trace( "GetReportForAllMarketplaces", this._credentials.SellerId, marker, "Begin invoke" );
 
-			var report = this.GetReportForMarketplaces< T >( marker, reportType, this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList(), startDate, endDate );
+			var marketplaces = dontSendMarketplaces ? new List< string >() : this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList();
+			var report = this.GetReportForMarketplaces< T >( marker, reportType, marketplaces, startDate, endDate );
 
 			AmazonLogger.Trace( "GetReportForAllMarketplaces", this._credentials.SellerId, marker, "End invoke" );
 			return report;
