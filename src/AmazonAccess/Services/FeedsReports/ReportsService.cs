@@ -128,7 +128,7 @@ namespace AmazonAccess.Services.FeedsReports
 
 			var reportId = this.GetNewReportId( marker, reportRequestId );
 			if( string.IsNullOrEmpty( reportId ) )
-				reportId = this.GetExistingReportId( marker, reportType );
+				reportId = this.GetExistingReportId( marker, reportType, marketplaces );
 			if( string.IsNullOrEmpty( reportId ) )
 				throw AmazonLogger.Error( "GetReport", this._credentials.SellerId, marker, "Can't request new report or find existing" );
 			if( reportId.Equals( "_NO_DATA_" ) )
@@ -222,7 +222,7 @@ namespace AmazonAccess.Services.FeedsReports
 			throw AmazonLogger.Error( "GetNewReportId", this._credentials.SellerId, marker, "Limit of replays was reached" );
 		}
 
-		private string GetExistingReportId( string marker, ReportType reportType )
+		private string GetExistingReportId( string marker, ReportType reportType, List< string > marketplaces )
 		{
 			AmazonLogger.Trace( "GetExistingReportId", this._credentials.SellerId, marker, "Begin invoke" );
 
@@ -230,6 +230,8 @@ namespace AmazonAccess.Services.FeedsReports
 			{
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
+				MarketplaceIdListList = marketplaces, //Amazon returns reports for any marketplaces from this list
+				ReportTypeList = new List< string > { reportType.Description },
 				AvailableFromDate = DateTime.MinValue.ToUniversalTime(),
 				AvailableToDate = DateTime.UtcNow.ToUniversalTime()
 			};
@@ -241,10 +243,10 @@ namespace AmazonAccess.Services.FeedsReports
 			if( reportInfo != null )
 				return reportInfo.ReportId;
 
-			return this.GetExistingReportIdInNextPages( marker, reportListResponse.GetReportListResult.NextToken, reportType.Description );
+			return this.GetExistingReportIdInNextPages( marker, reportListResponse.GetReportListResult.NextToken, reportType.Description, marketplaces );
 		}
 
-		private string GetExistingReportIdInNextPages( string marker, string nextToken, string reportType )
+		private string GetExistingReportIdInNextPages( string marker, string nextToken, string reportType, List< string > marketplaces )
 		{
 			for( var i = 0; i < 30 && !string.IsNullOrEmpty( nextToken ); i++ )
 			{
@@ -254,6 +256,7 @@ namespace AmazonAccess.Services.FeedsReports
 				{
 					SellerId = this._credentials.SellerId,
 					MWSAuthToken = this._credentials.MwsAuthToken,
+					MarketplaceIdListList = marketplaces,
 					NextToken = nextToken
 				};
 				var response = ActionPolicies.Get.Get( () => this._getReportListByNextTokenThrottler.Execute( () => this._client.GetReportListByNextToken( request, marker ) ) );

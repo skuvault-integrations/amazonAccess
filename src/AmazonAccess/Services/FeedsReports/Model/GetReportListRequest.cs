@@ -23,24 +23,24 @@ namespace AmazonAccess.Services.FeedsReports.Model
 {
 	public class GetReportListRequest: AbstractMwsObject
 	{
-		private Decimal? maxCountField;
-		private Boolean? acknowledgedField;
+		private decimal? maxCountField;
+		private bool? acknowledgedField;
 		private DateTime? availableFromDateField;
 		private DateTime? availableToDateField;
-		private List< string > _marketplaceId;
+		private List< string > _marketplaceIdList;
 
 		/// <summary>
 		/// Gets and sets the MarketplaceId property.
 		/// </summary>
-		public List< string > MarketplaceId
+		public List< string > MarketplaceIdListList
 		{
 			get
 			{
-				if( this._marketplaceId == null )
-					this._marketplaceId = new List< string >();
-				return this._marketplaceId;
+				if( this._marketplaceIdList == null )
+					this._marketplaceIdList = new List< string >();
+				return this._marketplaceIdList;
 			}
-			set { this._marketplaceId = value; }
+			set { this._marketplaceIdList = value; }
 		}
 
 		/// <summary>
@@ -50,7 +50,7 @@ namespace AmazonAccess.Services.FeedsReports.Model
 		/// <returns>this instance.</returns>
 		public GetReportListRequest WithMarketplaceId( string[] marketplaceId )
 		{
-			this.MarketplaceId.AddRange( marketplaceId );
+			this.MarketplaceIdListList.AddRange( marketplaceId );
 			return this;
 		}
 
@@ -60,7 +60,7 @@ namespace AmazonAccess.Services.FeedsReports.Model
 		/// <returns>true if MarketplaceId property is set.</returns>
 		public bool IsSetMarketplaceId()
 		{
-			return this.MarketplaceId.Count > 0;
+			return this.MarketplaceIdListList.Count > 0;
 		}
 
 		/// <summary>
@@ -287,7 +287,7 @@ namespace AmazonAccess.Services.FeedsReports.Model
 			this.acknowledgedField = reader.Read< bool? >( "Acknowledged" );
 			this.availableFromDateField = reader.Read< DateTime? >( "AvailableFromDate" );
 			this.availableToDateField = reader.Read< DateTime? >( "AvailableToDate" );
-			this._marketplaceId = reader.ReadList< string >( "MarketplaceId", "Id" );
+			this._marketplaceIdList = reader.ReadList< string >( "MarketplaceIdList", "Id" );
 			this.ReportRequestIdList = reader.ReadList< string >( "ReportRequestIdList", "Id" );
 			this.ReportTypeList = reader.ReadList< string >( "ReportTypeList", "Type" );
 		}
@@ -300,7 +300,7 @@ namespace AmazonAccess.Services.FeedsReports.Model
 			writer.Write( "Acknowledged", this.acknowledgedField );
 			writer.Write( "AvailableFromDate", this.availableFromDateField );
 			writer.Write( "AvailableToDate", this.availableToDateField );
-			writer.WriteList( "MarketplaceId", "Id", this._marketplaceId );
+			writer.WriteList( "MarketplaceIdList", "Id", this._marketplaceIdList );
 			writer.WriteList( "ReportRequestIdList", "Id", this.ReportRequestIdList );
 			writer.WriteList( "ReportTypeList", "Type", this.ReportTypeList );
 		}

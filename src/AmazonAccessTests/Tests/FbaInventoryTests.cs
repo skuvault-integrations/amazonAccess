@@ -162,7 +162,11 @@ namespace AmazonAccessTests.Tests
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces( true ) );
 			var inventory = service.GetDetailedFbaInventoryByMarketplace();
-
+			foreach( var inv in inventory )
+			{
+				var inv2 = inv.Value.Where( x => x.AfnTotalQuantity > 0 ).ToList();
+				this.SaveToFile( $"FbaManageInventoryArchived_{inv.Key.MarketplaceId}.txt", inv2 );
+			}
 			inventory.Count.Should().BeGreaterThan( 0 );
 		}
 
