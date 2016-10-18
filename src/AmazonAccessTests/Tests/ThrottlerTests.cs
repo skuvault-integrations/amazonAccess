@@ -19,8 +19,8 @@ namespace AmazonAccessTests.Tests
 		{
 			this._callCounter = 0;
 			this._callCounterFunc = () => this._callCounter++;
-			//this._throttlerExecute = x => this._throttler.Execute( x );
-			this._throttlerExecute = x => this._throttlerAsync.ExecuteAsync( () => Task.FromResult( x() ) ).GetAwaiter().GetResult();
+			this._throttlerExecute = x => this._throttler.Execute( x );
+			//this._throttlerExecute = x => this._throttlerAsync.ExecuteAsync( () => Task.FromResult( x() ) ).GetAwaiter().GetResult();
 		}
 
 		protected void MakeRequests( int requestsCount )

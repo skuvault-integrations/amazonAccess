@@ -26,8 +26,10 @@ namespace AmazonAccess.Misc
 		/// <param name="maxQuota">Max quota</param>
 		/// <param name="delayInSecondsBeforeRelease">Delay in seconds before release</param>
 		/// <param name="itemsCountForRelease">Items count for release. Default is 1</param>
-		public Throttler( int maxQuota, int delayInSecondsBeforeRelease, int itemsCountForRelease = 1 ):
-			this( maxQuota, el => el / delayInSecondsBeforeRelease * itemsCountForRelease, el => delayInSecondsBeforeRelease - el, 10, "throttle" )
+		/// <param name="maxRetryCount">Max Retry Count</param>
+		/// <param name="throttleMessage">Throttle Message</param>
+		public Throttler( int maxQuota, int delayInSecondsBeforeRelease, int itemsCountForRelease = 1, int maxRetryCount = 10, string throttleMessage = "throttle" ):
+			this( maxQuota, el => el / delayInSecondsBeforeRelease * itemsCountForRelease, el => delayInSecondsBeforeRelease - el, maxRetryCount, throttleMessage )
 		{
 		}
 
