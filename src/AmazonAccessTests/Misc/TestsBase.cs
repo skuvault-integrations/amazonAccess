@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using AmazonAccess;
 using AmazonAccess.Models;
-using AmazonAccess.Services.FbaInventory.Model;
 using LINQtoCSV;
 using Netco.Logging;
 using NUnit.Framework;

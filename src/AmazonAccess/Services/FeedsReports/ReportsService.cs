@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using AmazonAccess.Misc;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FeedsReports.Model;
@@ -291,11 +292,18 @@ namespace AmazonAccess.Services.FeedsReports
 
 		private IEnumerable< T > ConvertReport< T >( string reportString ) where T : class, new()
 		{
+			reportString = Regex.Replace( reportString, "&amp;", "&" );
+			
 			using( var ms = new MemoryStream( Encoding.UTF8.GetBytes( reportString ) ) )
 			using( var reader = new StreamReader( ms ) )
 			{
 				var cc = new CsvContext();
-				var report = cc.Read< T >( reader, new CsvFileDescription { FirstLineHasColumnNames = true, SeparatorChar = '\t', IgnoreUnknownColumns = true, FileCultureInfo = CultureInfo.InvariantCulture } );
+				var csvOptions = new CsvFileDescription
+				{
+					FirstLineHasColumnNames = true, SeparatorChar = '\t', IgnoreUnknownColumns = true, FileCultureInfo = CultureInfo.InvariantCulture,
+					QuoteAllFields = true, TextEncoding = Encoding.UTF8, UseFieldIndexForReadingData = false
+				};
+				var report = cc.Read< T >( reader, csvOptions );
 				return report.ToList();
 			}
 		}
