@@ -131,16 +131,19 @@ namespace AmazonAccess.Services.FeedsReports
 			if( string.IsNullOrEmpty( reportId ) )
 				reportId = this.GetExistingReportId( marker, reportType, marketplaces );
 			if( string.IsNullOrEmpty( reportId ) )
-				throw AmazonLogger.Error( "GetReport", this._credentials.SellerId, marker, "Can't request new report or find existing" );
+			{
+				AmazonLogger.Trace( "GetReportForMarketplaces", this._credentials.SellerId, marker, "Can't request new report or find existing. Maybe report is empty. See previous attempt." );
+				return new List< T >();
+			}
 			if( reportId.Equals( "_NO_DATA_" ) )
 			{
-				AmazonLogger.Trace( "GetReport", this._credentials.SellerId, marker, "Empty report" );
+				AmazonLogger.Trace( "GetReportForMarketplaces", this._credentials.SellerId, marker, "Empty report" );
 				return new List< T >();
 			}
 
 			var reportString = this.GetReportById( marker, reportId );
 			if( reportString == null )
-				throw AmazonLogger.Error( "GetReport", this._credentials.SellerId, marker, "Can't get report" );
+				throw AmazonLogger.Error( "GetReportForMarketplaces", this._credentials.SellerId, marker, "Can't get report" );
 
 			var report = this.ConvertReport< T >( reportString );
 			return report;
