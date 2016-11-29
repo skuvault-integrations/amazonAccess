@@ -79,9 +79,14 @@ namespace AmazonAccessTests.Tests
 		[ Test ]
 		public void GetActiveProductsByMarketplace()
 		{
-			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
+			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces( true ) );
 
 			var result = service.GetActiveProductsByMarketplace( false );
+			foreach( var marketplace in result )
+			{
+				this.SaveToFile( $"GetActiveProductsByMarketplace_2_{marketplace.Key.MarketplaceId}.txt", marketplace.Value );
+			}
+			
 			result.Should().NotBeEmpty();
 		}
 
@@ -121,6 +126,37 @@ namespace AmazonAccessTests.Tests
 
 			service.GetOpenProductsByMarketplace( true, ( marketplace, product ) => products.Add( product ) );
 			products.Should().NotBeEmpty();
+		}
+
+		[ Test ]
+		public void FindProductsDiff()
+		{
+			var marketplaces = new List< string > { "2_A2EUQ1WTGCTBG2", "2_ATVPDKIKX0DER", "ATVPDKIKX0DER" };
+
+			var products = new Dictionary< string, List< ProductShort > >();
+			foreach( var marketplace in marketplaces )
+			{
+				var pr = this.ReadFromFile< List< ProductShort > >( $"GetActiveProductsByMarketplace_{marketplace}.txt" );
+				products.Add( marketplace, pr );
+			}
+
+			var existsInNa = GetUniqueProducts( products, "2_ATVPDKIKX0DER", "ATVPDKIKX0DER", true );
+			var existsInEu = GetUniqueProducts( products, "ATVPDKIKX0DER", "2_ATVPDKIKX0DER", true );
+			var existsInBoth = GetUniqueProducts( products, "2_ATVPDKIKX0DER", "ATVPDKIKX0DER", false );
+
+			products[ "2_ATVPDKIKX0DER" ].AddRange( products[ "2_A2EUQ1WTGCTBG2" ] );
+
+			var existsInNa2 = GetUniqueProducts( products, "2_ATVPDKIKX0DER", "ATVPDKIKX0DER", true );
+			var existsInEu2 = GetUniqueProducts( products, "ATVPDKIKX0DER", "2_ATVPDKIKX0DER", true );
+			var existsInBoth2 = GetUniqueProducts( products, "2_ATVPDKIKX0DER", "ATVPDKIKX0DER", false );
+		}
+
+		private List< ProductShort > GetUniqueProducts( Dictionary< string, List< ProductShort > > products, string marketplace1, string marketplace2, bool isExistOnlyInFirst )
+		{
+			return ( from na in products[ marketplace1 ]
+				join eu in products[ marketplace2 ] on na.SellerSku equals eu.SellerSku into eu
+				where eu.Any() != isExistOnlyInFirst
+				select na ).ToList();
 		}
 	}
 }
