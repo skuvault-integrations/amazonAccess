@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using AmazonAccess.Misc;
@@ -295,8 +296,8 @@ namespace AmazonAccess.Services.FeedsReports
 
 		private IEnumerable< T > ConvertReport< T >( string reportString ) where T : class, new()
 		{
-			reportString = Regex.Replace( reportString, "&amp;", "&" );
-			
+			reportString = WebUtility.HtmlDecode( reportString );
+
 			using( var ms = new MemoryStream( Encoding.UTF8.GetBytes( reportString ) ) )
 			using( var reader = new StreamReader( ms ) )
 			{
