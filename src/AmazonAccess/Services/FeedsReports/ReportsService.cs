@@ -110,9 +110,16 @@ namespace AmazonAccess.Services.FeedsReports
 				var reportPortion = this.GetReportForMarketplaces< T >( marker, reportType, new List< string > { marketplace.MarketplaceId }, startDate, endDate ).ToList();
 				if( skipDuplicates )
 				{
-					var filteredItems = reportPortion.Select( x => new { key = getKey( x ), value = x } ).Where( x => !keys.Contains( x.key ) ).ToList();
-					keys.AddRange( filteredItems.Select( x => x.key ) );
-					reportPortion = filteredItems.Select( x => x.value ).ToList();
+					var newReportPortion = new List< T >();
+					foreach( var item in reportPortion )
+					{
+						var key = getKey( item );
+						if( keys.Contains( key ) )
+							continue;
+						newReportPortion.Add( item );
+						keys.Add( key );
+					}
+					reportPortion = newReportPortion;
 				}
 				processReportAction( marketplace, reportPortion );
 			}
