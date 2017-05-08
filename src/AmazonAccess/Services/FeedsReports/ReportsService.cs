@@ -108,11 +108,6 @@ namespace AmazonAccess.Services.FeedsReports
 			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
 
 			var keys = new HashSet< string >();
-			long reportPortionSize = 0;
-			long reportPortion2Size = 0;
-			long keysSize = 0;
-			long keys3Size = 0;
-			bool error = false;
 
 			foreach( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
 			{
