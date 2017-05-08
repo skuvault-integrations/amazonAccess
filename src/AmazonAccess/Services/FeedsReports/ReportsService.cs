@@ -107,29 +107,27 @@ namespace AmazonAccess.Services.FeedsReports
 		{
 			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
 
-			var keys3 = new HashSet<string>();
+			var keys = new HashSet< string >();
 			long reportPortionSize = 0;
 			long reportPortion2Size = 0;
 			long keysSize = 0;
 			long keys3Size = 0;
 			bool error = false;
 
-			foreach ( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
+			foreach( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
 			{
 				var reportPortion = this.GetReportForMarketplaces< T >( marker, reportType, new List< string > { marketplace.MarketplaceId }, startDate, endDate ).ToList();
-				if ( skipDuplicates )
+				if( skipDuplicates )
 				{
-					var newReportPortion3 = new T[reportPortion.Count];//
-					var newReportPortion3Count = 0;//
-					for (int i = 0; i < reportPortion.Count; i++)
+					var newReportPortion = new List< T >();
+					for( var i = 0; i < reportPortion.Count; i++ )
 					{
-						var key = getKey(reportPortion[i]);
+						var key = getKey( reportPortion[ i ] );
 
-						if (keys3.Add(key))
-						{
-							newReportPortion3[newReportPortion3Count++] = reportPortion[i];
-						}
+						if( keys.Add( key ) )
+							newReportPortion.Add( reportPortion[ i ] );
 					}
+					reportPortion = newReportPortion;
 				}
 				processReportAction( marketplace, reportPortion );
 			}
