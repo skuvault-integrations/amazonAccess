@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
 using AmazonAccess.Misc;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FeedsReports.Model;
 using CuttingEdge.Conditions;
+using FluentAssertions;
 using LINQtoCSV;
 
 namespace AmazonAccess.Services.FeedsReports
@@ -105,26 +108,122 @@ namespace AmazonAccess.Services.FeedsReports
 			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
 
 			var keys = new List< string >();
-			foreach( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
+			var keys3 = new HashSet<string>();
+			var sw1 = new Stopwatch();
+			var sw2 = new Stopwatch();
+			var sw3 = new Stopwatch();
+			long reportPortionSize = 0;
+			long reportPortion2Size = 0;
+			long keysSize = 0;
+			long keys3Size = 0;
+			bool error = false;
+
+			foreach ( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
 			{
 				var reportPortion = this.GetReportForMarketplaces< T >( marker, reportType, new List< string > { marketplace.MarketplaceId }, startDate, endDate ).ToList();
-				if( skipDuplicates )
+				//var reportPortion2 = reportPortion.ToArray();//
+				//reportPortionSize += GetSize(reportPortion);//
+				//reportPortion2Size += GetSize(reportPortion2);//
+				if ( skipDuplicates )
 				{
-					var newReportPortion = new List< T >();
-					foreach( var item in reportPortion )
+					//sw1.Start();
+					//var newReportPortion = new List< T >();
+					//foreach( var item in reportPortion )
+					//{
+					//	var key = getKey( item );
+					//	if( keys.Contains( key ) )
+					//		continue;
+					//	newReportPortion.Add( item );
+					//	keys.Add( key );
+					//}
+					//sw1.Stop();
+					//reportPortion = newReportPortion;
+					//new one
+					//sw2.Start();
+					//var newReportPortion2 = new T[reportPortion.Count];//
+					//var newReportPortion2Count = 0;//
+					//var ss = new SsSearch.SsSearch();
+					//for (int i = 0; i < reportPortion2.Length; i++)
+					//{
+					//	var key = getKey(reportPortion2[i]);
+					//	var shifts = ss.GetShifts(key);
+
+					//	if (keys.Exists(x =>ss.IndexOf(x,key,shifts)>-1))
+					//	{
+					//		continue;
+					//	}
+					//	newReportPortion2[newReportPortion2Count++] = reportPortion2[i];
+					//	keys.Add(key);
+					//}
+					//sw2.Stop();
+					//new one 2
+					sw3.Start();
+					var newReportPortion3 = new T[reportPortion.Count];//
+					var newReportPortion3Count = 0;//
+					for (int i = 0; i < reportPortion.Count; i++)
 					{
-						var key = getKey( item );
-						if( keys.Contains( key ) )
-							continue;
-						newReportPortion.Add( item );
-						keys.Add( key );
+						var key = getKey(reportPortion[i]);
+
+						if (keys3.Add(key))
+						{
+							newReportPortion3[newReportPortion3Count++] = reportPortion[i];
+						}
 					}
-					reportPortion = newReportPortion;
+					sw3.Stop();
+					//error = false;
+					//try
+					//{
+					//	//newReportPortion2.ShouldBeEquivalentTo(newReportPortion);
+					//	 newReportPortion3.ShouldBeEquivalentTo(newReportPortion);
+					//}
+					//catch( Exception exception )
+					//{
+					//	error = true;
+					//	Console.WriteLine( exception );
+					//	//throw;
+					//}
+					//Debug.WriteLine("old:{0}\tss:{1}\thash{2}", sw1.Elapsed, sw2.Elapsed, sw3.Elapsed);
 				}
 				processReportAction( marketplace, reportPortion );
 			}
 
+			//keysSize += GetSize(keys);
+			//keys3Size = GetSize(keys3);
+			//try
+			//{
+
+			//	keys.ShouldBeEquivalentTo(keys3);
+			//}
+			//catch( Exception exception )
+			//{
+			//	Console.WriteLine( exception );
+			//	//throw;
+			//}
 			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "End invoke" );
+			CollectStat(this._credentials.SellerId,sw1,sw2,sw3,reportPortionSize,reportPortion2Size,keysSize,keys3Size, error);
+		}
+
+		public void CollectStat( string fname, Stopwatch sw1, Stopwatch sw2, Stopwatch sw3, long reportsize, long reportsize2, long keysize, long keysize2, bool error )
+		{
+			lock( fname )
+			{
+				using( var f = File.AppendText("C:\\temp\\profile\\stat\\amazon\\"+fname+".csv") )
+				{
+					f.WriteLine($"{sw1.Elapsed}\t{sw2.Elapsed}\t{sw3.Elapsed}\t{reportsize}\t{reportsize2}\t{keysize}\t{keysize2}\t{error}\t");
+				}
+			}
+		}
+
+		public long GetSize(object o)
+		{
+			long size = 0;
+			using (Stream s = new MemoryStream())
+			{
+				BinaryFormatter formatter = new BinaryFormatter();
+				formatter.Serialize(s, o);
+				size = s.Length;
+			}
+			return size;
 		}
 		#endregion
 
