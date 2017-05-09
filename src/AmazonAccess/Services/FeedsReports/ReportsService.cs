@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -38,6 +39,11 @@ namespace AmazonAccess.Services.FeedsReports
 			this._client = client;
 			this._credentials = credentials;
 		}
+
+		//protected ReportsService()
+		//{
+		//	//for testing only
+		//}
 
 		#region TryGetReport
 		public bool TryGetReportForEachMarketplace( string marker, ReportType reportType, DateTime startDate, DateTime endDate )
@@ -105,27 +111,96 @@ namespace AmazonAccess.Services.FeedsReports
 			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
 
 			var keys = new List< string >();
-			foreach( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
+			var keys2 = new HashSet<string>();
+			var sw = new Stopwatch();
+			foreach ( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
 			{
 				var reportPortion = this.GetReportForMarketplaces< T >( marker, reportType, new List< string > { marketplace.MarketplaceId }, startDate, endDate ).ToList();
 				if( skipDuplicates )
 				{
+					sw.Start();
 					var newReportPortionQuery = from pItem in reportPortion
-						let pKey = getKey( pItem ).ToLower()
-						join key in keys on pKey equals key into existingKeys
-						where !existingKeys.Any()
-						select new { Key = pKey, PortionItem = pItem };
-					newReportPortionQuery = newReportPortionQuery.GroupBy( x => x.Key ).Select( x => x.First() );
+												let pKey = getKey(pItem).ToLower()
+												join key in keys on pKey equals key into existingKeys
+												where !existingKeys.Any()
+												select new { Key = pKey, PortionItem = pItem };
+					newReportPortionQuery = newReportPortionQuery.GroupBy(x => x.Key).Select(x => x.First());
 
 					var newReportPortion = newReportPortionQuery.ToList();
-					if( newReportPortion.Count != reportPortion.Count )
-						reportPortion = newReportPortion.Select( x => x.PortionItem ).ToList();
-					keys.AddRange( newReportPortion.Select( x => x.Key ) );
+					if (newReportPortion.Count != reportPortion.Count)
+						reportPortion = newReportPortion.Select(x => x.PortionItem).ToList();
+					keys.AddRange(newReportPortion.Select(x => x.Key));
+
+					//
+					//var newReportPortion2 = new List<T>();
+					//for (var i = 0; i < reportPortion.Count; i++)
+					//{
+					//	var key = getKey(reportPortion[i]);
+					//	if (keys2.Add(key))
+					//		newReportPortion2.Add(reportPortion[i]);
+					//}
+					//reportPortion = newReportPortion2;
+
+					sw.Stop();
 				}
 				processReportAction( marketplace, reportPortion );
 			}
 
 			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "End invoke" );
+		}
+
+		public void GetReportForEachMarketplace_Max< T >( string marker, ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey,
+			Action< AmazonMarketplace, List< T > > processReportAction ) where T : class, new()
+		{
+			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var keys = new HashSet< string >();
+			foreach( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
+			{
+				var reportPortion = this.GetReportForMarketplaces< T >( marker, reportType, new List< string > { marketplace.MarketplaceId }, startDate, endDate ).ToList();
+				if( skipDuplicates )
+				{
+					var newReportPortion = new List< T >();
+					for( var i = 0; i < reportPortion.Count; i++ )
+					{
+						var key = getKey( reportPortion[ i ] );
+
+						if( keys.Add( key ) )
+							newReportPortion.Add( reportPortion[ i ] );
+					}
+					reportPortion = newReportPortion;
+				}
+				processReportAction( marketplace, reportPortion );
+			}
+
+			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "End invoke" );
+		}
+		public void GetReportForEachMarketplace_Original<T>(string marker, ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func<T, string> getKey,
+			Action<AmazonMarketplace, List<T>> processReportAction) where T : class, new()
+		{
+			AmazonLogger.Trace("GetReportForEachMarketplace", this._credentials.SellerId, marker, "Begin invoke");
+
+			var keys = new List<string>();
+			foreach (var marketplace in this._credentials.AmazonMarketplaces.Marketplaces)
+			{
+				var reportPortion = this.GetReportForMarketplaces<T>(marker, reportType, new List<string> { marketplace.MarketplaceId }, startDate, endDate).ToList();
+				if (skipDuplicates)
+				{
+					var newReportPortion = new List<T>();
+					foreach (var item in reportPortion)
+					{
+						var key = getKey(item);
+						if (keys.Contains(key))
+							continue;
+						newReportPortion.Add(item);
+						keys.Add(key);
+					}
+					reportPortion = newReportPortion;
+				}
+				processReportAction(marketplace, reportPortion);
+			}
+
+			AmazonLogger.Trace("GetReportForEachMarketplace", this._credentials.SellerId, marker, "End invoke");
 		}
 		#endregion
 
