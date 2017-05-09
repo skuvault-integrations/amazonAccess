@@ -130,7 +130,7 @@ namespace AmazonAccess.Services.FeedsReports
 		#endregion
 
 		#region common
-		private IEnumerable< T > GetReportForMarketplaces< T >( string marker, ReportType reportType, List< string > marketplaces, DateTime startDate, DateTime endDate ) where T : class, new()
+		protected virtual IEnumerable< T > GetReportForMarketplaces< T >( string marker, ReportType reportType, List< string > marketplaces, DateTime startDate, DateTime endDate ) where T : class, new()
 		{
 			AmazonLogger.Trace( "GetReportForMarketplaces", this._credentials.SellerId, marker, "Begin invoke" );
 
