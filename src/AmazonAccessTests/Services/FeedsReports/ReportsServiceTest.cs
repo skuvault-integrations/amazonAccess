@@ -46,6 +46,28 @@ namespace AmazonAccessTests.Services.FeedsReports
 				methodReO[ i ].ShouldBeEquivalentTo( methodResMax[ i ] );
 			}
 		}
+
+		[ Test ]
+		public void ReportServicetest2()
+		{
+			//a
+			var reportsServiceStubCurrent = new ReportsServiceStub2( new FeedsReportsServiceClient( "a", "s", "http://qwe.ru" ), new AmazonCredentials( "qwe", "secret", "seller", "mws", new AmazonMarketplaces( new List< string > { "us", "ca", "mx" } ) ) );
+			reportsServiceStubCurrent.inventories.Add( new List< ProductInventory > { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" } } );
+			reportsServiceStubCurrent.inventories.Add( new List< ProductInventory > { new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" }, new ProductInventory() { Sku = "sku4" } } );
+			reportsServiceStubCurrent.inventories.Add( new List< ProductInventory > { new ProductInventory() { Sku = "sku3" }, new ProductInventory() { Sku = "sku4" }, new ProductInventory() { Sku = "sku5" } } );
+
+			//a
+			var methodResCurrent = new List< ProductInventory >();
+			reportsServiceStubCurrent.GetReportForEachMarketplace< ProductInventory >( "marker", ReportType.InventoryReport, DateTime.Now, DateTime.Now, true, p => p.Sku, ( x, y ) => methodResCurrent.AddRange( y ) );
+
+			//a
+			methodResCurrent = methodResCurrent.OrderBy( x => x.Sku ).ToList();
+			var resultShouldBe = new List< ProductInventory >() { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" }, new ProductInventory() { Sku = "sku4" }, new ProductInventory() { Sku = "sku5" } };
+			for( var i = 0; i < resultShouldBe.Count; i++ )
+				resultShouldBe[ i ].ShouldBeEquivalentTo( methodResCurrent[ i ] );
+			resultShouldBe.Count.Should().Be( methodResCurrent.Count );
+		}
+
 	}
 
 	public class ReportsServiceStub: ReportsService
@@ -65,6 +87,21 @@ namespace AmazonAccessTests.Services.FeedsReports
 		protected override IEnumerable< T > GetReportForMarketplaces< T >( string marker, ReportType reportType, List< string > marketplaces, DateTime startDate, DateTime endDate )
 		{
 			return this.GetReportForMarketplaces( 100000 ) as IEnumerable< T >;
+		}
+	}
+
+	public class ReportsServiceStub2: ReportsService
+	{
+		private int callCount = 0;
+		public List< IEnumerable< ProductInventory > > inventories = new List< IEnumerable< ProductInventory > >();
+
+		public ReportsServiceStub2( IFeedsReportsServiceClient client, AmazonCredentials credentials ): base( client, credentials )
+		{
+		}
+
+		protected override IEnumerable< T > GetReportForMarketplaces< T >( string marker, ReportType reportType, List< string > marketplaces, DateTime startDate, DateTime endDate )
+		{
+			return this.inventories[ this.callCount++ % this.inventories.Count ] as IEnumerable< T >;
 		}
 	}
 }
