@@ -15,7 +15,7 @@ namespace AmazonAccessTests.Services.FeedsReports
 	{
 		[ Test ]
 		[ TestCaseSource( typeof( TestDataSource ), nameof( TestDataSource.TestCases ) ) ]
-		public void ReportServicetest2( IEnumerable< IEnumerable< ProductInventory > > stubs, List< ProductInventory > result )
+		public void ReportServicetest( IEnumerable< IEnumerable< ProductInventory > > stubs, List< ProductInventory > result )
 		{
 			//a
 			var reportsServiceStubCurrent = new ReportsServiceStub( new FeedsReportsServiceClient( "a", "s", "http://qwe.ru" ), new AmazonCredentials( "qwe", "secret", "seller", "mws", new AmazonMarketplaces( new List< string > { "us", "ca", "mx" } ) ) );
