@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -48,13 +49,13 @@ namespace AmazonAccessTests.Services.FeedsReports
 		}
 
 		[ Test ]
-		public void ReportServicetest2()
+		[ TestCaseSource( typeof( testDataSource ), nameof( testDataSource.TestCases ) ) ]
+		public void ReportServicetest2( IEnumerable< IEnumerable< ProductInventory > > stubs, List< ProductInventory > result )
 		{
 			//a
 			var reportsServiceStubCurrent = new ReportsServiceStub2( new FeedsReportsServiceClient( "a", "s", "http://qwe.ru" ), new AmazonCredentials( "qwe", "secret", "seller", "mws", new AmazonMarketplaces( new List< string > { "us", "ca", "mx" } ) ) );
-			reportsServiceStubCurrent.inventories.Add( new List< ProductInventory > { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" } } );
-			reportsServiceStubCurrent.inventories.Add( new List< ProductInventory > { new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" }, new ProductInventory() { Sku = "sku4" } } );
-			reportsServiceStubCurrent.inventories.Add( new List< ProductInventory > { new ProductInventory() { Sku = "sku3" }, new ProductInventory() { Sku = "sku4" }, new ProductInventory() { Sku = "sku5" } } );
+			foreach( var stub in stubs )
+				reportsServiceStubCurrent.inventories.Add( stub );
 
 			//a
 			var methodResCurrent = new List< ProductInventory >();
@@ -62,12 +63,44 @@ namespace AmazonAccessTests.Services.FeedsReports
 
 			//a
 			methodResCurrent = methodResCurrent.OrderBy( x => x.Sku ).ToList();
-			var resultShouldBe = new List< ProductInventory >() { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" }, new ProductInventory() { Sku = "sku4" }, new ProductInventory() { Sku = "sku5" } };
-			for( var i = 0; i < resultShouldBe.Count; i++ )
-				resultShouldBe[ i ].ShouldBeEquivalentTo( methodResCurrent[ i ] );
-			resultShouldBe.Count.Should().Be( methodResCurrent.Count );
+			for( var i = 0; i < result.Count; i++ )
+				result[ i ].ShouldBeEquivalentTo( methodResCurrent[ i ] );
+			result.Count.Should().Be( methodResCurrent.Count );
 		}
 
+		public class testDataSource
+		{
+			public static IEnumerable TestCases
+			{
+				get
+				{
+					yield return new TestCaseData( new List< List< ProductInventory > >
+						{
+							new List< ProductInventory > { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" } },
+							new List< ProductInventory > { new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" }, new ProductInventory() { Sku = "sku4" } },
+							new List< ProductInventory > { new ProductInventory() { Sku = "sku3" }, new ProductInventory() { Sku = "sku4" }, new ProductInventory() { Sku = "sku5" } }
+						},
+						new List< ProductInventory >() { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" }, new ProductInventory() { Sku = "sku4" }, new ProductInventory() { Sku = "sku5" } }
+					);
+					yield return new TestCaseData( new List< List< ProductInventory > >
+						{
+							new List< ProductInventory > { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" } },
+							new List< ProductInventory > { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" } },
+							new List< ProductInventory > { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" } },
+						},
+						new List< ProductInventory >() { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" } }
+					);
+					yield return new TestCaseData( new List< List< ProductInventory > >
+						{
+							new List< ProductInventory > { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" } },
+							new List< ProductInventory > { new ProductInventory() { Sku = "sku4" }, new ProductInventory() { Sku = "sku5" }, new ProductInventory() { Sku = "sku6" } },
+							new List< ProductInventory > { new ProductInventory() { Sku = "sku7" }, new ProductInventory() { Sku = "sku8" }, new ProductInventory() { Sku = "sku9" } },
+						},
+						new List< ProductInventory >() { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" }, new ProductInventory() { Sku = "sku4" }, new ProductInventory() { Sku = "sku5" }, new ProductInventory() { Sku = "sku6" }, new ProductInventory() { Sku = "sku7" }, new ProductInventory() { Sku = "sku8" }, new ProductInventory() { Sku = "sku9" } }
+					);
+				}
+			}
+		}
 	}
 
 	public class ReportsServiceStub: ReportsService
