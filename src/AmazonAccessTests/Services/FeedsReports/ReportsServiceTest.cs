@@ -27,10 +27,11 @@ namespace AmazonAccessTests.Services.FeedsReports
 			reportsServiceStubCurrent.GetReportForEachMarketplace< ProductInventory >( "marker", ReportType.InventoryReport, DateTime.Now, DateTime.Now, true, p => p.Sku, ( x, y ) => methodResCurrent.AddRange( y ) );
 
 			//a
-			methodResCurrent = methodResCurrent.OrderBy( x => x.Sku ).ToList();
-			for( var i = 0; i < result.Count; i++ )
-				result[ i ].ShouldBeEquivalentTo( methodResCurrent[ i ] );
 			result.Count.Should().Be( methodResCurrent.Count );
+			methodResCurrent = methodResCurrent.OrderBy( x => x.Sku ).ToList();
+			result = result.OrderBy( x => x.Sku ).ToList();
+			for( var i = 0; i < result.Count; i++ )
+				result[ i ].Sku.ToLower().Should().BeEquivalentTo( methodResCurrent[ i ].Sku.ToLower() );
 		}
 
 		public class TestDataSource
@@ -55,7 +56,6 @@ namespace AmazonAccessTests.Services.FeedsReports
 						},
 						new List< ProductInventory >() { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" } }
 					).SetName( "Marketplaces-The-Same" );
-					;
 					yield return new TestCaseData( new List< List< ProductInventory > >
 						{
 							new List< ProductInventory > { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" } },
@@ -64,8 +64,26 @@ namespace AmazonAccessTests.Services.FeedsReports
 						},
 						new List< ProductInventory >() { new ProductInventory() { Sku = "sku1" }, new ProductInventory() { Sku = "sku2" }, new ProductInventory() { Sku = "sku3" }, new ProductInventory() { Sku = "sku4" }, new ProductInventory() { Sku = "sku5" }, new ProductInventory() { Sku = "sku6" }, new ProductInventory() { Sku = "sku7" }, new ProductInventory() { Sku = "sku8" }, new ProductInventory() { Sku = "sku9" } }
 					).SetName( "Marketplaces-Unique" );
-					;
+
+					yield return new TestCaseData( new List< IEnumerable< ProductInventory > >
+						{
+							GenerateSkus( 1, 100000, "TestSku" ),
+							GenerateSkus( 50001, 150000, "testSku" ),
+							GenerateSkus( 100001, 200000, "TestSku" ),
+						},
+						GenerateSkus( 1, 200000, "TestSku" ).ToList()
+					).SetName( "Marketplaces-differs-cases" );
 				}
+			}
+
+			public static ProductInventory[] GenerateSkus( int from, int to, string skuPrefix )
+			{
+				var a = new ProductInventory[ to - from + 1 ];
+				for( var i = from; i <= to; i++ )
+				{
+					a[ i - from ] = new ProductInventory() { Sku = skuPrefix + i.ToString( "D7" ) };
+				}
+				return a;
 			}
 		}
 	}
