@@ -109,13 +109,23 @@ namespace AmazonAccess.Services.FeedsReports
 			Action< AmazonMarketplace, List< T > > processReportAction ) where T : class, new()
 		{
 			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
+			var stopwatch1 = new Stopwatch();
+			var stopwatch2 = new Stopwatch();
+			var stopwatch3 = new Stopwatch();
 
 			var keys = new HashSet< string >();
+			var keys2 = new HashSet< string >( StringComparer.OrdinalIgnoreCase );
+			var keys3 = new List< string >();
 			foreach( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
 			{
 				var reportPortion = this.GetReportForMarketplaces< T >( marker, reportType, new List< string > { marketplace.MarketplaceId }, startDate, endDate ).ToList();
+				var reportPortionResult = reportPortion;
+				var reportPortionResult2 = reportPortion;
+				var reportPortionResult3 = reportPortion;
 				if( skipDuplicates )
 				{
+					//Original Max's version with bug
+					stopwatch1.Start();
 					var newReportPortion = new List< T >();
 					for( var i = 0; i < reportPortion.Count; i++ )
 					{
@@ -123,12 +133,48 @@ namespace AmazonAccess.Services.FeedsReports
 						if( keys.Add( key ) )
 							newReportPortion.Add( reportPortion[ i ] );
 					}
-					reportPortion = newReportPortion;
+					reportPortionResult = newReportPortion;
+					stopwatch1.Stop();
+
+					//Max's version with fixed bug
+					stopwatch2.Start();
+					var newReportPortion2 = new List< T >();
+					for( var i = 0; i < reportPortion.Count; i++ )
+					{
+						var key = getKey( reportPortion[ i ] );
+						if( keys2.Add( key ) )
+							newReportPortion2.Add( reportPortion[ i ] );
+					}
+					reportPortionResult2 = newReportPortion2;
+					stopwatch2.Stop();
+
+					//Original version
+					stopwatch3.Start();
+					var newReportPortionQuery = from pItem in reportPortion
+						let pKey = getKey( pItem ).ToLower()
+						join key in keys3 on pKey equals key into existingKeys
+						where !existingKeys.Any()
+						select new { Key = pKey, PortionItem = pItem };
+					newReportPortionQuery = newReportPortionQuery.GroupBy( x => x.Key ).Select( x => x.First() );
+
+					var newReportPortion3 = newReportPortionQuery.ToList();
+					if( newReportPortion3.Count != reportPortion.Count )
+						reportPortionResult3 = newReportPortion3.Select( x => x.PortionItem ).ToList();
+					keys3.AddRange( newReportPortion3.Select( x => x.Key ) );
+					stopwatch3.Stop();
+
+					var time1 = stopwatch1.Elapsed.TotalSeconds;
+					var time2 = stopwatch2.Elapsed.TotalSeconds;
+					var time3 = stopwatch3.Elapsed.TotalSeconds;
+					var count1 = reportPortionResult.Count;
+					var count2 = reportPortionResult2.Count;
+					var count3 = reportPortionResult3.Count;
 				}
 				processReportAction( marketplace, reportPortion );
 			}
-
-			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "End invoke" );
+			                    
+			
+			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "End invokewith" );
 		}
 
 		#endregion
@@ -138,9 +184,9 @@ namespace AmazonAccess.Services.FeedsReports
 		{
 			AmazonLogger.Trace( "GetReportForMarketplaces", this._credentials.SellerId, marker, "Begin invoke" );
 
-			var reportRequestId = this.GetReportRequestId( marker, reportType, marketplaces, startDate, endDate );
+			//var reportRequestId = this.GetReportRequestId( marker, reportType, marketplaces, startDate, endDate );
 
-			var reportId = this.GetNewReportId( marker, reportRequestId );
+			var reportId = "5071902104017296";//this.GetNewReportId( marker, reportRequestId );
 			if( string.IsNullOrEmpty( reportId ) )
 				reportId = this.GetExistingReportId( marker, reportType, marketplaces );
 			if( string.IsNullOrEmpty( reportId ) )

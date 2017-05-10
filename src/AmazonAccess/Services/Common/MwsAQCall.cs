@@ -108,8 +108,8 @@ namespace AmazonAccess.Services.Common
 						responseBody = reader.ReadToEnd();
 				}
 
-				AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Response received with StatusCode:'{0}'\n--- Response header metadata: ---\n{1} \n--- Response body: ---\n{2}",
-					statusCode, this.ResponseHeaderMetadata, responseBody );
+				//AmazonLogger.Trace( operationNameForLog, sellerId, marker, "Response received with StatusCode:'{0}'\n--- Response header metadata: ---\n{1} \n--- Response body: ---\n{2}",
+				//	statusCode, this.ResponseHeaderMetadata, responseBody );
 
 				if( statusCode != HttpStatusCode.OK )
 					throw new MwsException( ( int )statusCode, message, null, null, responseBody, this.ResponseHeaderMetadata );
