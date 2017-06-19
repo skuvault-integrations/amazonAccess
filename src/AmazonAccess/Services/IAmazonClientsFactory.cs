@@ -1,4 +1,5 @@
 ﻿using AmazonAccess.Services.FbaInventory;
+using AmazonAccess.Services.FBAInbound;
 using AmazonAccess.Services.FeedsReports;
 using AmazonAccess.Services.Orders;
 using AmazonAccess.Services.Products;
@@ -13,5 +14,6 @@ namespace AmazonAccess.Services
 		IOrdersServiceClient CreateOrdersClient();
 		IProductsServiceClient CreateProductsClient();
 		ISellersServiceClient CreateSellersClient();
+		IFbaInboundServiceClient CreateFbaInboundClient();
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventory.Model;
+using AmazonAccess.Services.FBAInbound.Model;
 using AmazonAccess.Services.FeedsReports.Model;
 using AmazonAccess.Services.FeedsReports.ReportModel;
 using AmazonAccess.Services.Orders.Model;
@@ -210,5 +211,7 @@ namespace AmazonAccess
 		List< FbaFulfilledInventory > GetFbaFulfilledInventory( bool dontSendMarketplaces = false );
 
 		MarketplaceParticipations GetMarketplaceParticipations();
+
+		List< InboundShipmentInfo > GetListInboundShipments();
 	}
 }

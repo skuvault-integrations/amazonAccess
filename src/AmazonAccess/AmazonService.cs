@@ -4,8 +4,10 @@ using System.Linq;
 using AmazonAccess.Misc;
 using AmazonAccess.Models;
 using AmazonAccess.Services;
+using AmazonAccess.Services.FbaInbound;
 using AmazonAccess.Services.FbaInventory;
 using AmazonAccess.Services.FbaInventory.Model;
+using AmazonAccess.Services.FBAInbound.Model;
 using AmazonAccess.Services.FeedsReports;
 using AmazonAccess.Services.FeedsReports.Model;
 using AmazonAccess.Services.FeedsReports.ReportModel;
@@ -414,6 +416,16 @@ namespace AmazonAccess
 
 			AmazonLogger.Trace( "GetFbaFulfilledInventory", this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();
+		}
+		#endregion
+
+		#region Get FBA Inbound
+		public List< InboundShipmentInfo > GetListInboundShipments()
+		{
+			var client = this._factory.CreateFbaInboundClient();
+			var service = new FbaInboundService( client, this._credentials );
+			var inbounds = service.GetListInboundShipments( this.GetMarker() );
+			return inbounds.ToList();
 		}
 		#endregion
 

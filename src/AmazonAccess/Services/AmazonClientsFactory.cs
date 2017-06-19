@@ -2,6 +2,7 @@
 using AmazonAccess.Models;
 using AmazonAccess.Services.Common;
 using AmazonAccess.Services.FbaInventory;
+using AmazonAccess.Services.FBAInbound;
 using AmazonAccess.Services.FeedsReports;
 using AmazonAccess.Services.Orders;
 using AmazonAccess.Services.Products;
@@ -31,6 +32,18 @@ namespace AmazonAccess.Services
 			};
 			connection.SetUserAgent( "SkuVault", "1.0", "C#" );
 			return new FbaInventoryServiceClient( connection );
+		}
+
+		public IFbaInboundServiceClient CreateFbaInboundClient()
+		{
+			var connection = new MwsConnection
+			{
+				AwsAccessKeyId = this._credentials.AccessKeyId,
+				AwsSecretKeyId = this._credentials.SecretAccessKeyId,
+				ServiceURL = this._credentials.AmazonMarketplaces.FbaInboundServiceUrl
+			};
+			connection.SetUserAgent( "SkuVault", "1.0", "C#" );
+			return new FbaInboundServiceClient( connection );
 		}
 
 		public IFeedsReportsServiceClient CreateFeedsReportsClient()

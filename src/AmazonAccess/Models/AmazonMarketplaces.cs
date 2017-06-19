@@ -10,6 +10,7 @@ namespace AmazonAccess.Models
 		public string OrdersServiceUrl{ get; private set; }
 		public string ProductsServiceUrl{ get; private set; }
 		public string FbaInventoryServiceUrl{ get; private set; }
+		public string FbaInboundServiceUrl{ get; private set; }
 		public string FeedsServiceUrl{ get; private set; }
 		public string SellersServiceUrl{ get; private set; }
 		public List< AmazonMarketplace > Marketplaces{ get; private set; }
@@ -21,6 +22,7 @@ namespace AmazonAccess.Models
 			this.OrdersServiceUrl = marketplace.OrdersServiceUrl;
 			this.ProductsServiceUrl = marketplace.ProductsServiceUrl;
 			this.FbaInventoryServiceUrl = marketplace.FbaInventoryServiceUrl;
+			this.FbaInboundServiceUrl = marketplace.FbaInboundServiceUrl;
 			this.FeedsServiceUrl = marketplace.FeedsServiceUrl;
 			this.SellersServiceUrl = marketplace.SellersServiceUrl;
 			this.Marketplaces = marketplaces;

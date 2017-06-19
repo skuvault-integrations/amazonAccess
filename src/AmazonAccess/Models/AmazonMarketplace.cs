@@ -12,6 +12,7 @@ namespace AmazonAccess.Models
 		public string OrdersServiceUrl{ get; private set; }
 		public string ProductsServiceUrl{ get; private set; }
 		public string FbaInventoryServiceUrl{ get; private set; }
+		public string FbaInboundServiceUrl{ get; private set; }
 		public string FeedsServiceUrl{ get; private set; }
 		public string SellersServiceUrl{ get; private set; }
 		public AmazonRegionCodeEnum RegionCode{ get; private set; }
@@ -142,6 +143,7 @@ namespace AmazonAccess.Models
 			this.OrdersServiceUrl = this.Endpoint + "/Orders/2013-09-01";
 			this.ProductsServiceUrl = this.Endpoint + "/Products/2011-10-01";
 			this.FbaInventoryServiceUrl = this.Endpoint + "/FulfillmentInventory/2010-10-01";
+			this.FbaInboundServiceUrl = this.Endpoint + "/FulfillmentInboundShipment/2010-10-01";
 			this.FeedsServiceUrl = this.Endpoint;
 			this.SellersServiceUrl = this.Endpoint + "/Sellers/2011-07-01";
 		}
