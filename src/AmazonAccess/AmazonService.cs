@@ -420,12 +420,11 @@ namespace AmazonAccess
 		#endregion
 
 		#region Get FBA Inbound
-		public List< InboundShipmentInfo > GetListInboundShipments()
+		public List< InboundShipmentFullInfo > GetInboundShipmentsData()
 		{
 			var client = this._factory.CreateFbaInboundClient();
 			var service = new FbaInboundService( client, this._credentials );
-			var inbounds = service.GetListInboundShipments( this.GetMarker() );
-			return inbounds.ToList();
+			return service.GetInboundShipmentsData( this.GetMarker() );
 		}
 		#endregion
 

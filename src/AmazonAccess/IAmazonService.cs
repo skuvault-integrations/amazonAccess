@@ -212,6 +212,6 @@ namespace AmazonAccess
 
 		MarketplaceParticipations GetMarketplaceParticipations();
 
-		List< InboundShipmentInfo > GetListInboundShipments();
+		List< InboundShipmentFullInfo > GetInboundShipmentsData();
 	}
 }

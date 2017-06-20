@@ -20,8 +20,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AmazonAccess.Misc;
 using AmazonAccess.Models;
-using AmazonAccess.Services.FbaInventory;
-using AmazonAccess.Services.FbaInventory.Model;
 using AmazonAccess.Services.FBAInbound;
 using AmazonAccess.Services.FBAInbound.Model;
 using CuttingEdge.Conditions;
@@ -45,36 +43,20 @@ namespace AmazonAccess.Services.FbaInbound
 			this._credentials = credentials;
 		}
 
-		/// <summary>
-		/// Get information about the supply of seller-owned inventory in
-		/// Amazon's fulfillment network. "Supply" is inventory that is available
-		/// for fulfilling (a.k.a. Multi-Channel Fulfillment) orders. In general
-		/// this includes all sellable inventory that has been received by Amazon,
-		/// that is not reserved for existing orders or for internal FC processes,
-		/// and also inventory expected to be received from inbound shipments.
-		/// This operation provides 2 typical usages by setting different
-		/// ListInventorySupplyRequest value:
-		/// 
-		/// 1. Set value to SellerSkus and not set value to QueryStartDateTime,
-		/// this operation will return all sellable inventory that has been received
-		/// by Amazon's fulfillment network for these SellerSkus.
-		/// 2. Not set value to SellerSkus and set value to QueryStartDateTime,
-		/// This operation will return information about the supply of all seller-owned
-		/// inventory in Amazon's fulfillment network, for inventory items that may have had
-		/// recent changes in inventory levels. It provides the most efficient mechanism
-		/// for clients to maintain local copies of inventory supply data.
-		/// Only 1 of these 2 parameters (SellerSkus and QueryStartDateTime) can be set value for 1 request.
-		/// If both with values or neither with values, an exception will be thrown.
-		/// This operation is used with ListInventorySupplyByNextToken
-		/// to paginate over the resultset. Begin pagination by invoking the
-		/// ListInventorySupply operation, and retrieve the first set of
-		/// results. If more results are available,continuing iteratively requesting further
-		/// pages results by invoking the ListInventorySupplyByNextToken operation (each time
-		/// passing in the NextToken value from the previous result), until the returned NextToken
-		/// is null, indicating no further results are available.
-		/// 
-		/// </summary>
-		public IEnumerable< InboundShipmentInfo > GetListInboundShipments( string marker )
+		public List< InboundShipmentFullInfo > GetInboundShipmentsData( string marker )
+		{
+			var listInboundShipments = this.GetListInboundShipments( marker ).ToList();
+			var result = new List< InboundShipmentFullInfo >();
+			foreach( var inboundShipment in listInboundShipments )
+			{
+				var inboundShipmentItems = this.GetListInboundShipmentItems( inboundShipment.ShipmentId, marker );
+				result.Add( new InboundShipmentFullInfo( inboundShipment, inboundShipmentItems.ToList() ) );
+			}
+
+			return result;
+		}
+
+		private IEnumerable< InboundShipmentInfo > GetListInboundShipments( string marker )
 		{
 			AmazonLogger.Trace( "ListInboundShipments", this._credentials.SellerId, marker, "Begin invoke" );
 
@@ -91,18 +73,18 @@ namespace AmazonAccess.Services.FbaInbound
 			{
 				if( response.ListInboundShipmentsResult.IsSetShipmentData() )
 					result.AddRange( response.ListInboundShipmentsResult.ShipmentData.member );
-				this.AddFbaInventoryFromOtherPages( marker, response.ListInboundShipmentsResult.NextToken, result );
+				this.AddFbaInboundShipmentsFromOtherPages( marker, response.ListInboundShipmentsResult.NextToken, result );
 			}
 
 			AmazonLogger.Trace( "LoadFbaInventory", this._credentials.SellerId, marker, "End invoke" );
 			return result;
 		}
 
-		private void AddFbaInventoryFromOtherPages( string marker, string nextToken, List< InboundShipmentInfo > result )
+		private void AddFbaInboundShipmentsFromOtherPages( string marker, string nextToken, List< InboundShipmentInfo > result )
 		{
 			while( !string.IsNullOrEmpty( nextToken ) )
 			{
-				AmazonLogger.Trace( "AddFbaInboundFromOtherPages", this._credentials.SellerId, marker, "NextToken:{0}", nextToken );
+				AmazonLogger.Trace( "AddFbaInboundShipmentsFromOtherPages", this._credentials.SellerId, marker, "NextToken:{0}", nextToken );
 
 				var request = new ListInboundShipmentsByNextTokenRequest
 				{
@@ -116,6 +98,52 @@ namespace AmazonAccess.Services.FbaInbound
 					if( response.ListInboundShipmentsByNextTokenResult.IsSetShipmentData() )
 						result.AddRange( response.ListInboundShipmentsByNextTokenResult.ShipmentData.member );
 					nextToken = response.ListInboundShipmentsByNextTokenResult.NextToken;
+				}
+			}
+		}
+
+		private IEnumerable< InboundShipmentItem > GetListInboundShipmentItems( string shipmentId, string marker )
+		{
+			AmazonLogger.Trace( "ListInboundShipmentItems", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var marketplaces = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList();
+			var request = new ListInboundShipmentItemsRequest
+			{
+				SellerId = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				ShipmentId = shipmentId
+			};
+			var result = new List< InboundShipmentItem >();
+			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListInboundShipmentItems( request, marker ) ) );
+			if( response.IsSetListInboundShipmentItemsResult() )
+			{
+				if( response.ListInboundShipmentItemsResult.IsSetItemData() )
+					result.AddRange( response.ListInboundShipmentItemsResult.ItemData.member );
+				this.AddFbaInboundShipmentItemsFromOtherPages( marker, response.ListInboundShipmentItemsResult.NextToken, result );
+			}
+
+			AmazonLogger.Trace( "LoadFbaInventory", this._credentials.SellerId, marker, "End invoke" );
+			return result;
+		}
+
+		private void AddFbaInboundShipmentItemsFromOtherPages( string marker, string nextToken, List< InboundShipmentItem > result )
+		{
+			while( !string.IsNullOrEmpty( nextToken ) )
+			{
+				AmazonLogger.Trace( "AddFbaInboundShipmentItemsFromOtherPages", this._credentials.SellerId, marker, "NextToken:{0}", nextToken );
+
+				var request = new ListInboundShipmentItemsByNextTokenRequest
+				{
+					SellerId = this._credentials.SellerId,
+					MWSAuthToken = this._credentials.MwsAuthToken,
+					NextToken = nextToken
+				};
+				var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListInboundShipmentItemsByNextToken( request, marker ) ) );
+				if( response.IsSetListInboundShipmentItemsByNextTokenResult() )
+				{
+					if( response.ListInboundShipmentItemsByNextTokenResult.IsSetItemData() )
+						result.AddRange( response.ListInboundShipmentItemsByNextTokenResult.ItemData.member );
+					nextToken = response.ListInboundShipmentItemsByNextTokenResult.NextToken;
 				}
 			}
 		}

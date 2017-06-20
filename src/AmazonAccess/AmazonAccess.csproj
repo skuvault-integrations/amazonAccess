@@ -64,6 +64,7 @@
     <Compile Include="Misc\ThrottlerAsync.cs" />
     <Compile Include="Services\FBAInbound\FbaInboundService.cs" />
     <Compile Include="Services\FBAInbound\Model\FBAInboundServiceMWSException.cs" />
+    <Compile Include="Services\FBAInbound\Model\InboundShipmentFullInfo.cs" />
     <Compile Include="Services\FeedsReports\InventoryFeedXmlService.cs" />
     <Compile Include="Misc\Throttler.cs" />
     <Compile Include="Models\AmazonAppCredentials.cs" />

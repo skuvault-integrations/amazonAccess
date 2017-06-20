@@ -20,7 +20,7 @@ namespace AmazonAccessTests.Tests
 		public void GetListInboundShipments()
 		{
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
-			var inbounds = service.GetListInboundShipments();
+			var inbounds = service.GetInboundShipmentsData();
 
 			inbounds.Count().Should().BeGreaterThan( 0 );
 		}
