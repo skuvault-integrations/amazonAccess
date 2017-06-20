@@ -26,6 +26,20 @@ namespace AmazonAccess.Services.FBAInbound.Model
 			this.InboundShipmentItemList = new List< InboundShipmentItem >();
 		}
 
+		public InboundShipmentFullInfo( InboundShipmentInfo inboundShipmentInfo )
+		{
+			this.ShipmentId = inboundShipmentInfo.ShipmentId;
+			this.ShipmentName = inboundShipmentInfo.ShipmentName;
+			this.ShipFromAddress = inboundShipmentInfo.ShipFromAddress;
+			this.DestinationFulfillmentCenterId = inboundShipmentInfo.DestinationFulfillmentCenterId;
+			this.ShipmentStatus = inboundShipmentInfo.ShipmentStatus;
+			this.LabelPrepType = inboundShipmentInfo.LabelPrepType;
+			this.ConfirmedNeedByDate = inboundShipmentInfo.ConfirmedNeedByDate;
+			this.BoxContentsSource = inboundShipmentInfo.BoxContentsSource;
+			this.EstimatedBoxContentsFee = inboundShipmentInfo.EstimatedBoxContentsFee;
+			this.InboundShipmentItemList = new List< InboundShipmentItem >();
+		}
+
 		public InboundShipmentFullInfo( InboundShipmentInfo inboundShipmentInfo, List< InboundShipmentItem > inboundShipmentItemList )
 		{
 			this.ShipmentId = inboundShipmentInfo.ShipmentId;

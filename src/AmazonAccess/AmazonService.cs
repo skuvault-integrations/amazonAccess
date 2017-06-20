@@ -420,11 +420,33 @@ namespace AmazonAccess
 		#endregion
 
 		#region Get FBA Inbound
-		public List< InboundShipmentFullInfo > GetInboundShipmentsData()
+		public List< InboundShipmentFullInfo > GetListInboundShipments( string[] shipmentStatusListForReceive, string[] shipmentStatusListForReceiveItems )
 		{
 			var client = this._factory.CreateFbaInboundClient();
 			var service = new FbaInboundService( client, this._credentials );
-			return service.GetInboundShipmentsData( this.GetMarker() );
+			return service.GetInboundShipmentsData(
+				this.GetMarker(),
+				shipmentStatusListForReceive.Any() ? shipmentStatusListForReceive.ToList() : this.GetAllShipmentStatusList().ToList(),
+				shipmentStatusListForReceiveItems.Any() ? shipmentStatusListForReceiveItems.ToList() : this.GetShipmentStatusListForReceiveItems().ToList() );
+		}
+
+		private IEnumerable< string > GetAllShipmentStatusList()
+		{
+			yield return "WORKING";
+			yield return "SHIPPED";
+			yield return "IN_TRANSIT";
+			yield return "DELIVERED";
+			yield return "CHECKED_IN";
+			yield return "RECEIVING";
+			yield return "CLOSED";
+			yield return "CANCELLED";
+			yield return "DELETED";
+			yield return "ERROR";
+		}
+
+		private IEnumerable< string > GetShipmentStatusListForReceiveItems()
+		{
+			yield return "WORKING";
 		}
 		#endregion
 

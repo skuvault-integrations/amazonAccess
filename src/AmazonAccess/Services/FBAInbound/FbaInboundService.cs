@@ -43,20 +43,22 @@ namespace AmazonAccess.Services.FbaInbound
 			this._credentials = credentials;
 		}
 
-		public List< InboundShipmentFullInfo > GetInboundShipmentsData( string marker )
+		public List< InboundShipmentFullInfo > GetInboundShipmentsData( string marker, List< string > shipmentStatusListForReceive, List< string > shipmentStatusListForReceiveItems )
 		{
-			var listInboundShipments = this.GetListInboundShipments( marker ).ToList();
+			var listInboundShipments = this.GetListInboundShipments( marker, shipmentStatusListForReceive ).ToList();
 			var result = new List< InboundShipmentFullInfo >();
 			foreach( var inboundShipment in listInboundShipments )
 			{
-				var inboundShipmentItems = this.GetListInboundShipmentItems( inboundShipment.ShipmentId, marker );
-				result.Add( new InboundShipmentFullInfo( inboundShipment, inboundShipmentItems.ToList() ) );
+				if( shipmentStatusListForReceiveItems.Any( t => string.Equals( t, inboundShipment.ShipmentStatus, StringComparison.InvariantCultureIgnoreCase ) ) )
+					result.Add( new InboundShipmentFullInfo( inboundShipment, this.GetListInboundShipmentItems( inboundShipment.ShipmentId, marker ).ToList() ) );
+				else
+					result.Add( new InboundShipmentFullInfo( inboundShipment ) );
 			}
 
 			return result;
 		}
 
-		private IEnumerable< InboundShipmentInfo > GetListInboundShipments( string marker )
+		private List< InboundShipmentInfo > GetListInboundShipments( string marker, List< string > shipmentStatusListForReceive)
 		{
 			AmazonLogger.Trace( "ListInboundShipments", this._credentials.SellerId, marker, "Begin invoke" );
 
@@ -65,7 +67,7 @@ namespace AmazonAccess.Services.FbaInbound
 			{
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
-				ShipmentStatusList = new ShipmentStatusList() { member = new List< string >() { "WORKING" } }
+				ShipmentStatusList = new ShipmentStatusList() { member = shipmentStatusListForReceive }
 			};
 			var result = new List< InboundShipmentInfo >();
 			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListInboundShipments( request, marker ) ) );
