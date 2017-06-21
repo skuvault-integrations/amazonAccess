@@ -420,12 +420,14 @@ namespace AmazonAccess
 		#endregion
 
 		#region Get FBA Inbound
-		public List< InboundShipmentFullInfo > GetListInboundShipments( string[] shipmentStatusListForReceive, string[] shipmentStatusListForReceiveItems )
+		public List< InboundShipmentFullInfo > GetListInboundShipments( DateTime? dateFrom, DateTime? dateTo, string[] shipmentStatusListForReceive, string[] shipmentStatusListForReceiveItems )
 		{
 			var client = this._factory.CreateFbaInboundClient();
 			var service = new FbaInboundService( client, this._credentials );
 			return service.GetInboundShipmentsData(
 				this.GetMarker(),
+				dateFrom ?? DateTime.MinValue,
+				dateTo ?? DateTime.UtcNow,
 				shipmentStatusListForReceive.Any() ? shipmentStatusListForReceive.ToList() : this.GetAllShipmentStatusList().ToList(),
 				shipmentStatusListForReceiveItems.Any() ? shipmentStatusListForReceiveItems.ToList() : this.GetShipmentStatusListForReceiveItems().ToList() );
 		}

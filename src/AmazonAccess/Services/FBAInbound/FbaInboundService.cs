@@ -43,9 +43,9 @@ namespace AmazonAccess.Services.FbaInbound
 			this._credentials = credentials;
 		}
 
-		public List< InboundShipmentFullInfo > GetInboundShipmentsData( string marker, List< string > shipmentStatusListForReceive, List< string > shipmentStatusListForReceiveItems )
+		public List< InboundShipmentFullInfo > GetInboundShipmentsData( string marker, DateTime dateFrom, DateTime dateTo, List< string > shipmentStatusListForReceive, List< string > shipmentStatusListForReceiveItems )
 		{
-			var listInboundShipments = this.GetListInboundShipments( marker, shipmentStatusListForReceive ).ToList();
+			var listInboundShipments = this.GetListInboundShipments( marker, dateFrom, dateTo, shipmentStatusListForReceive ).ToList();
 			var result = new List< InboundShipmentFullInfo >();
 			foreach( var inboundShipment in listInboundShipments )
 			{
@@ -58,7 +58,7 @@ namespace AmazonAccess.Services.FbaInbound
 			return result;
 		}
 
-		private List< InboundShipmentInfo > GetListInboundShipments( string marker, List< string > shipmentStatusListForReceive)
+		private List< InboundShipmentInfo > GetListInboundShipments( string marker, DateTime dateFrom, DateTime dateTo, List< string > shipmentStatusListForReceive)
 		{
 			AmazonLogger.Trace( "ListInboundShipments", this._credentials.SellerId, marker, "Begin invoke" );
 
@@ -67,6 +67,8 @@ namespace AmazonAccess.Services.FbaInbound
 			{
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
+				LastUpdatedAfter = dateFrom,
+				LastUpdatedBefore = dateTo,
 				ShipmentStatusList = new ShipmentStatusList() { member = shipmentStatusListForReceive }
 			};
 			var result = new List< InboundShipmentInfo >();
