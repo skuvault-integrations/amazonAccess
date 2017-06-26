@@ -30,7 +30,7 @@ namespace AmazonAccess.Services.FbaInbound
 	{
 		private readonly IFbaInboundServiceClient _client;
 		private readonly AmazonCredentials _credentials;
-		private readonly Throttler _throttler = new Throttler( 30, 1 );
+		private readonly Throttler _throttler = new Throttler( 30, 1, 2 );
 
 		/// <param name="client">Instance of FBAInventoryServiceMWS client</param>
 		/// <param name="credentials">credentials</param>
