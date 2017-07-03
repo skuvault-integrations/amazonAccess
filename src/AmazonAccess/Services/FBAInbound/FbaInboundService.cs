@@ -30,7 +30,8 @@ namespace AmazonAccess.Services.FbaInbound
 	{
 		private readonly IFbaInboundServiceClient _client;
 		private readonly AmazonCredentials _credentials;
-		private readonly Throttler _throttler = new Throttler( 30, 1, 2 );
+		private readonly Throttler _getOrdersThrottler = new Throttler( 30, 1, 2 );
+		private readonly Throttler _orderItemsThrottler = new Throttler( 30, 1, 2 );
 
 		/// <param name="client">Instance of FBAInventoryServiceMWS client</param>
 		/// <param name="credentials">credentials</param>
@@ -72,7 +73,7 @@ namespace AmazonAccess.Services.FbaInbound
 				ShipmentStatusList = new ShipmentStatusList() { member = shipmentStatusListForReceive }
 			};
 			var result = new List< InboundShipmentInfo >();
-			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListInboundShipments( request, marker ) ) );
+			var response = ActionPolicies.Get.Get( () => this._getOrdersThrottler.Execute( () => this._client.ListInboundShipments( request, marker ) ) );
 			if( response.IsSetListInboundShipmentsResult() )
 			{
 				if( response.ListInboundShipmentsResult.IsSetShipmentData() )
@@ -96,7 +97,7 @@ namespace AmazonAccess.Services.FbaInbound
 					MWSAuthToken = this._credentials.MwsAuthToken,
 					NextToken = nextToken
 				};
-				var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListInboundShipmentsByNextToken( request, marker ) ) );
+				var response = ActionPolicies.Get.Get( () => this._getOrdersThrottler.Execute( () => this._client.ListInboundShipmentsByNextToken( request, marker ) ) );
 				if( response.IsSetListInboundShipmentsByNextTokenResult() )
 				{
 					if( response.ListInboundShipmentsByNextTokenResult.IsSetShipmentData() )
@@ -118,7 +119,7 @@ namespace AmazonAccess.Services.FbaInbound
 				ShipmentId = shipmentId
 			};
 			var result = new List< InboundShipmentItem >();
-			var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListInboundShipmentItems( request, marker ) ) );
+			var response = ActionPolicies.Get.Get( () => this._orderItemsThrottler.Execute( () => this._client.ListInboundShipmentItems( request, marker ) ) );
 			if( response.IsSetListInboundShipmentItemsResult() )
 			{
 				if( response.ListInboundShipmentItemsResult.IsSetItemData() )
@@ -142,7 +143,7 @@ namespace AmazonAccess.Services.FbaInbound
 					MWSAuthToken = this._credentials.MwsAuthToken,
 					NextToken = nextToken
 				};
-				var response = ActionPolicies.Get.Get( () => this._throttler.Execute( () => this._client.ListInboundShipmentItemsByNextToken( request, marker ) ) );
+				var response = ActionPolicies.Get.Get( () => this._orderItemsThrottler.Execute( () => this._client.ListInboundShipmentItemsByNextToken( request, marker ) ) );
 				if( response.IsSetListInboundShipmentItemsByNextTokenResult() )
 				{
 					if( response.ListInboundShipmentItemsByNextTokenResult.IsSetItemData() )
