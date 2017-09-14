@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using AmazonAccess.Misc;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FeedsReports.Model;
+using AmazonAccess.Services.FeedsReports.ReportModel;
 using CuttingEdge.Conditions;
 using LINQtoCSV;
 
@@ -103,6 +104,49 @@ namespace AmazonAccess.Services.FeedsReports
 					processReportAction( marketplace, p );
 				}
 			} );
+		}
+
+		public List< ProductInventory > GetReportForEachMarketplaceAndJoinForProductInventory( string marker, DateTime startDate, DateTime endDate, bool skipDuplicates )
+		{
+			var report = new List< ProductInventory >();
+			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var keys = new Dictionary< string, bool >( StringComparer.OrdinalIgnoreCase );
+			foreach( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
+			{
+				var reportPortion = this.GetReportForMarketplaces< ProductInventory >( marker, ReportType.InventoryReport, new List< string > { marketplace.MarketplaceId }, startDate, endDate ).ToList();
+				if( skipDuplicates )
+				{
+					var newReportPortion = new List< ProductInventory >();
+					for( var i = 0; i < reportPortion.Count; i++ )
+					{
+						var key = reportPortion[ i ].Sku;
+						if( keys.ContainsKey( key ) )
+						{
+							// If old is FBA and new is NotFba then...
+							if( !keys[ key ] && reportPortion[ i ].IsDefaultFulfillmentChannel )
+							{
+								keys.Remove( key );
+								report.RemoveAll( x => string.Equals( x.Sku, key, StringComparison.OrdinalIgnoreCase ) );
+								newReportPortion.RemoveAll( x => string.Equals( x.Sku, key, StringComparison.OrdinalIgnoreCase ) );
+
+								keys.Add( key, reportPortion[ i ].IsDefaultFulfillmentChannel );
+								newReportPortion.Add( reportPortion[ i ] );
+							}
+						}
+						else
+						{
+							keys.Add( key, reportPortion[ i ].IsDefaultFulfillmentChannel );
+							newReportPortion.Add( reportPortion[ i ] );
+						}
+					}
+					reportPortion = newReportPortion;
+				}
+				report.AddRange( reportPortion );
+			}
+
+			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "End invoke" );
+			return report;
 		}
 
 		public void GetReportForEachMarketplace< T >( string marker, ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey,
