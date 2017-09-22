@@ -100,8 +100,9 @@ namespace AmazonAccess
 			var service = new ReportsService( client, this._credentials );
 			//var products = service.GetReportForEachMarketplaceAndJoin<ProductInventory>(marker, ReportType.InventoryReport, 
 			//	DateTime.UtcNow.AddDays(-90).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), skipDuplicates, (pr => pr.Sku));
-			var products = service.GetReportForEachMarketplaceAndJoinForProductInventory( marker,
-				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), skipDuplicates );
+			var products = skipDuplicates ?
+				service.GetReportForEachMarketplaceAndJoinForProductInventorySkipDuplicates( marker, DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime() ) :
+				service.GetReportForEachMarketplaceAndJoinForProductInventoryNotSkipDuplicates( marker, DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime() );
 
 			AmazonLogger.Trace( "GetProductsInventory", this._credentials.SellerId, marker, "End invoke" );
 			return products;

@@ -106,42 +106,13 @@ namespace AmazonAccess.Services.FeedsReports
 			} );
 		}
 
-		public List< ProductInventory > GetReportForEachMarketplaceAndJoinForProductInventory( string marker, DateTime startDate, DateTime endDate, bool skipDuplicates )
+		public List< ProductInventory > GetReportForEachMarketplaceAndJoinForProductInventoryNotSkipDuplicates( string marker, DateTime startDate, DateTime endDate )
 		{
 			var report = new List< ProductInventory >();
 			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
-
-			var keys = new Dictionary< string, bool >( StringComparer.OrdinalIgnoreCase );
 			foreach( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
 			{
 				var reportPortion = this.GetReportForMarketplaces< ProductInventory >( marker, ReportType.InventoryReport, new List< string > { marketplace.MarketplaceId }, startDate, endDate ).ToList();
-				if( skipDuplicates )
-				{
-					var newReportPortion = new List< ProductInventory >();
-					for( var i = 0; i < reportPortion.Count; i++ )
-					{
-						var key = reportPortion[ i ].Sku;
-						if( keys.ContainsKey( key ) )
-						{
-							// If old is FBA and new is NotFba then...
-							if( !keys[ key ] && reportPortion[ i ].IsDefaultFulfillmentChannel )
-							{
-								keys.Remove( key );
-								report.RemoveAll( x => string.Equals( x.Sku, key, StringComparison.OrdinalIgnoreCase ) );
-								newReportPortion.RemoveAll( x => string.Equals( x.Sku, key, StringComparison.OrdinalIgnoreCase ) );
-
-								keys.Add( key, reportPortion[ i ].IsDefaultFulfillmentChannel );
-								newReportPortion.Add( reportPortion[ i ] );
-							}
-						}
-						else
-						{
-							keys.Add( key, reportPortion[ i ].IsDefaultFulfillmentChannel );
-							newReportPortion.Add( reportPortion[ i ] );
-						}
-					}
-					reportPortion = newReportPortion;
-				}
 				report.AddRange( reportPortion );
 			}
 
@@ -149,6 +120,37 @@ namespace AmazonAccess.Services.FeedsReports
 			return report;
 		}
 
+		public List< ProductInventory > GetReportForEachMarketplaceAndJoinForProductInventorySkipDuplicates( string marker, DateTime startDate, DateTime endDate )
+		{
+			var report = new Dictionary< string, ProductInventory >( StringComparer.OrdinalIgnoreCase );
+			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
+			
+			foreach( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
+			{
+				var reportPortion = this.GetReportForMarketplaces< ProductInventory >( marker, ReportType.InventoryReport, new List< string > { marketplace.MarketplaceId }, startDate, endDate ).ToList();
+				for( var i = 0; i < reportPortion.Count; i++ )
+				{
+					var key = reportPortion[ i ].Sku;
+					if( report.ContainsKey( key ) )
+					{
+						// If old is FBA and new is NotFba then...
+						if( !report[ key ].IsDefaultFulfillmentChannel && reportPortion[ i ].IsDefaultFulfillmentChannel )
+						{
+							report.Remove( key );
+							report.Add( key, reportPortion[ i ] );
+						}
+					}
+					else
+					{
+						report.Add( key, reportPortion[ i ] );
+					}
+				}
+			}
+
+			AmazonLogger.Trace( "GetReportForEachMarketplace", this._credentials.SellerId, marker, "End invoke" );
+			return report.Select( x => x.Value ).ToList();
+		}
+		
 		public void GetReportForEachMarketplace< T >( string marker, ReportType reportType, DateTime startDate, DateTime endDate, bool skipDuplicates, Func< T, string > getKey,
 			Action< AmazonMarketplace, List< T > > processReportAction ) where T : class, new()
 		{
