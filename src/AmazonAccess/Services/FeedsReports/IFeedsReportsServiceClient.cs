@@ -15,6 +15,7 @@
  * 
  */
 
+using AmazonAccess.Models;
 using AmazonAccess.Services.FeedsReports.Model;
 
 namespace AmazonAccess.Services.FeedsReports
@@ -36,7 +37,7 @@ namespace AmazonAccess.Services.FeedsReports
 		/// streaming fashion.
 		///   
 		/// </remarks>
-		GetReportResponse GetReport( GetReportRequest request, string marker );
+		GetReportResponse GetReport( GetReportRequest request, string marker, AmazonCountryCodeEnum? countryCode = null );
 
 		/// <summary>
 		/// Get Report Schedule Count 

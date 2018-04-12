@@ -11,6 +11,8 @@
  * Marketplace Web Service Runtime Client Library
  */
 
+using AmazonAccess.Models;
+
 namespace AmazonAccess.Services.Common
 {
 	public interface IMwsCall: IMwsWriter
@@ -21,7 +23,7 @@ namespace AmazonAccess.Services.Common
 		/// </summary>
 		/// <exception cref="MwsException">Exceptions from invoking the request</exception>
 		/// <returns></returns>
-		IMwsReader invoke( string marker );
+		IMwsReader invoke( string marker, AmazonCountryCodeEnum? countryCode = null );
 
 		/// <summary>
 		/// Get the response metadata header.

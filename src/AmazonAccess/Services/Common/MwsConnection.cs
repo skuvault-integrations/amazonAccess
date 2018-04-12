@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using AmazonAccess.Models;
 
 namespace AmazonAccess.Services.Common
 {
@@ -140,7 +141,7 @@ namespace AmazonAccess.Services.Common
 		/// <param name="requestData"></param>
 		/// <param name="marker"></param>
 		/// <returns></returns>
-		public T Call< T >( IMwsRequestType< T > type, IMwsObject requestData, string marker ) where T : IMwsObject
+		public T Call< T >( IMwsRequestType< T > type, IMwsObject requestData, string marker, AmazonCountryCodeEnum? countryCode = null ) where T : IMwsObject
 		{
 			try
 			{
@@ -148,7 +149,7 @@ namespace AmazonAccess.Services.Common
 				using( var mc = this.NewCall( operationName ) )
 				{
 					requestData.WriteFragmentTo( mc );
-					var responseReader = mc.invoke( marker );
+					var responseReader = mc.invoke( marker, countryCode );
 					var rhmd = mc.GetResponseMetadataHeader();
 					var response = MwsUtil.NewInstance< T >();
 					type.SetResponseHeaderMetadata( response, rhmd );

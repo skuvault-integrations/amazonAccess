@@ -16,6 +16,7 @@
  */
 
 using System;
+using AmazonAccess.Models;
 using AmazonAccess.Services.Common;
 using AmazonAccess.Services.FeedsReports.Model;
 
@@ -62,9 +63,9 @@ namespace AmazonAccess.Services.FeedsReports
 		/// streaming fashion.
 		/// 
 		/// </remarks>
-		public GetReportResponse GetReport( GetReportRequest request, string marker )
+		public GetReportResponse GetReport( GetReportRequest request, string marker, AmazonCountryCodeEnum? countryCode = null )
 		{
-			return this.connection.Call( new Request< GetReportResponse >( "GetReport" ), request, marker );
+			return this.connection.Call( new Request< GetReportResponse >( "GetReport" ), request, marker, countryCode );
 		}
 
 		/// <summary>

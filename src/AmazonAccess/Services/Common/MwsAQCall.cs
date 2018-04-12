@@ -22,6 +22,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
 using AmazonAccess.Misc;
+using AmazonAccess.Models;
 
 namespace AmazonAccess.Services.Common
 {
@@ -53,7 +54,7 @@ namespace AmazonAccess.Services.Common
 		/// </summary>
 		/// <returns></returns>
 		/// <exception cref="MwsException">Exceptions from invoking the request</exception>
-		public IMwsReader invoke( string marker )
+		public IMwsReader invoke( string marker, AmazonCountryCodeEnum? countryCode = null )
 		{
 			var sellerId = this.GetSellerId();
 			marker = marker ?? Guid.NewGuid().ToString();
@@ -104,7 +105,7 @@ namespace AmazonAccess.Services.Common
 					message = httpResponse.StatusDescription;
 					this.ResponseHeaderMetadata = GetResponseHeaderMetadata( httpResponse );
 					using( var responseStream = httpResponse.GetResponseStream() )
-					using( var reader = new StreamReader( responseStream, Encoding.UTF8 ) )
+					using( var reader = new StreamReader( responseStream, countryCode == AmazonCountryCodeEnum.Jp ? Encoding.GetEncoding( "shift-jis" ) : Encoding.UTF8 ) )
 						responseBody = reader.ReadToEnd();
 				}
 

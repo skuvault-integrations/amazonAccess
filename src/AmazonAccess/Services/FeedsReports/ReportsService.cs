@@ -159,7 +159,7 @@ namespace AmazonAccess.Services.FeedsReports
 			var keys = new HashSet< string >( StringComparer.OrdinalIgnoreCase );
 			foreach( var marketplace in this._credentials.AmazonMarketplaces.Marketplaces )
 			{
-				var reportPortion = this.GetReportForMarketplaces< T >( marker, reportType, new List< string > { marketplace.MarketplaceId }, startDate, endDate ).ToList();
+				var reportPortion = this.GetReportForMarketplaces< T >( marker, reportType, new List< string > { marketplace.MarketplaceId }, startDate, endDate, marketplace.CountryCode ).ToList();
 				if( skipDuplicates )
 				{
 					var newReportPortion = new List< T >();
@@ -180,7 +180,7 @@ namespace AmazonAccess.Services.FeedsReports
 		#endregion
 
 		#region common
-		protected virtual IEnumerable< T > GetReportForMarketplaces< T >( string marker, ReportType reportType, List< string > marketplaces, DateTime startDate, DateTime endDate ) where T : class, new()
+		protected virtual IEnumerable< T > GetReportForMarketplaces< T >( string marker, ReportType reportType, List< string > marketplaces, DateTime startDate, DateTime endDate, AmazonCountryCodeEnum? countryCode = null ) where T : class, new()
 		{
 			AmazonLogger.Trace( "GetReportForMarketplaces", this._credentials.SellerId, marker, "Begin invoke" );
 
@@ -200,11 +200,11 @@ namespace AmazonAccess.Services.FeedsReports
 				return new List< T >();
 			}
 
-			var reportString = this.GetReportById( marker, reportId );
+			var reportString = this.GetReportById( marker, reportId, countryCode );
 			if( reportString == null )
 				throw AmazonLogger.Error( "GetReportForMarketplaces", this._credentials.SellerId, marker, "Can't get report" );
 
-			var report = this.ConvertReport< T >( reportString );
+			var report = this.ConvertReport< T >( reportString, countryCode );
 			return report;
 		}
 
@@ -335,7 +335,7 @@ namespace AmazonAccess.Services.FeedsReports
 			return string.Empty;
 		}
 
-		private string GetReportById( string marker, string reportId )
+		private string GetReportById( string marker, string reportId, AmazonCountryCodeEnum? countryCode = null )
 		{
 			AmazonLogger.Trace( "GetReportById", this._credentials.SellerId, marker, "Begin invoke" );
 
@@ -345,14 +345,14 @@ namespace AmazonAccess.Services.FeedsReports
 				MWSAuthToken = this._credentials.MwsAuthToken,
 				ReportId = reportId
 			};
-			var response = ActionPolicies.Get.Get( () => this._getReportThrottler.Execute( () => this._client.GetReport( request, marker ) ) );
+			var response = ActionPolicies.Get.Get( () => this._getReportThrottler.Execute( () => this._client.GetReport( request, marker, countryCode ) ) );
 			if( response.IsSetGetReportResult() && response.GetReportResult.IsSetResult() )
 				return response.GetReportResult.Result;
 
 			return null;
 		}
 
-		private IEnumerable< T > ConvertReport< T >( string reportString ) where T : class, new()
+		private IEnumerable< T > ConvertReport< T >( string reportString, AmazonCountryCodeEnum? countryCode = null ) where T : class, new()
 		{
 			reportString = WebUtility.HtmlDecode( reportString );
 
@@ -365,9 +365,27 @@ namespace AmazonAccess.Services.FeedsReports
 					FirstLineHasColumnNames = true, SeparatorChar = '\t', IgnoreUnknownColumns = true, FileCultureInfo = CultureInfo.InvariantCulture,
 					QuoteAllFields = true, TextEncoding = Encoding.UTF8, UseFieldIndexForReadingData = false
 				};
-				var report = cc.Read< T >( reader, csvOptions );
-				return report.ToList();
+
+				var obj = new T();
+				if( obj is ProductShort && countryCode == AmazonCountryCodeEnum.Jp )
+				{
+					var dataJp = this.ReadReport< ProductShortJp >( reader, cc, csvOptions );
+					return ( IEnumerable< T > )dataJp.Select( ProductShort.FromProductShortJp ).ToList();
+				}
+				if( obj is ProductShort )
+				{
+					var dataEn = this.ReadReport< ProductShortEn >( reader, cc, csvOptions );
+					return ( IEnumerable< T > )dataEn.Select( ProductShort.FromProductShortEn ).ToList();
+				}
+
+				return this.ReadReport< T >( reader, cc, csvOptions );
 			}
+		}
+
+		private List< T > ReadReport< T >( StreamReader reader, CsvContext cc, CsvFileDescription csvOptions ) where T : class, new()
+		{
+			var report = cc.Read< T >( reader, csvOptions );
+			return report.ToList();
 		}
 		#endregion
 	}

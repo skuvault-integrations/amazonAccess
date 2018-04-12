@@ -18,6 +18,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using AmazonAccess.Models;
 using AmazonAccess.Services.Common;
 using AmazonAccess.Services.FeedsReports.Model;
 
@@ -49,7 +50,7 @@ namespace AmazonAccess.Services.FeedsReports.Mock
 		/// streaming fashion.
 		///   
 		/// </remarks>
-		public GetReportResponse GetReport( GetReportRequest request, string marker )
+		public GetReportResponse GetReport( GetReportRequest request, string marker, AmazonCountryCodeEnum? countryCode = null )
 		{
 			return this.newResponse< GetReportResponse >();
 		}
