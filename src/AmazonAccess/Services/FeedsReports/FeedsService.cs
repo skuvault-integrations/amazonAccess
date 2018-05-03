@@ -40,15 +40,15 @@ namespace AmazonAccess.Services.FeedsReports
 				FeedType = feedType.Description,
 				FeedContent = feedContent,
 			};
-			//var response = ActionPolicies.Get.Get( () => this._submitFeedThrottler.Execute( () => this._client.SubmitFeed( request, marker ) ) );
-			//if( !response.IsSetSubmitFeedResult() )
-			//	throw AmazonLogger.Error( "SubmitFeed", this._credentials.SellerId, marker, "Result was not received" );
+			var response = ActionPolicies.Get.Get( () => this._submitFeedThrottler.Execute( () => this._client.SubmitFeed( request, marker ) ) );
+			if( !response.IsSetSubmitFeedResult() )
+				throw AmazonLogger.Error( "SubmitFeed", this._credentials.SellerId, marker, "Result was not received" );
 
-			//var feedSubmissionId = response.SubmitFeedResult.FeedSubmissionInfo.FeedSubmissionId;
-			//this.WaitFeedSubmission( marker, feedSubmissionId );
-			//this.CheckSubmissionResult( marker, feedSubmissionId );
+			var feedSubmissionId = response.SubmitFeedResult.FeedSubmissionInfo.FeedSubmissionId;
+			this.WaitFeedSubmission( marker, feedSubmissionId );
+			this.CheckSubmissionResult( marker, feedSubmissionId );
 
-			//AmazonLogger.Trace( "SubmitFeed", this._credentials.SellerId, marker, "End invoke" );
+			AmazonLogger.Trace( "SubmitFeed", this._credentials.SellerId, marker, "End invoke" );
 		}
 
 		private void WaitFeedSubmission( string marker, string feedSubmissionId )
