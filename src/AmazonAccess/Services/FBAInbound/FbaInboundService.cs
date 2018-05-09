@@ -30,8 +30,11 @@ namespace AmazonAccess.Services.FbaInbound
 	{
 		private readonly IFbaInboundServiceClient _client;
 		private readonly AmazonCredentials _credentials;
-		private readonly Throttler _getOrdersThrottler = new Throttler( 30, 1, 2 );
-		private readonly Throttler _orderItemsThrottler = new Throttler( 30, 1, 2 );
+		private readonly Throttler _listInboundShipmentsThrottler = new Throttler( 30, 1, 2 );
+		private readonly Throttler _listInboundShipmentItemsThrottler = new Throttler( 30, 1, 2 );
+		private readonly Throttler _createInboundShipmentPlanThrottler = new Throttler( 30, 1, 2 );
+		private readonly Throttler _createInboundShipmentThrottler = new Throttler( 30, 1, 2 );
+		private readonly Throttler _updateInboundShipmentThrottler = new Throttler( 30, 1, 2 );
 
 		/// <param name="client">Instance of FBAInventoryServiceMWS client</param>
 		/// <param name="credentials">credentials</param>
@@ -73,7 +76,7 @@ namespace AmazonAccess.Services.FbaInbound
 				ShipmentStatusList = new ShipmentStatusList() { member = shipmentStatusListForReceive }
 			};
 			var result = new List< InboundShipmentInfo >();
-			var response = ActionPolicies.Get.Get( () => this._getOrdersThrottler.Execute( () => this._client.ListInboundShipments( request, marker ) ) );
+			var response = ActionPolicies.Get.Get( () => this._listInboundShipmentsThrottler.Execute( () => this._client.ListInboundShipments( request, marker ) ) );
 			if( response.IsSetListInboundShipmentsResult() )
 			{
 				if( response.ListInboundShipmentsResult.IsSetShipmentData() )
@@ -97,7 +100,7 @@ namespace AmazonAccess.Services.FbaInbound
 					MWSAuthToken = this._credentials.MwsAuthToken,
 					NextToken = nextToken
 				};
-				var response = ActionPolicies.Get.Get( () => this._getOrdersThrottler.Execute( () => this._client.ListInboundShipmentsByNextToken( request, marker ) ) );
+				var response = ActionPolicies.Get.Get( () => this._listInboundShipmentsThrottler.Execute( () => this._client.ListInboundShipmentsByNextToken( request, marker ) ) );
 				if( response.IsSetListInboundShipmentsByNextTokenResult() )
 				{
 					if( response.ListInboundShipmentsByNextTokenResult.IsSetShipmentData() )
@@ -119,7 +122,7 @@ namespace AmazonAccess.Services.FbaInbound
 				ShipmentId = shipmentId
 			};
 			var result = new List< InboundShipmentItem >();
-			var response = ActionPolicies.Get.Get( () => this._orderItemsThrottler.Execute( () => this._client.ListInboundShipmentItems( request, marker ) ) );
+			var response = ActionPolicies.Get.Get( () => this._listInboundShipmentItemsThrottler.Execute( () => this._client.ListInboundShipmentItems( request, marker ) ) );
 			if( response.IsSetListInboundShipmentItemsResult() )
 			{
 				if( response.ListInboundShipmentItemsResult.IsSetItemData() )
@@ -143,7 +146,7 @@ namespace AmazonAccess.Services.FbaInbound
 					MWSAuthToken = this._credentials.MwsAuthToken,
 					NextToken = nextToken
 				};
-				var response = ActionPolicies.Get.Get( () => this._orderItemsThrottler.Execute( () => this._client.ListInboundShipmentItemsByNextToken( request, marker ) ) );
+				var response = ActionPolicies.Get.Get( () => this._listInboundShipmentItemsThrottler.Execute( () => this._client.ListInboundShipmentItemsByNextToken( request, marker ) ) );
 				if( response.IsSetListInboundShipmentItemsByNextTokenResult() )
 				{
 					if( response.ListInboundShipmentItemsByNextTokenResult.IsSetItemData() )
@@ -174,7 +177,7 @@ namespace AmazonAccess.Services.FbaInbound
 			};
 
 			var result = new List< InboundShipmentPlan >();
-			var response = ActionPolicies.Submit.Get( () => this._orderItemsThrottler.Execute( () => this._client.CreateInboundShipmentPlan( request, marker ) ) );
+			var response = ActionPolicies.Submit.Get( () => this._createInboundShipmentPlanThrottler.Execute( () => this._client.CreateInboundShipmentPlan( request, marker ) ) );
 			if( response.IsSetCreateInboundShipmentPlanResult() )
 			{
 				if( response.CreateInboundShipmentPlanResult.IsSetInboundShipmentPlans() )
@@ -199,7 +202,7 @@ namespace AmazonAccess.Services.FbaInbound
 			};
 
 			var result = string.Empty;
-			var response = ActionPolicies.Submit.Get( () => this._orderItemsThrottler.Execute( () => this._client.CreateInboundShipment( request, marker ) ) );
+			var response = ActionPolicies.Submit.Get( () => this._createInboundShipmentThrottler.Execute( () => this._client.CreateInboundShipment( request, marker ) ) );
 			if( response.IsSetCreateInboundShipmentResult() )
 			{
 				if( response.CreateInboundShipmentResult.IsSetShipmentId() )
@@ -224,7 +227,7 @@ namespace AmazonAccess.Services.FbaInbound
 			};
 
 			var result = string.Empty;
-			var response = ActionPolicies.Submit.Get( () => this._orderItemsThrottler.Execute( () => this._client.UpdateInboundShipment( request, marker ) ) );
+			var response = ActionPolicies.Submit.Get( () => this._updateInboundShipmentThrottler.Execute( () => this._client.UpdateInboundShipment( request, marker ) ) );
 			if( response.IsSetUpdateInboundShipmentResult() )
 			{
 				if( response.UpdateInboundShipmentResult.IsSetShipmentId() )
