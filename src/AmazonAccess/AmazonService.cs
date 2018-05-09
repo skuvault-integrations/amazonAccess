@@ -497,12 +497,15 @@ namespace AmazonAccess
 			var result = new InboundShipmentItemList { member = new List< InboundShipmentItem >( ) };
 			foreach( var item in list )
 			{
+				PrepDetailsList prepDetailsListCopy = null;
+				if(item.PrepDetailsList != null)
+					prepDetailsListCopy = new PrepDetailsList() { PrepDetails = new List<PrepDetails>(item.PrepDetailsList.PrepDetails) };
 				result.member.Add( new InboundShipmentItem()
 				{
 					SellerSKU = item.SellerSKU,
 					QuantityShipped = item.Quantity,
 					QuantityInCase = request.FirstOrDefault( r => r.SellerSKU == item.SellerSKU )?.QuantityInCase ?? 0,
-					PrepDetailsList = new PrepDetailsList() { PrepDetails = new List<PrepDetails>(item.PrepDetailsList.PrepDetails) }
+					PrepDetailsList = prepDetailsListCopy
 				} );
 			}
 			return result;
