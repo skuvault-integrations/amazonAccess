@@ -97,7 +97,7 @@ namespace AmazonAccessTests.Services.FeedsReports
 		{
 		}
 
-		protected override IEnumerable< T > GetReportForMarketplaces< T >( string marker, ReportType reportType, List< string > marketplaces, DateTime startDate, DateTime endDate )
+		protected override IEnumerable< T > GetReportForMarketplaces< T >( string marker, ReportType reportType, List< string > marketplaces, DateTime startDate, DateTime endDate, AmazonCountryCodeEnum? countryCode = null )
 		{
 			return this.inventories[ this.callCount++ % this.inventories.Count ] as IEnumerable< T >;
 		}

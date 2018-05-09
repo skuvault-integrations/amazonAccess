@@ -8,6 +8,7 @@ using AmazonAccess.Services.FeedsReports.ReportModel;
 using AmazonAccess.Services.Orders.Model;
 using AmazonAccess.Services.Products.Model;
 using AmazonAccess.Services.Sellers.Model;
+using Address = AmazonAccess.Services.FBAInbound.Model.Address;
 
 namespace AmazonAccess
 {
@@ -213,5 +214,11 @@ namespace AmazonAccess
 		MarketplaceParticipations GetMarketplaceParticipations();
 
 		List< InboundShipmentFullInfo > GetListInboundShipments( DateTime? dateFrom, DateTime? dateTo, string[] shipmentStatusListForReceive, string[] shipmentStatusListForReceiveItems );
+
+		bool CreateInboundShipment( Address shipFromAddress,
+			string shipToCountryCode,
+			string shipToCountrySubdivisionCode,
+			string labelPrepPreference,
+			IEnumerable< InboundShipmentPlanRequestItem > items );
 	}
 }

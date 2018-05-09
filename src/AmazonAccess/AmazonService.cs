@@ -19,12 +19,15 @@ using AmazonAccess.Services.Sellers;
 using AmazonAccess.Services.Sellers.Model;
 using CuttingEdge.Conditions;
 using Netco.Extensions;
+using Address = AmazonAccess.Services.FBAInbound.Model.Address;
 
 namespace AmazonAccess
 {
 	public sealed class AmazonService: IAmazonService
 	{
 		private const int Updateitemslimit = 3000;
+		private const int CreateInboundShipmentLimit = 200;
+		private const string InboundShipmentStatus = "WORKING";
 		private readonly AmazonCredentials _credentials;
 		private readonly IAmazonClientsFactory _factory;
 
@@ -419,6 +422,93 @@ namespace AmazonAccess
 
 			AmazonLogger.Trace( "GetFbaFulfilledInventory", this._credentials.SellerId, marker, "End invoke" );
 			return inventory.ToList();
+		}
+		#endregion
+
+		#region Create an inbound shipment
+		public bool CreateInboundShipment( Address shipFromAddress, 
+			string shipToCountryCode, 
+			string shipToCountrySubdivisionCode, 
+			string labelPrepPreference, 
+			IEnumerable< InboundShipmentPlanRequestItem > items )
+		{
+			var marker = this.GetMarker();
+			AmazonLogger.Trace( "CreateInboundShipment", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFbaInboundClient();
+			var service = new FbaInboundService( client, this._credentials );
+
+			var parts = items.Slice( CreateInboundShipmentLimit );
+			var plans = new List< InboundShipmentPlan >();
+			foreach( var part in parts )
+			{
+				var partInboundShipmentPlanRequestItem = new InboundShipmentPlanRequestItemList
+				{
+					member = new List< InboundShipmentPlanRequestItem >( part )
+				};
+				var partPlans = service.CreateInboundShipmentPlan(shipFromAddress, 
+					shipToCountryCode,
+					shipToCountrySubdivisionCode,
+					labelPrepPreference,
+					partInboundShipmentPlanRequestItem,
+					marker );
+				foreach( var plan in partPlans)
+				{
+					var existingPlan = FindExistingInboundShipmentPlan( plans, plan );
+					
+					if( existingPlan != null )
+					{
+						service.UpdateInboundShipment( existingPlan.ShipmentId, 
+							null,
+							ConvertShipmentPlanItemListToShipmentItemList( plan.Items.member, items ),
+							marker );
+					}
+					else
+					{
+						service.CreateInboundShipment( plan.ShipmentId, 
+							new InboundShipmentHeader()
+							{
+								ShipmentName = $"SV-{shipToCountryCode}-{DateTime.Now:yyyyMMddHHmmss}",
+								ShipFromAddress = shipFromAddress,
+								LabelPrepPreference = labelPrepPreference,
+								ShipmentStatus = InboundShipmentStatus,
+								DestinationFulfillmentCenterId = plan.DestinationFulfillmentCenterId
+							},
+							ConvertShipmentPlanItemListToShipmentItemList( plan.Items.member, items ),
+							marker );
+						plans.Add( plan );
+					}
+				}
+			}
+
+			AmazonLogger.Trace( "CreateInboundShipment", this._credentials.SellerId, marker, "End invoke" );
+			return true;
+		}
+
+		private static InboundShipmentPlan FindExistingInboundShipmentPlan( IEnumerable< InboundShipmentPlan > plans, InboundShipmentPlan newPlan )
+		{
+			return plans.FirstOrDefault( plan =>
+				string.Equals( plan.DestinationFulfillmentCenterId, newPlan.DestinationFulfillmentCenterId, StringComparison.InvariantCultureIgnoreCase ) &&
+				string.Equals( plan.LabelPrepType, newPlan.LabelPrepType ) );
+		}
+
+		private static InboundShipmentItemList ConvertShipmentPlanItemListToShipmentItemList( IEnumerable< InboundShipmentPlanItem > list, IEnumerable <InboundShipmentPlanRequestItem>  request )
+		{
+			var result = new InboundShipmentItemList { member = new List< InboundShipmentItem >( ) };
+			foreach( var item in list )
+			{
+				PrepDetailsList prepDetailsListCopy = null;
+				if(item.PrepDetailsList != null)
+					prepDetailsListCopy = new PrepDetailsList() { PrepDetails = new List<PrepDetails>(item.PrepDetailsList.PrepDetails) };
+				result.member.Add( new InboundShipmentItem()
+				{
+					SellerSKU = item.SellerSKU,
+					QuantityShipped = item.Quantity,
+					QuantityInCase = request.FirstOrDefault( r => r.SellerSKU == item.SellerSKU )?.QuantityInCase ?? 0,
+					PrepDetailsList = prepDetailsListCopy
+				} );
+			}
+			return result;
 		}
 		#endregion
 

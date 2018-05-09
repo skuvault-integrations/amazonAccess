@@ -30,8 +30,11 @@ namespace AmazonAccess.Services.FbaInbound
 	{
 		private readonly IFbaInboundServiceClient _client;
 		private readonly AmazonCredentials _credentials;
-		private readonly Throttler _getOrdersThrottler = new Throttler( 30, 1, 2 );
-		private readonly Throttler _orderItemsThrottler = new Throttler( 30, 1, 2 );
+		private readonly Throttler _listInboundShipmentsThrottler = new Throttler( 30, 1, 2 );
+		private readonly Throttler _listInboundShipmentItemsThrottler = new Throttler( 30, 1, 2 );
+		private readonly Throttler _createInboundShipmentPlanThrottler = new Throttler( 30, 1, 2 );
+		private readonly Throttler _createInboundShipmentThrottler = new Throttler( 30, 1, 2 );
+		private readonly Throttler _updateInboundShipmentThrottler = new Throttler( 30, 1, 2 );
 
 		/// <param name="client">Instance of FBAInventoryServiceMWS client</param>
 		/// <param name="credentials">credentials</param>
@@ -73,7 +76,7 @@ namespace AmazonAccess.Services.FbaInbound
 				ShipmentStatusList = new ShipmentStatusList() { member = shipmentStatusListForReceive }
 			};
 			var result = new List< InboundShipmentInfo >();
-			var response = ActionPolicies.Get.Get( () => this._getOrdersThrottler.Execute( () => this._client.ListInboundShipments( request, marker ) ) );
+			var response = ActionPolicies.Get.Get( () => this._listInboundShipmentsThrottler.Execute( () => this._client.ListInboundShipments( request, marker ) ) );
 			if( response.IsSetListInboundShipmentsResult() )
 			{
 				if( response.ListInboundShipmentsResult.IsSetShipmentData() )
@@ -97,7 +100,7 @@ namespace AmazonAccess.Services.FbaInbound
 					MWSAuthToken = this._credentials.MwsAuthToken,
 					NextToken = nextToken
 				};
-				var response = ActionPolicies.Get.Get( () => this._getOrdersThrottler.Execute( () => this._client.ListInboundShipmentsByNextToken( request, marker ) ) );
+				var response = ActionPolicies.Get.Get( () => this._listInboundShipmentsThrottler.Execute( () => this._client.ListInboundShipmentsByNextToken( request, marker ) ) );
 				if( response.IsSetListInboundShipmentsByNextTokenResult() )
 				{
 					if( response.ListInboundShipmentsByNextTokenResult.IsSetShipmentData() )
@@ -119,7 +122,7 @@ namespace AmazonAccess.Services.FbaInbound
 				ShipmentId = shipmentId
 			};
 			var result = new List< InboundShipmentItem >();
-			var response = ActionPolicies.Get.Get( () => this._orderItemsThrottler.Execute( () => this._client.ListInboundShipmentItems( request, marker ) ) );
+			var response = ActionPolicies.Get.Get( () => this._listInboundShipmentItemsThrottler.Execute( () => this._client.ListInboundShipmentItems( request, marker ) ) );
 			if( response.IsSetListInboundShipmentItemsResult() )
 			{
 				if( response.ListInboundShipmentItemsResult.IsSetItemData() )
@@ -143,7 +146,7 @@ namespace AmazonAccess.Services.FbaInbound
 					MWSAuthToken = this._credentials.MwsAuthToken,
 					NextToken = nextToken
 				};
-				var response = ActionPolicies.Get.Get( () => this._orderItemsThrottler.Execute( () => this._client.ListInboundShipmentItemsByNextToken( request, marker ) ) );
+				var response = ActionPolicies.Get.Get( () => this._listInboundShipmentItemsThrottler.Execute( () => this._client.ListInboundShipmentItemsByNextToken( request, marker ) ) );
 				if( response.IsSetListInboundShipmentItemsByNextTokenResult() )
 				{
 					if( response.ListInboundShipmentItemsByNextTokenResult.IsSetItemData() )
@@ -151,6 +154,88 @@ namespace AmazonAccess.Services.FbaInbound
 					nextToken = response.ListInboundShipmentItemsByNextTokenResult.NextToken;
 				}
 			}
+		}
+
+		public IEnumerable< InboundShipmentPlan > CreateInboundShipmentPlan( Address shipFromAddress, 
+			string shipToCountryCode, 
+			string shipToCountrySubdivisionCode, 
+			string labelPrepPreference, 
+			InboundShipmentPlanRequestItemList inboundShipmentPlanRequestItems, 
+			string marker )
+		{
+			AmazonLogger.Trace( "CreateInboundShipmentPlan", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var request = new CreateInboundShipmentPlanRequest
+			{
+				SellerId = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				InboundShipmentPlanRequestItems = inboundShipmentPlanRequestItems,
+				LabelPrepPreference = labelPrepPreference,
+				ShipFromAddress = shipFromAddress,
+				ShipToCountryCode = shipToCountryCode,
+				ShipToCountrySubdivisionCode = shipToCountrySubdivisionCode
+			};
+
+			var result = new List< InboundShipmentPlan >();
+			var response = ActionPolicies.Submit.Get( () => this._createInboundShipmentPlanThrottler.Execute( () => this._client.CreateInboundShipmentPlan( request, marker ) ) );
+			if( response.IsSetCreateInboundShipmentPlanResult() )
+			{
+				if( response.CreateInboundShipmentPlanResult.IsSetInboundShipmentPlans() )
+					result.AddRange( response.CreateInboundShipmentPlanResult.InboundShipmentPlans.member );
+			}
+
+			AmazonLogger.Trace( "CreateInboundShipmentPlan", this._credentials.SellerId, marker, "End invoke" );
+			return result;
+		}
+
+		public string CreateInboundShipment( string shipmentId, InboundShipmentHeader header, InboundShipmentItemList items, string marker )
+		{
+			AmazonLogger.Trace( "CreateInboundShipment", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var request = new CreateInboundShipmentRequest
+			{
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				InboundShipmentHeader = header,
+				InboundShipmentItems = items,
+				ShipmentId = shipmentId,
+				SellerId = this._credentials.SellerId
+			};
+
+			var result = string.Empty;
+			var response = ActionPolicies.Submit.Get( () => this._createInboundShipmentThrottler.Execute( () => this._client.CreateInboundShipment( request, marker ) ) );
+			if( response.IsSetCreateInboundShipmentResult() )
+			{
+				if( response.CreateInboundShipmentResult.IsSetShipmentId() )
+					result = response.CreateInboundShipmentResult.ShipmentId;
+			}
+
+			AmazonLogger.Trace( "CreateInboundShipment", this._credentials.SellerId, marker, "End invoke" );
+			return result;
+		}
+
+		public string UpdateInboundShipment( string shipmentId, InboundShipmentHeader header, InboundShipmentItemList items, string marker )
+		{
+			AmazonLogger.Trace( "UpdateInboundShipment", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var request = new UpdateInboundShipmentRequest
+			{
+				SellerId = this._credentials.SellerId,
+				MWSAuthToken = this._credentials.MwsAuthToken,
+				InboundShipmentHeader = header,
+				InboundShipmentItems = items,
+				ShipmentId = shipmentId
+			};
+
+			var result = string.Empty;
+			var response = ActionPolicies.Submit.Get( () => this._updateInboundShipmentThrottler.Execute( () => this._client.UpdateInboundShipment( request, marker ) ) );
+			if( response.IsSetUpdateInboundShipmentResult() )
+			{
+				if( response.UpdateInboundShipmentResult.IsSetShipmentId() )
+					result = response.UpdateInboundShipmentResult.ShipmentId;
+			}
+
+			AmazonLogger.Trace( "UpdateInboundShipment", this._credentials.SellerId, marker, "End invoke" );
+			return result;
 		}
 	}
 }
