@@ -86,7 +86,17 @@ namespace AmazonAccess.Models
 					this.MarketplaceId = "A1AM78C64UM0Y8";
 					this.Endpoint = "https://mws.amazonservices.com.mx";
 					break;
+				case AmazonCountryCodeEnum.Br:
+					this.RegionCode = AmazonRegionCodeEnum.Na;
+					this.MarketplaceId = "A2Q3Y263D00KWC";
+					this.Endpoint = "https://mws.amazonservices.com";
+					break;
 
+				case AmazonCountryCodeEnum.Ae:
+					this.RegionCode = AmazonRegionCodeEnum.Eu;
+					this.MarketplaceId = "A2VIGQ35RCS4UG";
+					this.Endpoint = "https://mws.amazonservices.ae";
+					break;
 				case AmazonCountryCodeEnum.De:
 					this.RegionCode = AmazonRegionCodeEnum.Eu;
 					this.MarketplaceId = "A1PA6795UKMFR9";
@@ -112,6 +122,11 @@ namespace AmazonAccess.Models
 					this.MarketplaceId = "APJ6JRA9NG5V4";
 					this.Endpoint = "https://mws-eu.amazonservices.com";
 					break;
+				case AmazonCountryCodeEnum.Tr:
+					this.RegionCode = AmazonRegionCodeEnum.Eu;
+					this.MarketplaceId = "A33AVAJ2PDY3EV";
+					this.Endpoint = "https://mws-eu.amazonservices.com";
+					break;
 				case AmazonCountryCodeEnum.Uk:
 				case AmazonCountryCodeEnum.Gb:
 					this.RegionCode = AmazonRegionCodeEnum.Eu;
@@ -119,6 +134,11 @@ namespace AmazonAccess.Models
 					this.Endpoint = "https://mws-eu.amazonservices.com";
 					break;
 
+				case AmazonCountryCodeEnum.Au:
+					this.RegionCode = AmazonRegionCodeEnum.Fe;
+					this.MarketplaceId = "A39IBJ37TRP1C6";
+					this.Endpoint = "https://mws.amazonservices.com.au";
+					break;
 				case AmazonCountryCodeEnum.Jp:
 					this.RegionCode = AmazonRegionCodeEnum.Fe;
 					this.MarketplaceId = "A1VC38T7YXB528";
@@ -164,14 +184,18 @@ namespace AmazonAccess.Models
 		Ca,
 		Us,
 		Mx,
+		Br,
+		Ae,
 		De,
 		Es,
 		Fr,
 		In,
 		It,
+		Tr,
 		Uk,
 		Gb,
 		Jp,
+		Au,
 		Cn
 	}
 }
