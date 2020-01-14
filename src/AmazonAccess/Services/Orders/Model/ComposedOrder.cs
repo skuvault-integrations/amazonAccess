@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AmazonAccess.Services.Finances.Model;
+using System.Collections.Generic;
 
 namespace AmazonAccess.Services.Orders.Model
 {
@@ -6,6 +7,7 @@ namespace AmazonAccess.Services.Orders.Model
 	{
 		public Order AmazonOrder{ get; private set; }
 		public IEnumerable< OrderItem > OrderItems{ get; set; }
+		public ShipmentEvent OrderFees { get; set; }
 
 		public ComposedOrder( Order amazonOrder )
 		{
