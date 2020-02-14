@@ -91,6 +91,11 @@ namespace AmazonAccess.Services.Common
 		{
 		}
 
+		public MwsResponseHeaderMetadata( string requestId, string responseContext, DateTime? timestamp, decimal? quotaMax, decimal? quotaRemaining, DateTime? quotaResetsAt )
+			: this( requestId, responseContext != null ? new List< string >( responseContext.Split( ',' ) ) : new List< string >(), timestamp, quotaMax, quotaRemaining, quotaResetsAt, null, null, null, null, null, null )
+		{
+		}
+
 		public string RequestId{ get; private set; }
 
 		public string ResponseContext

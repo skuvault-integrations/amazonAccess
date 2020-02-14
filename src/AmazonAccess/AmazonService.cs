@@ -20,6 +20,8 @@ using AmazonAccess.Services.Sellers.Model;
 using CuttingEdge.Conditions;
 using Netco.Extensions;
 using Address = AmazonAccess.Services.FBAInbound.Model.Address;
+using AmazonAccess.Services.Finances.Model;
+using AmazonAccess.Services.Finances;
 
 namespace AmazonAccess
 {
@@ -60,14 +62,16 @@ namespace AmazonAccess
 			dateTo = dateTo ?? DateTime.UtcNow.AddMinutes( -10 );
 
 			var client = this._factory.CreateOrdersClient();
-			var service = new OrdersService( client, this._credentials );
+			var financesServiceClient = this._factory.CreateFinancesServiceClient();
+			var service = new OrdersService( client, financesServiceClient, this._credentials );
 			return service.IsOrdersReceived( this.GetMarker(), dateFrom.Value, dateTo.Value );
 		}
 
 		public int GetOrders( DateTime dateFrom, DateTime dateTo, Action< ComposedOrder > processOrderAction )
 		{
 			var client = this._factory.CreateOrdersClient();
-			var service = new OrdersService( client, this._credentials );
+			var financesServiceClient = this._factory.CreateFinancesServiceClient();
+			var service = new OrdersService( client, financesServiceClient, this._credentials );
 			var ordersCount = service.LoadOrders( this.GetMarker(), dateFrom, dateTo, processOrderAction );
 			return ordersCount;
 		}
@@ -523,6 +527,14 @@ namespace AmazonAccess
 				dateTo ?? DateTime.UtcNow,
 				shipmentStatusListForReceive.Any() ? shipmentStatusListForReceive.ToList() : this.GetAllShipmentStatusList().ToList(),
 				shipmentStatusListForReceiveItems.Any() ? shipmentStatusListForReceiveItems.ToList() : this.GetShipmentStatusListForReceiveItems().ToList() );
+		}
+
+		public ShipmentEvent GetOrderFees( string marker, string orderId )
+		{
+			var client = this._factory.CreateFinancesServiceClient();
+			var service = new FinancesService( client, this._credentials );
+
+			return service.LoadOrderFees( marker, orderId );
 		}
 
 		private IEnumerable< string > GetAllShipmentStatusList()

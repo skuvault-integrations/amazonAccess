@@ -39,6 +39,7 @@ namespace AmazonAccess.Services.Common
 		private string signatureMethod;
 
 		private int connectionTimeout;
+		private int maxErrorRetry;
 		private Uri endpoint;
 
 		private string proxyHost;
@@ -318,6 +319,20 @@ namespace AmazonAccess.Services.Common
 		}
 
 		/// <summary>
+		/// Get or set max number of retries - default is 3
+		/// </summary>
+		/// <returns></returns>
+		public int MaxErrorRetry
+		{
+			get { return this.maxErrorRetry; }
+			set
+			{
+				CheckUpdatable();
+				this.maxErrorRetry = value;
+			}
+		}
+
+		/// <summary>
 		/// Get or set MWS endpoint URI
 		/// </summary>
 		public Uri Endpoint
@@ -343,7 +358,7 @@ namespace AmazonAccess.Services.Common
 			}
 		}
 
-		public string ServicePath{ get; private set; }
+		public string ServicePath{ get; set; }
 
 		/// <summary>
 		/// Gets and sets of the URL to base MWS calls on

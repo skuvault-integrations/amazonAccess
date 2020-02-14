@@ -9,6 +9,7 @@ using AmazonAccess.Services.Orders.Model;
 using AmazonAccess.Services.Products.Model;
 using AmazonAccess.Services.Sellers.Model;
 using Address = AmazonAccess.Services.FBAInbound.Model.Address;
+using AmazonAccess.Services.Finances.Model;
 
 namespace AmazonAccess
 {
@@ -214,6 +215,8 @@ namespace AmazonAccess
 		MarketplaceParticipations GetMarketplaceParticipations();
 
 		List< InboundShipmentFullInfo > GetListInboundShipments( DateTime? dateFrom, DateTime? dateTo, string[] shipmentStatusListForReceive, string[] shipmentStatusListForReceiveItems );
+
+		ShipmentEvent GetOrderFees( string marker, string orderId );
 
 		bool CreateInboundShipment( Address shipFromAddress,
 			string shipToCountryCode,

@@ -13,6 +13,7 @@ namespace AmazonAccess.Models
 		public string FbaInboundServiceUrl{ get; private set; }
 		public string FeedsServiceUrl{ get; private set; }
 		public string SellersServiceUrl{ get; private set; }
+		public string FinancesServiceUrl { get; private set; }
 		public List< AmazonMarketplace > Marketplaces{ get; private set; }
 
 		private void Init( List< AmazonMarketplace > marketplaces )
@@ -25,6 +26,8 @@ namespace AmazonAccess.Models
 			this.FbaInboundServiceUrl = marketplace.FbaInboundServiceUrl;
 			this.FeedsServiceUrl = marketplace.FeedsServiceUrl;
 			this.SellersServiceUrl = marketplace.SellersServiceUrl;
+			this.FinancesServiceUrl = marketplace.FinancesServiceUrl;
+
 			this.Marketplaces = marketplaces;
 		}
 

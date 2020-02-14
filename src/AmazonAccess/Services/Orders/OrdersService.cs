@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AmazonAccess.Misc;
 using AmazonAccess.Models;
+using AmazonAccess.Services.Finances;
 using AmazonAccess.Services.Orders.Model;
 using CuttingEdge.Conditions;
 
@@ -11,19 +12,24 @@ namespace AmazonAccess.Services.Orders
 	public sealed class OrdersService
 	{
 		private readonly IOrdersServiceClient _client;
+		private readonly IFinancesServiceClient _financesServiceClient;
 		private readonly AmazonCredentials _credentials;
 		private readonly OrderItemsService _orderItemsService;
+		private readonly FinancesService _financesService;
 		private readonly Throttler _getOrdersThrottler = new Throttler( 6, 61 );
 		private readonly Throttler _orderItemsThrottler = new Throttler( 30, 2 );
 
-		public OrdersService( IOrdersServiceClient client, AmazonCredentials credentials )
+		public OrdersService( IOrdersServiceClient client, IFinancesServiceClient financesServiceClient, AmazonCredentials credentials )
 		{
 			Condition.Requires( client, "client" ).IsNotNull();
+			Condition.Requires( financesServiceClient, "financesServiceClient" ).IsNotNull();
 			Condition.Requires( credentials, "credentials" ).IsNotNull();
 
 			this._client = client;
+			this._financesServiceClient = financesServiceClient;
 			this._credentials = credentials;
 			this._orderItemsService = new OrderItemsService( this._client, this._credentials, this._orderItemsThrottler );
+			this._financesService = new FinancesService( this._financesServiceClient, this._credentials );
 		}
 
 		public int LoadOrders( string marker, DateTime dateFrom, DateTime dateTo, Action< ComposedOrder > processOrderAction )
@@ -81,6 +87,7 @@ namespace AmazonAccess.Services.Orders
 			{
 				var resultOrder = new ComposedOrder( order );
 				resultOrder.OrderItems = this._orderItemsService.LoadOrderItems( marker, resultOrder.AmazonOrder.AmazonOrderId );
+				resultOrder.OrderFees = this._financesService.LoadOrderFees( marker, resultOrder.AmazonOrder.AmazonOrderId );
 				processOrderAction( resultOrder );
 			}
 			return orders.Count;

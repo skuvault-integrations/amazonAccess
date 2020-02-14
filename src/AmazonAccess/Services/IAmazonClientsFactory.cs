@@ -4,6 +4,7 @@ using AmazonAccess.Services.FeedsReports;
 using AmazonAccess.Services.Orders;
 using AmazonAccess.Services.Products;
 using AmazonAccess.Services.Sellers;
+using AmazonAccess.Services.Finances;
 
 namespace AmazonAccess.Services
 {
@@ -15,5 +16,6 @@ namespace AmazonAccess.Services
 		IProductsServiceClient CreateProductsClient();
 		ISellersServiceClient CreateSellersClient();
 		IFbaInboundServiceClient CreateFbaInboundClient();
+		IFinancesServiceClient CreateFinancesServiceClient();
 	}
 }

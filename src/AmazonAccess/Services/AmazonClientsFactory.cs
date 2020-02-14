@@ -8,6 +8,7 @@ using AmazonAccess.Services.Orders;
 using AmazonAccess.Services.Products;
 using AmazonAccess.Services.Sellers;
 using CuttingEdge.Conditions;
+using AmazonAccess.Services.Finances;
 
 namespace AmazonAccess.Services
 {
@@ -93,6 +94,16 @@ namespace AmazonAccess.Services
 			};
 			connection.SetUserAgent( "SkuVault", "1.0", "C#" );
 			return new SellersServiceClient( connection );
+		}
+
+		public IFinancesServiceClient CreateFinancesServiceClient()
+		{
+			var config = new FinancesServiceConfig()
+			{
+				ServiceURL = this._credentials.AmazonMarketplaces.FinancesServiceUrl
+			};
+
+			return new FinancesServiceClient( this._credentials.AccessKeyId, this._credentials.SecretAccessKeyId, "SkuVault", "1.0", config );
 		}
 	}
 }
