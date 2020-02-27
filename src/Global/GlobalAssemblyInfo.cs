@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 [ assembly : ComVisible( false ) ]
 [ assembly : AssemblyProduct( "AmazonAccess" ) ]
 [ assembly : AssemblyCompany( "SkuVault" ) ]
-[ assembly : AssemblyCopyright( "Copyright (C) SkuVault 2019" ) ]
+[ assembly : AssemblyCopyright( "Copyright (C) SkuVault 2020" ) ]
 [ assembly : AssemblyDescription( "Amazon webservices API wrapper." ) ]
 [ assembly : AssemblyTrademark( "" ) ]
 [ assembly : AssemblyCulture( "" ) ]
@@ -24,4 +24,4 @@ using System.Runtime.InteropServices;
 
 // Keep in track with CA API version
 
-[ assembly : AssemblyVersion( "1.4.0.0" ) ]
+[ assembly : AssemblyVersion( "1.5.0.0" ) ]
