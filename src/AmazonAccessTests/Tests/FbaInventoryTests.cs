@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using AmazonAccess.Misc;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FbaInventory.Model;
 using AmazonAccess.Services.FeedsReports.ReportModel;
@@ -144,6 +146,16 @@ namespace AmazonAccessTests.Tests
 			//var inventory = this.ReadFromFile< List< FbaManageInventory > >( "FbaManageInventory.txt" );
 
 			inventory.Count.Should().BeGreaterThan( 0 );
+		}
+
+		[ Test ]
+		public void ReadFbaInventoryData()
+		{
+			var data = File.ReadAllText( @"..\..\Files\FBA_inventory_example.csv" );
+			var inventory = new AmazonCsvReader().ParseFBAInventoryReport< FbaManageInventory >( data ).ToList();
+
+			inventory.Should().NotBeNull();
+			inventory.Count.Should().BeGreaterThan( 1 );
 		}
 
 		[ Test ]

@@ -60,6 +60,7 @@
     <Compile Include="AmazonService.cs" />
     <Compile Include="IAmazonService.cs" />
     <Compile Include="Misc\ActionPolicies.cs" />
+    <Compile Include="Misc\AmazonCsvReader.cs" />
     <Compile Include="Misc\AmazonLogger.cs" />
     <Compile Include="Misc\ThrottlerAsync.cs" />
     <Compile Include="Services\FBAInbound\FbaInboundService.cs" />
