@@ -23,6 +23,7 @@ Thumbs.db
 *.lib
 *.sbr
 obj/
+src/.vs
 [Rr]elease
 _ReSharper*/
 _TeamCity*/
