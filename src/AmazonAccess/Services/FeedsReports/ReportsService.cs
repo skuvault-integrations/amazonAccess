@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
 using AmazonAccess.Misc;
 using AmazonAccess.Models;
 using AmazonAccess.Services.FeedsReports.Model;
 using AmazonAccess.Services.FeedsReports.ReportModel;
 using CuttingEdge.Conditions;
-using LINQtoCSV;
 
 namespace AmazonAccess.Services.FeedsReports
 {
@@ -204,7 +197,7 @@ namespace AmazonAccess.Services.FeedsReports
 			if( reportString == null )
 				throw AmazonLogger.Error( "GetReportForMarketplaces", this._credentials.SellerId, marker, "Can't get report" );
 
-			var report = this.ConvertReport< T >( reportString, countryCode );
+			var report = new AmazonCsvReader().ParseFBAInventoryReport< T >( reportString, countryCode );
 			return report;
 		}
 
@@ -350,42 +343,6 @@ namespace AmazonAccess.Services.FeedsReports
 				return response.GetReportResult.Result;
 
 			return null;
-		}
-
-		private IEnumerable< T > ConvertReport< T >( string reportString, AmazonCountryCodeEnum? countryCode = null ) where T : class, new()
-		{
-			reportString = WebUtility.HtmlDecode( reportString );
-
-			using( var ms = new MemoryStream( Encoding.UTF8.GetBytes( reportString ) ) )
-			using( var reader = new StreamReader( ms ) )
-			{
-				var cc = new CsvContext();
-				var csvOptions = new CsvFileDescription
-				{
-					FirstLineHasColumnNames = true, SeparatorChar = '\t', IgnoreUnknownColumns = true, FileCultureInfo = CultureInfo.InvariantCulture,
-					QuoteAllFields = true, TextEncoding = Encoding.UTF8, UseFieldIndexForReadingData = false
-				};
-
-				var obj = new T();
-				if( obj is ProductShort && countryCode == AmazonCountryCodeEnum.Jp )
-				{
-					var dataJp = this.ReadReport< ProductShortJp >( reader, cc, csvOptions );
-					return ( IEnumerable< T > )dataJp.Select( ProductShort.FromProductShortJp ).ToList();
-				}
-				if( obj is ProductShort )
-				{
-					var dataEn = this.ReadReport< ProductShortEn >( reader, cc, csvOptions );
-					return ( IEnumerable< T > )dataEn.Select( ProductShort.FromProductShortEn ).ToList();
-				}
-
-				return this.ReadReport< T >( reader, cc, csvOptions );
-			}
-		}
-
-		private List< T > ReadReport< T >( StreamReader reader, CsvContext cc, CsvFileDescription csvOptions ) where T : class, new()
-		{
-			var report = cc.Read< T >( reader, csvOptions );
-			return report.ToList();
 		}
 		#endregion
 	}

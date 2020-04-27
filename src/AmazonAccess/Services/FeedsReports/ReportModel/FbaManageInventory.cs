@@ -13,25 +13,25 @@ namespace AmazonAccess.Services.FeedsReports.ReportModel
 		[ CsvColumn( Name = "asin", FieldIndex = 3 ) ]
 		public string Asin{ get; set; }
 
-		[ CsvColumn( Name = "product-name", FieldIndex = 4 ) ]
+		[ CsvColumn( Name = "product-name", FieldIndex = 4, CanBeNull = true ) ]
 		public string ProductName{ get; set; }
 
 		[ CsvColumn( Name = "condition", FieldIndex = 5 ) ]
 		public string Condition{ get; set; }
 
-		[ CsvColumn( Name = "your-price", FieldIndex = 6 ) ]
+		[ CsvColumn( Name = "your-price", FieldIndex = 6, CanBeNull = true ) ]
 		public decimal YourPrice{ get; set; }
 
-		[ CsvColumn( Name = "mfn-listing-exists", FieldIndex = 7 ) ]
+		[ CsvColumn( Name = "mfn-listing-exists", FieldIndex = 7, CanBeNull = true ) ]
 		public string MfnListingExists{ get; set; }
 
-		[ CsvColumn( Name = "mfn-fulfillable-quantity", FieldIndex = 8 ) ]
+		[ CsvColumn( Name = "mfn-fulfillable-quantity", FieldIndex = 8, CanBeNull = true ) ]
 		public int MfnFulfillableQuantity{ get; set; }
 
 		[ CsvColumn( Name = "afn-listing-exists", FieldIndex = 9 ) ]
 		public string AfnListingExists{ get; set; }
 
-		[ CsvColumn( Name = "afn-warehouse-quantity", FieldIndex = 10 ) ]
+		[ CsvColumn( Name = "afn-warehouse-quantity", FieldIndex = 10, CanBeNull = true ) ]
 		public int AfnWarehouseQuantity{ get; set; }
 
 		[ CsvColumn( Name = "afn-fulfillable-quantity", FieldIndex = 11 ) ]
@@ -46,7 +46,7 @@ namespace AmazonAccess.Services.FeedsReports.ReportModel
 		[ CsvColumn( Name = "afn-total-quantity", FieldIndex = 14 ) ]
 		public int AfnTotalQuantity{ get; set; }
 
-		[ CsvColumn( Name = "per-unit-volume", FieldIndex = 15 ) ]
+		[ CsvColumn( Name = "per-unit-volume", FieldIndex = 15, CanBeNull = true ) ]
 		public decimal PerUnitVolume{ get; set; }
 
 		[ CsvColumn( Name = "afn-inbound-working-quantity", FieldIndex = 16 ) ]
@@ -57,5 +57,14 @@ namespace AmazonAccess.Services.FeedsReports.ReportModel
 
 		[ CsvColumn( Name = "afn-inbound-receiving-quantity", FieldIndex = 18 ) ]
 		public int AfnInboundReceivingQuantity{ get; set; }
+
+		[ CsvColumn( Name = "afn-researching-quantity", FieldIndex = 19 ) ]
+		public int AfnResearchingQuantity { get; set; }
+
+		[ CsvColumn( Name = "afn-reserved-future-supply", FieldIndex = 20 ) ]
+		public int AfnReservedFutureSupply { get; set; }
+
+		[ CsvColumn( Name = "afn-future-supply-buyable", FieldIndex = 21 ) ]
+		public int AfnFutureSupplyBuyable { get; set; }
 	}
 }
