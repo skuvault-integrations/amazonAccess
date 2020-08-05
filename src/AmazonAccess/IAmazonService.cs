@@ -41,6 +41,14 @@ namespace AmazonAccess
 		int GetOrders( DateTime dateFrom, DateTime dateTo, Action< ComposedOrder > processOrderAction );
 
 		/// <summary>
+		/// Get FBA shipments
+		/// </summary>
+		/// <param name="dateFrom"></param>
+		/// <param name="dateTo"></param>
+		/// <returns></returns>
+		List< FbaShipmentItemData > GetFbaShipments( DateTime dateFrom, DateTime dateTo, string marker = null );
+
+		/// <summary>
 		/// Get Products By Skus
 		/// </summary>
 		/// <param name="skus"></param>

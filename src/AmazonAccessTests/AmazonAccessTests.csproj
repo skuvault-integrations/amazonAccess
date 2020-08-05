@@ -74,6 +74,7 @@
     <Compile Include="Services\FeedsReports\ReportsServiceTest.cs" />
     <Compile Include="Tests\FbaInventoryTests.cs" />
     <Compile Include="Tests\FbaInboundTests.cs" />
+    <Compile Include="Tests\FbaShipmentsTests.cs" />
     <Compile Include="Tests\FinancesTests.cs" />
     <Compile Include="Tests\ProductsTests.cs" />
     <Compile Include="Misc\TestsBase.cs" />
