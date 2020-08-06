@@ -46,7 +46,7 @@ namespace AmazonAccess
 		/// <param name="dateFrom"></param>
 		/// <param name="dateTo"></param>
 		/// <returns></returns>
-		List< FbaShipmentItemData > GetFbaShipments( DateTime dateFrom, DateTime dateTo, string marker = null );
+		IEnumerable< FbaShipmentItemData > GetFbaShipments( DateTime dateFrom, DateTime dateTo, string marker = null );
 
 		/// <summary>
 		/// Get Products By Skus

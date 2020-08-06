@@ -28,7 +28,7 @@ namespace AmazonAccessTests.Tests
 			var service = this.AmazonFactory.CreateService( this.ClientConfig.SellerId, this.ClientConfig.MwsAuthToken, this.ClientConfig.ParseMarketplaces() );
 			var shipments = service.GetFbaShipments( DateTime.UtcNow.AddDays( -1 ), DateTime.UtcNow );
 			
-			shipments.Count.Should().BeGreaterThan( 0 );
+			shipments.Count().Should().BeGreaterThan( 0 );
 		}
 	}
 }

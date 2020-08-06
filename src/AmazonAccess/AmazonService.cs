@@ -76,7 +76,7 @@ namespace AmazonAccess
 			return ordersCount;
 		}
 
-		public List< FbaShipmentItemData > GetFbaShipments( DateTime dateFrom, DateTime dateTo, string marker = null )
+		public IEnumerable< FbaShipmentItemData > GetFbaShipments( DateTime dateFrom, DateTime dateTo, string marker = null )
 		{
 			if ( marker == null )
 				marker = this.GetMarker();
