@@ -51,28 +51,28 @@ namespace AmazonAccess.Services.FeedsReports.ReportModel
 		public string ProductName { get; set; }
 
 		[ CsvColumn( Name = "quantity-shipped", FieldIndex = 16 ) ]
-		public int QuantityShipped { get; set; }
+		public int? QuantityShipped { get; set; }
 
 		[ CsvColumn( Name = "currency", FieldIndex = 17 ) ]
 		public string Currency { get; set; }
 
 		[ CsvColumn( Name = "item-price", FieldIndex = 18 ) ]
-		public decimal ItemPrice { get; set; }
+		public decimal? ItemPrice { get; set; }
 
 		[ CsvColumn( Name = "item-tax", FieldIndex = 19 ) ]
-		public decimal ItemTax { get; set; }
+		public decimal? ItemTax { get; set; }
 
 		[ CsvColumn( Name = "shipping-price", FieldIndex = 20 ) ]
-		public decimal ShippingPrice { get; set; }
+		public decimal? ShippingPrice { get; set; }
 
 		[ CsvColumn( Name = "shipping-tax", FieldIndex = 21 ) ]
-		public decimal ShippingTax { get; set; }
+		public decimal? ShippingTax { get; set; }
 
 		[ CsvColumn( Name = "gift-wrap-price", FieldIndex = 22 ) ]
-		public decimal GiftWrapPrice { get; set; }
+		public decimal? GiftWrapPrice { get; set; }
 
 		[ CsvColumn( Name = "gift-wrap-tax", FieldIndex = 23 ) ]
-		public decimal GiftWrapTax { get; set; }
+		public decimal? GiftWrapTax { get; set; }
 
 		[ CsvColumn( Name = "ship-service-level", FieldIndex = 24 ) ]
 		public string ShipServiceLevel { get; set; }
@@ -126,10 +126,10 @@ namespace AmazonAccess.Services.FeedsReports.ReportModel
 		public string BillCountry { get; set; }
 
 		[ CsvColumn( Name = "item-promotion-discount", FieldIndex = 41 ) ]
-		public decimal ItemPromotionDiscount { get; set; }
+		public decimal? ItemPromotionDiscount { get; set; }
 
 		[ CsvColumn( Name = "ship-promotion-discount", FieldIndex = 42 ) ]
-		public decimal ShipPromotionDiscount { get; set; }
+		public decimal? ShipPromotionDiscount { get; set; }
 
 		[ CsvColumn( Name = "carrier", FieldIndex = 43 ) ]
 		public string Carrier { get; set; }
