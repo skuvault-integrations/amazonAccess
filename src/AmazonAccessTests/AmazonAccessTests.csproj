@@ -71,6 +71,7 @@
     <Compile Include="..\Global\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Services\FeedsReports\InventoryFeedXmlServiceTests.cs" />
     <Compile Include="Services\FeedsReports\ReportsServiceTest.cs" />
     <Compile Include="Tests\FbaInventoryTests.cs" />
     <Compile Include="Tests\FbaInboundTests.cs" />

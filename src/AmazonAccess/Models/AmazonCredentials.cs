@@ -9,8 +9,9 @@ namespace AmazonAccess.Models
 		public string SellerId{ get; private set; }
 		public string MwsAuthToken{ get; private set; }
 		public AmazonMarketplaces AmazonMarketplaces{ get; private set; }
+		public bool IsMFN{ get; private set; }
 
-		public AmazonCredentials( string accessKeyId, string secretAccessKeyId, string sellerId, string mwsAuthToken, AmazonMarketplaces amazonMarketplaces )
+		public AmazonCredentials( string accessKeyId, string secretAccessKeyId, string sellerId, string mwsAuthToken, AmazonMarketplaces amazonMarketplaces, bool isMFN = false )
 		{
 			Condition.Requires( accessKeyId, "accessKeyId" ).IsNotNullOrWhiteSpace();
 			Condition.Requires( secretAccessKeyId, "secretAccessKeyId" ).IsNotNullOrWhiteSpace();
@@ -23,6 +24,7 @@ namespace AmazonAccess.Models
 			this.SellerId = sellerId;
 			this.AmazonMarketplaces = amazonMarketplaces;
 			this.MwsAuthToken = mwsAuthToken;
+			this.IsMFN = isMFN;
 		}
 	}
 }

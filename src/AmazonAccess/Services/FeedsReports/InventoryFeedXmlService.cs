@@ -11,13 +11,15 @@ namespace AmazonAccess.Services.FeedsReports
 	{
 		private readonly List< AmazonInventoryItem > _inventoryItems;
 		public readonly InventoryFeed _document;
+		private bool _sellerIsMFN;
 
-		public InventoryFeedXmlService( List< AmazonInventoryItem > inventoryItems, string sellerId )
+		public InventoryFeedXmlService( List< AmazonInventoryItem > inventoryItems, string sellerId, bool sellerIsMFN )
 		{
 			Condition.Requires( inventoryItems, "inventoryItems" ).IsNotEmpty();
 			Condition.Requires( sellerId, "sellerId" ).IsNotNull();
 
 			this._inventoryItems = inventoryItems;
+			this._sellerIsMFN = sellerIsMFN;
 			this._document = this.CreateDocument( sellerId );
 		}
 
@@ -66,16 +68,21 @@ namespace AmazonAccess.Services.FeedsReports
 			for( var i = 0; i < this._inventoryItems.Count; i++ )
 			{
 				var item = this._inventoryItems[ i ];
+				var inventory = new Inventory
+				{
+					Quantity = item.Quantity,
+					Sku = item.Sku,
+					FulfillmentLatency = item.FulfillmentLatency
+				};
+				if ( this._sellerIsMFN )
+				{ 
+					inventory = inventory.ToInventoryRemoteFulfillmentMFN();	
+				}
 				var message = new Message
 				{
 					OperationType = OperationType.Update,
 					MessageId = i + 1,
-					Inventory = new Inventory
-					{
-						Quantity = item.Quantity,
-						Sku = item.Sku,
-						FulfillmentLatency = item.FulfillmentLatency
-					}
+					Inventory = inventory
 				};
 				document.Message[ i ] = message;
 			}
