@@ -33,7 +33,7 @@ namespace AmazonAccessTests.Services.FeedsReports
 				$"<Header>\r\n    <DocumentVersion>1.01</DocumentVersion>\r\n    <MerchantIdentifier>{sellerId}</MerchantIdentifier>\r\n  </Header>\r\n  " + 
 				"<MessageType>Inventory</MessageType>\r\n  <Message>\r\n    <MessageID>1</MessageID>\r\n    <OperationType>Update</OperationType>\r\n    " + 
 				$"<Inventory>\r\n      <SKU>{sku}</SKU>\r\n      <Quantity>{quantity}</Quantity>\r\n      <FulfillmentLatency>{fulfillmentLatency}</FulfillmentLatency>\r\n      " + 
-				"<SwitchFulfillmentTo>MFN</SwitchFulfillmentTo>\r\n      <FulfillmentCenterID>DEFAULT</FulfillmentCenterID>\r\n    </Inventory>\r\n  </Message>\r\n</AmazonEnvelope>";
+				"<SwitchFulfillmentTo>MFN</SwitchFulfillmentTo>\r\n      <FulfillmentCenterID />\r\n    </Inventory>\r\n  </Message>\r\n</AmazonEnvelope>";
 			result.Should().Be( expectedXML );
 		}
 
@@ -49,7 +49,7 @@ namespace AmazonAccessTests.Services.FeedsReports
 					FulfillmentLatency = 3
 				}
 			};
-			var mfnXml = "<SwitchFulfillmentTo>MFN</SwitchFulfillmentTo>\r\n      <FulfillmentCenterID>DEFAULT</FulfillmentCenterID>";
+			var mfnXml = "<SwitchFulfillmentTo>MFN</SwitchFulfillmentTo>\r\n      <FulfillmentCenterID />";
 
 			var feedService = new InventoryFeedXmlServiceMFN( inventoryItems, sellerId: "1234" );
 			var result = feedService.GetDocumentString();
