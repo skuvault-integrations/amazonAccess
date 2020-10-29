@@ -35,9 +35,6 @@ namespace AmazonAccess.Services.FeedsReports.Model.InventoryFeed
 	{
 		[ XmlElement ]
 		public SwitchFulfillmentToEnum SwitchFulfillmentTo = SwitchFulfillmentToEnum.MFN;
-
-		[ XmlElement ]
-		public string FulfillmentCenterID = "";
 	}
 
 	public static class InventoryExtensions
