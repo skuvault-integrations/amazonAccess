@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Xml.Serialization;
-using AmazonAccess.Services.FbaInventory.Model;
 
 namespace AmazonAccess.Services.FeedsReports.Model.InventoryFeed
 {
@@ -42,7 +41,6 @@ namespace AmazonAccess.Services.FeedsReports.Model.InventoryFeed
 	}
 
 	[ Serializable ]
-	[ XmlInclude( typeof( InventoryRemoteFulfillmentMFN ) ) ]
 	public class Inventory
 	{
 		[ XmlElement( ElementName = "SKU" ) ]
@@ -53,35 +51,6 @@ namespace AmazonAccess.Services.FeedsReports.Model.InventoryFeed
 
 		[ XmlElement ]
 		public int FulfillmentLatency{ get; set; }
-	}
-
-	public static class InventoryExtensions
-	{
-		public static InventoryRemoteFulfillmentMFN ToInventoryRemoteFulfillmentMFN( this Inventory inventory )
-		{
-			return new InventoryRemoteFulfillmentMFN
-			{
-				Sku = inventory.Sku,
-				Quantity = inventory.Quantity,
-				FulfillmentLatency = inventory.FulfillmentLatency
-			};
-		}
-	}
-
-	[ Serializable ]
-	public class InventoryRemoteFulfillmentMFN : Inventory
-	{
-		[ XmlElement ]
-		public SwitchFulfillmentToEnum SwitchFulfillmentTo = SwitchFulfillmentToEnum.MFN;
-
-		[ XmlElement ]
-		public string FulfillmentCenterID = "DEFAULT";
-	}
-
-	public enum SwitchFulfillmentToEnum
-	{
-		MFN,
-		AFN
 	}
 
 	public enum OperationType

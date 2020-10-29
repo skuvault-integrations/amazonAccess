@@ -265,8 +265,18 @@ namespace AmazonAccess
 			var parts = inventoryItems.Slice( Updateitemslimit );
 			foreach( var part in parts )
 			{
-				var xmlService = new InventoryFeedXmlService( part.ToList(), this._credentials.SellerId, this._credentials.IsMFN );
-				var contentString = xmlService.GetDocumentString();
+				string contentString;
+				if ( this._credentials.IsMFN ) 
+				{ 
+					var xmlService = new InventoryFeedXmlServiceMFN( part.ToList(), this._credentials.SellerId );
+					contentString = xmlService.GetDocumentString();
+				}
+				else
+				{
+					var xmlService = new InventoryFeedXmlService( part.ToList(), this._credentials.SellerId );
+					contentString = xmlService.GetDocumentString();
+				}
+				
 				service.SubmitFeed( marker, FeedType.InventoryQuantityUpdate, contentString );
 			}
 
