@@ -29,11 +29,11 @@ namespace AmazonAccessTests.Services.FeedsReports
 			var feedService = new InventoryFeedXmlService( inventoryItems, sellerId );
 			var result = feedService.GetDocumentString();
 
-			var expectedXML = "<?xml version=\"1.0\"?>\r\n<AmazonEnvelope xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n  " +
+			var expectedXML = "<?xml version=\"1.0\"?>\r\n<AmazonEnvelope xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n  " + 
 				$"<Header>\r\n    <DocumentVersion>1.01</DocumentVersion>\r\n    <MerchantIdentifier>{sellerId}</MerchantIdentifier>\r\n  </Header>\r\n  " + 
 				"<MessageType>Inventory</MessageType>\r\n  <Message>\r\n    <MessageID>1</MessageID>\r\n    <OperationType>Update</OperationType>\r\n    " + 
-				$"<Inventory>\r\n      <SwitchFulfillmentTo>MFN</SwitchFulfillmentTo>\r\n      <SKU>{sku}</SKU>\r\n      <Quantity>{quantity}</Quantity>\r\n      " + 
-				$"<FulfillmentLatency>{fulfillmentLatency}</FulfillmentLatency>\r\n    </Inventory>\r\n  </Message>\r\n</AmazonEnvelope>";
+				$"<Inventory>\r\n      <SKU>{sku}</SKU>\r\n      <Quantity>{quantity}</Quantity>\r\n      <FulfillmentLatency>{fulfillmentLatency}</FulfillmentLatency>\r\n      " + 
+				"<SwitchFulfillmentTo>MFN</SwitchFulfillmentTo>\r\n    </Inventory>\r\n  </Message>\r\n</AmazonEnvelope>";
 			result.Should().Be( expectedXML );
 		}
 
