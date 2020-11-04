@@ -51,6 +51,9 @@ namespace AmazonAccess.Services.FeedsReports.Model.InventoryFeed
 
 		[ XmlElement ]
 		public int FulfillmentLatency{ get; set; }
+		
+		[ XmlElement ]
+		public SwitchFulfillmentToEnum SwitchFulfillmentTo = SwitchFulfillmentToEnum.MFN;		
 	}
 
 	public enum OperationType
@@ -63,5 +66,11 @@ namespace AmazonAccess.Services.FeedsReports.Model.InventoryFeed
 	{
 		Unknown,
 		Inventory
+	}
+	
+	public enum SwitchFulfillmentToEnum
+	{
+		MFN,
+		AFN
 	}
 }
