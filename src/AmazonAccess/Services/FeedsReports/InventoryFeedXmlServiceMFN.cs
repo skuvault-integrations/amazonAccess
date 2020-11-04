@@ -7,12 +7,12 @@ using CuttingEdge.Conditions;
 
 namespace AmazonAccess.Services.FeedsReports
 {
-	public class InventoryFeedXmlService
+	public class InventoryFeedXmlServiceMFN
 	{
 		private readonly List< AmazonInventoryItem > _inventoryItems;
-		public readonly InventoryFeed _document;
+		public readonly InventoryFeedMFN _document;
 
-		public InventoryFeedXmlService( List< AmazonInventoryItem > inventoryItems, string sellerId )
+		public InventoryFeedXmlServiceMFN( List< AmazonInventoryItem > inventoryItems, string sellerId )
 		{
 			Condition.Requires( inventoryItems, "inventoryItems" ).IsNotEmpty();
 			Condition.Requires( sellerId, "sellerId" ).IsNotNull();
@@ -30,7 +30,7 @@ namespace AmazonAccess.Services.FeedsReports
 				return str;
 			}
 
-			//var ser = new XmlSerializer( typeof( InventoryFeed ) );
+			//var ser = new XmlSerializer( typeof( InventoryFeedMFN ) );
 			//var stringWriter = new StringWriter();
 			//ser.Serialize( stringWriter, this._document );
 			//var str = stringWriter.ToString();
@@ -39,7 +39,7 @@ namespace AmazonAccess.Services.FeedsReports
 
 		private Stream GetDocumentStream()
 		{
-			var ser = new XmlSerializer( typeof( InventoryFeed ) );
+			var ser = new XmlSerializer( typeof( InventoryFeedMFN ) );
 			var stream = new MemoryStream();
 			ser.Serialize( stream, this._document );
 			stream.Position = 0;
@@ -47,13 +47,13 @@ namespace AmazonAccess.Services.FeedsReports
 			return stream;
 		}
 
-		private InventoryFeed CreateDocument( string sellerId )
+		private InventoryFeedMFN CreateDocument( string sellerId )
 		{
-			var document = new InventoryFeed
+			var document = new InventoryFeedMFN
 			{
 				Header = new Header { MerchantIdentifier = sellerId, DocumentVersion = "1.01" },
 				MessageType = MessageType.Inventory,
-				Message = new Message[ this._inventoryItems.Count ]
+				Message = new MessageMFN[ this._inventoryItems.Count ]
 			};
 
 			this.CreateMessageNodes( document );
@@ -61,18 +61,18 @@ namespace AmazonAccess.Services.FeedsReports
 			return document;
 		}
 
-		private void CreateMessageNodes( InventoryFeed document )
+		private void CreateMessageNodes( InventoryFeedMFN document )
 		{
 			for( var i = 0; i < this._inventoryItems.Count; i++ )
 			{
 				var item = this._inventoryItems[ i ];
-				var inventory = new Inventory
+				var inventory = new InventoryRemoteFulfillmentMFN
 				{
 					Quantity = item.Quantity,
 					Sku = item.Sku,
 					FulfillmentLatency = item.FulfillmentLatency
 				};
-				var message = new Message
+				var message = new MessageMFN
 				{
 					OperationType = OperationType.Update,
 					MessageId = i + 1,
