@@ -6,7 +6,7 @@ namespace AmazonAccess
 {
 	public interface IAmazonFactory
 	{
-		IAmazonService CreateService( string sellerId, string mwsAuthToken, AmazonMarketplaces amazonMarketplaces, bool isMFN = false );
+		IAmazonService CreateService( string sellerId, string mwsAuthToken, AmazonMarketplaces amazonMarketplaces );
 	}
 
 	public sealed class AmazonFactory: IAmazonFactory
@@ -29,7 +29,7 @@ namespace AmazonAccess
 				this.AppCredentials.Add( AmazonRegionCodeEnum.Cn, cnRegionCredentials );
 		}
 
-		public IAmazonService CreateService( string sellerId, string mwsAuthToken, AmazonMarketplaces amazonMarketplaces, bool isMFN = false )
+		public IAmazonService CreateService( string sellerId, string mwsAuthToken, AmazonMarketplaces amazonMarketplaces )
 		{
 			Condition.Requires( sellerId, "sellerId" ).IsNotNullOrWhiteSpace();
 			Condition.Requires( mwsAuthToken, "mwsAuthToken" ).IsNotNullOrWhiteSpace();
@@ -37,7 +37,7 @@ namespace AmazonAccess
 			Condition.Requires( this.AppCredentials.ContainsKey( amazonMarketplaces.RegionCode ), "AppCredentials" ).IsTrue( "Credentials for region are not found" );
 
 			var credentials = this.AppCredentials[ amazonMarketplaces.RegionCode ];
-			return new AmazonService( new AmazonCredentials( credentials.AccessKeyId, credentials.SecretAccessKeyId, sellerId, mwsAuthToken, amazonMarketplaces, isMFN ) );
+			return new AmazonService( new AmazonCredentials( credentials.AccessKeyId, credentials.SecretAccessKeyId, sellerId, mwsAuthToken, amazonMarketplaces ) );
 		}
 	}
 }

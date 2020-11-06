@@ -66,7 +66,6 @@
     <Compile Include="Services\FBAInbound\FbaInboundService.cs" />
     <Compile Include="Services\FBAInbound\Model\FBAInboundServiceMWSException.cs" />
     <Compile Include="Services\FBAInbound\Model\InboundShipmentFullInfo.cs" />
-    <Compile Include="Services\FeedsReports\InventoryFeedXmlServiceMFN.cs" />
     <Compile Include="Services\FeedsReports\InventoryFeedXmlService.cs" />
     <Compile Include="Misc\Throttler.cs" />
     <Compile Include="Models\AmazonAppCredentials.cs" />
@@ -112,7 +111,6 @@
     <Compile Include="Services\FeedsReports\Mock\MarketplaceWebServiceMock.cs" />
     <Compile Include="Services\FeedsReports\Model\AmazonInventoryItem.cs" />
     <Compile Include="Services\FeedsReports\Model\IMwsResponse.cs" />
-    <Compile Include="Services\FeedsReports\Model\InventoryFeed\InventoryFeedMFN.cs" />
     <Compile Include="Services\FeedsReports\ReportModel\FbaReservedInventory.cs" />
     <Compile Include="Services\FeedsReports\ReportModel\FbaFulfilledInventory.cs" />
     <Compile Include="Services\FeedsReports\ReportModel\FbaMultiCountryInventory.cs" />
