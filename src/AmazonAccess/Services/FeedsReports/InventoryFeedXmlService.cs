@@ -66,16 +66,17 @@ namespace AmazonAccess.Services.FeedsReports
 			for( var i = 0; i < this._inventoryItems.Count; i++ )
 			{
 				var item = this._inventoryItems[ i ];
+				var inventory = new Inventory
+				{
+					Quantity = item.Quantity,
+					Sku = item.Sku,
+					FulfillmentLatency = item.FulfillmentLatency
+				};
 				var message = new Message
 				{
 					OperationType = OperationType.Update,
 					MessageId = i + 1,
-					Inventory = new Inventory
-					{
-						Quantity = item.Quantity,
-						Sku = item.Sku,
-						FulfillmentLatency = item.FulfillmentLatency
-					}
+					Inventory = inventory
 				};
 				document.Message[ i ] = message;
 			}

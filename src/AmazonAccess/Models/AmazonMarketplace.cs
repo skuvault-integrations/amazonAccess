@@ -139,6 +139,11 @@ namespace AmazonAccess.Models
 					this.MarketplaceId = "A1805IZSGTT6HS";
 					this.Endpoint = "https://mws-eu.amazonservices.com";
 					break;
+				case AmazonCountryCodeEnum.Se:
+					this.RegionCode = AmazonRegionCodeEnum.Eu;
+					this.MarketplaceId = "A2NODRKZP88ZB9";
+					this.Endpoint = "https://mws-eu.amazonservices.com";
+					break;
 
 				case AmazonCountryCodeEnum.Au:
 					this.RegionCode = AmazonRegionCodeEnum.Fe;
@@ -204,6 +209,7 @@ namespace AmazonAccess.Models
 		Jp,
 		Au,
 		Cn,
-		Nl
+		Nl,
+		Se
 	}
 }

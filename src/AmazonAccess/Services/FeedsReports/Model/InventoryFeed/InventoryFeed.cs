@@ -43,14 +43,17 @@ namespace AmazonAccess.Services.FeedsReports.Model.InventoryFeed
 	[ Serializable ]
 	public class Inventory
 	{
-		[ XmlElement( ElementName = "SKU" ) ]
+		[ XmlElement( ElementName = "SKU", Order = 0 ) ]
 		public string Sku{ get; set; }
 
-		[ XmlElement ]
+		[ XmlElement( Order = 1 ) ]
 		public int Quantity{ get; set; }
 
-		[ XmlElement ]
+		[ XmlElement( Order = 2 ) ]
 		public int FulfillmentLatency{ get; set; }
+		
+		[ XmlElement( Order = 3 ) ]
+		public SwitchFulfillmentToEnum SwitchFulfillmentTo = SwitchFulfillmentToEnum.MFN;		
 	}
 
 	public enum OperationType
@@ -63,5 +66,11 @@ namespace AmazonAccess.Services.FeedsReports.Model.InventoryFeed
 	{
 		Unknown,
 		Inventory
+	}
+	
+	public enum SwitchFulfillmentToEnum
+	{
+		MFN,
+		AFN
 	}
 }
