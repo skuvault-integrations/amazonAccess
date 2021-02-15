@@ -12,7 +12,7 @@ namespace AmazonAccess.Misc
 {
 	public class AmazonCsvReader
 	{
-		public IEnumerable< T > ParseFBAInventoryReport< T >( string reportString, AmazonCountryCodeEnum? countryCode = null ) where T : class, new()
+		public IEnumerable< T > ParseReport< T >( string reportString, AmazonCountryCodeEnum? countryCode = null ) where T : class, new()
 		{
 			reportString = WebUtility.HtmlDecode( reportString );
 			// sku can contain quote

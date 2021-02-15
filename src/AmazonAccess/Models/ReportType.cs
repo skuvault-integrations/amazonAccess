@@ -12,6 +12,7 @@
 		public static readonly ReportType FbaManageInventory = new ReportType( "_GET_FBA_MYI_UNSUPPRESSED_INVENTORY_DATA_" ); // We use for Fba Sync
 		public static readonly ReportType FbaManageInventoryArchived = new ReportType( "_GET_FBA_MYI_ALL_INVENTORY_DATA_" ); // We use for Fba Sync
 		public static readonly ReportType FbaStrandedInventoryReport = new ReportType( "_GET_STRANDED_INVENTORY_UI_DATA_" );
+		public static readonly ReportType FbaShipmentsData = new ReportType( "_GET_AMAZON_FULFILLED_SHIPMENTS_DATA_" );
 
 		public static readonly ReportType InventoryReport = new ReportType( "_GET_FLAT_FILE_OPEN_LISTINGS_DATA_" ); // We use for Inventory Sync
 		public static readonly ReportType ActiveListingsReport = new ReportType( "_GET_MERCHANT_LISTINGS_DATA_" ); // We use for Prod Sync

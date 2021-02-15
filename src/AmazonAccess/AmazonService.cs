@@ -75,6 +75,21 @@ namespace AmazonAccess
 			var ordersCount = service.LoadOrders( this.GetMarker(), dateFrom, dateTo, processOrderAction );
 			return ordersCount;
 		}
+
+		public IEnumerable< FbaShipmentItemData > GetFbaShipments( DateTime dateFrom, DateTime dateTo, string marker = null )
+		{
+			if ( marker == null )
+				marker = this.GetMarker();
+
+			AmazonLogger.Trace( "GetFbaShipments", this._credentials.SellerId, marker, "Begin invoke" );
+
+			var client = this._factory.CreateFeedsReportsClient();
+			var service = new ReportsService( client, this._credentials );
+			var fbaShipments = service.GetReportForAllMarketplaces< FbaShipmentItemData >( marker, ReportType.FbaShipmentsData, dateFrom, dateTo );
+
+			AmazonLogger.Trace( "GetFbaShipments", this._credentials.SellerId, marker, "End invoke" );
+			return fbaShipments.ToList();
+		}
 		#endregion
 
 		#region Products	

@@ -197,7 +197,7 @@ namespace AmazonAccess.Services.FeedsReports
 			if( reportString == null )
 				throw AmazonLogger.Error( "GetReportForMarketplaces", this._credentials.SellerId, marker, "Can't get report" );
 
-			var report = new AmazonCsvReader().ParseFBAInventoryReport< T >( reportString, countryCode );
+			var report = new AmazonCsvReader().ParseReport< T >( reportString, countryCode );
 			return report;
 		}
 

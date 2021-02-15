@@ -114,6 +114,7 @@
     <Compile Include="Services\FeedsReports\ReportModel\FbaReservedInventory.cs" />
     <Compile Include="Services\FeedsReports\ReportModel\FbaFulfilledInventory.cs" />
     <Compile Include="Services\FeedsReports\ReportModel\FbaMultiCountryInventory.cs" />
+    <Compile Include="Services\FeedsReports\ReportModel\FbaShipmentItemData.cs" />
     <Compile Include="Services\FeedsReports\ReportModel\ProductInventory.cs" />
     <Compile Include="Services\FeedsReports\ReportModel\ProductShort.cs" />
     <Compile Include="Services\FBAInbound\IFbaInboundServiceClient.cs" />

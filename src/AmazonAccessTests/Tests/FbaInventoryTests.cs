@@ -152,7 +152,7 @@ namespace AmazonAccessTests.Tests
 		public void ReadFbaInventoryData()
 		{
 			var data = File.ReadAllText( @"..\..\Files\FBA_inventory_example.csv" );
-			var inventory = new AmazonCsvReader().ParseFBAInventoryReport< FbaManageInventory >( data ).ToList();
+			var inventory = new AmazonCsvReader().ParseReport< FbaManageInventory >( data ).ToList();
 
 			inventory.Should().NotBeNull();
 			inventory.Count.Should().BeGreaterThan( 1 );
