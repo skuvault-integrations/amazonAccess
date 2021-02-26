@@ -144,6 +144,21 @@ namespace AmazonAccess.Models
 					this.MarketplaceId = "A2NODRKZP88ZB9";
 					this.Endpoint = "https://mws-eu.amazonservices.com";
 					break;
+				case AmazonCountryCodeEnum.Sa:
+					this.RegionCode = AmazonRegionCodeEnum.Eu;
+					this.MarketplaceId = "A17E79C6D8DWNP";
+					this.Endpoint = "https://mws-eu.amazonservices.com";
+					break;
+				case AmazonCountryCodeEnum.Eg:
+					this.RegionCode = AmazonRegionCodeEnum.Eu;
+					this.MarketplaceId = "ARBP9OOSHTCHU";
+					this.Endpoint = "https://mws-eu.amazonservices.com";
+					break;
+				case AmazonCountryCodeEnum.Pl:
+					this.RegionCode = AmazonRegionCodeEnum.Eu;
+					this.MarketplaceId = "A1C3SOZRARQ6R3";
+					this.Endpoint = "https://mws-eu.amazonservices.com";
+					break;
 
 				case AmazonCountryCodeEnum.Au:
 					this.RegionCode = AmazonRegionCodeEnum.Fe;
@@ -154,6 +169,11 @@ namespace AmazonAccess.Models
 					this.RegionCode = AmazonRegionCodeEnum.Fe;
 					this.MarketplaceId = "A1VC38T7YXB528";
 					this.Endpoint = "https://mws.amazonservices.jp";
+					break;
+				case AmazonCountryCodeEnum.Sg:
+					this.RegionCode = AmazonRegionCodeEnum.Fe;
+					this.MarketplaceId = "A19VAU5U5O7RUS";
+					this.Endpoint = "https://mws-fe.amazonservices.com";
 					break;
 
 				case AmazonCountryCodeEnum.Cn:
@@ -210,6 +230,10 @@ namespace AmazonAccess.Models
 		Au,
 		Cn,
 		Nl,
-		Se
+		Se,
+		Eg,
+		Sa,
+		Sg,
+		Pl
 	}
 }
