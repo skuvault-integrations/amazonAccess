@@ -136,11 +136,20 @@ namespace AmazonAccess
 			AmazonLogger.Trace( "GetProductsInventoryByMarketplace", this._credentials.SellerId, marker, "Begin invoke" );
 
 			var client = this._factory.CreateFeedsReportsClient();
+			
+			var randomData = new List<int>();
+			
+			randomData.AddRange(new []{34,56,87,2345,689,945,322,345});
+
 			var service = new ReportsService( client, this._credentials );
 			var products = service.GetReportForEachMarketplace< ProductInventory >( marker, ReportType.InventoryReport,
 				DateTime.UtcNow.AddDays( -90 ).ToUniversalTime(), DateTime.UtcNow.ToUniversalTime(), skipDuplicates, p => p.Sku );
 
 			AmazonLogger.Trace( "GetProductsInventoryByMarketplace", this._credentials.SellerId, marker, "End invoke" );
+			
+			
+			randomData.Contains( 45 );
+			randomData.Clear();
 			return products;
 		}
 
