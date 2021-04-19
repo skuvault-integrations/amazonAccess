@@ -41,7 +41,7 @@ namespace AmazonAccess.Services.Orders
 				SellerId = this._credentials.SellerId,
 				MWSAuthToken = this._credentials.MwsAuthToken,
 				LastUpdatedAfter = dateFrom,
-				//LastUpdatedBefore = dateTo,
+				LastUpdatedBefore = dateTo,
 				MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList()
 			};
 			var ordersCount = 0;
@@ -104,7 +104,7 @@ namespace AmazonAccess.Services.Orders
 					SellerId = this._credentials.SellerId,
 					MWSAuthToken = this._credentials.MwsAuthToken,
 					LastUpdatedAfter = dateFrom,
-					//LastUpdatedBefore = dateTo,
+					LastUpdatedBefore = dateTo,
 					MarketplaceId = this._credentials.AmazonMarketplaces.GetMarketplaceIdAsList()
 				};
 				var response = this._client.ListOrders( request, marker );
