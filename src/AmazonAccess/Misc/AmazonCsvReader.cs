@@ -1,4 +1,5 @@
-﻿using AmazonAccess.Models;
+﻿using System;
+using AmazonAccess.Models;
 using AmazonAccess.Services.FeedsReports.ReportModel;
 using LINQtoCSV;
 using System.Collections.Generic;
@@ -17,6 +18,9 @@ namespace AmazonAccess.Misc
 			reportString = WebUtility.HtmlDecode( reportString );
 			// sku can contain quote
 			reportString = reportString.Replace( @"""", "" );
+			
+			// sku and asin can be uppercase
+			reportString = ParseColumnsHeaderToLowerCase(reportString);
 
 			using( var ms = new MemoryStream( Encoding.UTF8.GetBytes( reportString ) ) )
 			using( var reader = new StreamReader( ms ) )
@@ -48,6 +52,24 @@ namespace AmazonAccess.Misc
 		{
 			var report = cc.Read< T >( reader, csvOptions );
 			return report.ToList();
+		}
+		
+		private static string ParseColumnsHeaderToLowerCase(string reportString)
+		{
+			int locationOfFirstCharReturn = reportString.IndexOf( "\r", StringComparison.Ordinal );
+			if( locationOfFirstCharReturn < 0 )
+				return reportString;
+			
+			string headerString = reportString.Substring( 0, locationOfFirstCharReturn );
+			
+			var headerColumnsList = headerString.Split( '\t' ).ToList();
+			headerColumnsList = headerColumnsList.ConvertAll( c => c.ToLower() );
+			
+			headerString = string.Join( "\t", headerColumnsList );
+			
+			string report = reportString.Substring( locationOfFirstCharReturn, reportString.Length - locationOfFirstCharReturn );
+			
+			return headerString + report;
 		}
 	}
 }
