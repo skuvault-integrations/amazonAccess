@@ -62,14 +62,9 @@ namespace AmazonAccess.Misc
 			
 			string headerString = reportString.Substring( 0, locationOfFirstCharReturn );
 			
-			var headerColumnsList = headerString.Split( '\t' ).ToList();
-			headerColumnsList = headerColumnsList.ConvertAll( c => c.ToLower() );
-			
-			headerString = string.Join( "\t", headerColumnsList );
-			
 			string report = reportString.Substring( locationOfFirstCharReturn, reportString.Length - locationOfFirstCharReturn );
 			
-			return headerString + report;
+			return headerString.ToLowerInvariant() + report;
 		}
 	}
 }
