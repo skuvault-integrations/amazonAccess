@@ -564,6 +564,7 @@ namespace AmazonAccess
 			yield return "CANCELLED";
 			yield return "DELETED";
 			yield return "ERROR";
+			yield return "READY_TO_SHIP";
 		}
 
 		private IEnumerable< string > GetShipmentStatusListForReceiveItems()
