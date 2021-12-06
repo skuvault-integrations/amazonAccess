@@ -219,7 +219,9 @@ namespace AmazonAccess
 		/// <param name="dontSendMarketplaces">Amazon will use home marketplace</param>
 		/// <returns></returns>
 		List< FbaFulfilledInventory > GetFbaFulfilledInventory( bool dontSendMarketplaces = false );
-
+	
+		IEnumerable< string > GetAllShipmentStatusList();
+		
 		MarketplaceParticipations GetMarketplaceParticipations();
 
 		List< InboundShipmentFullInfo > GetListInboundShipments( DateTime? dateFrom, DateTime? dateTo, string[] shipmentStatusListForReceive, string[] shipmentStatusListForReceiveItems );

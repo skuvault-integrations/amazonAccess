@@ -552,7 +552,7 @@ namespace AmazonAccess
 			return service.LoadOrderFees( marker, orderId );
 		}
 
-		private IEnumerable< string > GetAllShipmentStatusList()
+		public IEnumerable< string > GetAllShipmentStatusList()
 		{
 			yield return "WORKING";
 			yield return "SHIPPED";
