@@ -71,6 +71,7 @@
     <Compile Include="..\Global\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Models\AmazonMarketplaceTests.cs" />
     <Compile Include="Services\FeedsReports\InventoryFeedXmlServiceTests.cs" />
     <Compile Include="Services\FeedsReports\ReportsServiceTest.cs" />
     <Compile Include="Tests\FbaInventoryTests.cs" />
@@ -92,7 +93,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

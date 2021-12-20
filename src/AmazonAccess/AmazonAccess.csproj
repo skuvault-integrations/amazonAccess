@@ -63,6 +63,8 @@
     <Compile Include="Misc\AmazonCsvReader.cs" />
     <Compile Include="Misc\AmazonLogger.cs" />
     <Compile Include="Misc\ThrottlerAsync.cs" />
+    <Compile Include="Models\AmazonEndpointsRelative.cs" />
+    <Compile Include="Models\AmazonMarketplacesHelper.cs" />
     <Compile Include="Services\FBAInbound\FbaInboundService.cs" />
     <Compile Include="Services\FBAInbound\Model\FBAInboundServiceMWSException.cs" />
     <Compile Include="Services\FBAInbound\Model\InboundShipmentFullInfo.cs" />

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -7,6 +8,8 @@ using System.Runtime.InteropServices;
 
 [ assembly : AssemblyTitle( "AmazonAccess" ) ]
 [ assembly : AssemblyConfiguration( "" ) ]
+
+[ assembly : InternalsVisibleTo( "AmazonAccessTests" ) ]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [ assembly : Guid( "a8903d48-3579-4d1c-968b-6f033028495b" ) ]
