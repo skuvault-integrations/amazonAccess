@@ -67,10 +67,7 @@ namespace AmazonAccess.Models
 		{
 			this.CountryCode = countryCode;
 			this.IsAmazonMarketplace = true;
-			var marketplace = AmazonMarketplacesHelper.GetMarketplaceByCountryCode( countryCode );
-			this.RegionCode = marketplace.RegionCode;
-			this.MarketplaceId = marketplace.MarketplaceId;
-			this.Endpoint = marketplace.Endpoint;
+			base.PopulateMarketplaceByCountryCode( countryCode );
 			
 			if( !string.IsNullOrWhiteSpace( marketplaceId ) && !this.MarketplaceId.Equals( marketplaceId, StringComparison.InvariantCultureIgnoreCase ) )
 			{
