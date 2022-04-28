@@ -57,12 +57,14 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AmazonFactory.cs" />
+    <Compile Include="AmazonMarketplacesHelpers.cs" />
     <Compile Include="AmazonService.cs" />
     <Compile Include="IAmazonService.cs" />
     <Compile Include="Misc\ActionPolicies.cs" />
     <Compile Include="Misc\AmazonCsvReader.cs" />
     <Compile Include="Misc\AmazonLogger.cs" />
     <Compile Include="Misc\ThrottlerAsync.cs" />
+    <Compile Include="Models\AmazonEndpointsRelative.cs" />
     <Compile Include="Services\FBAInbound\FbaInboundService.cs" />
     <Compile Include="Services\FBAInbound\Model\FBAInboundServiceMWSException.cs" />
     <Compile Include="Services\FBAInbound\Model\InboundShipmentFullInfo.cs" />
